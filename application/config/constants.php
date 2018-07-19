@@ -88,3 +88,11 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 define('TWILIO_SID','ACe60f8f7e7f6b5c76f244ed687d7e555f');
 define('TWILIO_TOKEN','3fd9ddd4b66dcd39a37a93eb1108ab4c');
 define('TWILIO_NUMBER','+1 856 281 3441');
+
+
+// smtp mail credentials
+
+define('MAIL_HOST','smtp.mailtrap.io');
+define('MAIL_USERNAME','c4f3f72a8e133a');
+define('MAIL_PASSWORD','500f8fd814ede7');
+define('MAIL_PORT',25);

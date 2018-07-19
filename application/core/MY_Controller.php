@@ -25,9 +25,9 @@ class MY_Controller extends CI_Controller
   }
 
 
-  protected function renderJson() {
+  protected function renderJson($data) {
     header('Content-Type: application/json');
-    echo json_encode($this->data);
+    echo json_encode($data);
     exit;
   }
 }

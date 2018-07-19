@@ -10,6 +10,7 @@ class User extends MY_Controller {
 	    parent::__construct();
 	    $this->load->helper('api');
 	    $this->load->model('UserModel');
+	    $this->load->library('mailer');
 	}
 
 	
@@ -17,91 +18,89 @@ class User extends MY_Controller {
 	{
 
 		
-		if($this->input->method()=='post') {
-			$this->form_validation->set_rules('phone', 'Phone', 'trim|required|is_unique[users.phone]');
-			$this->form_validation->set_message('is_unique', 'The phone is already taken');
-			if ($this->form_validation->run() == true) {
-				$phone= $this->input->post('phone');
-				$otp = generate_otp();
-				$data = array(
+		if($this->input->method()!='post') {
+			return;
+		}
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required|is_unique[users.phone]');
+		$this->form_validation->set_message('is_unique', 'The phone is already taken');
+		if ($this->form_validation->run() == true) {
+			$phone= $this->input->post('phone');
+			$otp = generate_otp();
+			$data = array(
+				'phone'=>$phone,
+				'body' =>"Your one time password is ".$otp
+			);
+			$message = send_sms($data);
+			//print_r($message);die;
+			if($message->sid){
+				$register_data = array(
 					'phone'=>$phone,
-					'body' =>"Your one time password is ".$otp
+					'otp' => $otp,
+					'created_at' => date("Y-m-d H:m:s")
 				);
-				$message = send_sms($data);
-				//print_r($message);die;
-				if($message->sid){
-					$register_data = array(
-						'phone'=>$phone,
-						'otp' => $otp,
-						'created_at' => date("Y-m-d H:m:s")
-					);
-					$user_id = $this->UserModel->insert($register_data);
-					if($user_id){
-						$criteria['field'] = 'id,created_at,updated_at';
-						$criteria['conditions'] = array('id'=>$user_id);
-						$criteria['returnType'] = 'single';
+				$user_id = $this->UserModel->insert($register_data);
+				if($user_id){
+					$criteria['field'] = 'id,created_at,updated_at';
+					$criteria['conditions'] = array('id'=>$user_id);
+					$criteria['returnType'] = 'single';
 
-						$user= $this->UserModel->search($criteria);
-						if($user){
-							$response= array("status"=>true,'message'=>"Record inserted successfully!",'user'=>$user);
-						}
+					$user= $this->UserModel->search($criteria);
+					if($user){
+						$response= array("status"=>true,'message'=>"Record inserted successfully!",'user'=>$user);
 					}
-				}else{
-					$response = array('status'=>false,'message'=>$message); 
 				}
 			}else{
-				$errors = $this->form_validation->error_array();
-				$response = array('status'=>false,'message'=>$errors);
+				$response = array('status'=>false,'message'=>$message); 
 			}
-
-			$this->data= $response;
-			$this->renderJson($this->data);
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
 		}
+
+		$this->renderJson($response);
 	}// end of registerPhone method
 
 	public function otpVerify()
 	{
-		if($this->input->method()=='post') {
-		   $this->form_validation->set_rules('user_id', 'User id', 'trim|required');
-		   $this->form_validation->set_rules('device_type', 'Device type', 'trim|required');
-		   $this->form_validation->set_rules('device_id', 'Device id', 'trim|required');
-		   $this->form_validation->set_rules('otp', 'OTP', 'trim|required');
-		   if ($this->form_validation->run() == true){
-		   		$user_id = $this->input->post('user_id');
-		   		$otp = $this->input->post('otp');
-		   		
-
-		   	   $is_verified = $this->UserModel->verifyOtp(array('user_id'=>$user_id,'otp'=>$otp));
-		   	   if($is_verified){
-		   	   		$update_data = array(
-			   			'device_type' => $this->input->post('device_type'),
-			   			'device_id'=>$this->input->post('device_id'),
-			   			'otp_verify'=>1
-			   		);
-		   	   		$this->UserModel->update($update_data,array('id'=>$user_id));
-		   	   		$user = $this->UserModel->get(array('id'=>$user_id));
-		   	   		$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
-		   	   }else{
-
-		   	   		$response = array('status'=>false,'message'=>array('otp'=>'OTP code doesn\'t match'));
-
-		   	   }
-
-		   }else{
-
-		   		$errors = $this->form_validation->error_array();
-				$response = array('status'=>false,'message'=>$errors);
-		   }
-
-		   $this->data= $response;
-		   $this->renderJson($this->data);
-
+		if($this->input->method()!='post') {
+			return;
 		}
+	   $this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+	   $this->form_validation->set_rules('otp', 'OTP', 'trim|required');
+	   if ($this->form_validation->run() == true){
+	   		$user_id = $this->input->post('user_id');
+	   		$otp = $this->input->post('otp');
+	   		
+
+	   	   $is_verified = $this->UserModel->verifyOtp(array('id'=>$user_id,'otp'=>$otp));
+	   	   if($is_verified){
+	   	   		$update_data = array(
+		   			'otp_verify'=>1
+		   		);
+	   	   		$this->UserModel->update($update_data,array('id'=>$user_id));
+	   	   		$user = $this->UserModel->get(array('id'=>$user_id));
+	   	   		$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
+	   	   }else{
+
+	   	   		$response = array('status'=>false,'message'=>array('otp'=>'OTP code doesn\'t match'));
+
+	   	   }
+
+	   }else{
+
+	   		$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+	   }
+
+	   $this->renderJson($response);
+
 	}// end of otpVerify method
 
 	public function register() {
 
-		if($this->input->method()=='post') {
+		if($this->input->method()!='post') {
+			return;
+		}
 			$this->form_validation->set_rules('name', 'Name', 'trim|required');
 
 		   $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
@@ -130,40 +129,255 @@ class User extends MY_Controller {
 		   		$errors = $this->form_validation->error_array();
 				$response = array('status'=>false,'message'=>$errors);
 		   }
-		   $this->data= $response;
-		   $this->renderJson($this->data);
-		}
+
+		   $this->renderJson($response);
 
 	}// end of register method
 
 	public function login() {
 
-		if($this->input->method()=='post') {
+		if($this->input->method()!='post') {
+			return;
+		}
 
-			$this->form_validation->set_rules('username', 'Phone or email', 'trim|required');
-			$this->form_validation->set_rules('password', 'Password', 'trim|required');
-			if ($this->form_validation->run() == true){
-				$username = $this->input->post('username');
-				$password = $this->input->post('password');
-				$user = $this->UserModel->check_user_exits(array('username'=>$username));
-				if($user){
-					$is_verified = password_verify($password,$user['password']);
-					if($is_verified){
-						$response = array('status'=>true,'message'=>'Login successfully','user'=>$user);
-					}else{
-						$response = array('status'=>false,'message'=>'Your password doesn\'t match');
-					}
+		$this->form_validation->set_rules('username', 'Phone or email', 'trim|required');
+		$this->form_validation->set_rules('password', 'Password', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$username = $this->input->post('username');
+			$password = $this->input->post('password');
+			$user = $this->UserModel->check_user_exits(array('username'=>$username));
+			if($user){
+				$is_verified = password_verify($password,$user['password']);
+				if($is_verified){
+					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user);
 				}else{
-					$response = array('status'=>false,'message'=>'User detail not found');
+					$response = array('status'=>false,'message'=>'Your password doesn\'t match');
 				}
 			}else{
-				$errors = $this->form_validation->error_array();
-				$response = array('status'=>false,'message'=>$errors);
+				$response = array('status'=>false,'message'=>'User detail not found');
 			}
-
-			$this->data= $response;
-		    $this->renderJson($this->data);
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
 		}
+
+
+	    $this->renderJson($response);
+
 	}// end of login method 
+
+
+	public function  registerDevice() {
+		if($this->input->method() != 'post'){
+			return;
+		}
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+
+		$this->form_validation->set_rules('device_type', 'Device type', 'trim|required');
+
+		$this->form_validation->set_rules('device_id', 'Device id', 'trim|required');
+
+		if ($this->form_validation->run() == true){
+			$user_id = $this->input->post('user_id');
+			$update_data=array(
+		   			'device_id'=>$this->input->post('device_id'),
+		   			'device_type'=>$this->input->post('device_type')
+		   	);
+
+		   	$is_update = $this->UserModel->update($update_data,array('id'=>$user_id));
+		   	if($is_update){
+		   		$user = $this->UserModel->get(array('id'=>$user_id));
+		   		$response = array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
+		   	}else{
+		   		$response = array('status'=>false,'message'=>'Something went wrong! Please try again');
+		   	}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+
+	}// end of registerDevice method
+
+	public function sendOtpToChangePassword(){
+
+		if($this->input->method() != 'post'){
+			return;
+		}
+
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		if ($this->form_validation->run() == true){
+
+			$user_id = $this->input->post('user_id');
+			$user = $this->UserModel->get(array('id'=>$user_id));
+			if($user){
+				$otp = generate_otp();
+				$data = array(
+					'phone'=>$user['phone'],
+					'body' =>"Your one time password to change password is ".$otp
+				);
+				$message = send_sms($data);
+				if($message->sid){
+					$update_data=array(
+						'change_password_otp'=>$otp,
+					);
+					$this->UserModel->update($update_data,array('id'=>$user_id));
+					$response= array('status'=>true,'message'=>"OTP sent to your register phone",'user'=>$user);
+				}else{
+					$response = array('status'=>false,'message'=>$message); 
+				}
+			}
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+
+	}// end of sendOtpToChangePassword method
+
+
+
+
+
+
+	public function verifyOtpToChangePassword() {
+
+		if($this->input->method() != 'post'){
+			return;
+		}
+
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('otp', 'OTP', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$user_id = $this->input->post('user_id');
+			$otp = $this->input->post('otp');
+			$is_verified = $this->UserModel->verifyOtp(array('id'=>$user_id,'change_password_otp'=>$otp));
+			if($is_verified){
+
+	   	   		$user = $this->UserModel->get(array('id'=>$user_id));
+	   	   		$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
+	   	   }else{
+
+	   	   		$response = array('status'=>false,'message'=>array('otp'=>'OTP code doesn\'t match'));
+
+	   	   }
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+
+	}
+
+	public function changePassword() {
+
+		if($this->input->method() != 'post'){
+			return;
+		}
+
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('password', 'Password', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$user_id = $this->input->post('user_id');
+	   		$options = [
+			    'cost' => 12,
+			];
+	   		$update_data=array(
+	   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT,$options)
+	   		);
+
+	   		$this->UserModel->update($update_data,array('id'=>$user_id));
+	   		$user = $this->UserModel->get(array('id'=>$user_id));
+	   	   	$response = array('status'=>true,'message'=>'Password changed successfully','user'=>$user);
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}// end of changePassword method
+
+
+	public function sendChangePasswordEmail(){
+
+		if($this->input->method() != 'post'){
+			return;
+		}
+
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+
+		if ($this->form_validation->run() == true){
+
+			$user_id = $this->input->post('user_id');
+			$user = $this->UserModel->get(array('id'=>$user_id));
+			$password_hash= md5(uniqid(mt_rand(1000,9999),true));
+			$link = base_url()."api/user/resetPassword/".$user['email']."/".$password_hash;
+
+			$this->mailer->setFrom('info@revivecare.com');
+			$this->mailer->addAddress($user['email']);
+			$this->mailer->subject('Change password');
+			$this->mailer->body($this->load->view('api/email/changePassword',array('user'=>$user,'link'=>$link),true));
+			$this->mailer->isHTML();
+			$mail=$this->mailer->send();
+			$update_data = array(
+				'password_reset_hash'=>$password_hash
+			);
+
+			$this->UserModel->update($update_data,array('id'=>$user_id));
+	   		$user = $this->UserModel->get(array('id'=>$user_id));
+	   	   	$response = array('status'=>true,'message'=>'Email has been sent successfully','user'=>$user);
+
+		}else{
+
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+
+	}
+
+	public function resetPassword($email,$hash) {
+
+		if(!$email || !$hash){
+			return ;
+		}
+		$data=array('email'=>$email,'hash'=>$hash);
+		$this->load->view('api/passwordReset',$data);
+	}
+
+	public function changePasswordByEmail() {
+		if($this->input->post('email')){
+			$email= $this->input->post('email');
+			$hash = $this->input->post('hash');
+			$pwd = $this->input->post('pwd');
+
+			$criteria['conditions']=array('email'=>$email,'password_reset_hash'=>$hash);
+			$criteria['returnType'] = 'single';
+			$user = $this->UserModel->search($criteria);
+
+			if($user){
+				$user_id = $user['id'];
+				$options = [
+				    'cost' => 12,
+				];
+
+				$update_data= array(
+					'password'=>password_hash($pwd,PASSWORD_BCRYPT,$options)
+				);
+				$this->UserModel->update($update_data,array('id'=>$user_id));
+				$response = array('status'=>true,'message'=>'Password changed successfully!');
+			}else{
+				$response= array('status'=>false,'message'=>'User not found!');
+			}
+			
+			$this->renderJson($response);
+		}
+	}// end of changePasswordByEmail method
 
 }// end of class

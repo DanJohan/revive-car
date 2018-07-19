@@ -11,7 +11,7 @@ class UserModel extends MY_Model {
 
 	public function verifyOtp($data=array()) {
 		$this->db->select('*');
-		$this->db->where(array('id'=>$data['user_id'],'otp'=>$data['otp']));
+		$this->db->where($data);
 		$query=$this->db->get($this->table);
 		$result=$query->result_array();
 		return (!empty($result))?true:false;
