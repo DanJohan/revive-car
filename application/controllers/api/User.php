@@ -28,7 +28,7 @@ class User extends MY_Controller {
 			$otp = generate_otp();
 			$data = array(
 				'phone'=>$phone,
-				'body' =>"Your one time password is ".$otp
+				'body' =>$otp." otp for your mobile verification"
 			);
 			$message = send_sms($data);
 			//print_r($message);die;
@@ -468,5 +468,145 @@ class User extends MY_Controller {
 
 		$this->renderJson($response);
 	} // end of socialLogin method
+
+	public function changeMobile() {
+
+		if($this->input->method() != 'post'){
+			return;
+		}
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('otp', 'OTP', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$user_id = $this->input->post('user_id');
+	   		$otp = $this->input->post('otp');
+	   		$criteria['field'] = 'changed_phone';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+
+			$user= $this->UserModel->search($criteria);
+	   	   	$is_verified = $this->UserModel->verifyOtp(array('id'=>$user_id,'otp'=>$otp));
+
+	   	   if($is_verified){
+	   	   		if($user['changed_phone']) {
+	   	   			
+		   	   		$update_data = array(
+			   			'phone'=>$user['changed_phone'],
+			   			'changed_phone'=>null
+			   		);
+
+
+		   	   		$this->UserModel->update($update_data,array('id'=>$user_id));
+	   	   		}
+
+	   	   		$criteria['field'] = 'id,phone,name,email,profile_image,created_at,updated_at';
+	   	   		$user= $this->UserModel->search($criteria);
+	   	   		$response = array('status'=>true,'message'=>'Phone no changed successfully','user'=>$user);
+	   	   }else{
+
+	   	   		$response = array('status'=>false,'message'=>array('otp'=>'OTP code doesn\'t match'));
+
+	   	   }
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}// end of change mobile method
+
+
+	public function sendOtpToChangeMobile() {
+
+		if($this->input->method() != 'post'){
+			return;
+		}
+
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required|is_unique[users.phone]');
+		$this->form_validation->set_message('is_unique', 'The phone is already taken');
+
+		if ($this->form_validation->run() == true){
+			$user_id = $this->input->post('user_id');
+			$phone= $this->input->post('phone');
+			$otp = generate_otp();
+			$data = array(
+				'phone'=>$phone,
+				'body' =>$otp." otp for your mobile verification"
+			);
+			$message = send_sms($data);
+
+			if($message->sid){
+				$update_data = array(
+					'otp' => $otp,
+					'changed_phone' =>$phone
+				);
+				$this->UserModel->update($update_data,array('id'=>$user_id));
+
+				$criteria['field'] = 'id,created_at,updated_at';
+				$criteria['conditions'] = array('id'=>$user_id);
+				$criteria['returnType'] = 'single';
+
+				$user= $this->UserModel->search($criteria);
+				if($user){
+					$response= array("status"=>true,'message'=>"OTP send succussfully !",'user'=>$user);
+				}
+
+			}else{
+				$response = array('status'=>false,'message'=>$message); 
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}// end of sendOtpToChangeMobile method 
+
+	public function editProfile(){
+		if($this->input->method() != 'post'){
+			return;
+		}
+
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('name', 'Name', 'trim|required');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
+
+		if ($this->form_validation->run() == true){
+			$file_name = '';
+			if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
+
+				$url = FCPATH."uploads/app/";	
+				$upload =$this->do_upload('profile_image',$url);
+				if(isset($upload['upload_data'])){
+					chmod($upload['upload_data']['full_path'], 0777);
+					$file_name = $upload['upload_data']['file_name'];
+				}
+			}
+			$user_id = $this->input->post('user_id');
+			$update_data = array(
+				'name' =>$this->input->post('name'),
+				'email' =>$this->input->post('email')
+			);
+			if($file_name != ''){
+				$update_data['profile_image']=$file_name;
+			}
+
+			$this->UserModel->update($update_data,array('id'=>$user_id));
+			$criteria['field'] = 'id,otp,otp_verify,name,profile_image,email,created_at,updated_at';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+
+			$user= $this->UserModel->search($criteria);
+			$response =array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
+
+		}else{
+
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}// end of edit profile method
 
 }// end of class

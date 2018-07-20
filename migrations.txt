@@ -17,3 +17,7 @@ ALTER TABLE `users` ADD `password_reset_hash` VARCHAR(255) NOT NULL AFTER `chang
 20 july 2018
 ************************************************************************
 ALTER TABLE `users` ADD `gmail_id` INT NULL DEFAULT NULL AFTER `device_type`, ADD `facebook_id` INT NULL DEFAULT NULL AFTER `gmail_id`;
+
+ALTER TABLE `users` ADD `profile_image` VARCHAR(255) NOT NULL AFTER `password`;
+
+ALTER TABLE `users` ADD `changed_phone` VARCHAR(50) NULL DEFAULT NULL AFTER `phone`;
