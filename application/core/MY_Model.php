@@ -151,6 +151,7 @@ class MY_Model extends CI_Model
      * get rows from the users table
      */
     public function search($params = array(),$backtick=true){
+
         if(array_key_exists('field', $params)){
           $this->db->select($params['field'],$backtick);
         }else{
@@ -158,6 +159,12 @@ class MY_Model extends CI_Model
         }
 
         $this->db->from($this->table);
+
+        if(array_key_exists('join', $params)){
+          foreach ($params['join'] as $index => $condition) {
+              $this->db->join($condition[0],$condition[1],$condition[2]);
+          }
+        }
         
         //fetch data by conditions
         if(array_key_exists("conditions",$params)){

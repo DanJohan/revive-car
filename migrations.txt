@@ -12,3 +12,8 @@ ALTER TABLE `users` CHANGE `email` `email` VARCHAR(255) CHARACTER SET latin1 COL
 ALTER TABLE `users` ADD `change_password_otp` VARCHAR(10) NOT NULL AFTER `password`;
 
 ALTER TABLE `users` ADD `password_reset_hash` VARCHAR(255) NOT NULL AFTER `change_password_otp`;
+
+************************************************************************
+20 july 2018
+************************************************************************
+ALTER TABLE `users` ADD `gmail_id` INT NULL DEFAULT NULL AFTER `device_type`, ADD `facebook_id` INT NULL DEFAULT NULL AFTER `gmail_id`;

@@ -78,7 +78,11 @@ class User extends MY_Controller {
 		   			'otp_verify'=>1
 		   		);
 	   	   		$this->UserModel->update($update_data,array('id'=>$user_id));
-	   	   		$user = $this->UserModel->get(array('id'=>$user_id));
+	   	   		$criteria['field'] = 'id,otp,otp_verify,created_at,updated_at';
+				$criteria['conditions'] = array('id'=>$user_id);
+				$criteria['returnType'] = 'single';
+
+				$user= $this->UserModel->search($criteria);
 	   	   		$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
 	   	   }else{
 
@@ -121,7 +125,11 @@ class User extends MY_Controller {
 		   		);
 
 		   		$this->UserModel->update($update_data,array('id'=>$user_id));
-		   		$user = $this->UserModel->get(array('id'=>$user_id));
+		   		$criteria['field'] = 'id,otp,otp_verify,name,email,created_at,updated_at';
+				$criteria['conditions'] = array('id'=>$user_id);
+				$criteria['returnType'] = 'single';
+
+				$user= $this->UserModel->search($criteria);
 		   	   	$response = array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
 
 		   }else{
@@ -186,7 +194,12 @@ class User extends MY_Controller {
 
 		   	$is_update = $this->UserModel->update($update_data,array('id'=>$user_id));
 		   	if($is_update){
-		   		$user = $this->UserModel->get(array('id'=>$user_id));
+		   		$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+				$criteria['conditions'] = array('id'=>$user_id);
+				$criteria['returnType'] = 'single';
+
+				$user= $this->UserModel->search($criteria);
+
 		   		$response = array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
 		   	}else{
 		   		$response = array('status'=>false,'message'=>'Something went wrong! Please try again');
@@ -211,7 +224,13 @@ class User extends MY_Controller {
 		if ($this->form_validation->run() == true){
 
 			$user_id = $this->input->post('user_id');
-			$user = $this->UserModel->get(array('id'=>$user_id));
+
+			$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+
+			$user= $this->UserModel->search($criteria);
+
 			if($user){
 				$otp = generate_otp();
 				$data = array(
@@ -257,8 +276,12 @@ class User extends MY_Controller {
 			$is_verified = $this->UserModel->verifyOtp(array('id'=>$user_id,'change_password_otp'=>$otp));
 			if($is_verified){
 
-	   	   		$user = $this->UserModel->get(array('id'=>$user_id));
-	   	   		$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
+	   	   	$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+
+			$user= $this->UserModel->search($criteria);
+	   	   	$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
 	   	   }else{
 
 	   	   		$response = array('status'=>false,'message'=>array('otp'=>'OTP code doesn\'t match'));
@@ -272,6 +295,7 @@ class User extends MY_Controller {
 		$this->renderJson($response);
 
 	}
+
 
 	public function changePassword() {
 
@@ -291,7 +315,12 @@ class User extends MY_Controller {
 	   		);
 
 	   		$this->UserModel->update($update_data,array('id'=>$user_id));
-	   		$user = $this->UserModel->get(array('id'=>$user_id));
+	   		$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+
+			$user= $this->UserModel->search($criteria);
+
 	   	   	$response = array('status'=>true,'message'=>'Password changed successfully','user'=>$user);
 
 		}else{
@@ -329,7 +358,13 @@ class User extends MY_Controller {
 			);
 
 			$this->UserModel->update($update_data,array('id'=>$user_id));
-	   		$user = $this->UserModel->get(array('id'=>$user_id));
+
+	   		$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+
+			$user= $this->UserModel->search($criteria);
+
 	   	   	$response = array('status'=>true,'message'=>'Email has been sent successfully','user'=>$user);
 
 		}else{
@@ -357,6 +392,8 @@ class User extends MY_Controller {
 			$hash = $this->input->post('hash');
 			$pwd = $this->input->post('pwd');
 
+			$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+
 			$criteria['conditions']=array('email'=>$email,'password_reset_hash'=>$hash);
 			$criteria['returnType'] = 'single';
 			$user = $this->UserModel->search($criteria);
@@ -379,5 +416,57 @@ class User extends MY_Controller {
 			$this->renderJson($response);
 		}
 	}// end of changePasswordByEmail method
+
+	public function socialLogin() {
+
+		if($this->input->method() != 'post'){
+			return;
+		}
+
+		$login_type = $this->input->post('login_type');
+		if($login_type=='G'){
+			$this->form_validation->set_rules('gmail_id','Gmail id','trim|required');
+		}elseif ($login_type=='F') {
+			$this->form_validation->set_rules('facebook_id', 'Facebook_id', 'trim|required');
+		}
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('name', 'Name', 'trim|required');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
+
+		$this->form_validation->set_rules('login_type', 'Login Type', 'trim|required');
+
+		if ($this->form_validation->run() == true){
+
+			$user_id = $this->input->post('user_id');
+
+			$criteria['field'] = 'id,otp,otp_verify,gmail_id,facebook_id,name,device_id,device_type,email,created_at,updated_at';
+
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+			$user = $this->UserModel->search($criteria);
+
+
+			$update_data= array(
+				'name' => $this->input->post('name'),
+				'email'=>$this->input->post('email'),
+			);
+
+			if($login_type=='G'){
+				$update_data['gmail_id']= $this->input->post('gmail_id');
+			}elseif ($login_type=='F') {
+				$update_data['facebook_id']= $this->input->post('facebook_id');
+			}
+			$this->UserModel->update($update_data,array('id'=>$user_id));
+			$user = $this->UserModel->search($criteria);
+
+			$response = array('status'=>true,'message'=>"Login successfully",'user'=>$user);
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	} // end of socialLogin method
 
 }// end of class
