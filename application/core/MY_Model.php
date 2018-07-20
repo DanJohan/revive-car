@@ -45,7 +45,9 @@ class MY_Model extends CI_Model
       $this->db->select($select);
     }
     $query = $this->db->get($this->table);
-    $this->db->last_query();
+
+    //echo $this->db->last_query();
+
     if($query->num_rows()>0)
     {
       foreach($query->result_array() as $row)
