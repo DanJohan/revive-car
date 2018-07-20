@@ -8,18 +8,16 @@
         <!-- /.box-header -->
         <!-- form start -->
         <div class="box-body my-form-body">
-          <?php if(isset($msg) || validation_errors() !== ''): ?> 
+          <?php if(isset($msg)): ?> 
               <div class="alert alert-warning alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h4><i class="icon fa fa-warning"></i> Alert!</h4>
-                  <?= validation_errors();?>
+                  
                   <?= isset($msg)? $msg: ''; ?>
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('admin/workshop/insertManager'));  ?> 
-
-
+           <form method="post" action="<?php echo base_url() . 'admin/workshop/insert_manager'; ?>">
               <div class="form-group">
                 <label for="managername" class="col-sm-3 control-label">Manager Name</label>
 
@@ -95,7 +93,7 @@
                   <input type="submit" name="submit" value="Add User" class="btn btn-info pull-right">
                 </div>
               </div>
-            <?php echo form_close( ); ?>
+            </div>
           </div>
           <!-- /.box-body -->
       </div>
@@ -103,8 +101,3 @@
   </div>  
 
 </section> 
-
-
-<script>
-$("#add_user").addClass('active');
-</script>    
