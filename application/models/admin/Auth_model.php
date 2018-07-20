@@ -3,7 +3,7 @@
 
 		public function login($data){
 			//$query = $this->db->get_where('users', array('email' => $data['email']));
-			$query = $this->db->get_where('tbl_admin', array('email' => $data['email']));
+			$query = $this->db->get_where('admin', array('email' => $data['email']));
 			if ($query->num_rows() == 0){
 				return false;
 			}
@@ -21,7 +21,7 @@
 		public function change_pwd($data, $id){
 			$this->db->where('id', $id);
 			//$this->db->update('users', $data);
-			$this->db->update('tbl_admin', $data);
+			$this->db->update('admin', $data);
 			return true;
 		}
 
