@@ -33,3 +33,4 @@ application/vendor/
 
 uploads/app/*
 !uploads/app/.gitkeep
+application/config/database.php
