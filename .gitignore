@@ -33,3 +33,6 @@ application/vendor/
 
 uploads/app/*
 !uploads/app/.gitkeep
+
+uploads/admin/*
+!uploads/admin/.gitkeep

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		  <title><?=isset($title)?$title:'User Management System' ?></title>
+		  <title><?=isset($title)?$title:'Customer Relationship Management' ?></title>
 		  <!-- Tell the browser to be responsive to screen width -->
 		  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 		  <!-- Bootstrap 3.3.6 -->
@@ -27,7 +27,7 @@
 			 <?php if($this->session->flashdata('msg') != ''): ?>
 			    <div class="alert alert-warning flash-msg alert-dismissible">
 			      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			      <h4> Success!</h4>
+			      <h4> Alert!</h4>
 			      <?= $this->session->flashdata('msg'); ?> 
 			    </div>
 			  <?php endif; ?> 

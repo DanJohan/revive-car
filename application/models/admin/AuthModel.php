@@ -1,5 +1,5 @@
 <?php
-	class Auth_model extends CI_Model{
+	class AuthModel extends CI_Model{
 
 		public function login($data){
 			//$query = $this->db->get_where('users', array('email' => $data['email']));
