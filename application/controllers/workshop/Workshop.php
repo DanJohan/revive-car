@@ -21,7 +21,7 @@
 					$data = array(
 						'm_name' => $this->input->post('m_name'),
 						'm_email' => $this->input->post('m_email'),
-						'm_password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT,array('cost'=>12)),
+						'm_password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT),
 						'm_phone' => $this->input->post('m_phone'),
 						'm_address' => $this->input->post('m_address'),
 						'm_workshop_location' => $this->input->post('m_workshop_location'),
@@ -29,14 +29,12 @@
 						'created_at' => date('Y-m-d : h:m:s'),
 						'updated_at' => date('Y-m-d : h:m:s'),
 					);
-
 					$data = $this->security->xss_clean($data);
-					dd($data,false);
 					$result = $this->WorkshopModel->insert($data);
 
 					if($result){
 						$this->session->set_flashdata('msg', 'Manager is Added Successfully!');
-						//redirect(base_url('admin/workshop/view_manager'));
+						redirect(base_url('admin/workshop/view_manager'));
 
 					}
 				
