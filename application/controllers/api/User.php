@@ -16,7 +16,6 @@ class User extends MY_Controller {
 	
 	public function registerPhone()
 	{
-
 		
 		if($this->input->method()!='post') {
 			return;
@@ -36,7 +35,7 @@ class User extends MY_Controller {
 				$register_data = array(
 					'phone'=>$phone,
 					'otp' => $otp,
-					'created_at' => date("Y-m-d H:m:s")
+					'created_at' => date("Y-m-d H:i:s")
 				);
 				$user_id = $this->UserModel->insert($register_data);
 				if($user_id){
