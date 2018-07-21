@@ -17,12 +17,12 @@
               </div>
             <?php endif; ?>
            
-           <form method="post" action="<?php echo base_url() . 'admin/workshop/insert_manager'; ?>">
+           <form method="post" action="<?php echo base_url() . 'admin/workshop/insert_manager'; ?>" enctype="multipart/form-data">
               <div class="form-group">
                 <label for="managername" class="col-sm-3 control-label">Manager Name</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="m_name" class="form-control" id="managername" placeholder="">
+                  <input type="text" name="m_name" class="form-control" pattern="[A-Za-z]+" title="only letters" required>
                 </div> 
               </div>
               <br></br><br>
@@ -31,7 +31,7 @@
                 <label for="email" class="col-sm-3 control-label">Email</label>
 
                 <div class="col-sm-8">
-                  <input type="email" name="m_email" class="form-control" id="email" placeholder="">
+                  <input type="email" name="m_email" class="form-control" id="email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" title="Invalid email address" required>
                 </div>
               </div>
               <br></br>
@@ -39,7 +39,7 @@
                 <label for="password" class="col-sm-3 control-label">Password</label>
 
                 <div class="col-sm-8">
-                  <input type="password" name="m_password" class="form-control" id="password" placeholder="">
+                  <input type="password" name="m_password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
                 </div>
               </div>
               <br></br>
@@ -47,7 +47,7 @@
                 <label for="mobile_no" class="col-sm-3 control-label">Mobile No</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="m_phone" class="form-control" id="mobile_no" placeholder="">
+                  <input type="text" name="m_phone" class="form-control" id="mobile_no" pattern="[789][0-9]{9}" title="Enter valid number" required>
                 </div>
               </div>
               <br></br>
@@ -55,7 +55,7 @@
                 <label for="password" class="col-sm-3 control-label">Complete Address</label>
 
                 <div class="col-sm-8">
-                  <textarea type="text" name="m_address" class="form-control" id="password" placeholder=""></textarea>
+                  <textarea type="text" name="m_address" class="form-control" id="password" required></textarea>
                 </div>
               </div>
               <br></br><br>
@@ -63,7 +63,7 @@
                 <label for="role" class="col-sm-3 control-label">Workshop Location</label>
 
                 <div class="col-sm-8">
-                  <select name="m_workshop_location" class="form-control">
+                  <select name="m_workshop_location" class="form-control" title="select any option" required>
                     <option value="location not selected">Select Location</option>
                     <option value="Delhi">Delhi</option>
                     <option value="Gurugram">Gurugram</option>
@@ -77,7 +77,7 @@
                 <label for="password" class="col-sm-3 control-label">ID Proof</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="m_id_proof" class="form-control" id="password" placeholder="Adharcard/Pancard..">
+                  <input type="text" name="m_id_proof" class="form-control" id="password" placeholder="Adharcard/Pancard.." required>
                 </div>
               </div>
               <br></br>

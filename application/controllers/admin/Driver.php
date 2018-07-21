@@ -8,30 +8,36 @@
 			$this->load->model('admin/DriverModel');
 		}
 
-		public function add_driver(){
+		public function add_driver(){ //display add driver page 
 			$data=array();
 			$data['view'] = 'admin/driver/add_driver';
 			$this->load->view('admin/layout', $data);
 			
 		}
 		
-		public function insert_driver(){
-			if($this->input->post('submit')){
-				
+		public function insert_driver(){  //insert driver 
+			if($this->input->post('submit')){  //inserting image in DB
+					$file_name = '';
+					if(isset($_FILES['d_photo']) && !empty($_FILES['d_photo']['name'])) {
+						$path= FCPATH.'uploads/admin/';
+						$upload= $this->do_upload('d_photo',$path);
+						if(isset($upload['upload_data'])){
+							$file_name = $upload['upload_data']['file_name'];
+						}
+					}
 					$data = array(
 						'd_name' => $this->input->post('d_name'),
 						'd_email' => $this->input->post('d_email'),
 						'd_phone' => $this->input->post('d_phone'),
 						'd_address' => $this->input->post('d_address'),
 						'd_idproof' => $this->input->post('d_idproof'),
-						'created_at' => date('Y-m-d : h:m:s'),
+						'd_photo' => $file_name,
+						'created_at' => date('Y-m-d H:i:s')
 						
 					);
-					$data = $this->security->xss_clean($data);
 					
 					$result = $this->DriverModel->insert($data);
-					// $result= $this->db->last_query();
-					// print_r($result);die;
+					
 					if($result){
 						$this->session->set_flashdata('msg', 'Driver is Added Successfully!');
 						redirect(base_url('admin/driver/view_driver'));
@@ -46,56 +52,54 @@
 			}	
 		}
 
-		public function view_driver(){
+		public function view_driver(){ //view all drivers from db
 			$data=array();
 			$data['all_driver'][0] =  $this->DriverModel->get_all();
 			$data['view'] = 'admin/driver/view_driver';
-			//print_r($data['all_manager'][0]);die;
 			$this->load->view('admin/layout', $data);
 
 		  }
 
-		/*public function edit($id = 0){
+		public function edit_driver($id = 0){  // display record of selected id 
 			if($this->input->post('submit')){
-				$this->form_validation->set_rules('username', 'Username', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('phone', 'Number', 'trim|required');
-				/*$this->form_validation->set_rules('user_role', 'User Role', 'trim|required');
-*/
-				/*if ($this->form_validation->run() == FALSE) {
-					$data['user'] = $this->user_model->get_user_by_id($id);
-					$data['view'] = 'admin/users/user_edit';
+				$this->form_validation->set_rules('d_name', 'Username', 'trim|required');
+				$this->form_validation->set_rules('d_email', 'Email', 'trim|required');
+				$this->form_validation->set_rules('d_phone', 'Number', 'trim|required');
+				$this->form_validation->set_rules('d_address', 'Address', 'trim|required');
+				
+				if ($this->form_validation->run() == FALSE) {
+					$data['driver'] = $this->DriverModel->get_driver_by_id($id);
+					$data['view'] = 'admin/driver/edit_driver';
 					$this->load->view('admin/layout', $data);
 				}
 				else{
 					$data = array(
-						'username' => $this->input->post('username'),
-						'email' => $this->input->post('email'),
-						'phone' => $this->input->post('phone'),
-						'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-						'is_admin' => $this->input->post('user_role'),
-						'updated_at' => date('Y-m-d : h:m:s'),
+						'd_name' => $this->input->post('d_name'),
+						'd_email' => $this->input->post('d_email'),
+						'd_phone' => $this->input->post('d_phone'),
+						'd_address' => $this->input->post('d_address')
 					);
-					$data = $this->security->xss_clean($data);
-					$result = $this->user_model->edit_user($data, $id);
+				
+					$result = $this->DriverModel->edit($data, $id);
 					if($result){
 						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('admin/users'));
+						redirect(base_url('admin/driver/view_driver'));
 					}
 				}
 			}
 			else{
-				$data['user'] = $this->user_model->get_user_by_id($id);
-				$data['view'] = 'admin/users/user_edit';
+				$data['driver'] = $this->DriverModel->get_driver_by_id($id);
+				$data['view'] = 'admin/driver/edit_driver';
 				$this->load->view('admin/layout', $data);
 			}
-		}*/
+		}
 
-		/*public function del($id = 0){
-			$this->db->delete('users', array('id' => $id));
+
+		public function del_driver($id = 0){
+			$this->db->delete('driver', array('id' => $id));
 			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('admin/users'));
-		}*/
+			redirect(base_url('admin/driver/view_driver'));
+		}
 
 	}
 

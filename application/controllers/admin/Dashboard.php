@@ -12,10 +12,6 @@
 			$this->load->view('admin/layout', $data);
 		}
 
-		public function index2(){
-			$data['view'] = 'admin/dashboard/index2';
-			$this->load->view('admin/layout', $data);
-		}
 	}
 
 ?>	

@@ -11,9 +11,11 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
-          <th>Username</th>
+          <th>Manager Name</th>
           <th>Email</th>
           <th>Mobile No.</th>
+          <th>Workstation</th>
+          <th>ID Proof</th>
           <th>Address</th>
           <th>Created At</th>
           <th style="width: 150px;" class="text-right">Option</th>
@@ -27,11 +29,13 @@
             <td><?= $row['m_name']; ?></td>
             <td><?= $row['m_email']; ?></td>
             <td><?= $row['m_phone']; ?></td>
+            <td><?= $row['m_workshop_location']; ?></td>
+            <td><?= $row['m_id_proof']; ?></td>
             <td><?= $row['m_address']; ?></td>
             <td><?= $row['created_at']; ?></td>
             
-            <td class="text-right"><a href="<?= base_url('admin/users/edit/'.$row['id']); ?>" class="btn btn-info btn-flat">Edit</a>
-              <a href="<?= base_url('admin/users/del/'.$row['id']); ?>" class="btn btn-danger btn-flat">Delete</a></td>
+            <td class="text-right"><a href="<?= base_url('admin/workshop/edit_manager/'.$row['id']); ?>" class="btn btn-info btn-flat">Edit</a>
+              <a href="<?= base_url('admin/workshop/del_manager/'.$row['id']); ?>" class="btn btn-danger btn-flat">Delete</a></td>
           </tr>
           <?php endforeach; ?>
         </tbody>

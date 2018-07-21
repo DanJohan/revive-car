@@ -5,7 +5,7 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('admin/auth_model', 'auth_model');
+			$this->load->model('admin/AuthModel');
 		}
 
 		public function index(){
@@ -32,7 +32,7 @@
 					'email' => $this->input->post('email'),
 					'password' => $this->input->post('password')
 					);
-					$result = $this->auth_model->login($data);
+					$result = $this->AuthModel->login($data);
 					if ($result == TRUE) {
 						$admin_data = array(
 							'admin_id' => $result['id'],
@@ -66,7 +66,7 @@
 					$data = array(
 						'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT)
 					);
-					$result = $this->auth_model->change_pwd($data, $id);
+					$result = $this->AuthModel->change_pwd($data, $id);
 					if($result){
 						$this->session->set_flashdata('msg', 'Password has been changed successfully!');
 						redirect(base_url('admin/auth/change_pwd'));

@@ -18,10 +18,10 @@
            
              <form method="post" action="<?php echo base_url() . 'admin/driver/insert_driver'; ?>"> 
               <div class="form-group">
-                <label for="firstname" class="col-sm-3 control-label">First Name</label>
+                <label for="firstname" class="col-sm-3 control-label">Driver Name</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_name" class="form-control" id="firstname" placeholder="">
+                  <input type="text" name="d_name" class="form-control" pattern="[A-Za-z]+" title="only letters" placeholder="" required>
                 </div>
               </div>
               <br><br></br>
@@ -29,7 +29,7 @@
                 <label for="email" class="col-sm-3 control-label">Email</label>
 
                 <div class="col-sm-8">
-                  <input type="email" name="d_email" class="form-control" id="email" placeholder="">
+                  <input type="email" name="d_email" class="form-control" id="email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" title="Invalid email address" required>
                 </div>
               </div>
               <br></br>
@@ -37,7 +37,7 @@
                 <label for="mobile_no" class="col-sm-3 control-label">Mobile No</label>
 
                 <div class="col-sm-8">
-                  <input type="number" name="d_phone" class="form-control" id="mobile_no" placeholder="">
+                  <input type="text" name="d_phone" class="form-control" id="mobile_no" pattern="[789][0-9]{9}" title="9999999999" required>
                 </div>
               </div>
               <br></br>
@@ -45,7 +45,7 @@
                 <label for="password" class="col-sm-3 control-label">Complete Address</label>
 
                 <div class="col-sm-8">
-                  <textarea type="text" name="d_address" class="form-control" id="password" placeholder=""></textarea>
+                  <textarea type="text" name="d_address" class="form-control" id="password" required></textarea>
                 </div>
               </div>
               <br><br></br>
@@ -53,7 +53,7 @@
                 <label for="password" class="col-sm-3 control-label">ID Proof</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_idproof" class="form-control" id="password" placeholder="Adharcard/Pancard/License..">
+                  <input type="text" name="d_idproof" class="form-control" id="password" placeholder="Adharcard/Pancard/License.." required>
                 </div>
               </div>
               <br></br>
