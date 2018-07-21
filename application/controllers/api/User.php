@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 class User extends MY_Controller {
 
 	
@@ -16,11 +15,7 @@ class User extends MY_Controller {
 	
 	public function registerPhone()
 	{
-
 		
-		if($this->input->method()!='post') {
-			return;
-		}
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|required|is_unique[users.phone]');
 		$this->form_validation->set_message('is_unique', 'The phone is already taken');
 		if ($this->form_validation->run() == true) {
@@ -36,7 +31,7 @@ class User extends MY_Controller {
 				$register_data = array(
 					'phone'=>$phone,
 					'otp' => $otp,
-					'created_at' => date("Y-m-d H:m:s")
+					'created_at' => date("Y-m-d H:i:s")
 				);
 				$user_id = $this->UserModel->insert($register_data);
 				if($user_id){
@@ -62,9 +57,7 @@ class User extends MY_Controller {
 
 	public function otpVerify()
 	{
-		if($this->input->method()!='post') {
-			return;
-		}
+
 	   $this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 	   $this->form_validation->set_rules('otp', 'OTP', 'trim|required');
 	   if ($this->form_validation->run() == true){
@@ -102,9 +95,7 @@ class User extends MY_Controller {
 
 	public function register() {
 
-		if($this->input->method()!='post') {
-			return;
-		}
+
 			$this->form_validation->set_rules('name', 'Name', 'trim|required');
 
 		   $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
@@ -144,9 +135,6 @@ class User extends MY_Controller {
 
 	public function login() {
 
-		if($this->input->method()!='post') {
-			return;
-		}
 
 		$this->form_validation->set_rules('username', 'Phone or email', 'trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
@@ -176,9 +164,7 @@ class User extends MY_Controller {
 
 
 	public function  registerDevice() {
-		if($this->input->method() != 'post'){
-			return;
-		}
+
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 
 		$this->form_validation->set_rules('device_type', 'Device type', 'trim|required');
@@ -215,10 +201,6 @@ class User extends MY_Controller {
 	}// end of registerDevice method
 
 	public function sendOtpToChangePassword(){
-
-		if($this->input->method() != 'post'){
-			return;
-		}
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		if ($this->form_validation->run() == true){
@@ -258,15 +240,8 @@ class User extends MY_Controller {
 	}// end of sendOtpToChangePassword method
 
 
-
-
-
-
 	public function verifyOtpToChangePassword() {
 
-		if($this->input->method() != 'post'){
-			return;
-		}
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('otp', 'OTP', 'trim|required');
@@ -299,9 +274,6 @@ class User extends MY_Controller {
 
 	public function changePassword() {
 
-		if($this->input->method() != 'post'){
-			return;
-		}
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
@@ -334,9 +306,6 @@ class User extends MY_Controller {
 
 	public function sendChangePasswordEmail(){
 
-		if($this->input->method() != 'post'){
-			return;
-		}
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 
@@ -419,10 +388,6 @@ class User extends MY_Controller {
 
 	public function socialLogin() {
 
-		if($this->input->method() != 'post'){
-			return;
-		}
-
 		$login_type = $this->input->post('login_type');
 		if($login_type=='G'){
 			$this->form_validation->set_rules('gmail_id','Gmail id','trim|required');
@@ -471,9 +436,6 @@ class User extends MY_Controller {
 
 	public function changeMobile() {
 
-		if($this->input->method() != 'post'){
-			return;
-		}
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('otp', 'OTP', 'trim|required');
 		if ($this->form_validation->run() == true){
@@ -516,10 +478,6 @@ class User extends MY_Controller {
 
 
 	public function sendOtpToChangeMobile() {
-
-		if($this->input->method() != 'post'){
-			return;
-		}
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|required|is_unique[users.phone]');
@@ -564,9 +522,6 @@ class User extends MY_Controller {
 	}// end of sendOtpToChangeMobile method 
 
 	public function editProfile(){
-		if($this->input->method() != 'post'){
-			return;
-		}
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
