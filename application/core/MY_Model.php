@@ -96,7 +96,7 @@ class MY_Model extends CI_Model
   */
   public function insert($columns_arr)
   {
-
+//print_r($columns_arr);die;
     if(is_array($columns_arr))
     {
       if($this->db->insert($this->table,$columns_arr))

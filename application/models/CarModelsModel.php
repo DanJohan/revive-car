@@ -9,6 +9,4 @@ class CarModelsModel extends MY_Model {
 	    parent::__construct();
 	}
 
-
-
 }

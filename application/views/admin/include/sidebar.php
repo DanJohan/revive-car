@@ -13,7 +13,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
         </div>
         <div class="pull-left info">
           <p><?= ucwords($this->session->userdata('name')); ?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+         <!--  <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
         </div>
       </div>
       <!-- search form -->
@@ -49,6 +49,20 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
             </ul>
           </li>
           </ul>
+      <ul class="sidebar-menu">
+        <li id="users" class="treeview">
+            <a href="#">
+              <i class="fa fa-dashboard"></i> <span>Car Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li id="add_carbrand"><a href="<?= base_url('admin/car/add_carbrand'); ?>"><i class="fa fa-circle-o"></i> Add Car Brand</a></li>
+              <li id="add_carmodel"><a href="<?= base_url('admin/car/add_carmodel'); ?>"><i class="fa fa-circle-o"></i> Add Car Model</a></li>
+           </ul>
+        </li>
+      </ul>
       <ul class="sidebar-menu">
         <li id="users" class="treeview">
             <a href="#">
