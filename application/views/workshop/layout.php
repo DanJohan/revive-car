@@ -35,12 +35,12 @@
 			<section id="container">
 				<!--header start-->
 				<header class="header white-bg">
-					<?php include('include/navbar.php'); ?>
+					<?php $this->load->view('workshop/include/navbar.php'); ?>
 				</header>
 				<!--header end-->
 				<!--sidebar start-->
 				<aside>
-					<?php include('include/sidebar.php'); ?>
+					<?php $this->load->view('workshop/include/sidebar.php'); ?>
 				</aside>
 				<!--sidebar end-->
 				<!--main content start-->
@@ -61,7 +61,7 @@
 			</section>
 
 			<!-- /.control-sidebar -->
-			<?php include('include/control_sidebar.php'); ?>
+			<?php $this->load->view('workshop/include/control_sidebar.php'); ?>
 
 	</div>	
     

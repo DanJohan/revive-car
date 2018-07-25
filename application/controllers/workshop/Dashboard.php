@@ -8,14 +8,14 @@
 		}
 
 		public function index(){
-			$data['view'] = 'admin/dashboard/index';
-			$this->load->view('admin/layout', $data);
+			$data['view'] = 'workshop/dashboard/index';
+			$this->load->view('workshop/layout', $data);
 		}
 
-		public function index2(){
-			$data['view'] = 'admin/dashboard/index2';
-			$this->load->view('admin/layout', $data);
-		}
+		 public function index2(){
+			$data['view'] = 'workshop/dashboard/index2';
+			$this->load->view('workshop/layout', $data);
+		} 
 	}
 
 ?>	

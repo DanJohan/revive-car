@@ -16,7 +16,7 @@
               </div>
             <?php endif; ?>
            
-            <?php echo form_open(base_url('admin/auth/change_pwd'), 'class="form-horizontal"');  ?> 
+            <?php echo form_open(base_url('workshop/auth/change_pwd'), 'class="form-horizontal"');  ?> 
               <div class="form-group">
                 <label for="password" class="col-sm-3 control-label">New Password</label>
 

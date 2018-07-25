@@ -12,7 +12,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
           <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?= ucwords($this->session->userdata('name')); ?></p>
+          <p><?= ucwords($this->session->userdata('m_name')); ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -30,13 +30,13 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li id="dashboard" class="treeview">
-          <a href="<?= base_url('admin/dashboard'); ?>">
+          <a href="<?= base_url('workshop/dashboard'); ?>">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
            </a>
         </li>
       </ul>
 
-      <ul class="sidebar-menu">
+    <!--  <ul class="sidebar-menu">
         <li id="users" class="treeview">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Users</span>
@@ -45,7 +45,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="view_users" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
+              <li id="view_users" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
             </ul>
           </li>
           </ul>
@@ -75,7 +75,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
             <ul class="treeview-menu">
               <li id="add_manager"><a href="<?= base_url('admin/workshop/add_manager'); ?>"><i class="fa fa-circle-o"></i> Add Manager</a></li>
               <li id="view_manager" class=""><a href="<?= base_url('admin/workshop/view_manager'); ?>"><i class="fa fa-circle-o"></i> View Manager</a></li>
-            </ul>
+            </ul>-->
         </li>
       </ul>   
        

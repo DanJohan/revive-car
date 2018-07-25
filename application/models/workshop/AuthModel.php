@@ -28,7 +28,7 @@
 		public function change_pwd($data, $id){
 			$this->db->where('id', $id);
 			//$this->db->update('users', $data);
-			$this->db->update('admin', $data);
+			$this->db->update('workshop_manager', $data);
 			return true;
 		}
 

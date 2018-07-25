@@ -39,6 +39,7 @@
 						$manager_data = array(
 							'id' => $result['id'],
 						 	'm_email' => $result['m_email'],
+							'm_name' => $result['m_name'],
 						 	'is_manager_login' => TRUE
 						);
 						$this->session->set_userdata($manager_data);
