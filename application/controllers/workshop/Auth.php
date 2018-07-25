@@ -34,9 +34,6 @@
 					);
 
 					$result = $this->AuthModel->login($data);
-					//$this->db->last_query(); die;
-//print_r($result);die;
-
 
 					if ($result == TRUE) {
 						$manager_data = array(

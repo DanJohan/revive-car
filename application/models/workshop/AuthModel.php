@@ -5,23 +5,20 @@
 		//echo 'mdl';	print_r($data);
 			$query = $this->db->get_where('workshop_manager', array('m_email' => $data['m_email']));
 
-			if ($query->num_rows()< 0){
+			if ($query->num_rows()== 0){
 
 				return false;
 			}
 			else{
 				//Compare the password attempt with the password we have stored.
 				$result = $query->row_array();
-				dd($result);
+				//echo strlen($result['m_password']);
+				//dd($result);
 			    $validPassword = password_verify($data['m_password'], $result['m_password']);
-				
-				var_dump($validPassword);die;
 				//print_r($result);die;
 			    if($validPassword){
 					
 			        return $result;
-					
-					
 					
 			    }
 				
