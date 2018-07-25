@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-use Twilio\Rest\Client;
-
 if ( ! function_exists('generate_otp'))
 {
     function generate_otp($digits = 4)
@@ -10,32 +8,20 @@ if ( ! function_exists('generate_otp'))
     }   
 }
 
-if ( ! function_exists('send_sms'))
+if ( ! function_exists('getRandomString'))
 {
-    function send_sms($data = array())
-    {
-        // Your Account SID and Auth Token from twilio.com/console
-        try{
-			$account_sid = TWILIO_SID;
-			$auth_token = TWILIO_TOKEN;
-			// In production, these should be environment variables. E.g.:
-			// $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
+	function getRandomString($length=5) 
+	{
 
-			// A Twilio number you own with SMS capabilities
-			$twilio_number = TWILIO_NUMBER;
+	    $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWZYZ";
 
-			$client = new Client($account_sid, $auth_token);
-			$message = $client->messages->create(
-			    // Where to send a text message (your cell phone?)
-			    $data['phone'],
-			    array(
-			        'from' => $twilio_number,
-			        'body' => $data['body']
-			    )
-			);
-			return $message;
-		}catch(Exception $e){
-			return $e->getMessage();
-		}
-    }   
+	    $real_string_length = strlen($characters) ;     
+	    $string='';
+	    for ($p = 0; $p < $length; $p++) 
+	    {
+	        $string .= $characters[mt_rand(0, $real_string_length-1)];
+	    }
+
+	    return strtolower($string);
+	}
 }
