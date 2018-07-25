@@ -10,42 +10,59 @@ class User extends MY_Controller {
 	    $this->load->helper('api');
 	    $this->load->model('UserModel');
 	    $this->load->library('mailer');
+	    $this->load->library('textMessage');
 	}
 
 	
 	public function registerPhone()
 	{
 		
-		$this->form_validation->set_rules('phone', 'Phone', 'trim|required|is_unique[users.phone]');
-		$this->form_validation->set_message('is_unique', 'The phone is already taken');
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required');
 		if ($this->form_validation->run() == true) {
 			$phone= $this->input->post('phone');
+			$userInfo = $this->UserModel->checkPhoneExists($phone);
 			$otp = generate_otp();
 			$data = array(
-				'phone'=>$phone,
-				'body' =>$otp." otp for your mobile verification"
-			);
-			$message = send_sms($data);
-			//print_r($message);die;
-			if($message->sid){
-				$register_data = array(
 					'phone'=>$phone,
-					'otp' => $otp,
-					'created_at' => date("Y-m-d H:i:s")
-				);
-				$user_id = $this->UserModel->insert($register_data);
-				if($user_id){
-					$criteria['field'] = 'id,created_at,updated_at';
-					$criteria['conditions'] = array('id'=>$user_id);
-					$criteria['returnType'] = 'single';
+					'body' =>$otp." otp for your mobile verification"
+			);
+			if(!$userInfo){
+				
+				$message = $this->textmessage->send($data);
+				//print_r($message);die;
+				if($message->sid){
+					$register_data = array(
+						'phone'=>$phone,
+						'otp' => $otp,
+						'created_at' => date("Y-m-d H:i:s")
+					);
+					$user_id = $this->UserModel->insert($register_data);
+					if($user_id){
+						$criteria['field'] = 'id,phone,created_at,updated_at';
+						$criteria['conditions'] = array('id'=>$user_id);
+						$criteria['returnType'] = 'single';
 
-					$user= $this->UserModel->search($criteria);
-					if($user){
-						$response= array("status"=>true,'message'=>"Record inserted successfully!",'user'=>$user);
+						$user= $this->UserModel->search($criteria);
+						if($user){
+							$response= array("status"=>true,'message'=>"Phone register successfully!",'user'=>$user);
+						}
 					}
 				}
 			}else{
-				$response = array('status'=>false,'message'=>$message); 
+				if($userInfo['otp_verify']){
+					$response = array('status'=>true,'otp_verify'=>true,'message'=>'Phone number already registered','user'=>$userInfo);
+				}else{
+					$message = $this->textmessage->send($data);
+					if($message->sid){
+						$update_data = array(
+							'otp'=>$otp
+						);
+						$this->UserModel->update($update_data,array('id'=>$userInfo['id']));
+						$response = array('status'=>true,'otp_verify'=>false,'sms_send'=>true,'user'=>$userInfo,'message'=>'OTP send successfully');
+					}else{
+						$response = array('status'=>false,'otp_verify'=>false,'sms_send'=>false,'message'=>'Message not send! Please try again');
+					}
+				}
 			}
 		}else{
 			$errors = $this->form_validation->error_array();
@@ -179,17 +196,13 @@ class User extends MY_Controller {
 		   	);
 
 		   	$is_update = $this->UserModel->update($update_data,array('id'=>$user_id));
-		   	if($is_update){
-		   		$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
-				$criteria['conditions'] = array('id'=>$user_id);
-				$criteria['returnType'] = 'single';
+	   		$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
 
-				$user= $this->UserModel->search($criteria);
+			$user= $this->UserModel->search($criteria);
 
-		   		$response = array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
-		   	}else{
-		   		$response = array('status'=>false,'message'=>'Something went wrong! Please try again');
-		   	}
+	   		$response = array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
 
 		}else{
 			$errors = $this->form_validation->error_array();
@@ -386,6 +399,56 @@ class User extends MY_Controller {
 		}
 	}// end of changePasswordByEmail method
 
+	public function socialPhoneRegister() {
+		$login_type = $this->input->post('login_type');
+
+		$this->form_validation->set_rules('user_id','User id' ,'trim|required');
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required');
+		if ($this->form_validation->run() == true){
+				$user_id = $this->input->post('user_id');
+				$phone = $this->input->post('phone');
+				$is_phone_exists = $this->UserModel->checkPhoneExists($phone);
+
+				if(empty($is_phone_exists)) {
+					$otp = generate_otp();
+					$data = array(
+							'phone'=>$phone,
+							'body' =>$otp." otp for your mobile verification"
+					);
+					$message = $this->textmessage->send($data);
+					//print_r($message);die;
+					if($message->sid){
+						$update_data = array(
+							'phone'=>$phone,
+							'otp' => $otp,
+						);
+						$this->UserModel->update($update_data,array('id'=>$user_id));
+
+						$criteria['field'] = 'id,phone,otp_verify,created_at,updated_at';
+						$criteria['conditions'] = array('id'=>$user_id);
+						$criteria['returnType'] = 'single';
+
+						$user= $this->UserModel->search($criteria);
+						if($user){
+							$response= array("status"=>true,'message'=>"OTP code send successfully!",'user'=>$user);
+						}
+
+					}else{
+						$response = array('status'=>false,'message'=>'Message not send! Please try again');
+					}
+				}else{
+					$response = array('status'=>false,'message'=>'Phone number already registered');
+				}
+
+		}else{
+
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+
+	}// end of socialPhoneRegister method
+
 	public function socialLogin() {
 
 		$login_type = $this->input->post('login_type');
@@ -394,37 +457,64 @@ class User extends MY_Controller {
 		}elseif ($login_type=='F') {
 			$this->form_validation->set_rules('facebook_id', 'Facebook_id', 'trim|required');
 		}
-		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		//$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
 		$this->form_validation->set_rules('login_type', 'Login Type', 'trim|required');
 
 		if ($this->form_validation->run() == true){
 
-			$user_id = $this->input->post('user_id');
+			//$user_id = $this->input->post('user_id');
+			$email = $this->input->post('email');
+			if($login_type =="G"){
+				$social_id = $this->input->post('gmail_id');
+				$criteria['conditions'] = array('gmail_id'=>$social_id);
+			}else if($login_type == 'F'){
+				$social_id = $this->input->post('facebook_id');
+				$criteria['conditions'] = array('facebook_id'=>$social_id);
+			}
 
-			$criteria['field'] = 'id,otp,otp_verify,gmail_id,facebook_id,name,device_id,device_type,email,created_at,updated_at';
-
-			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['field'] = 'id,phone,otp,otp_verify,gmail_id,facebook_id,name,device_id,device_type,email,created_at,updated_at';
 			$criteria['returnType'] = 'single';
 			$user = $this->UserModel->search($criteria);
+			unset($criteria);
+			if(!empty($user)){
+				if($user['otp_verify']){
+					$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$user);
+				}else{
+					$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$user);
+				}
+			}else{
+				$email = $this->input->post('email');
+				$is_exits_email = $this->UserModel->checkEmailExists($email);
+				if($is_exits_email) {
+					$response = array('status'=>false,'message'=>'User email already registered');
+				}else{
+					$register_data =array(
+						'name' => $this->input->post('name'),
+						'email'=>$email,
+						'created_at'=>date("Y-m-d H:i:s")
+					);
+					if($login_type=='G'){
+						$register_data['gmail_id']= $this->input->post('gmail_id');
+					}elseif ($login_type=='F') {
+						$register_data['facebook_id']= $this->input->post('facebook_id');
+					}
+					$user_id = $this->UserModel->insert($register_data);
 
+					$criteria['field'] = 'id,phone,otp,otp_verify,gmail_id,facebook_id,name,device_id,device_type,email,created_at,updated_at';
+					$criteria['conditions'] = array('id'=>$user_id);
+					$criteria['returnType'] = 'single';
+					$userInfo = $this->UserModel->search($criteria);
+					if($userInfo['otp_verify']){
+						$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$userInfo);
+					}else{
+						$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$userInfo);
+					}
 
-			$update_data= array(
-				'name' => $this->input->post('name'),
-				'email'=>$this->input->post('email'),
-			);
-
-			if($login_type=='G'){
-				$update_data['gmail_id']= $this->input->post('gmail_id');
-			}elseif ($login_type=='F') {
-				$update_data['facebook_id']= $this->input->post('facebook_id');
+				}
 			}
-			$this->UserModel->update($update_data,array('id'=>$user_id));
-			$user = $this->UserModel->search($criteria);
-
-			$response = array('status'=>true,'message'=>"Login successfully",'user'=>$user);
 
 		}else{
 			$errors = $this->form_validation->error_array();

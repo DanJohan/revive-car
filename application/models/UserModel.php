@@ -25,4 +25,28 @@ class UserModel extends MY_Model {
 		return (!empty($result))?$result:false;
 	}
 
+	public function checkEmailExistsExcept($id,$email){
+		$this->db->select('*');
+		$this->db->where(array('id !='=>$id,'email'=>$email));
+		$query = $this->db->get($this->table);
+		$result = $query->result_array();
+		return (!empty($result))?true:false;
+	}
+
+	public function checkEmailExists($email){
+		$this->db->select('email');
+		$this->db->where(array('email'=>$email));
+		$query = $this->db->get($this->table);
+		$result = $query->result_array();
+		return (!empty($result))? $result : false;
+	}
+
+	public function checkPhoneExists($phone) {
+		$this->db->select('id,phone,otp_verify');
+		$this->db->where(array('phone'=>$phone));
+		$query = $this->db->get($this->table);
+		$result = $query->row_array();
+		return (!empty($result))? $result :false;
+	}
+
 }

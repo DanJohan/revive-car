@@ -109,6 +109,15 @@ class MY_Model extends CI_Model
       }
     }
   }
+
+  public function insert_batch($columns_arr){
+    if(is_array($columns_arr)) {
+      if($this->db->insert_batch($this->table,$columns_arr)){
+        return true;
+      }
+    }
+    return false;
+  }
   /**
    * Update record(s)
    * @param type $columns_arr
