@@ -28,6 +28,7 @@
 					$data = array(
 						'd_name' => $this->input->post('d_name'),
 						'd_email' => $this->input->post('d_email'),
+						'd_password' => password_hash($this->input->post('d_password'), PASSWORD_BCRYPT),
 						'd_phone' => $this->input->post('d_phone'),
 						'd_address' => $this->input->post('d_address'),
 						'd_idproof' => $this->input->post('d_idproof'),
@@ -96,7 +97,7 @@
 
 
 		public function del_driver($id = 0){
-			$this->db->delete('driver', array('id' => $id));
+			$this->db->delete('driver', array('d_id' => $id));
 			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
 			redirect(base_url('admin/driver/view_driver'));
 		}

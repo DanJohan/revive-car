@@ -34,6 +34,14 @@
               </div>
               <br></br>
               <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">Password</label>
+
+                <div class="col-sm-8">
+                  <input type="password" name="d_password" class="form-control" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+                </div>
+              </div>
+               <br></br>
+              <div class="form-group">
                 <label for="mobile_no" class="col-sm-3 control-label">Mobile No</label>
 
                 <div class="col-sm-8">

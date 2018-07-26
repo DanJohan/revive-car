@@ -316,38 +316,45 @@ class User extends MY_Controller {
 		$this->renderJson($response);
 	}// end of changePassword method
 
+	/* Api : To send an email for change parameter
+	*  parameter : email (required) 
+	*/
 
 	public function sendChangePasswordEmail(){
 
 
-		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
 		if ($this->form_validation->run() == true){
 
-			$user_id = $this->input->post('user_id');
-			$user = $this->UserModel->get(array('id'=>$user_id));
-			$password_hash= md5(uniqid(mt_rand(1000,9999),true));
-			$link = base_url()."api/user/resetPassword/".$user['email']."/".$password_hash;
+			$email = $this->input->post('email');
+			$user = $this->UserModel->get(array('email'=>$email));
+			if(!empty($user)) {
+				$password_hash= md5(uniqid(mt_rand(1000,9999),true));
+				$link = base_url()."api/user/resetPassword/".$user['email']."/".$password_hash;
 
-			$this->mailer->setFrom('info@revivecare.com');
-			$this->mailer->addAddress($user['email']);
-			$this->mailer->subject('Change password');
-			$this->mailer->body($this->load->view('api/email/changePassword',array('user'=>$user,'link'=>$link),true));
-			$this->mailer->isHTML();
-			$mail=$this->mailer->send();
-			$update_data = array(
-				'password_reset_hash'=>$password_hash
-			);
+				$this->mailer->setFrom('info@revivecare.com');
+				$this->mailer->addAddress($user['email']);
+				$this->mailer->subject('Change password');
+				$this->mailer->body($this->load->view('api/email/changePassword',array('user'=>$user,'link'=>$link),true));
+				$this->mailer->isHTML();
+				$mail=$this->mailer->send();
+				$update_data = array(
+					'password_reset_hash'=>$password_hash
+				);
 
-			$this->UserModel->update($update_data,array('id'=>$user_id));
+				$this->UserModel->update($update_data,array('id'=>$user['id']));
 
-	   		$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
-			$criteria['conditions'] = array('id'=>$user_id);
-			$criteria['returnType'] = 'single';
+		   		$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+				$criteria['conditions'] = array('id'=>$user['id']);
+				$criteria['returnType'] = 'single';
 
-			$user= $this->UserModel->search($criteria);
+				$user= $this->UserModel->search($criteria);
 
-	   	   	$response = array('status'=>true,'message'=>'Email has been sent successfully','user'=>$user);
+		   	   	$response = array('status'=>true,'message'=>'Email has been sent successfully','user'=>$user);
+	   	   	}else{
+	   	   		$response = array('status'=>false,'message'=>'Sorry this email is not registered with us!');
+	   	   	}
 
 		}else{
 
@@ -448,6 +455,7 @@ class User extends MY_Controller {
 		$this->renderJson($response);
 
 	}// end of socialPhoneRegister method
+
 
 	public function socialLogin() {
 
@@ -611,39 +619,53 @@ class User extends MY_Controller {
 		$this->renderJson($response);
 	}// end of sendOtpToChangeMobile method 
 
+
+	/*
+	* Api : To edit a user profile
+	* Parameter : user_id , name, email
+	 */
 	public function editProfile(){
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
 		if ($this->form_validation->run() == true){
-			$file_name = '';
-			if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
-
-				$url = FCPATH."uploads/app/";	
-				$upload =$this->do_upload('profile_image',$url);
-				if(isset($upload['upload_data'])){
-					chmod($upload['upload_data']['full_path'], 0777);
-					$file_name = $upload['upload_data']['file_name'];
-				}
-			}
 			$user_id = $this->input->post('user_id');
-			$update_data = array(
-				'name' =>$this->input->post('name'),
-				'email' =>$this->input->post('email')
-			);
-			if($file_name != ''){
-				$update_data['profile_image']=$file_name;
+			$email = $this->input->post('email');
+			$is_email_exist = $this->UserModel->checkEmailExistsExcept($user_id,$email);
+
+			if(!$is_email_exist) {
+				$file_name = '';
+				if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
+
+					$url = FCPATH."uploads/app/";	
+					$upload =$this->do_upload('profile_image',$url);
+					if(isset($upload['upload_data'])){
+						chmod($upload['upload_data']['full_path'], 0777);
+						$file_name = $upload['upload_data']['file_name'];
+					}
+				}
+				$user_id = $this->input->post('user_id');
+				$update_data = array(
+					'name' =>$this->input->post('name'),
+					'email' =>$this->input->post('email')
+				);
+				if($file_name != ''){
+					$update_data['profile_image']=$file_name;
+				}
+
+				$this->UserModel->update($update_data,array('id'=>$user_id));
+				$criteria['field'] = 'id,otp,otp_verify,name,profile_image,email,created_at,updated_at';
+				$criteria['conditions'] = array('id'=>$user_id);
+				$criteria['returnType'] = 'single';
+
+				$user= $this->UserModel->search($criteria);
+				$user['profile_image'] = base_url()."uploads/app/".$user['profile_image'];
+				$response =array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
+			}else{
+				$response = array('status'=>false,'message'=>'Email is already registered!');
 			}
-
-			$this->UserModel->update($update_data,array('id'=>$user_id));
-			$criteria['field'] = 'id,otp,otp_verify,name,profile_image,email,created_at,updated_at';
-			$criteria['conditions'] = array('id'=>$user_id);
-			$criteria['returnType'] = 'single';
-
-			$user= $this->UserModel->search($criteria);
-			$response =array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
 
 		}else{
 
