@@ -129,6 +129,28 @@ class Car extends MY_Controller {
 		$this->renderJson($response);
 	}// end of deleteCar method
 
+	public function setDefaultCar() {
+		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$car_id = $this->input->post('car_id');
+			$user_id = $this->input->post('user_id');
+			$this->CarModel->updateDefaultCar($user_id,$car_id);
+			$user_cars = $this->CarModel->getUserAllCars($user_id);
+			if(!empty($user_cars)){
+				$response = array('status'=>true,'message'=>'Record updated successfully','data'=>$user_cars);
+			}else{
+				$response = array('status'=>false,'message'=>'No detail found'); 
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}
+
 	public function serviceEnquiry() {
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
@@ -177,7 +199,7 @@ class Car extends MY_Controller {
 				if(!empty($enquiry['image_id'][0])) {
 					foreach ($enquiry['image_id'] as $index => $data) {
 						$images[$index]['image_id'] = $data;
-						$images[$index]['image'] = $enquiry['image'][$index];
+						$images[$index]['image'] = base_url()."uploads/app/".$enquiry['image'][$index];
 					}
 				}
 				unset($enquiry['image_id']);
