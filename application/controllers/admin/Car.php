@@ -54,9 +54,12 @@
 						'created_at' => date('Y-m-d H:i:s')
 						
 					);
-					
+					//print_r($data);die;
+
 					$result = $this->CarModelsModel->insert($data);
 					//print_r($result);die;
+					//echo $this->db->last_query();die;
+
 					if($result){
 						$this->session->set_flashdata('msg', 'Car Model is Added Successfully!');
 						redirect(base_url('admin/car/add_carmodel'));
