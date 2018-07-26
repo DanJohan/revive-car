@@ -11,16 +11,20 @@
 		.error{
 			color:red;
 		}
-		.form-top {
-    margin: 59px 0px;
-}
+		.flex-container {
+		  display: flex;
+		  height: 100%;
+		  justify-content: center;
+		  align-items: center;
+		}
+
 	</style>
 </head>
 <body>
 <div class="form-top">
 	<div class="container-fluid">
-		<div class="row">
-			<div id="form-container" class="col-md-6 col-md-offset-3 well">
+		<div class="row flex-container ">
+			<div id="form-container" class="col-xs-6 col-sm-6 col-md-4 well">
 				<form id="password_reset" action="/action_page.php">
 					<input type="hidden" id="email" name="email" value="<?php echo $email; ?>">
 					<input type="hidden" id="hash" name="hash" value="<?php echo $hash; ?>">
@@ -36,11 +40,6 @@
 					</div>
 					<button type="submit" class="btn btn-danger">Submit</button>
 				</form>
-				
-				
-				
-				
-				
 			</div>
 		</div>
 	</div>

@@ -92,7 +92,18 @@ define('TWILIO_NUMBER','+1 856 281 3441');
 
 // smtp mail credentials
 
-define('MAIL_HOST','smtp.mailtrap.io');
+/*define('MAIL_HOST','smtp.mailtrap.io');
 define('MAIL_USERNAME','c4f3f72a8e133a');
 define('MAIL_PASSWORD','500f8fd814ede7');
+define('MAIL_PORT',25);*/
+
+define('MAIL_HOST','mail.globalcaresystems.com');
+define('MAIL_USERNAME','revive@globalcaresystems.com');
+define('MAIL_PASSWORD','D}B^F7x(2{fP');
 define('MAIL_PORT',25);
+
+/*
+define('MAIL_HOST','smtp.gmail.com');
+define('MAIL_USERNAME','kumaranuj.smartserve@gmail.com');
+define('MAIL_PASSWORD','aNuj@123');
+define('MAIL_PORT',587);*/

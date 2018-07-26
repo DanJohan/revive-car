@@ -30,8 +30,8 @@
             <td><?= $row['d_address']; ?></td>
             <td><?= $row['created_at']; ?></td>
             
-            <td class="text-right"><a href="<?= base_url('admin/driver/edit_driver/'.$row['id']); ?>" class="btn btn-info btn-flat">Edit</a>
-              <a href="<?= base_url('admin/driver/del_driver/'.$row['id']); ?>" class="btn btn-danger btn-flat">Delete</a></td>
+            <td class="text-right"><a href="<?= base_url('admin/driver/edit_driver/'.$row['d_id']); ?>" class="btn btn-info btn-flat">Edit</a>
+              <a href="<?= base_url('admin/driver/del_driver/'.$row['d_id']); ?>" class="btn btn-danger btn-flat">Delete</a></td>
           </tr>
           <?php endforeach; ?>
         </tbody>
