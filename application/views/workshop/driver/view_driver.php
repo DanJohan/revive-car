@@ -4,7 +4,7 @@
  <section class="content">
    <div class="box">
     <div class="box-header">
-      <h3 class="box-title">Registered Drivers</h3>
+      <h3 class="box-title">Workshop Drivers Detail</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
@@ -16,12 +16,12 @@
           <th>Mobile No.</th>
           <th>Address</th>
           <th>Created At</th>
-          <th style="width: 150px;" class="text-right">Option</th>
+         <!-- <th style="width: 150px;" class="text-right">Option</th>-->
         </tr>
         </thead>
         <tbody>
           
-          <?php foreach($all_driver[0] as $row):?>
+          <?php foreach($driverData[0] as $row):?>
       
           <tr>
             <td><?= $row['d_name']; ?></td>
@@ -30,8 +30,8 @@
             <td><?= $row['d_address']; ?></td>
             <td><?= $row['created_at']; ?></td>
             
-            <td class="text-right"><a href="" class="btn btn-info btn-flat">Edit</a>
-              <a href="" class="btn btn-danger btn-flat">Delete</a></td>
+           <!-- <td class="text-right"><a href="" class="btn btn-info btn-flat">Edit</a>
+              <a href="" class="btn btn-danger btn-flat">Delete</a></td>-->
           </tr>
           <?php endforeach; ?>
         </tbody>

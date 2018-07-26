@@ -48,7 +48,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               <li id="view_users" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
             </ul>
           </li>
-          </ul>
+          </ul>-->
       <ul class="sidebar-menu">
         <li id="users" class="treeview">
             <a href="#">
@@ -58,13 +58,13 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="add_driver"><a href="<?= base_url('admin/driver/add_driver'); ?>"><i class="fa fa-circle-o"></i> Add Driver</a></li>
-              <li id="view_driver" class=""><a href="<?= base_url('admin/driver/view_driver'); ?>"><i class="fa fa-circle-o"></i> View Driver Details</a></li>
+           <!--<li id="add_driver"><a href="<?= base_url('workshop/driver/add_driver'); ?>"><i class="fa fa-circle-o"></i> Add Driver</a></li>-->
+              <li id="view_driver" class=""><a href="<?= base_url('workshop/driver/view_driver'); ?>"><i class="fa fa-circle-o"></i> View Driver Details</a></li>
             </ul>
         </li>
       </ul>
        
-      <ul class="sidebar-menu">
+      <!--<ul class="sidebar-menu">
         <li id="manager" class="treeview">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Workshop Management</span>
