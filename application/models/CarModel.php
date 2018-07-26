@@ -28,5 +28,15 @@ class CarModel extends MY_Model {
 		return $result;
 	}
 
+	public function updateDefaultCar($user_id,$car_id){
+		$this->db->set('is_default',1);
+		$this->db->where(array('id'=>$car_id,'user_id'=>$user_id));
+		$this->db->update($this->table);
+		$this->db->set('is_default',0);
+		$this->db->where(array('id !='=>$car_id,'user_id'=>$user_id));
+		$this->db->update($this->table);
+
+	}
+
 
 }
