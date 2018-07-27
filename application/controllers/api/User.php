@@ -676,4 +676,26 @@ class User extends MY_Controller {
 		$this->renderJson($response);
 	}// end of edit profile method
 
+
+	public function getUserProfile(){
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$user_id = $this->input->post('user_id');
+			$criteria['field'] = 'id,name,phone,password,profile_image,email,created_at';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+			$user= $this->UserModel->search($criteria);
+			if(!empty($user)) {
+				$user['profile_image'] = (!empty($user['profile_image'])) ? base_url()."uploads/app/".$user['profile_image']:'';
+				$response =array('status'=>true,'message'=>'Record found successfully','user'=>$user);
+			}else{
+				$response =array('status'=>false,'message'=>'Record not found');
+			}
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
+
 }// end of class
