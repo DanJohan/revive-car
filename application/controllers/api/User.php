@@ -366,7 +366,7 @@ class User extends MY_Controller {
 
 	}
 
-	public function resetPassword($email,$hash) {
+	public function resetPassword($email=null,$hash=null) {
 
 		if(!$email || !$hash){
 			return ;
