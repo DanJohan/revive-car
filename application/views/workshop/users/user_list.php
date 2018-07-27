@@ -14,24 +14,28 @@
           <th>Username</th>
           <th>Email</th>
           <th>Mobile No.</th>
-          <th>Device</th>
           <th>Created At</th>
-          <th style="width: 150px;" class="text-right">Option</th>
+       
         </tr>
         </thead>
         <tbody>
-          <?php foreach($all_users as $row): ?>
-          <tr>
-            <td><?= $row['username']; ?></td>
-            <td><?= $row['email']; ?></td>
-            <td><?= $row['phone']; ?></td>
-            <td><?= $row['device_type']; ?></td>
-            <td><?= $row['created_at']; ?></td>
-            <!-- <td><span class="btn btn-primary btn-flat btn-xs"><?= ($row['is_admin'] == 1)? 'admin': 'member'; ?><span></td> -->
-            <td class="text-right"><!-- <a href="<?= base_url('admin/users/edit/'.$row['id']); ?>" class="btn btn-info btn-flat">Edit</a> -->
-              <a href="<?= base_url('admin/users/del/'.$row['id']); ?>" class="btn btn-danger btn-flat <?= ($row['is_admin'] == 1)? 'disabled': ''?>">Delete</a></td>
-          </tr>
-          <?php endforeach; ?>
+          <?php 
+          if(!empty($userData))
+          {
+          foreach($userData as  $row)
+            {
+            ?>
+              <tr>
+                <td><?= $row['name']; ?></td>
+                <td><?= $row['email']; ?></td>
+                <td><?= $row['phone']; ?></td>
+                <td><?= $row['created_at']; ?></td>
+              
+              </tr>
+            <?php
+            }
+            }
+            ?>
         </tbody>
        
       </table>

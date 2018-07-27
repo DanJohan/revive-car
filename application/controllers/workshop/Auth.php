@@ -18,6 +18,8 @@
 		{
 		   redirect('workshop/dashboard'); //redirect to login page
 		} 
+
+		
 			if($this->input->post('submit')){
 				$this->form_validation->set_rules('m_email', 'Email', 'trim|required');
 				$this->form_validation->set_rules('m_password', 'Password', 'trim|required');
