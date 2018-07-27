@@ -9,17 +9,15 @@
 		}
 
 		public function index(){
-			 if($this->session->has_userdata('is_manager_login'))
-			{
-				redirect('workshop/dashboard');
-			}
-			else{
-				redirect('workshop/auth/login');
-			}
+			redirect('workshop/auth/login');
 		}
 
 		public function login(){
+		if ($this->session->has_userdata['is_manager_login'] == TRUE)
 
+		{
+		   redirect('workshop/dashboard'); //redirect to login page
+		} 
 			if($this->input->post('submit')){
 				$this->form_validation->set_rules('m_email', 'Email', 'trim|required');
 				$this->form_validation->set_rules('m_password', 'Password', 'trim|required');
@@ -57,6 +55,11 @@
 		}	
 
 		public function change_pwd(){
+			if (!$this->session->userdata['is_manager_login'] == TRUE)
+
+		{
+		   redirect('workshop/auth/login'); //redirect to login page
+		} 
 			$id = $this->session->userdata('id');
 			if($this->input->post('submit')){
 				$this->form_validation->set_rules('m_password', 'Password', 'trim|required');
@@ -83,6 +86,11 @@
 		}
 				
 		public function logout(){
+			if (!$this->session->userdata['is_manager_login'] == TRUE)
+
+		{
+		   redirect('workshop/auth/login'); //redirect to login page
+		} 
 			$this->session->sess_destroy();
 			redirect(base_url('workshop/auth/login'), 'refresh');
 		}

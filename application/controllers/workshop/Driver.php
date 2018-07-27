@@ -5,6 +5,12 @@
 
 		public function __construct(){
 			parent::__construct();
+		if (!$this->session->userdata['is_manager_login'] == TRUE)
+
+		{
+		   redirect('workshop/auth/login'); //redirect to login page
+		} 
+		
 			$this->load->model('workshop/DriverModel');
 		}
 
