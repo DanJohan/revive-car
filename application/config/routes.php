@@ -58,5 +58,10 @@ $route['admin/dashboard2'] = 'admin/dashboard/index2';
 $route['adminlte'] = 'admin/auth';
 $route['adminlte/(:any)'] = 'admin/adminlte/$1';
 
+$route['workshop'] = 'workshop/auth/login';
+
+
+
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
