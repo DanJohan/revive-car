@@ -19,6 +19,7 @@ class Mailer {
 	    $this->mail->Password = MAIL_PASSWORD;
 	    $this->mail->SMTPSecure = 'tls';  
 	    $this->mail->Port =MAIL_PORT; 
+	    
 	}
 
 	public function setFrom($email,$name=''){

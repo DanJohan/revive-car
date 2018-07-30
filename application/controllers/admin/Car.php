@@ -7,6 +7,10 @@
 			parent::__construct();
 			$this->load->model('CarBrandModel');
 			$this->load->model('CarModelsModel');
+			if (!$this->session->userdata['is_admin_login'] == TRUE)
+			{
+			   redirect('admin/auth/login'); //redirect to login page
+			} 
 		}
 
 		public function add_carbrand(){ //display add carbrand page 

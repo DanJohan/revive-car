@@ -46,6 +46,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
             </a>
             <ul class="treeview-menu">
               <li id="view_users" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
+                <li id="add_manager"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
             </ul>
           </li>
           </ul>
@@ -92,21 +93,6 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
             </ul>
         </li>
       </ul>   
-
-      <ul class="sidebar-menu">
-        <li id="manager" class="treeview">
-            <a href="#">
-              <i class="fa fa-dashboard"></i> <span>Customer enquiries</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li id="add_manager"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>View enquiries</a></li>
-            </ul>
-        </li>
-      </ul> 
-       
     </section>
     <!-- /.sidebar -->
   </aside>

@@ -29,7 +29,7 @@
                 <td><?php echo $enquiry['brand_name']."-".$enquiry['model_name']; ?></td>
                 <td><?php echo ($enquiry['loaner_vehicle'])? 'Required' : 'Not required'; ?></td>
                 <td><?php echo $enquiry['enquiry']; ?></td>
-                <td><?php echo date('d M Y',strtotime($enquiry['created_at'])); ?></td>
+                <td><?php echo date('d M Y H:i:s',strtotime($enquiry['created_at'])); ?></td>
                 <td><a class="btn btn-success" href="<?= base_url('admin/enquiry/show/'.$enquiry['id']); ?>">View</a></td>
             </tr>
           <?php
