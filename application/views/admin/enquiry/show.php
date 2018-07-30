@@ -36,22 +36,29 @@
              <tr>
                 <td><b>Images</b></td>
                 <td>
+                    <div class="row">
                     <?php 
                       if(!empty($enquiry['image_id'])) {
                         $image_id = explode('|', $enquiry['image_id']);
                         $images = explode('|', $enquiry['images']);
                         foreach ($image_id as $index => $id) {
                       ?>
-                          <div>
-                              <img src="<?php echo base_url().'uploads/app/'.$images[$index]; ?>" height="400" />
+                          <div class="col-md-4">
+                            <div class="image-responsive">
+                                <img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$images[$index]; ?>" height="200" />
+                            </div>
                           </div>
                       <?php
+                          if($index % 3 == 0) {
+                            echo "</div><div class='row'>";
+                          }
                         }
                       }
                     ?>
                    
                  </td>
             </tr>
+            <tr><td><a href="<?php echo base_url(); ?>admin/enquiry/confirm/<?php echo $enquiry['id']; ?>" class="btn btn-primary">Confirm</a></td></tr>
         </table>
     </div>
     <!-- /.box-body -->

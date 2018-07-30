@@ -9,16 +9,14 @@
 		}
 
 		public function index(){
-			if($this->session->has_userdata('is_admin_login'))
-			{
-				redirect('admin/dashboard');
-			}
-			else{
-				redirect('admin/auth/login');
-			}
+			redirect('admin/auth/login');
 		}
 
 		public function login(){
+			if ($this->session->has_userdata('is_admin_login'))
+			{ 
+			   redirect('admin/dashboard'); //redirect to login page
+			} 
 
 			if($this->input->post('submit')){
 				$this->form_validation->set_rules('email', 'Email', 'trim|required');
@@ -54,6 +52,10 @@
 		}	
 
 		public function change_pwd(){
+			if (!$this->session->userdata['is_admin_login'] == TRUE)
+			{
+			   redirect('admin/auth/login'); //redirect to login page
+			} 
 			$id = $this->session->userdata('admin_id');
 			if($this->input->post('submit')){
 				$this->form_validation->set_rules('password', 'Password', 'trim|required');

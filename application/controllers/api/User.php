@@ -656,7 +656,7 @@ class User extends MY_Controller {
 				}
 
 				$this->UserModel->update($update_data,array('id'=>$user_id));
-				$criteria['field'] = 'id,otp,otp_verify,name,profile_image,email,created_at,updated_at';
+				$criteria['field'] = 'id,otp,otp_verify,phone,name,profile_image,email,password,created_at,updated_at';
 				$criteria['conditions'] = array('id'=>$user_id);
 				$criteria['returnType'] = 'single';
 

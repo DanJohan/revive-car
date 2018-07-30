@@ -14,7 +14,17 @@
       </a>
 
       <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav">
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning" id="notification-count">0</span>
+            </a>
+            <ul class="dropdown-menu" id="notification-list">
+
+            </ul>
+          </li>
+
          <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
