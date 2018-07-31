@@ -21,12 +21,13 @@ class User extends MY_Controller {
 		if ($this->form_validation->run() == true) {
 			$phone= $this->input->post('phone');
 			$userInfo = $this->UserModel->checkPhoneExists($phone);
+
 			$otp = generate_otp();
 			$data = array(
 					'phone'=>$phone,
 					'body' =>$otp." otp for your mobile verification"
 			);
-			if(!$userInfo){
+			if(! $userInfo){
 				
 				$message = $this->textmessage->send($data);
 				//print_r($message);die;
@@ -47,6 +48,8 @@ class User extends MY_Controller {
 							$response= array("status"=>true,'message'=>"Phone register successfully!",'user'=>$user);
 						}
 					}
+				}else{
+					$response= array("status"=>false,'message'=>'An error occured!Please try again!',);
 				}
 			}else{
 				if($userInfo['otp_verify']){
@@ -220,7 +223,7 @@ class User extends MY_Controller {
 
 			$user_id = $this->input->post('user_id');
 
-			$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+			$criteria['field'] = 'id,otp,otp_verify,name,phone,device_id,device_type,email,created_at,updated_at';
 			$criteria['conditions'] = array('id'=>$user_id);
 			$criteria['returnType'] = 'single';
 
@@ -232,7 +235,7 @@ class User extends MY_Controller {
 					'phone'=>$user['phone'],
 					'body' =>"Your one time password to change password is ".$otp
 				);
-				$message = send_sms($data);
+				$message = $this->textmessage->send($data);
 				if($message->sid){
 					$update_data=array(
 						'change_password_otp'=>$otp,

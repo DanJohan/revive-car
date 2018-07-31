@@ -7,12 +7,11 @@
     <div class="box-body">
         <form action="<?php echo base_url(); ?>admin/enquiry/save_enquiry_confirm" method="post">
         <input type="hidden" name="enquiry_id" value="<?php echo $enquiry['id']; ?>">
-        <table class="table">
-          <?php if($enquiry['loaner_vehicle']) { ?>
+        <table class="table"> 
             <tr>
                 <td><b>Assign driver</b></td>
                 <td>
-                    <select class="form-control" name="driver" required="required">
+                    <select class="form-control" name="driver">
                         <option value="">Please select</option>
                         <?php
                           if(!empty($drivers)) {
@@ -26,6 +25,7 @@
                     </select>
                 </td>
             </tr>
+          <?php if($enquiry['loaner_vehicle']) { ?>
             <tr>
               <td><b>Loaner vechicle cost</b></td>
               <td>150 / Day <input type="hidden" class="form-control" name="loaner_vehicle_cost" value="150" /></td>

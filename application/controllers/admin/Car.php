@@ -1,14 +1,14 @@
 <?php
-	defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class Car extends MY_Controller {
+class Car extends MY_Controller {
 
-		public function __construct(){
-			parent::__construct();
-			$this->load->model('CarBrandModel');
-			$this->load->model('CarModelsModel');
-			if (!$this->session->userdata['is_admin_login'] == TRUE)
-			{
+	public function __construct(){
+		parent::__construct();
+		$this->load->model('CarBrandModel');
+		$this->load->model('CarModelsModel');
+		if (!$this->session->userdata['is_admin_login'] == TRUE)
+		{
 			   redirect('admin/auth/login'); //redirect to login page
 			} 
 		}
@@ -22,61 +22,65 @@
 
 		public function add_carmodel(){ //display add carmodel page 
 			$data=array();
-			$data['all_carbrand'][0] =  $this->CarBrandModel->get_all();
+			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
 			$data['view'] = 'admin/car/add_carmodel';
 			$this->load->view('admin/layout', $data);
 			
 		}
 		
 		public function insert_carbrand(){  //insert carbrand
-					$data = array(
-						'brand_name' => $this->input->post('brand_name'),
-						'created_at' => date('Y-m-d H:i:s')
-						
-					);
-					
-					$result = $this->CarBrandModel->insert($data);
-					
-					if($result){
-						$this->session->set_flashdata('msg', 'Car Brand is Added Successfully!');
-						redirect(base_url('admin/car/add_carbrand'));
 
-					}
-				
+			if(count($_POST) >0 ) {
+				$data = array(
+					'brand_name' => $this->input->post('brand_name'),
+					'created_at' => date('Y-m-d H:i:s')
+
+				);
+
+				$result = $this->CarBrandModel->insert($data);
+
+
+				if($result){
+					$this->session->set_flashdata('msg', 'Car Brand is Added Successfully!');
+					redirect(base_url('admin/car/add_carbrand'));
+
+				}
+
 				else{
 					$this->session->set_flashdata('msg', 'Some problem occur!');
 					redirect(base_url('admin/car/add_carbrand'));
-					
-				   }
-			}	
-			
+
+				}
+			}
+		}	
+
 			public function insert_carmodel(){  //insert carmodel
 
-					$data = array(
-						'brand_id' => $this->input->post('brand_id'),
-						'model_name' => $this->input->post('model_name'),
-						'created_at' => date('Y-m-d H:i:s')
-						
-					);
+				$data = array(
+					'brand_id' => $this->input->post('brand_id'),
+					'model_name' => $this->input->post('model_name'),
+					'created_at' => date('Y-m-d H:i:s')
+
+				);
 					//print_r($data);die;
 
-					$result = $this->CarModelsModel->insert($data);
+				$result = $this->CarModelsModel->insert($data);
 					//print_r($result);die;
 					//echo $this->db->last_query();die;
 
-					if($result){
-						$this->session->set_flashdata('msg', 'Car Model is Added Successfully!');
-						redirect(base_url('admin/car/add_carmodel'));
+				if($result){
+					$this->session->set_flashdata('msg', 'Car Model is Added Successfully!');
+					redirect(base_url('admin/car/add_carmodel'));
 
-					}
+				}
 				
 				else{
 					$this->session->set_flashdata('msg', 'Some problem occur!');
 					redirect(base_url('admin/car/add_carmodel'));
 					
-				   }
+				}
 			}	
-					
+
 
 
 
@@ -90,7 +94,7 @@
 			  }
 */
 
-			 
+
 		/*public function edit_driver($id = 0){  // display record of selected id 
 			if($this->input->post('submit')){
 				$this->form_validation->set_rules('d_name', 'Username', 'trim|required');
@@ -135,4 +139,4 @@
 	}
 
 
-?>
+	?>

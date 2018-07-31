@@ -22,7 +22,7 @@
 
                 <div class="col-sm-8">
                   <select name="brand_id" class="form-control" required>
-                    <?php foreach($all_carbrand[0] as $row):?>
+                    <?php foreach($all_carbrand as $row):?>
                       <option value="<?= $row['id']; ?>"><?= $row['brand_name']; ?></option>
                     <?php endforeach; ?> 
                   </select>

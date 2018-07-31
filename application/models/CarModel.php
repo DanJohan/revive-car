@@ -48,5 +48,13 @@ class CarModel extends MY_Model {
 		return $result;
 	}
 
+	public function checkUserCarsExists($user_id) {
+		$this->db->select('id');
+		$this->db->from($this->table);
+		$this->db->where(array('user_id'=>$user_id));
+		$result= $this->db->get()->result_array();
+		return (!empty($result)) ? true : false ;
+	}
+
 
 }

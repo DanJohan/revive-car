@@ -66,12 +66,15 @@ class Car extends MY_Controller {
 		$this->form_validation->set_rules('avg_mileage', 'Avg mileage', 'trim|required');
 
 		if ($this->form_validation->run() == true) {
+			$user_id = $this->input->post('user_id');
+			$have_cars = $this->CarModel->checkUserCarsExists($user_id);
 			$register_data=array(
 				'user_id'=>$this->input->post('user_id'),
 				'brand_id' => $this->input->post('brand_id'),
 				'model_id' => $this->input->post('model_id'),
 				'color' => $this->input->post('color'),
 				'year' => $this->input->post('year'),
+				'is_default' => (!$have_cars) ? 1 : 0 ,
 				'registration_no' => $this->input->post('registration_no'),
 				'avg_mileage' => $this->input->post('avg_mileage'),
 				'created_at' => date("Y-m-d H:i:s")

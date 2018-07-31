@@ -12,7 +12,7 @@ class Enquiry extends MY_Controller {
 		}
 		$this->load->model('ServiceEnquiryModel');
 		$this->load->model('admin/DriverModel');
-		$this->load->library('textMessage');
+		 $this->load->library('textMessage');
 	}
 
 	public function index( $id = null){
@@ -41,7 +41,13 @@ class Enquiry extends MY_Controller {
 		if($id){
 			$data['enquiry'] = $this->ServiceEnquiryModel->getEnquiry($id);
 		}
+
 		if(empty($data['enquiry'])) {
+			redirect('admin/enquiry/index');
+		}
+
+		if($data['enquiry']['confirmed']) {
+			$this->session->set_flashdata('success_msg', 'This enquiry is alredy confirmed!');
 			redirect('admin/enquiry/index');
 		}
 
@@ -63,13 +69,14 @@ class Enquiry extends MY_Controller {
 			);
 			$is_update = $this->ServiceEnquiryModel->update($update_data,array('id'=>$enquiry_id));
 			$enquiry = $this->ServiceEnquiryModel->getEnquiry($enquiry_id);
+
 			$data['phone'] = $enquiry['phone'];
-			if(!empty($enquiry['id'])) {
-				$data['body'] = 'Your enquiry has been confirmed from revive auto car\nDriver name:'.$enquiry['d_name'].'\n OTP:'.$otp;
+			if(!empty($enquiry['driver_id'])) {
+				$data['body'] = 'Dear '.$enquiry['name'].', On confirmation of your enquiry , REVIVE driver '.$enquiry['d_name'].' is coming to pick your car. Insert OTP '.$otp.' for Confirmation to start assistance and service';
 			}else{
-				$data['body'] = 'Your enquiry has been confirmed from revive auto car\n Your OTP:'.$otp;
+				$data['body'] = 'Dear '.$enquiry['name'].', Thanks for Choosing Revive car care Service , we will glad to welcome you on our service center, please enter '.$otp.' , when you reach to our workshop manager to start service.';
 			}
-			$this->textMessage->send($data);
+			$message = $this->textmessage->send($data);
 			//$criteria['field'] = 
 			if($is_update){
 				$this->session->set_flashdata('success_msg', 'Enquiry confirmed successfully!');
