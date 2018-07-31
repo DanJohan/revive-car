@@ -29,7 +29,7 @@
                 <label for="email" class="col-sm-3 control-label">Email</label>
 
                 <div class="col-sm-8">
-                  <input type="email" name="d_email" class="form-control" value="<?= $driver['d_email']; ?>" id="email"  pattern="[789][0-9]{9}" title="Enter valid number" required>
+                  <input type="email" name="d_email" class="form-control" value="<?= $driver['d_email']; ?>" id="email"  pattern="[^@\s]+@[^@\s]+\.[^@\s]+" title="Enter valid number" required>
                 </div>
               </div>
               <br></br>
