@@ -12,6 +12,8 @@
 		  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 		  <!-- Theme style -->
 	      <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/AdminLTE.min.css">
+	       <!-- Datatable style -->
+		  <link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css"> 
 	       <!-- Custom CSS -->
 		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/style.css">
 		  <!-- AdminLTE Skins. Choose a skin from the css/skins. -->
@@ -72,6 +74,11 @@
 	<script src="<?= base_url() ?>public/dist/js/app.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="<?= base_url() ?>public/dist/js/demo.js"></script>
+
+<!-- DataTables -->
+<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+
 	<!-- page script -->
 	<script type="text/javascript">
 	  $(".flash-msg").fadeTo(2000, 500).slideUp(500, function(){

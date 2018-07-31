@@ -5,8 +5,8 @@
 		public function __construct(){
 			parent::__construct();
 
-			$this->load->model('admin/DriverModel');
-			$this->load->model('admin/WorkshopModel');
+			$this->load->model('DriverModel');
+			$this->load->model('WorkshopModel');
 
 			$this->load->model('UserModel');
 			$this->load->model('ServiceEnquiryModel');

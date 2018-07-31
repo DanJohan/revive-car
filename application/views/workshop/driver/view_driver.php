@@ -21,7 +21,7 @@
         </thead>
         <tbody>
           
-          <?php foreach($driverData[0] as $row):?>
+          <?php foreach($driverData as $row):?>
       
           <tr>
             <td><?= $row['d_name']; ?></td>

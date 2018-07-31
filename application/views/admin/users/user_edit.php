@@ -37,7 +37,10 @@
                 <label for="mobile_no" class="col-sm-2 control-label">Mobile No</label>
 
                 <div class="col-sm-9">
-                  <input type="text" name="phone" value="<?= $user['phone']; ?>" class="form-control" pattern="[789][0-9]{9}" title="Enter valid number" required>
+                  <div class="input-group">
+                      <span class="input-group-addon">+ 91</span>
+                      <input type="text" name="phone" value="<?= $user['phone']; ?>" class="form-control" pattern="[789][0-9]{9}" title="Enter valid number" required>
+                  </div>
                 </div>
               </div>
               <div class="form-group">

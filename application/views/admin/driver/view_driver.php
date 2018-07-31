@@ -1,6 +1,3 @@
- <!-- Datatable style -->
-<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
-
  <section class="content">
    <div class="box">
     <div class="box-header">
@@ -21,7 +18,7 @@
         </thead>
         <tbody>
           
-          <?php foreach($all_driver[0] as $row):?>
+          <?php foreach($all_driver as $row):?>
       
           <tr>
             <td><?= $row['d_name']; ?></td>
@@ -43,9 +40,6 @@
   <!-- /.box -->
 </section>  
 
-<!-- DataTables -->
-<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
     $("#example1").DataTable();

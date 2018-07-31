@@ -45,7 +45,10 @@
                 <label for="mobile_no" class="col-sm-3 control-label">Mobile No</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_phone" class="form-control" id="mobile_no" pattern="[789][0-9]{9}" title="9999999999" required>
+                  <div class="input-group">
+                      <span class="input-group-addon">+ 91</span>
+                      <input type="text" name="d_phone" class="form-control" id="mobile_no" pattern="[789][0-9]{9}" title="9999999999" required>
+                  </div>
                 </div>
               </div>
               <br></br>

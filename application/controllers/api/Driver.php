@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends MY_Controller {
+class Driver extends MY_Controller {
 
 	public function __construct()
 	{
@@ -14,7 +14,7 @@ class User extends MY_Controller {
 
 	public function login() {
 
-		$this->form_validation->set_rules('username', 'Phone or email', 'trim|required');
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
 		
 		if ($this->form_validation->run() == true){

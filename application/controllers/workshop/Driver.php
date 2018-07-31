@@ -11,13 +11,13 @@
 		   redirect('workshop/auth/login'); //redirect to login page
 		} 
 		
-			$this->load->model('workshop/DriverModel');
+			$this->load->model('DriverModel');
 		}
 
 						
 		public function view_driver(){
 			$data=array();
-			$data['driverData'][0] =  $this->DriverModel->get_all();
+			$data['driverData'] =  $this->DriverModel->get_all();
 			$data['view'] = 'workshop/driver/view_driver';
 			//print_r($data['all_manager'][0]);die;
 			$this->load->view('workshop/layout', $data);

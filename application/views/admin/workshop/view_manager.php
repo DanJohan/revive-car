@@ -23,7 +23,7 @@
         </thead>
         <tbody>
           
-          <?php foreach($all_manager[0] as $row):?>
+          <?php foreach($all_manager as $row):?>
       
           <tr>
             <td><?= $row['m_name']; ?></td>

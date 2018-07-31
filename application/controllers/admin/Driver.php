@@ -5,7 +5,7 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('admin/DriverModel');
+			$this->load->model('DriverModel');
 			if (!$this->session->userdata['is_admin_login'] == TRUE)
 			{
 			   redirect('admin/auth/login'); //redirect to login page
@@ -33,7 +33,7 @@
 						'd_name' => $this->input->post('d_name'),
 						'd_email' => $this->input->post('d_email'),
 						'd_password' => password_hash($this->input->post('d_password'), PASSWORD_BCRYPT),
-						'd_phone' => $this->input->post('d_phone'),
+						'd_phone' => ($this->input->post('d_phone')) ? '+91'.$this->input->post('d_phone') : '',
 						'd_address' => $this->input->post('d_address'),
 						'd_idproof' => $this->input->post('d_idproof'),
 						'd_photo' => $file_name,
@@ -59,13 +59,16 @@
 
 		public function view_driver(){ //view all drivers from db
 			$data=array();
-			$data['all_driver'][0] =  $this->DriverModel->get_all();
+			$data['all_driver'] =  $this->DriverModel->get_all(NULL,array('id','desc'));
 			$data['view'] = 'admin/driver/view_driver';
 			$this->load->view('admin/layout', $data);
 
 		  }
 
-		public function edit_driver($id = 0){  // display record of selected id 
+		public function edit_driver($id = null){  // display record of selected id 
+			if(!$id){
+				redirect(base_url('admin/driver/view_driver'));
+			}
 			if($this->input->post('submit')){
 				$this->form_validation->set_rules('d_name', 'Username', 'trim|required');
 				$this->form_validation->set_rules('d_email', 'Email', 'trim|required');
@@ -73,7 +76,7 @@
 				$this->form_validation->set_rules('d_address', 'Address', 'trim|required');
 				
 				if ($this->form_validation->run() == FALSE) {
-					$data['driver'] = $this->DriverModel->get_driver_by_id($id);
+					$data['driver'] = $this->DriverModel->get(array('id'=>$id));
 					$data['view'] = 'admin/driver/edit_driver';
 					$this->load->view('admin/layout', $data);
 				}
@@ -81,27 +84,29 @@
 					$data = array(
 						'd_name' => $this->input->post('d_name'),
 						'd_email' => $this->input->post('d_email'),
-						'd_phone' => $this->input->post('d_phone'),
+						'd_phone' => ($this->input->post('d_phone'))?'+91'.$this->input->post('d_phone'):'',
 						'd_address' => $this->input->post('d_address')
 					);
 				
-					$result = $this->DriverModel->edit($data, $id);
-					if($result){
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('admin/driver/view_driver'));
-					}
+					$result = $this->DriverModel->update($data, array('id'=>$id));
+					$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
+					redirect(base_url('admin/driver/view_driver'));
 				}
 			}
 			else{
-				$data['driver'] = $this->DriverModel->get_driver_by_id($id);
+				$data['driver'] = $this->DriverModel->get(array('id'=>$id));
+				$data['driver']['d_phone'] = substr($data['driver']['d_phone'],3,10);
 				$data['view'] = 'admin/driver/edit_driver';
 				$this->load->view('admin/layout', $data);
 			}
 		}
 
 
-		public function del_driver($id = 0){
-			$this->db->delete('driver', array('d_id' => $id));
+		public function del_driver($id = null){
+			if(!id){
+				redirect(base_url('admin/driver/view_driver'));
+			}
+			$this->DriverModel->delete(array('id' => $id));
 			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
 			redirect(base_url('admin/driver/view_driver'));
 		}
