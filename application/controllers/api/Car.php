@@ -176,15 +176,22 @@ class Car extends MY_Controller {
 	public function serviceEnquiry() {
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
+		$this->form_validation->set_rules('location','Location','trim|required');
 		$this->form_validation->set_rules('loaner_vehicle', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('enquiry', 'Enquiry', 'trim|required');
+		$this->form_validation->set_rules('pick_up_date','Pickup Date','trim|required');
+		$this->form_validation->set_rules('pick_up_time','Pickup Time', 'trim|required');
 		//dd($_FILES);die;
 		if ($this->form_validation->run() == true) {
 			$register_data = array(
 				'car_id' => $this->input->post('car_id'),
 				'address' => $this->input->post('address'),
+				'location' => $this->input->post('location'),
 				'loaner_vehicle' => $this->input->post('loaner_vehicle'),
 				'enquiry' => $this->input->post('enquiry'),
+				'pick_up_date'=> $this->input->post('pick_up_date'),
+				'service_type' => 1,
+				'pick_up_time' => $this->input->post('pick_up_time'),
 				'created_at' => date("Y-m-d H:i:s") 
 			);
 
