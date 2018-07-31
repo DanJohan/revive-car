@@ -37,7 +37,7 @@
                 <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Nauman Ahmed - Web Developer
+                  <?= ucwords($this->session->userdata('name')); ?>
                 </p>
               </li>
              <!-- Menu Footer-->
