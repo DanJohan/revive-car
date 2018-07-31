@@ -49,7 +49,7 @@
                             </div>
                           </div>
                       <?php
-                          if($index % 3 == 0) {
+                          if(($index+1) % 3 == 0) {
                             echo "</div><div class='row'>";
                           }
                         }

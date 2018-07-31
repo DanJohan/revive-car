@@ -23,7 +23,7 @@ class ServiceEnquiryModel extends MY_Model {
 
 
 	public function getAllEnquiries(){
-		$this->db->select('e.id,e.address,e.loaner_vehicle,e.enquiry,e.created_at,cb.brand_name,cm.model_name,u.name');
+		$this->db->select('e.*,cb.brand_name,cm.model_name,u.name');
 		$this->db->from($this->table.' AS e');
 		$this->db->join('cars AS c','e.car_id = c.id');
 		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
@@ -36,16 +36,19 @@ class ServiceEnquiryModel extends MY_Model {
 
 	}
 
+	// used in crm
 	public function getEnquiry($id){
-		$this->db->select('e.id,e.address,e.loaner_vehicle,e.enquiry,e.created_at,GROUP_CONCAT(em.id SEPARATOR "|")AS image_id,GROUP_CONCAT(em.image SEPARATOR "|") AS images,cb.brand_name,cm.model_name,u.name');
+		$this->db->select('e.id,e.address,e.loaner_vehicle,e.enquiry,e.created_at,GROUP_CONCAT(em.id SEPARATOR "|")AS image_id,GROUP_CONCAT(em.image SEPARATOR "|") AS images,cb.brand_name,cm.model_name,u.name,u.phone,u.email,d.d_name,d.id');
 		$this->db->from($this->table.' AS e');
 		$this->db->join('cars AS c','e.car_id = c.id');
 		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
 		$this->db->join('car_models AS cm','c.model_id = cm.id');
 		$this->db->join('enquiry_images AS em','e.id = em.enquiry_id');
 		$this->db->join('users AS u','c.user_id = u.id');
+		$this->db->join('driver AS d','e.assign_driver= d.id','left');
 		$this->db->where('e.id',$id);
 		$query = $this->db->get();
+		//echo $this->db->last_query();die;
 		$result = $query->row_array();
 		return (!empty($result))? $result : false;
 	}

@@ -1,7 +1,10 @@
  <!-- Datatable style -->
-<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
+<link rel="stylesheet" href="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.css">  
 
  <section class="content">
+    <?php 
+     $this->load->view('common/flashmessage'); 
+    ?>
    <div class="box">
     <div class="box-header">
       <h3 class="box-title">Customer enquiry</h3>
@@ -24,13 +27,13 @@
             if(!empty($enquiries)) {
               foreach ($enquiries as $index => $enquiry) {
           ?>
-            <tr>
+            <tr style="<?php echo ($enquiry['confirmed'])?'background-color: lightgreen':''; ?>">
                 <td><?php echo $enquiry['name']; ?></td>
                 <td><?php echo $enquiry['brand_name']."-".$enquiry['model_name']; ?></td>
                 <td><?php echo ($enquiry['loaner_vehicle'])? 'Required' : 'Not required'; ?></td>
                 <td><?php echo $enquiry['enquiry']; ?></td>
                 <td><?php echo date('d M Y H:i:s',strtotime($enquiry['created_at'])); ?></td>
-                <td><a class="btn btn-success" href="<?= base_url('admin/enquiry/show/'.$enquiry['id']); ?>">View</a></td>
+                <td><a class="btn btn-success" href="<?php echo base_url('admin/enquiry/show/'.$enquiry['id']); ?>">View</a></td>
             </tr>
           <?php
               }
@@ -46,8 +49,8 @@
 </section>  
 
 <!-- DataTables -->
-<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
     $("#example1").DataTable();
