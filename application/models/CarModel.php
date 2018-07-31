@@ -38,5 +38,15 @@ class CarModel extends MY_Model {
 
 	}
 
+	public function getDefaultCar($user_id) {
+		$this->db->select('c.*,cb.brand_name,cm.model_name');
+		$this->db->from($this->table." AS c");
+		$this->db->join('car_brands AS cb','cb.id=c.brand_id');
+		$this->db->join('car_models AS cm','cm.id = c.model_id');
+		$this->db->where(array('c.user_id'=>$user_id,'is_default'=>1));
+		$result = $this->db->get()->row_array();
+		return $result;
+	}
+
 
 }

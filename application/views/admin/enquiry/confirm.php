@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td>&nbsp;</td>
-            <td><button type="submit" class="btn btn-primary" name="submit">Confirm</button></td>
+            <td><button type="submit" class="btn btn-primary" name="submit">Submit</button></td>
           </tr>
         </table>
       </form>
