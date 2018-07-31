@@ -151,6 +151,25 @@ class Car extends MY_Controller {
 		$this->renderJson($response);
 	}
 
+	public function getDefaultCar() {
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$user_id = $this->input->post('user_id');
+			$user_car = $this->CarModel->getDefaultCar($user_id);
+			if(!empty($user_car)){
+				$response = array('status'=>true,'message'=>'Record found successfully','data'=>$user_car);
+			}else{
+				$response = array('status'=>false,'message'=>'No detail found!');
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}
+
 	public function serviceEnquiry() {
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');

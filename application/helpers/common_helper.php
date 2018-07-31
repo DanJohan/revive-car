@@ -14,3 +14,11 @@ if ( ! function_exists('dd'))
         }
     }   
 }
+
+if ( ! function_exists('generate_otp'))
+{
+    function generate_otp($digits = 4)
+    {
+        return rand(pow(10, $digits - 1) - 1, pow(10, $digits) - 1);
+    }   
+}

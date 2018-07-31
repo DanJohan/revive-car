@@ -1,23 +1,24 @@
 <section class="content">
    <div class="box">
     <div class="box-header">
-      <h3 class="box-title">Customer enquiry</h3>
+      <h3 class="box-title">Confirm enquiry</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-        <form action="<?php ?>">
+        <form action="<?php echo base_url(); ?>admin/enquiry/save_enquiry_confirm" method="post">
+        <input type="hidden" name="enquiry_id" value="<?php echo $enquiry['id']; ?>">
         <table class="table">
           <?php if($enquiry['loaner_vehicle']) { ?>
             <tr>
                 <td><b>Assign driver</b></td>
                 <td>
-                    <select class="form-control">
-                        <option>Please select</option>
+                    <select class="form-control" name="driver" required="required">
+                        <option value="">Please select</option>
                         <?php
                           if(!empty($drivers)) {
                             foreach ($drivers as $index => $driver) {
                         ?>
-                          <option value="<?php echo $driver['d_id']; ?>"><?php echo $driver['d_name']; ?></option>
+                          <option value="<?php echo $driver['id']; ?>"><?php echo $driver['d_name']; ?></option>
                         <?php
                             }
                           }
@@ -27,18 +28,19 @@
             </tr>
             <tr>
               <td><b>Loaner vechicle cost</b></td>
-              <td><input type="text" class="form-control" name="loaner_vehicle_cost" /></td>
+              <td>150 / Day <input type="hidden" class="form-control" name="loaner_vehicle_cost" value="150" /></td>
           </tr>
           <?php } ?>
           <tr>
               <td><b>Estimated cost</b></td>
-              <td><input type="text" class="form-control" name="estimated_cost" /></td>
+              <td><input type="text" class="form-control" name="estimated_cost"  required="required"/></td>
           </tr>
           <tr>
             <td>&nbsp;</td>
-            <td><button type="submit" class="btn btn-primary">Confirm</button></td>
+            <td><button type="submit" class="btn btn-primary" name="submit">Submit</button></td>
           </tr>
         </table>
+      </form>
     </div>
     <!-- /.box-body -->
   </div>
