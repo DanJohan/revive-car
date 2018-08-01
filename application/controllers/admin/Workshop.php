@@ -102,7 +102,7 @@
 			}
 			else{
 				$data['manager'] = $this->WorkshopModel->get(array('id'=>$id));
-				$data['manager']['m_phone'] = substr($data['manager']['m_phone'],3,10);
+				$data['manager']['m_phone'] = substr($data['manager']['m_phone'],-10);
 				$data['view'] = 'admin/workshop/edit_manager';
 				$this->load->view('admin/layout', $data);
 			}
