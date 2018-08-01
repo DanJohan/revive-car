@@ -7,8 +7,7 @@
         <h2 class="page-header">
           <i class="fa fa-globe"></i> Job card
           <small class="pull-right">Date: 31/07/2018&nbsp;&nbsp;<input type="button" onclick="window.print();" value="Print" class="btn btn-info btn-flat" /></small>
-		  
-        </h2>
+		   </h2>
       </div>
       <!-- /.col -->
     </div>
@@ -24,6 +23,15 @@
         <b>Payment Due:</b> 2/22/2014<br>
         <b>Account:</b> 968-34567
       </div>
+
+       <!-- /.col -->
+      <!--<div class="col-sm-6 invoice-col">
+        <b>Job card No. #007612</b><br>
+        <br>
+        <b>Order ID:</b> 4F3S8J<br>
+        <b>Payment Due:</b> 2/22/2014<br>
+        <b>Account:</b> 968-34567
+      </div>-->
       <!-- /.col -->
     </div>
     <!-- /.row -->
@@ -77,47 +85,7 @@
     </div>
     <!-- /.row -->
 
-    <div class="row">
-      <!-- accepted payments column -->
-      <div class="col-xs-6">
-        <p class="lead">Payment Methods:</p>
-        <img src="../../dist/img/credit/visa.png" alt="Visa">
-        <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-        <img src="../../dist/img/credit/american-express.png" alt="American Express">
-        <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
-
-        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-          Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr
-          jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-        </p>
-      </div>
-      <!-- /.col -->
-      <div class="col-xs-6">
-        <p class="lead">Amount Due 2/22/2014</p>
-
-        <div class="table-responsive">
-          <table class="table">
-            <tr>
-              <th style="width:50%">Subtotal:</th>
-              <td>$250.30</td>
-            </tr>
-            <tr>
-              <th>Tax (9.3%)</th>
-              <td>$10.34</td>
-            </tr>
-            <tr>
-              <th>Shipping:</th>
-              <td>$5.80</td>
-            </tr>
-            <tr>
-              <th>Total:</th>
-              <td>$265.24</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <!-- /.col -->
-    </div>
+    
     <!-- /.row -->
   </section>
   <!-- /.content -->

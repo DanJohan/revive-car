@@ -17,7 +17,7 @@
 						
 		public function view_jobcard(){
 			$data=array();
-			//$data['jobcardData'][0] =  $this->JobcardModel->get_all();
+			$data['jobcardData'] = $this->JobcardModel->get(array('id'=>$id));
 			$data['view'] = 'workshop/jobcard/view_jobcard';
 			$this->load->view('workshop/layout', $data);
 
