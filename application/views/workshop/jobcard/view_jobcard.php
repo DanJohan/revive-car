@@ -1,93 +1,55 @@
-<div class="wrapper">
-  <!-- Main content -->
-  <section class="invoice">
-    <!-- title row -->
-    <div class="row">
-      <div class="col-xs-12">
-        <h2 class="page-header">
-          <i class="fa fa-globe"></i> Job card
-          <small class="pull-right">Date: 31/07/2018&nbsp;&nbsp;<input type="button" onclick="window.print();" value="Print" class="btn btn-info btn-flat" /></small>
-		   </h2>
-      </div>
-      <!-- /.col -->
-    </div>
-    <!-- info row -->
-    <div class="row invoice-info">
-     
-    
-      <!-- /.col -->
-      <div class="col-sm-12 invoice-col">
-        <b>Job card No. #007612</b><br>
-        <br>
-        <b>Order ID:</b> 4F3S8J<br>
-        <b>Payment Due:</b> 2/22/2014<br>
-        <b>Account:</b> 968-34567
-      </div>
+ <!-- Datatable style -->
+<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
 
-       <!-- /.col -->
-      <!--<div class="col-sm-6 invoice-col">
-        <b>Job card No. #007612</b><br>
-        <br>
-        <b>Order ID:</b> 4F3S8J<br>
-        <b>Payment Due:</b> 2/22/2014<br>
-        <b>Account:</b> 968-34567
-      </div>-->
-      <!-- /.col -->
+ <section class="content">
+   <div class="box">
+    <div class="box-header">
+      <h3 class="box-title">job card Detail</h3>
     </div>
-    <!-- /.row -->
+    <!-- /.box-header -->
+    <div class="box-body table-responsive">
+      <table id="jobcard" class="table table-bordered table-striped ">
+        <thead>
+        <tr>
 
-    <!-- Table row -->
-    <div class="row">
-      <div class="col-xs-12 table-responsive">
-        <table class="table table-striped">
-          <thead>
+         <th>User name</th>
+          <th>Job Name</th>
+          <th>Car</th>
+          <th>Created At</th>
+         <!-- <th style="width: 150px;" class="text-right">Option</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        
+          <?php foreach($jobcardData as $row):?>
+      
           <tr>
-            <th>Qty</th>
-            <th>Product</th>
-            <th>Serial #</th>
-            <th>Description</th>
-            <th>Subtotal</th>
+            <td><?php echo $row['name']; ?></td>
+            <td><?php echo  $row['job_name']; ?></td>
+            <td><?php echo $row['brand_name']."-".$row['model_name']; ?></td>
+            <td><?php echo $row['created_at']; ?></td>
+            
+           <!-- <td class="text-right"><a href="" class="btn btn-info btn-flat">Edit</a>
+              <a href="" class="btn btn-danger btn-flat">Delete</a></td>-->
           </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>1</td>
-            <td>Call of Duty</td>
-            <td>455-981-221</td>
-            <td>El snort testosterone trophy driving gloves handsome</td>
-            <td>$64.50</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Need for Speed IV</td>
-            <td>247-925-726</td>
-            <td>Wes Anderson umami biodiesel</td>
-            <td>$50.00</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Monsters DVD</td>
-            <td>735-845-642</td>
-            <td>Terry Richardson helvetica tousled street art master</td>
-            <td>$10.70</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Grown Ups Blue Ray</td>
-            <td>422-568-642</td>
-            <td>Tousled lomo letterpress</td>
-            <td>$25.99</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- /.col -->
+          <?php endforeach; ?>
+        </tbody>
+       
+      </table>
     </div>
-    <!-- /.row -->
+    <!-- /.box-body -->
+  </div>
+  <!-- /.box -->
+</section>  
 
-    
-    <!-- /.row -->
-  </section>
-  <!-- /.content -->
-</div>
-<!-- ./wrapper -->
+<!-- DataTables -->
+<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+  $(function () {
+    $("#jobcard").DataTable();
+  });
+</script> 
+<script>
+$("#view_users").addClass('active');
+</script>        

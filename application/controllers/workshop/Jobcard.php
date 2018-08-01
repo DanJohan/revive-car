@@ -5,11 +5,11 @@
 
 		public function __construct(){
 			parent::__construct();
-		/* if (!$this->session->userdata['is_manager_login'] == TRUE)
+		 if (!$this->session->userdata['is_manager_login'] == TRUE)
 
 		{
 		   redirect('workshop/auth/login'); //redirect to login page
-		}  */
+		}  
 		
 			$this->load->model('JobcardModel');
 		}
@@ -17,7 +17,8 @@
 						
 		public function view_jobcard(){
 			$data=array();
-			$data['jobcardData'] = $this->JobcardModel->get(array('id'=>$id));
+			$data['jobcardData'] = $this->JobcardModel->JobcardDetails();
+			//dd($data['jobcardData']);
 			$data['view'] = 'workshop/jobcard/view_jobcard';
 			$this->load->view('workshop/layout', $data);
 
