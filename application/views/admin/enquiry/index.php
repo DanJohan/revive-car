@@ -1,3 +1,8 @@
+  <style type="text/css">
+.btn{
+  padding: 3px 6px !important;
+}
+ </style>
  <!-- Datatable style -->
 <link rel="stylesheet" href="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.css">  
 
@@ -33,7 +38,9 @@
                 <td><?php echo ($enquiry['loaner_vehicle'])? 'Required' : 'Not required'; ?></td>
                 <td><?php echo $enquiry['enquiry']; ?></td>
                 <td><?php echo date('d M Y H:i:s',strtotime($enquiry['created_at'])); ?></td>
-                <td><a class="btn btn-success" href="<?php echo base_url('admin/enquiry/show/'.$enquiry['id']); ?>">View</a></td>
+                <td>
+                  <a class="btn btn-success" data-toggle="tooltip" href="<?php echo base_url('admin/enquiry/show/'.$enquiry['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+                </td>
             </tr>
           <?php
               }

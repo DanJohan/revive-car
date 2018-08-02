@@ -107,5 +107,3 @@ define('MAIL_HOST','smtp.gmail.com');
 define('MAIL_USERNAME','kumaranuj.smartserve@gmail.com');
 define('MAIL_PASSWORD','aNuj@123');
 define('MAIL_PORT',587);
-
-define('ANDRIOD_PUSH_AUTH_KEY','AAAAtccVGxI:APA91bHG_6NO2rN-rSbIfVavdOiRkBnEMBgSxxjdeau-3iul2MyDOGsbHRkmRP3p5icF_Az5s4Mly1EvQHr3UTijvH07t5pFcSfy3yssW1wDCNT43w4LdwPGvWyAxIlrZcMhUL2JKxAHic4WyRfAjredB80R5vfZfQ');
