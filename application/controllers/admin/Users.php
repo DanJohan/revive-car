@@ -48,7 +48,7 @@
 			}
 			else{
 				$data['user'] = $this->UserModel->get(array('id'=>$id));
-				$data['user']['phone'] = substr($data['user']['phone'],-10);
+				$data['user']['phone'] = substr($data['user']['phone'],3,10);
 				$data['view'] = 'admin/users/user_edit';
 				$this->load->view('admin/layout', $data);
 			}

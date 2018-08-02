@@ -1,3 +1,8 @@
+ <style type="text/css">
+.btn{
+  padding: 3px 6px !important;
+}
+ </style>
  <!-- Datatable style -->
 <link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
 
@@ -27,9 +32,11 @@
             <td><?= $row['phone']; ?></td>
             <!-- <td><?= $row['device_type']; ?></td> -->
             <td><?= $row['created_at']; ?></td>
+           <td class="text-right">
+            <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/users/edit/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
+            <a class="btn btn-danger" data-toggle="tooltip" href="<?= base_url('admin/users/del/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
             
-            <td class="text-right"><a href="<?= base_url('admin/users/edit/'.$row['id']); ?>" class="btn btn-info btn-flat">Edit</a>
-              <a href="<?= base_url('admin/users/del/'.$row['id']); ?>" class="btn btn-danger btn-flat">Delete</a></td>
+            </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
