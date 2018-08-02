@@ -15,14 +15,14 @@
 	       <!-- Custom CSS -->
 		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/style.css">
 		  <!-- AdminLTE Skins. Choose a skin from the css/skins. -->
-		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/skins/skin-blue.min.css">
+		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/skins/skin-green.min.css">
 		  <!-- jQuery 2.2.3 -->
 		  <script src="<?= base_url() ?>public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 		  <!-- jQuery UI 1.11.4 -->
 		  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 		
 	</head>
-	<body class="hold-transition skin-blue sidebar-mini">
+	<body class="hold-transition skin-green sidebar-mini">
 		<div class="wrapper" style="height: auto;">
 			 <?php if($this->session->flashdata('msg') != ''): ?>
 			    <div class="alert alert-warning flash-msg alert-dismissible">
@@ -54,7 +54,7 @@
 				<!--main content end-->
 				<!--footer start-->
 				<footer class="main-footer">
-					<strong>Copyright © 2018 <a href="#">Smart Serve Infotech</a></strong> All rights
+					<strong>Copyright © 2018 <a href="javascript:void(0);">Smart Serve Infotech</a></strong> All rights
 					reserved.
 				</footer>
 				<!--footer end-->

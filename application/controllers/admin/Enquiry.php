@@ -11,7 +11,7 @@ class Enquiry extends MY_Controller {
 			redirect('admin/auth/login');
 		}
 		$this->load->model('ServiceEnquiryModel');
-		$this->load->model('admin/DriverModel');
+		$this->load->model('DriverModel');
 		 $this->load->library('textMessage');
 	}
 
