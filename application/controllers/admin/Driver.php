@@ -60,12 +60,13 @@
 		public function view_driver(){ //view all drivers from db
 			$data=array();
 			$data['all_driver'] =  $this->DriverModel->get_all(NULL,array('id','desc'));
+
 			$data['view'] = 'admin/driver/view_driver';
 			$this->load->view('admin/layout', $data);
 
 		  }
 
-		public function edit_driver($id = null){  // display record of selected id 
+		public function edit_driver($id = null){  // display record of selected id
 			if(!$id){
 				redirect(base_url('admin/driver/view_driver'));
 			}
@@ -95,7 +96,7 @@
 			}
 			else{
 				$data['driver'] = $this->DriverModel->get(array('id'=>$id));
-				$data['driver']['d_phone'] = substr($data['driver']['d_phone'],3,10);
+				$data['driver']['d_phone'] = substr($data['driver']['d_phone'],-10);
 				$data['view'] = 'admin/driver/edit_driver';
 				$this->load->view('admin/layout', $data);
 			}
