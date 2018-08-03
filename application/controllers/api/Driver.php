@@ -65,7 +65,11 @@ class Driver extends MY_Controller {
 	}
 
 	public function getEnquiryDetail(){
-		
+		// To Do
+	}
+
+	public function createJob(){
+		//Todo
 	}
 }
 ?>

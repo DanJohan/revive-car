@@ -324,8 +324,7 @@ class User extends MY_Controller {
 	*/
 
 	public function sendChangePasswordEmail(){
-
-
+	
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
 		if ($this->form_validation->run() == true){
