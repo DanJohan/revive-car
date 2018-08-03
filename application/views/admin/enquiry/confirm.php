@@ -36,6 +36,26 @@
               <td><input type="text" class="form-control" name="estimated_cost"  required="required"/></td>
           </tr>
           <tr>
+
+          <tr>
+                <td><b>Assign Manager</b></td>
+                <td>
+                    <select class="form-control" name="wmanager" required="required">
+                        <option value="">Please select</option>
+                        <?php
+                          if(!empty($wmanagers)) {
+                            foreach ($wmanagers as $index => $wmanager) {
+                        ?>
+                          <option value="<?php echo $wmanager['id']; ?>"><?php echo $wmanager['m_name']; ?></option>
+                        <?php
+                            }
+                          }
+                        ?>
+                    </select>
+                </td>
+            </tr>
+
+
             <td>&nbsp;</td>
             <td><button type="submit" class="btn btn-primary" name="submit">Submit</button></td>
           </tr>

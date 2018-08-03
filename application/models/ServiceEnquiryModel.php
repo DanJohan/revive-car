@@ -46,6 +46,7 @@ class ServiceEnquiryModel extends MY_Model {
 		$this->db->join('enquiry_images AS em','e.id = em.enquiry_id');
 		$this->db->join('users AS u','c.user_id = u.id');
 		$this->db->join('driver AS d','e.assign_driver= d.id','left');
+		//$this->db->join('workshop_manager AS wm','e.assign_manager= wm.id','left');
 		$this->db->where('e.id',$id);
 		$query = $this->db->get();
 		//echo $this->db->last_query();die;
