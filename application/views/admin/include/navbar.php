@@ -28,13 +28,13 @@
          <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="<?= base_url() ?>public/dist/img/avatar3.png" class="user-image" alt="User Image">
               <span class="hidden-xs"><?= ucwords($this->session->userdata('name')); ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="<?= base_url() ?>public/dist/img/avatar3.png" class="img-circle" alt="User Image">
 
                 <p>
                   <?= ucwords($this->session->userdata('name')); ?>
@@ -43,10 +43,10 @@
              <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-right">
-                  <a href="<?= site_url('admin/auth/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?= site_url('admin/auth/logout'); ?>" class="btn btn-danger btn-flat">Sign out</a>
                 </div>
                 <div class="pull-left">
-                  <a href="<?= site_url('admin/auth/change_pwd'); ?>" class="btn btn-default btn-flat">Change Password</a>
+                  <a href="<?= site_url('admin/auth/change_pwd'); ?>" class="btn btn-primary btn-flat">Change Password</a>
                 </div>
               </li>
             </ul>

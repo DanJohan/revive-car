@@ -9,15 +9,15 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <!-- <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
         </div>
         <div class="pull-left info">
-          <p><?= ucwords($this->session->userdata('name')); ?></p>
+         <!--  <p><?= ucwords($this->session->userdata('name')); ?></p> -->
          <!--  <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
@@ -25,7 +25,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
                 </button>
               </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
