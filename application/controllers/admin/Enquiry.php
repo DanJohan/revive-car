@@ -12,7 +12,7 @@ class Enquiry extends MY_Controller {
 		}
 		$this->load->model('ServiceEnquiryModel');
 		$this->load->model('DriverModel');
-		$this->load->library('textMessage');
+		$this->load->library('textMessage'); 
 	}
 
 	public function index( $id = null){
