@@ -72,14 +72,14 @@ class Enquiry extends MY_Controller {
 			);
 			$is_update = $this->ServiceEnquiryModel->update($update_data,array('id'=>$enquiry_id));
 			$enquiry = $this->ServiceEnquiryModel->getEnquiry($enquiry_id);
-
+			dd($enquiry,false);
 			$data['phone'] = $enquiry['phone'];
 			if(!empty($enquiry['driver_id'])) {
 				$data['body'] = 'Dear '.$enquiry['name'].', On confirmation of your enquiry , REVIVE driver '.$enquiry['d_name'].' is coming to pick your car. Insert OTP '.$otp.' for Confirmation to start assistance and service';
 			}else{
 				$data['body'] = 'Dear '.$enquiry['name'].', Thanks for Choosing Revive car care Service , we will glad to welcome you on our service center, please enter '.$otp.' , when you reach to our workshop manager to start service.';
 			}
-			$message = $this->textmessage->send($data);
+			//$message = $this->textmessage->send($data);
 			$notification_data = array(
 				'user_id'=>$enquiry['user_id'],
 				'text' =>$data['body'],
@@ -88,16 +88,13 @@ class Enquiry extends MY_Controller {
 			);
 			$this->NotificationModel->insert($notification_data);
 
-			if($enquiry['device_type']=='A') {
-				$msg=array('title'=>'Revive auto car','message'=>$data['body']);
-				$notifymsg=array(
-					'data'=>$msg,
-					'to'  =>$enquiry['device_id']
-				);
-				$notification_result=android_notification($notifymsg);
-				//dd($notification_result);
-			}elseif($enquiry['device_type'] == 'I'){
-			}
+
+			$msg=array('body'=>$data['body'],'title'=>'Revive auto car','icon'=> base_url().'public/images/purepng.png','sound'=> 1);
+			$notifymsg=array(
+				'notification'=>$msg,
+				'to'  =>$enquiry['device_id']
+			);
+			$notification_result=android_notification($notifymsg);
 
 			//$criteria['field'] = 
 			if($is_update){
