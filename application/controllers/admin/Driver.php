@@ -109,7 +109,7 @@
 			}
 			$this->DriverModel->delete(array('id' => $id));
 			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('admin/driver/view_driver'));
+			redirect(base_url('admin/driver/view_driver')); 
 		}
 
 	}
