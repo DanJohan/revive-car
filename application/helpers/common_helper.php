@@ -10,10 +10,10 @@ if ( ! function_exists('dd'))
         	echo $data;
         }
         if($dump){
-        	exit;
+        	exit; 
         }
     }   
-}
+} 
 
 if ( ! function_exists('generate_otp'))
 {

@@ -9,7 +9,7 @@ if ( ! function_exists('getRandomString'))
 	    $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWZYZ";
 
 	    $real_string_length = strlen($characters) ;     
-	    $string='';
+	    $string=''; 
 	    for ($p = 0; $p < $length; $p++) 
 	    {
 	        $string .= $characters[mt_rand(0, $real_string_length-1)];
