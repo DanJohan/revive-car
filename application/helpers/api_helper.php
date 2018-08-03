@@ -9,12 +9,35 @@ if ( ! function_exists('getRandomString'))
 	    $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWZYZ";
 
 	    $real_string_length = strlen($characters) ;     
-	    $string='';
+	    $string=''; 
 	    for ($p = 0; $p < $length; $p++) 
 	    {
 	        $string .= $characters[mt_rand(0, $real_string_length-1)];
 	    }
 
 	    return strtolower($string);
+	}
+}
+
+if(!function_exists('android_notification')){
+	function android_notification($data){
+		$url = 'https://fcm.googleapis.com/fcm/send';
+		$serverApiKey = ANDRIOD_PUSH_AUTH_KEY;
+		$headers = array(
+			'Content-Type:application/json',
+			'Authorization:key=' .$serverApiKey
+		);	
+	
+				 $ch = curl_init();
+				 curl_setopt($ch, CURLOPT_URL, $url);
+				 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+				 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				 curl_setopt($ch, CURLOPT_POST, true);
+				 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));     
+				 $response = curl_exec($ch);
+				 curl_close($ch);
+				 $result_ = json_decode($response,true);
+				 return $result_;
 	}
 }

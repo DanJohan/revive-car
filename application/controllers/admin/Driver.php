@@ -74,7 +74,7 @@
 				$this->form_validation->set_rules('d_email', 'Email', 'trim|required');
 				$this->form_validation->set_rules('d_phone', 'Number', 'trim|required');
 				$this->form_validation->set_rules('d_address', 'Address', 'trim|required');
-				
+				 
 				if ($this->form_validation->run() == FALSE) {
 					$data['driver'] = $this->DriverModel->get(array('id'=>$id));
 					$data['view'] = 'admin/driver/edit_driver';
@@ -95,7 +95,7 @@
 			}
 			else{
 				$data['driver'] = $this->DriverModel->get(array('id'=>$id));
-				$data['driver']['d_phone'] = substr($data['driver']['d_phone'],3,10);
+				$data['driver']['d_phone'] = substr($data['driver']['d_phone'],-10);
 				$data['view'] = 'admin/driver/edit_driver';
 				$this->load->view('admin/layout', $data);
 			}
@@ -108,7 +108,7 @@
 			}
 			$this->DriverModel->delete(array('id' => $id));
 			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('admin/driver/view_driver'));
+			redirect(base_url('admin/driver/view_driver')); 
 		}
 
 	}
