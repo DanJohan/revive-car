@@ -62,6 +62,21 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
             </ul>
         </li>
       </ul>
+
+       <ul class="sidebar-menu">
+        <li id="jobscard" class="treeview">
+            <a href="#">
+              <i class="fa fa-dashboard"></i> <span>Jobs Card</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+               <li id="view_driver" class=""><a href="<?= base_url('workshop/jobcard/view_jobcard'); ?>"><i class="fa fa-circle-o"></i> View Jobs Card</a></li>
+            </ul>
+        </li>
+      </ul>
+
        
       <!--<ul class="sidebar-menu">
         <li id="manager" class="treeview">
