@@ -9,6 +9,4 @@ class CarBrandModel extends MY_Model {
 	    parent::__construct();
 	}
 
-
-
 }
