@@ -54,5 +54,5 @@
   });
 </script> 
 <script>
-$("#view_users").addClass('active');
+$("#users").addClass('active');
 </script>        
