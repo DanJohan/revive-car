@@ -39,5 +39,36 @@ class Driver extends MY_Controller {
 
 	    $this->renderJson($response);
 	}
-}
+
+
+	public function verifyCustomerCode(){
+		$this->form_validation->set_rules('code', 'Verfication code', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$code = $this->input->post('code');
+			$criteria['field'] = 'id';
+			$criteria['conditions'] = array('verification_code'=>$code);
+			$criteria['returnType'] = 'single';
+			$enquiry = $this->ServiceEnquiryModel->search($criteria);
+			if($enquiry){
+				$response = array('status'=>true,'message'=>'Record found successfully!','data'=>$enquiry);
+			}else{
+				$response = array('status'=>false,'message'=>'No detail found!');
+			}
+			
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
+
+	public function getEnquiryDetail(){
+		// To Do
+	}
+
+	public function createJob(){
+		//Todo
+	}
+
+}// end of class
 ?>
