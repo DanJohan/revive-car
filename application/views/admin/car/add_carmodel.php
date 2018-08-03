@@ -51,3 +51,43 @@
   </div>  
 
 </section> 
+<section class="content">
+   <div class="box">
+    <div class="box-header">
+      <h3 class="box-title">Added Car Models</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body table-responsive">
+      <table id="example1" class="table table-bordered table-striped ">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Brand Id</th>
+          <th>Model</th>
+          <th>Updated At</th>
+          <th style="width: 150px;" class="text-right">Option</th>
+        </tr>
+        </thead>
+        <tbody>
+          
+          <?php foreach($all_carmodel as $row):?>
+      
+          <tr>
+            <td><?= $row['id']; ?></td>
+            <td><?= $row['brand_name']; ?></td>
+            <td><?= $row['model_name']; ?></td>
+            <td><?= $row['updated_at']; ?></td>
+            
+            <td class="text-right">
+             <a class="btn btn-danger" data-toggle="tooltip" href="<?= base_url('admin/car/del_carmodel/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+       
+      </table>
+    </div>
+    <!-- /.box-body -->
+  </div>
+  <!-- /.box -->
+</section>  
+

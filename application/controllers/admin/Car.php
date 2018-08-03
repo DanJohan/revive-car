@@ -15,6 +15,7 @@ class Car extends MY_Controller {
 
 		public function add_carbrand(){ //display add carbrand page 
 			$data=array();
+			$data['all_carbrand'] =  $this->CarBrandModel->get_all(NULL,array('id','asc'));
 			$data['view'] = 'admin/car/add_carbrand';
 			$this->load->view('admin/layout', $data);
 			
@@ -23,6 +24,16 @@ class Car extends MY_Controller {
 		public function add_carmodel(){ //display add carmodel page 
 			$data=array();
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
+
+			/*$c['field'] = 'car_models.*,car_brands.brand_name';
+			$c['join'] = array(
+				array('car_brands','car_models.brand_id=car_brands.id','inner'),
+			);
+			$data['all_carmodel'] =  $this->CarModelsModel->search($c);
+			echo $this->db->last_query()*/;
+
+			$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
+			//dd($data['all_carmodel']);
 			$data['view'] = 'admin/car/add_carmodel';
 			$this->load->view('admin/layout', $data);
 			
@@ -43,8 +54,7 @@ class Car extends MY_Controller {
 				if($result){
 					$this->session->set_flashdata('msg', 'Car Brand is Added Successfully!');
 					redirect(base_url('admin/car/add_carbrand'));
-
-				}
+					}
 
 				else{
 					$this->session->set_flashdata('msg', 'Some problem occur!');
@@ -62,13 +72,9 @@ class Car extends MY_Controller {
 					'created_at' => date('Y-m-d H:i:s')
 
 				);
-					//print_r($data);die;
-
+				
 				$result = $this->CarModelsModel->insert($data);
-					//print_r($result);die;
-					//echo $this->db->last_query();die;
-
-				if($result){
+			    if($result){
 					$this->session->set_flashdata('msg', 'Car Model is Added Successfully!');
 					redirect(base_url('admin/car/add_carmodel'));
 
@@ -81,61 +87,18 @@ class Car extends MY_Controller {
 				}
 			}	
 
-
-
-
-			/*public function view_carbrand(){ //view all car brand names from db
-				$data=array();
-				$data['all_carbrand'][0] =  $this->CarBrandModel->get_all();
-				print_r($data['all_carbrand'][0]);die;
-				$data['view'] = 'admin/car/add_carmodel';
-				$this->load->view('admin/layout', $data);
-
-			  }
-*/
-
-
-		/*public function edit_driver($id = 0){  // display record of selected id 
-			if($this->input->post('submit')){
-				$this->form_validation->set_rules('d_name', 'Username', 'trim|required');
-				$this->form_validation->set_rules('d_email', 'Email', 'trim|required');
-				$this->form_validation->set_rules('d_phone', 'Number', 'trim|required');
-				$this->form_validation->set_rules('d_address', 'Address', 'trim|required');
-				
-				if ($this->form_validation->run() == FALSE) {
-					$data['driver'] = $this->DriverModel->get_driver_by_id($id);
-					$data['view'] = 'admin/driver/edit_driver';
-					$this->load->view('admin/layout', $data);
-				}
-				else{
-					$data = array(
-						'd_name' => $this->input->post('d_name'),
-						'd_email' => $this->input->post('d_email'),
-						'd_phone' => $this->input->post('d_phone'),
-						'd_address' => $this->input->post('d_address')
-					);
-				
-					$result = $this->DriverModel->edit($data, $id);
-					if($result){
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-						redirect(base_url('admin/driver/view_driver'));
-					}
-				}
-			}
-			else{
-				$data['driver'] = $this->DriverModel->get_driver_by_id($id);
-				$data['view'] = 'admin/driver/edit_driver';
-				$this->load->view('admin/layout', $data);
-			}
+			public function del_carbrand($id = 0){
+			$this->db->delete('car_brands', array('id' => $id));
+			$this->session->set_flashdata('msg', 'Brand name is Deleted Successfully!');
+			redirect(base_url('admin/car/add_carbrand'));
+		}
+		public function del_carmodel($id = 0){
+			$this->db->delete('car_models', array('id' => $id));
+			$this->session->set_flashdata('msg', 'Model name is Deleted Successfully!');
+			redirect(base_url('admin/car/add_carmodel'));
 		}
 
 
-		public function del_driver($id = 0){
-			$this->db->delete('driver', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
-			redirect(base_url('admin/driver/view_driver'));
-		}
-*/
 	}
 
 
