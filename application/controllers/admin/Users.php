@@ -11,7 +11,7 @@
 			   redirect('admin/auth/login'); //redirect to login page
 			} 
 		}
-
+ 
 		public function index(){
 			$data['all_users'] =  $this->UserModel->get_all(NULL,array('id','desc'));
 			$data['view'] = 'admin/users/user_list';

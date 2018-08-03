@@ -75,7 +75,7 @@
 				$this->form_validation->set_rules('d_email', 'Email', 'trim|required');
 				$this->form_validation->set_rules('d_phone', 'Number', 'trim|required');
 				$this->form_validation->set_rules('d_address', 'Address', 'trim|required');
-				
+				 
 				if ($this->form_validation->run() == FALSE) {
 					$data['driver'] = $this->DriverModel->get(array('id'=>$id));
 					$data['view'] = 'admin/driver/edit_driver';

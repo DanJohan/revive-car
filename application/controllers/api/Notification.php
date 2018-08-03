@@ -20,7 +20,7 @@ class Notification extends MY_Controller {
 			}else{
 				$response = array('status'=>false,'message'=>'Detail not found');
 			}
-
+ 
 		}else{
 			$errors = $this->form_validation->error_array();
 			$response = array('status'=>false,'message'=>$errors);
