@@ -10,6 +10,7 @@ class Enquiry extends MY_Controller {
 		{
 			redirect('admin/auth/login');
 		}
+		$this->load->helper('api');
 		$this->load->model('ServiceEnquiryModel');
 		$this->load->model('DriverModel');
 		$this->load->library('textMessage'); 
@@ -60,13 +61,13 @@ class Enquiry extends MY_Controller {
 	public function save_enquiry_confirm() {
 		if(count($_POST) > 0) {
 			$enquiry_id = $this->input->post('enquiry_id');
-			$otp = generate_otp();
+			$otp = getRandomString(6);
 			$update_data = array(
 				'assign_driver' => ($this->input->post('driver'))?$this->input->post('driver'):null,
 				'loaner_vehicle_cost' => ($this->input->post('loaner_vehicle_cost'))? $this->input->post('loaner_vehicle_cost') : null,
 				'estimated_cost' => $this->input->post('estimated_cost'),
 				'confirmed' => 1,
-				'otp' =>$otp
+				'verification_code' =>$otp
 			);
 			$is_update = $this->ServiceEnquiryModel->update($update_data,array('id'=>$enquiry_id));
 			$enquiry = $this->ServiceEnquiryModel->getEnquiry($enquiry_id);
