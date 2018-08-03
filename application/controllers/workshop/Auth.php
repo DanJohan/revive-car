@@ -34,12 +34,13 @@
 					);
 
 					$result = $this->AuthModel->login($data);
-
+					//print_r($result);die;
 					if ($result == TRUE) {
 						$manager_data = array(
 							'id' => $result['id'],
 						 	'm_email' => $result['m_email'],
 							'm_name' => $result['m_name'],
+							'm_photo' => $result['m_photo'],
 						 	'is_manager_login' => TRUE
 						);
 						$this->session->set_userdata($manager_data);

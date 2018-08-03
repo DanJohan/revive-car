@@ -3,7 +3,7 @@
 
  <section class="content">
    <div class="box">
-    <div class="box-header">
+    <div class="box-header bg-green">
       <h3 class="box-title">Workshop Drivers Detail</h3>
     </div>
     <!-- /.box-header -->

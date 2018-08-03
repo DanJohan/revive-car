@@ -16,6 +16,7 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
+          <th>Image</th>
           <th>Manager Name</th>
           <th>Email</th>
           <th>Mobile No.</th>
@@ -31,6 +32,7 @@
           <?php foreach($all_manager as $row):?>
       
           <tr>
+            <td><img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/<?= $row['m_photo']; ?>"></td>
             <td><?= $row['m_name']; ?></td>
             <td><?= $row['m_email']; ?></td>
             <td><?= $row['m_phone']; ?></td>

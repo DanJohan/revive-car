@@ -18,25 +18,26 @@
          <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="<?= base_url() ?>uploads/admin/<?= $this->session->userdata('m_photo'); ?>" class="user-image" alt="User Image">
               <span class="hidden-xs"><?= ucwords($this->session->userdata('m_name')); ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?= base_url() ?>public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="<?= base_url() ?>uploads/admin/<?= $this->session->userdata('m_photo'); ?>" class="user-image" alt="User Image">
+             
+                  <p style="text-transform:capitalize;">
+                  <b style="color:#fff;font-weight:normal !important;"><?= ucwords($this->session->userdata('m_name')); ?></b>
+                  <small style="color:#fff;font-weight:bold;">Manager</small> </p>
 
-                <p>
-                  <?= ucwords($this->session->userdata('m_name')); ?>
-                </p>
               </li>
              <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-right">
-                  <a href="<?= site_url('workshop/auth/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?= site_url('workshop/auth/logout'); ?>" class="btn btn-danger btn-flat">Sign out</a>
                 </div>
                 <div class="pull-left">
-                  <a href="<?= site_url('workshop/auth/change_pwd'); ?>" class="btn btn-default btn-flat">Change Password</a>
+                  <a href="<?= site_url('workshop/auth/change_pwd'); ?>" class="btn btn-primary btn-flat">Change Password</a>
                 </div>
               </li>
             </ul>

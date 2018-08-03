@@ -6,6 +6,7 @@
 			parent::__construct();
 		$this->load->model('DriverModel');
 		$this->load->model('UserModel');
+		$this->load->model('ServiceEnquiryModel');
 		
 		if (!$this->session->userdata['is_manager_login'] == TRUE)
 		{
@@ -20,6 +21,7 @@
 			$criteria['returnType'] = 'count';
 			$data['driverCount'] =  $this->DriverModel->search($criteria);
 			$data['userCount'] =  $this->UserModel->search($criteria);
+			$data['enquiryCount'] =  $this->ServiceEnquiryModel->search($criteria);	
 			$data['view'] = 'workshop/dashboard/index';
 			$this->load->view('workshop/layout', $data);
 		}

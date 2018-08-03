@@ -4,7 +4,7 @@
  <section class="content">
    <div class="box">
     <div class="box-header text-center">
-      <h1 class="box-title" style="text-transform:uppercase;font-weight:bold;">Revive Car Management Dashboard</h1>
+      <h1 class="box-title" style="text-transform:uppercase;font-weight:bold;">Revive Car Admin Management Dashboard</h1>
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
@@ -15,7 +15,7 @@
             <div class="inner">
               <h3><?php echo $userCount; ?></h3>
 
-              <p>User Registrations</p>
+              <p>Users</p>
             </div>
             <div class="icon">
               <img height="80" width="80" src="<?= base_url() ?>public/dist/img/customer.png">
