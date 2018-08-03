@@ -12,6 +12,7 @@ class Enquiry extends MY_Controller {
 		}
 		$this->load->helper('api');
 		$this->load->model('ServiceEnquiryModel');
+		$this->load->model('NotificationModel');
 		$this->load->model('DriverModel');
 		$this->load->library('textMessage'); 
 	}
@@ -61,7 +62,7 @@ class Enquiry extends MY_Controller {
 	public function save_enquiry_confirm() {
 		if(count($_POST) > 0) {
 			$enquiry_id = $this->input->post('enquiry_id');
-			$otp = getRandomString(6);
+			$otp = randomString();
 			$update_data = array(
 				'assign_driver' => ($this->input->post('driver'))?$this->input->post('driver'):null,
 				'loaner_vehicle_cost' => ($this->input->post('loaner_vehicle_cost'))? $this->input->post('loaner_vehicle_cost') : null,
@@ -79,6 +80,25 @@ class Enquiry extends MY_Controller {
 				$data['body'] = 'Dear '.$enquiry['name'].', Thanks for Choosing Revive car care Service , we will glad to welcome you on our service center, please enter '.$otp.' , when you reach to our workshop manager to start service.';
 			}
 			$message = $this->textmessage->send($data);
+			$notification_data = array(
+				'user_id'=>$enquiry['user_id'],
+				'text' =>$data['body'],
+				'type'=>'enquiry_confirm',
+				'created_at'=>date("Y-m-d H:i:s")
+			);
+			$this->NotificationModel->insert($notification_data);
+
+			if($enquiry['device_type']=='A') {
+				$msg=array('title'=>'Revive auto car','message'=>$data['body']);
+				$notifymsg=array(
+					'data'=>$msg,
+					'to'  =>$enquiry['device_id']
+				);
+				$notification_result=android_notification($notifymsg);
+				//dd($notification_result);
+			}elseif($enquiry['device_type'] == 'I'){
+			}
+
 			//$criteria['field'] = 
 			if($is_update){
 				$this->session->set_flashdata('success_msg', 'Enquiry confirmed successfully!');

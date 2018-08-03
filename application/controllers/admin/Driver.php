@@ -95,7 +95,7 @@
 			}
 			else{
 				$data['driver'] = $this->DriverModel->get(array('id'=>$id));
-				$data['driver']['d_phone'] = substr($data['driver']['d_phone'],3,10);
+				$data['driver']['d_phone'] = substr($data['driver']['d_phone'],-10);
 				$data['view'] = 'admin/driver/edit_driver';
 				$this->load->view('admin/layout', $data);
 			}
