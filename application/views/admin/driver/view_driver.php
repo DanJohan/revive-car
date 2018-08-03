@@ -13,6 +13,7 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
+          <th>Image</th>
           <th>Username</th>
           <th>Email</th>
           <th>Mobile No.</th>
@@ -26,8 +27,9 @@
           <?php foreach($all_driver as $row):?>
       
           <tr>
+            <td><img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/<?= $row['d_photo']; ?>"></td>
             <td><?= $row['d_name']; ?></td>
-            <td><?= $row['d_email']; ?></td>
+            <td><?= $row['d_email']; ?></td> 
             <td><?= $row['d_phone']; ?></td>
             <td><?= $row['d_address']; ?></td>
             <td><?= $row['created_at']; ?></td>
