@@ -4,7 +4,7 @@
  <section class="content">
    <div class="box">
     <div class="box-header bg-green">
-      <h3 class="box-title">job card Detail</h3>
+      <h3 class="box-title">Service Status of Job</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
@@ -31,6 +31,8 @@
             
            <!-- <td class="text-right"><a href="" class="btn btn-info btn-flat">Edit</a>
               <a href="" class="btn btn-danger btn-flat">Delete</a></td>-->
+  
+        
           </tr>
           <?php endforeach; ?>
         </tbody>
