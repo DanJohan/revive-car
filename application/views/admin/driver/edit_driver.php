@@ -34,6 +34,14 @@
               </div>
               <br></br>
               <div class="form-group">
+                <label for="email" class="col-sm-3 control-label">Location</label>
+
+                <div class="col-sm-8">
+                  <input type="text" name="d_location" class="form-control" value="<?= $driver['d_location']; ?>" id="email" required>
+                </div>
+              </div>
+              <br></br>
+              <div class="form-group">
                 <label for="mobile_no" class="col-sm-3 control-label">Mobile No</label>
 
                 <div class="col-sm-8">
@@ -53,13 +61,36 @@
               </div>
               <br><br></br>
                <div class="form-group">
-                <label for="password" class="col-sm-3 control-label">ID Proof</label>
+                <label for="role" class="col-sm-3 control-label">Assign Workshop Location</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_idproof" class="form-control" value="<?= $driver['d_idproof']; ?>" id="password" placeholder="Adharcard/Pancard/License.." required>
+                  <select name="d_location_assign" class="form-control" title="select any option" required>
+                    <option value="<?= $driver['d_location_assign']; ?>"><?= $driver['d_location_assign']; ?></option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Gurugram">Gurugram</option>
+                    <option value="Noida">Noida</option>
+                    <option value="Gaziabad">Gaziabad</option>
+                  </select>
+                </div>
+              </div>
+               <br></br>
+              <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">License</label>
+
+                <div class="col-sm-8">
+                  <input type="text" name="d_license" class="form-control" value="<?= $driver['d_license']; ?>" id="password" required>
                 </div>
               </div>
               <br></br>
+               <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">ID Proof</label>
+
+                <div class="col-sm-8">
+                  <input type="text" name="d_idproof" class="form-control" value="<?= $driver['d_idproof']; ?>" id="password" required>
+                </div>
+              </div>
+              <br></br>
+
                <div class="form-group">
                 <label for="exampleInputFile" class="col-sm-3 control-label">Upload Photo</label>
                    <div class="col-sm-8">

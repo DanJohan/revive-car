@@ -65,10 +65,17 @@
 			$data['all_manager'] =  $this->WorkshopModel->get_all(NULL,array('id','desc'));
 			$data['view'] = 'admin/workshop/view_manager';
 			$this->load->view('admin/layout', $data);
-
+			$this->load->view('common/modal', $data);  //include modal box layout
 		  }
-
-		public function edit_manager($id = null){  // display record of selected id 
+		 
+		public function view_record_by_id($id){
+			$data=array();
+			$data['manager_by_id'] =  $this->WorkshopModel->get(array('id'=>$id));
+			echo $this->load->view('admin/workshop/manager_view',$data,true);
+			
+		  }
+		  
+		public function edit_manager($id = null){  //display record of selected id 
 			if(!$id){
 				redirect(base_url('admin/workshop/view_manager'));
 			}
@@ -107,6 +114,8 @@
 				$this->load->view('admin/layout', $data);
 			}
 		}
+
+
 
 
 		public function del_manager($id = null){

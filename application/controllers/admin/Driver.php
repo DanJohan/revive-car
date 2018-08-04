@@ -27,6 +27,7 @@
 						$upload= $this->do_upload('d_photo',$path);
 						if(isset($upload['upload_data'])){
 							$file_name = $upload['upload_data']['file_name'];
+
 						}
 					}
 					$data = array(
@@ -34,7 +35,10 @@
 						'd_email' => $this->input->post('d_email'),
 						'd_password' => password_hash($this->input->post('d_password'), PASSWORD_BCRYPT),
 						'd_phone' => ($this->input->post('d_phone')) ? '+91'.$this->input->post('d_phone') : '',
+						'd_location' => $this->input->post('d_location'),
 						'd_address' => $this->input->post('d_address'),
+						'd_location_assign' => $this->input->post('d_location_assign'),
+						'd_license' => $this->input->post('d_license'),
 						'd_idproof' => $this->input->post('d_idproof'),
 						'd_photo' => $file_name,
 						'created_at' => date('Y-m-d H:i:s')
@@ -62,7 +66,15 @@
 			$data['all_driver'] =  $this->DriverModel->get_all(NULL,array('id','desc'));
 			$data['view'] = 'admin/driver/view_driver';
 			$this->load->view('admin/layout', $data);
+			$this->load->view('common/modal', $data);  //include modal box layout
 
+		  }
+
+		  public function view_record_by_id($id){
+			$data=array();
+			$data['driver_by_id'] =  $this->DriverModel->get(array('id'=>$id));
+			echo $this->load->view('admin/driver/driver_view',$data,true);
+			
 		  }
 
 		public function edit_driver($id = null){  // display record of selected id 
@@ -73,7 +85,10 @@
 				$this->form_validation->set_rules('d_name', 'Username', 'trim|required');
 				$this->form_validation->set_rules('d_email', 'Email', 'trim|required');
 				$this->form_validation->set_rules('d_phone', 'Number', 'trim|required');
+				$this->form_validation->set_rules('d_location', 'Location', 'trim|required');
 				$this->form_validation->set_rules('d_address', 'Address', 'trim|required');
+				$this->form_validation->set_rules('d_location_assign', 'Location Assign', 'trim|required');
+				$this->form_validation->set_rules('d_license', 'License', 'trim|required');
 				 
 				if ($this->form_validation->run() == FALSE) {
 					$data['driver'] = $this->DriverModel->get(array('id'=>$id));
@@ -85,7 +100,10 @@
 						'd_name' => $this->input->post('d_name'),
 						'd_email' => $this->input->post('d_email'),
 						'd_phone' => ($this->input->post('d_phone'))?'+91'.$this->input->post('d_phone'):'',
-						'd_address' => $this->input->post('d_address')
+						'd_location' => $this->input->post('d_location'),
+						'd_address' => $this->input->post('d_address'),
+						'd_location_assign' => $this->input->post('d_location_assign'),
+						'd_license' => $this->input->post('d_license')
 					);
 				
 					$result = $this->DriverModel->update($data, array('id'=>$id));

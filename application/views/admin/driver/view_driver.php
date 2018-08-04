@@ -17,8 +17,7 @@
           <th>Username</th>
           <th>Email</th>
           <th>Mobile No.</th>
-          <th>Address</th>
-          <th>Created At</th>
+          
           <th style="width: 150px;" class="text-right">Option</th>
         </tr>
         </thead>
@@ -27,13 +26,17 @@
           <?php foreach($all_driver as $row):?>
       
           <tr>
-            <td><img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/<?= $row['d_photo']; ?>"></td>
+
+            <td><?php if($row['d_photo']){?>
+              <img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/<?= $row['d_photo']; ?>">
+              <?php }else {?>
+             <img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/download.jpg"><?php } ?></td>
+              
             <td><?= $row['d_name']; ?></td>
             <td><?= $row['d_email']; ?></td> 
             <td><?= $row['d_phone']; ?></td>
-            <td><?= $row['d_address']; ?></td>
-            <td><?= $row['created_at']; ?></td>
-             <td class="text-right">
+            <td class="text-right">
+              <a data-toggle="modal" data-target="#basicModal" class="btn btn-success" data-toggle="tooltip" href="<?= base_url('admin/driver/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
             <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/driver/edit_driver/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
             <a class="btn btn-danger" data-toggle="tooltip" href="<?= base_url('admin/driver/del_driver/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
             
