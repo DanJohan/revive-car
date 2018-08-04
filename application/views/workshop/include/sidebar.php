@@ -45,6 +45,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
             </a>
             <ul class="treeview-menu">
               <li id="view_users" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
+               <li id="manager_enquiry"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
             </ul>
           </li>
           </ul>

@@ -78,6 +78,18 @@
 	    $(".flash-msg").slideUp(500);
 	});
 	</script>
-	
+	</script>
+	<script type="text/javascript">
+		$.ajax({
+			url:"<?php echo base_url(); ?>workshop/enquiry/get_notifications",
+			method:"POST",
+			success:function(response){
+				if(response.status){
+					$('#notification-list').html(response.template);
+					$('#notification-count').text(response.total);
+				}
+			}
+		})
+	</script>
 	</body>
 </html>
