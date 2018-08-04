@@ -10,6 +10,12 @@ class Notification extends MY_Controller {
 	    $this->load->model('NotificationModel');
 	}
 
+	/**
+	 *  API DESCRIPTION : To get all notification of an user
+	 *  API URL : http://localhost/car-service/api/notification/getUserNotification
+	 *  PARAMETER : user_id (required)
+	 */
+
 	public function getUserNotification(){
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		if ($this->form_validation->run() == true) {
@@ -29,6 +35,11 @@ class Notification extends MY_Controller {
 		$this->renderJson($response);
 	}
 
+	/**
+	 *  API DESCRIPTION : To change notification status to seen
+	 *  API URL : http://localhost/car-service/api/notification/markNotificationToSeen
+	 *  PARAMETER : notification_id (required)
+	 */
 	public function markNotificationToSeen(){
 		$this->form_validation->set_rules('notification_id', 'Notification id', 'trim|required');
 		if ($this->form_validation->run() == true) {
@@ -42,6 +53,12 @@ class Notification extends MY_Controller {
 		$this->renderJson($response);
 	}
 
+	/**
+	 *  API DESCRIPTION : To delete single notification via its id
+	 *  API URL : http://localhost/car-service/api/notification/deleteNotification
+	 *  PARAMETER : notification_id (required)
+	 */
+
 	public function deleteNotification(){
 		$this->form_validation->set_rules('notification_id', 'Notification id', 'trim|required');
 		if ($this->form_validation->run() == true) {
@@ -54,6 +71,12 @@ class Notification extends MY_Controller {
 		}
 		$this->renderJson($response);
 	}
+
+	/**
+	 *  API DESCRIPTION : To delete all notification of user
+	 *  API URL : http://localhost/car-service/api/notification/deleteAllNotifications
+	 *  PARAMETER : user_id (required)
+	 */
 
 	public function deleteAllNotifications(){
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');

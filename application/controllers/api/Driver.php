@@ -13,6 +13,11 @@ class Driver extends MY_Controller {
 	    $this->load->library('textMessage');*/
 	}
 
+	/**
+	 *  API DESCRIPTION : To login driver
+	 *  API URL : http://localhost/car-service/api/driver/login
+	 *  PARAMETER : phone (required), password (required)
+	 */
 	public function login() {
 
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|required');
@@ -41,7 +46,11 @@ class Driver extends MY_Controller {
 	    $this->renderJson($response);
 	}
 
-
+	/**
+	 *  API DESCRIPTION : To verify customer given verification code
+	 *  API URL : http://localhost/car-service/api/driver/verifyCustomerCode
+	 *  PARAMETER : code (required)
+	 */
 	public function verifyCustomerCode(){
 		$this->form_validation->set_rules('code', 'Verfication code', 'trim|required');
 		if ($this->form_validation->run() == true){
@@ -63,6 +72,11 @@ class Driver extends MY_Controller {
 		$this->renderJson($response);
 	}
 
+	/**
+	 *  API DESCRIPTION : To get enquiry detail for creating a job
+	 *  API URL : http://localhost/car-service/api/driver/getEnquiryDetail
+	 *  PARAMETER : enquiry_id (required)
+	 */
 	public function getEnquiryDetail(){
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
 		if ($this->form_validation->run() == true){

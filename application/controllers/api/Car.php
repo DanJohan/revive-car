@@ -17,9 +17,14 @@ class Car extends MY_Controller {
 	}
 
 	public function index(){
-		$this->load->view('api/test');
+		//$this->load->view('api/test');
 	}
 
+	/**
+	 *  API DESCRIPTION : To get all car brands
+	 *  API URL : http://localhost/car-service/api/car/getCarBrands
+	 *  PARAMETER : not required
+	 */
 	public function getCarBrands(){
 
 		$brands = $this->CarBrandModel->get_all();
@@ -32,6 +37,11 @@ class Car extends MY_Controller {
 		$this->renderJson($response);		
 	}// end of getCarBrands method
 
+	/**
+	 *  API DESCRIPTION : To get all car models via its brand id
+	 *  API URL : http://localhost/car-service/api/car/getCarModels
+	 *  PARAMETER : brand_id(required)
+	 */
 	public function getCarModels(){
 
 		$this->form_validation->set_rules('brand_id', 'Brand id', 'trim|required');
@@ -55,8 +65,14 @@ class Car extends MY_Controller {
 		$this->renderJson($response);
 	} // end of getCarModels method
 
-	public function addCar(){
 
+	/**
+	 *  API DESCRIPTION : To add car of users
+	 *  API URL : http://localhost/car-service/api/car/getCarBrands
+	 *  PARAMETER : see validation rules in method
+	 */
+	
+	public function addCar(){
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('brand_id', 'Brand id', 'trim|required');
 		$this->form_validation->set_rules('model_id', 'Model id', 'trim|required');
@@ -95,6 +111,11 @@ class Car extends MY_Controller {
 		$this->renderJson($response);
 	}// end of addCar method
 
+	/**
+	 *  API DESCRIPTION : To get all car of user
+	 *  API URL : http://localhost/car-service/api/car/getUserCars
+	 *  PARAMETER : user_id (required)
+	 */
 	public function getUserCars() {
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
