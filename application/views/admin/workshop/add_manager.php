@@ -39,7 +39,7 @@
                 <label for="password" class="col-sm-3 control-label">Password</label>
 
                 <div class="col-sm-8">
-                  <input type="password" name="m_password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+                  <input type="password" name="m_password" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or not more then 20 characters" required>
                 </div>
               </div>
               <br></br>

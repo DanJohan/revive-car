@@ -16,7 +16,7 @@
               </div>
             <?php endif; ?>
            
-             <form method="post" action="<?php echo base_url() . 'admin/driver/insert_driver'; ?>"> 
+             <form method="post" action="<?php echo base_url() . 'admin/driver/insert_driver'; ?>" enctype="multipart/form-data"> 
               <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label">Driver Name</label>
 
@@ -37,7 +37,7 @@
                 <label for="password" class="col-sm-3 control-label">Password</label>
 
                 <div class="col-sm-8">
-                  <input type="password" name="d_password" class="form-control" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+                  <input type="password" name="d_password" class="form-control" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or not more then 20 characters" required>
                 </div>
               </div>
                <br></br>
@@ -53,18 +53,46 @@
               </div>
               <br></br>
               <div class="form-group">
+                <label for="firstname" class="col-sm-3 control-label">Location</label>
+                <div class="col-sm-8">
+                  <input type="text" name="d_location" class="form-control" required>
+                </div>
+              </div>
+              <br></br>
+              <div class="form-group">
                 <label for="password" class="col-sm-3 control-label">Complete Address</label>
 
                 <div class="col-sm-8">
                   <textarea type="text" name="d_address" class="form-control" id="password" required></textarea>
                 </div>
               </div>
-              <br><br></br>
+              <br><br><br>
                <div class="form-group">
+                  <label for="role" class="col-sm-3 control-label">Workshop Assign</label>
+                  <div class="col-sm-8">
+                    <select name="d_location_assign" class="form-control" title="select any option" required>
+                      <option value="location not selected">Select Location</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Gurugram">Gurugram</option>
+                      <option value="Noida">Noida</option>
+                      <option value="Gaziabad">Gaziabad</option>
+                    </select>
+                  </div>
+              </div>
+             <br></br>
+             <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">License</label>
+
+                <div class="col-sm-8">
+                  <input type="text" name="d_license" class="form-control" id="password" required>
+                </div>
+              </div>
+              <br></br>
+            <div class="form-group">
                 <label for="password" class="col-sm-3 control-label">ID Proof</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_idproof" class="form-control" id="password" placeholder="Adharcard/Pancard/License.." required>
+                  <input type="text" name="d_idproof" class="form-control" id="password" required>
                 </div>
               </div>
               <br></br>
