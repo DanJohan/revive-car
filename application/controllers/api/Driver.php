@@ -6,6 +6,7 @@ class Driver extends MY_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
+	    $this->load->model('ServiceEnquiryModel');
 /*	    $this->load->helper('api');
 	    $this->load->model('UserModel');
 	    $this->load->library('mailer');
@@ -63,7 +64,34 @@ class Driver extends MY_Controller {
 	}
 
 	public function getEnquiryDetail(){
-		// To Do
+		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$enquiry_id = $this->input->post('enquiry_id');
+			$enquiry_data= $this->ServiceEnquiryModel->getEnquiryWithUser($enquiry_id);
+
+			if($enquiry_data) {
+				$enquiry_data['image_id'] = explode('|', $enquiry_data['image_id']);
+				$enquiry_data['image'] = explode('|',$enquiry_data['image']);
+				$images =array();
+				if(!empty($enquiry_data['image_id'][0])) {
+					foreach ($enquiry_data['image_id'] as $index => $data) {
+						$images[$index]['image_id'] = $data;
+						$images[$index]['image'] = base_url()."uploads/app/".$enquiry_data['image'][$index];
+					}
+				}
+				unset($enquiry_data['image_id']);
+				unset($enquiry_data['image']);
+				$enquiry_data['images'] = $images;
+				$response = array('status'=>true,'message'=>'Record found successfully', 'data'=>$enquiry_data);
+			}else{
+				$response = array('status'=>false,'message'=>'No deatil found');
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
 	}
 
 	public function createJob(){
