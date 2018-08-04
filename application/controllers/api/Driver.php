@@ -7,6 +7,8 @@ class Driver extends MY_Controller {
 	{
 	    parent::__construct();
 	    $this->load->model('ServiceEnquiryModel');
+	    $this->load->model('JobcardModel');
+	    $this->load->model('JobModel');
 /*	    $this->load->helper('api');
 	    $this->load->model('UserModel');
 	    $this->load->library('mailer');
@@ -109,7 +111,42 @@ class Driver extends MY_Controller {
 	}
 
 	public function createJob(){
-		//Todo
+		//dd($_POST);
+		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
+		$this->form_validation->set_rules('date_of_accident','Date of accident','trim');
+		$this->form_validation->set_rules('able_to_authorise','Able to authorise','trim');
+		$this->form_validation->set_rules('taxable','Taxable','trim');
+		$this->form_validation->set_rules('damage_area','Damage area','trim');
+		$this->form_validation->set_rules('vehicle_status','Damage area','trim');
+		$this->form_validation->set_rules('tyres','Tyres','trim');
+		$this->form_validation->set_rules('jobs','Jobs','trim');
+		if ($this->form_validation->run() == true){
+			$insert_data = array(
+				'enquiry_id' => $this->input->post('enquiry_id'),
+				'date_of_accident' => $this->input->post('date_of_accident'),
+				'able_to_authorise' => $this->input->post('able_to_authorise'),
+				'taxable' => $this->input->post('taxable'),
+				'damage_area' =>($this->input->post('damage_area')) ? json_encode($this->input->post('damage_area')) :'',
+				'vehicle_status'=>($this->input->post('vehicle_status')) ? json_encode($this->input->post('vehicle_status')) :'',
+				'tyres'=>$this->input->post('tyres'),
+				'created_at' => date('Y-m-d H:i:s')
+			);
+			$insert_id = $this->JobcardModel->insert($insert_data);
+			$jobs = $this->input->post('jobs');
+			if(!empty($jobs) && $insert_id) {
+				foreach ($jobs as $index => $job) {
+					$jobs[$index]['job_card_id'] = $insert_id;
+					$jobs[$index]['created_at'] = date('Y-m-d H:i:s');
+				}
+				$this->JobModel->insert_batch($jobs);
+			}
+			$response = array();
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
 	}
 
 }// end of class

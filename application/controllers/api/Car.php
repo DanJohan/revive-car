@@ -196,6 +196,8 @@ class Car extends MY_Controller {
 
 	public function serviceEnquiry() {
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('user_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
 		$this->form_validation->set_rules('location','Location','trim|required');
 		$this->form_validation->set_rules('loaner_vehicle', 'Car id', 'trim|required');
@@ -206,6 +208,7 @@ class Car extends MY_Controller {
 		if ($this->form_validation->run() == true) {
 			$register_data = array(
 				'car_id' => $this->input->post('car_id'),
+				'user_id' => $this->input->post('user_id'),
 				'address' => $this->input->post('address'),
 				'location' => $this->input->post('location'),
 				'loaner_vehicle' => $this->input->post('loaner_vehicle'),
@@ -235,6 +238,7 @@ class Car extends MY_Controller {
 							chmod($upload['upload_data']['full_path'], 0777);
 							$files_data[$i]['enquiry_id'] = $insert_id;
 							$files_data[$i]['image'] = $upload['upload_data']['file_name'];
+							$files_data[$i]['created_at'] = date("Y-m-d H:i:s");
 						}
 
 		            }
