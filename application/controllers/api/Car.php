@@ -17,7 +17,7 @@ class Car extends MY_Controller {
 	}
 
 	public function index(){
-		//$this->load->view('api/test');
+		$this->load->view('api/test');
 	}
 
 	/**
@@ -195,10 +195,12 @@ class Car extends MY_Controller {
 	}
 
 	public function serviceEnquiry() {
+
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
-		$this->form_validation->set_rules('user_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
+		$this->form_validation->set_rules('latitude', 'Latitude', 'trim|required');
+		$this->form_validation->set_rules('longitude', 'Longitude', 'trim|required');
 		$this->form_validation->set_rules('location','Location','trim|required');
 		$this->form_validation->set_rules('loaner_vehicle', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('enquiry', 'Enquiry', 'trim|required');
@@ -208,8 +210,10 @@ class Car extends MY_Controller {
 		if ($this->form_validation->run() == true) {
 			$register_data = array(
 				'car_id' => $this->input->post('car_id'),
-				'user_id' => $this->input->post('user_id'),
+				'user_id' =>$this->input->post('user_id'),
 				'address' => $this->input->post('address'),
+				'latitude' => $this->input->post('latitude'),
+				'longitude' => $this->input->post('longitude'),
 				'location' => $this->input->post('location'),
 				'loaner_vehicle' => $this->input->post('loaner_vehicle'),
 				'enquiry' => $this->input->post('enquiry'),
@@ -234,6 +238,7 @@ class Car extends MY_Controller {
 		                $url = FCPATH.'uploads/app/';
 		                $config ['encrypt_name'] = true;
 		               	$upload = $this->do_upload('file',$url,$config);
+
 		                if(isset($upload['upload_data'])){
 							chmod($upload['upload_data']['full_path'], 0777);
 							$files_data[$i]['enquiry_id'] = $insert_id;
