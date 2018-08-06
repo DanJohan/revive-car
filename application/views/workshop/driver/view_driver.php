@@ -21,7 +21,10 @@
         </thead>
         <tbody>
           
-          <?php foreach($driverData as $row):?>
+          <?php 
+          if(!empty($driverData))
+          {
+          foreach($driverData as $row) {?>
       
           <tr>
             <td><?= $row['d_name']; ?></td>
@@ -33,7 +36,7 @@
            <!-- <td class="text-right"><a href="" class="btn btn-info btn-flat">Edit</a>
               <a href="" class="btn btn-danger btn-flat">Delete</a></td>-->
           </tr>
-          <?php endforeach; ?>
+          <?php }} ?>
         </tbody>
        
       </table>
