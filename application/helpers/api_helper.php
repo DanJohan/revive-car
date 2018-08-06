@@ -19,10 +19,10 @@ if ( ! function_exists('getRandomString'))
 	}
 }
 
-if(!function_exists('android_notification')){
-	function android_notification($data){
+if(!function_exists('send_push_notification')){
+	function send_push_notification($data,$key){
 		$url = 'https://fcm.googleapis.com/fcm/send';
-		$serverApiKey = ANDRIOD_PUSH_AUTH_KEY;
+		$serverApiKey = $key;
 		$headers = array(
 			'Content-Type:application/json',
 			'Authorization:key=' .$serverApiKey

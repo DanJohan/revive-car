@@ -9,10 +9,8 @@ class Driver extends MY_Controller {
 	    $this->load->model('ServiceEnquiryModel');
 	    $this->load->model('JobcardModel');
 	    $this->load->model('JobModel');
-/*	    $this->load->helper('api');
-	    $this->load->model('UserModel');
-	    $this->load->library('mailer');
-	    $this->load->library('textMessage');*/
+	    $this->load->model('DriverNotificationModel');
+	    $this->load->model('DriverModel');
 	}
 
 	/**
@@ -57,7 +55,7 @@ class Driver extends MY_Controller {
 		$this->form_validation->set_rules('code', 'Verfication code', 'trim|required');
 		if ($this->form_validation->run() == true){
 			$code = $this->input->post('code');
-			$criteria['field'] = 'id';
+			$criteria['field'] = 'id AS enquiry_id,car_id,user_id';
 			$criteria['conditions'] = array('verification_code'=>$code);
 			$criteria['returnType'] = 'single';
 			$enquiry = $this->ServiceEnquiryModel->search($criteria);
@@ -113,21 +111,27 @@ class Driver extends MY_Controller {
 	public function createJob(){
 		//dd($_POST);
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
-		$this->form_validation->set_rules('date_of_accident','Date of accident','trim');
+/*		$this->form_validation->set_rules('date_of_accident','Date of accident','trim');
 		$this->form_validation->set_rules('able_to_authorise','Able to authorise','trim');
 		$this->form_validation->set_rules('taxable','Taxable','trim');
 		$this->form_validation->set_rules('damage_area','Damage area','trim');
 		$this->form_validation->set_rules('vehicle_status','Damage area','trim');
 		$this->form_validation->set_rules('tyres','Tyres','trim');
-		$this->form_validation->set_rules('jobs','Jobs','trim');
+		$this->form_validation->set_rules('jobs','Jobs','trim');*/
 		if ($this->form_validation->run() == true){
 			$insert_data = array(
 				'enquiry_id' => $this->input->post('enquiry_id'),
 				'date_of_accident' => $this->input->post('date_of_accident'),
 				'able_to_authorise' => $this->input->post('able_to_authorise'),
 				'taxable' => $this->input->post('taxable'),
+				'registration_no' => $this->input->post('registration_no'),
 				'damage_area' =>($this->input->post('damage_area')) ? json_encode($this->input->post('damage_area')) :'',
 				'vehicle_status'=>($this->input->post('vehicle_status')) ? json_encode($this->input->post('vehicle_status')) :'',
+				'condition_description'=>($this->input->post('condition_description')) ? json_encode($this->input->post('condition_description')) :'',
+				'body_color'=>$this->input->post('body_color'),
+				'vehicle_identity'=>($this->input->post('vehicle_identity')) ? json_encode($this->input->post('vehicle_identity')) :'',
+				'body_style'=>($this->input->post('body_style')) ? json_encode($this->input->post('body_style')) :'',
+				'paint'=>($this->input->post('paint')) ? json_encode($this->input->post('paint')) :'',
 				'tyres'=>$this->input->post('tyres'),
 				'created_at' => date('Y-m-d H:i:s')
 			);
@@ -148,6 +152,51 @@ class Driver extends MY_Controller {
 		}
 		$this->renderJson($response);
 	}
+
+	public function getNotification(){
+		$this->form_validation->set_rules('driver_id', 'Driver id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$user_id = $this->input->post('driver_id');
+			$notifications = $this->DriverNotificationModel->getById($user_id);
+			if($notifications){
+				$response = array('status'=>true,'message'=>'Record found successfully','data'=>$notifications);
+			}else{
+				$response = array('status'=>false,'message'=>'Detail not found');
+			}
+ 
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}
+
+
+	public function  registerDevice() {
+
+		$this->form_validation->set_rules('driver_id', 'driver id', 'trim|required');
+		$this->form_validation->set_rules('device_type', 'Device type', 'trim|required');
+		$this->form_validation->set_rules('device_id', 'Device id', 'trim|required');
+
+		if ($this->form_validation->run() == true){
+			$driver_id = $this->input->post('driver_id');
+			$update_data=array(
+		   			'd_device_id'=>$this->input->post('device_id'),
+		   			'd_device_type'=>$this->input->post('device_type')
+		   	);
+
+		   	$is_update = $this->DriverModel->update($update_data,array('id'=>$driver_id));
+	   		$response = array('status'=>true,'message'=>'Record updated successfully');
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+
+	}// end of registerDevice method
 
 }// end of class
 ?>

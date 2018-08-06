@@ -34,10 +34,10 @@ class MY_Controller extends CI_Controller
   public function do_upload($file,$path,$params=array())
   {
       $config['upload_path'] = $path;
-      $config['allowed_types']= (isset($params['allowed_types']))?$params['allowed_types']:'gif|jpg|png|jpeg';
-      $config['max_size']= (isset($params['max_size']))?$params['max_size']:2000;
-      $config['max_width'] =(isset($params['max_width']))?$params['max_width']:1024;
-      $config['max_height']=(isset($params['max_height']))?$params['max_height']: 768;
+      $config['allowed_types']= (isset($params['allowed_types']))?$params['allowed_types']:'jpg|png|jpeg';
+      $config['max_size']= (isset($params['max_size']))?$params['max_size']:0;
+      $config['max_width'] =(isset($params['max_width']))?$params['max_width']:0;
+      $config['max_height']=(isset($params['max_height']))?$params['max_height']: 0;
 
       if(!isset($params['encrypt_name'])) { 
         $new_name = time().mt_rand(1000,9999).'_'.$_FILES[$file]['name'];
