@@ -128,4 +128,21 @@ class Enquiry extends MY_Controller {
 
 		$this->renderJson($response);
 	}
+
+	public function get_AssignDriver() {
+		$manager_id = $this->input->post('manager_id');
+		$criteria['field'] ="id,d_name";
+		$criteria['conditions'] = array('d_workshop_assign'=>$manager_id);
+		$drivers = $this->DriverModel->search($criteria);
+		echo "<option value=''>Select driver</option>";
+		if(!empty($drivers)){
+			foreach ($drivers as $index => $driver) {
+				echo "<option value='".$driver['id']."'>".$driver['d_name']."</option>";
+			}
+		}
+		exit;
+		
+	}
+
+
 }

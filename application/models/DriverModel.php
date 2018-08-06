@@ -9,4 +9,42 @@ class DriverModel extends MY_Model {
 	    parent::__construct();
 	}
 
+
+	public function checkEmailExistsExcept($id,$email){
+		$this->db->select('*');
+		$this->db->where(array('id !='=>$id,'d_email'=>$email));
+		$query = $this->db->get($this->table);
+		$result = $query->result_array();
+		return (!empty($result))?true:false;
+	}
+
+	public function checkPhoneExistsExcept($id,$phone){
+		$this->db->select('*');
+		$this->db->where(array('id !='=>$id,'d_phone'=>$phone));
+		$query = $this->db->get($this->table);
+		$result = $query->result_array();
+		return (!empty($result))?true:false;
+	}
+
+
+
+	public function checkEmailExists($email){
+		$this->db->select('d_email');
+		$this->db->where(array('d_email'=>$email));
+		$query = $this->db->get($this->table);
+		$result = $query->result_array();
+		return (!empty($result))? $result : false;
+	}
+
+	public function checkPhoneExists($phone) {
+		$this->db->select('id,d_phone');
+		$this->db->where(array('d_phone'=>$phone));
+		$query = $this->db->get($this->table);
+		$result = $query->row_array();
+		return (!empty($result))? $result :false;
+	}
+
+
+
+
 }

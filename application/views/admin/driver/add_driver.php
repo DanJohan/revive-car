@@ -7,7 +7,17 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
+<style>
+.error_msg
+{
+  color:red;
+  font:12px;
+  text-align: center;
+
+}
+</style>
         <div class="box-body my-form-body">
+
           <?php if(isset($msg)):?>
               <div class="alert alert-warning alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -15,13 +25,26 @@
                  <?= isset($msg)? $msg: ''; ?>
               </div>
             <?php endif; ?>
-           
+         
+           <?php
+           //  echo "<div class='error_msg'>";
+          //print_r($this->session->flashdata('validation_error'));
+          ?>
+            <?php
+            if(!empty($this->session->flashdata('validation_error'))) {
+              echo "<div class='alert alert-danger'>"; 
+                echo $this->session->flashdata('validation_error'); 
+              echo "</div>"; 
+            }
+            ?>
+
              <form method="post" action="<?php echo base_url() . 'admin/driver/insert_driver'; ?>" enctype="multipart/form-data"> 
+
               <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label">Driver Name</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_name" class="form-control" pattern="[A-Za-z]+" title="only letters" placeholder="" required>
+                  <input type="text" name="d_name" class="form-control" pattern="[A-Za-z]+" title="only letters" value="" placeholder="" required />
                 </div>
               </div>
               <br><br></br>
@@ -70,13 +93,20 @@
                <div class="form-group">
                   <label for="role" class="col-sm-3 control-label">Workshop Assign</label>
                   <div class="col-sm-8">
-                    <select name="d_location_assign" class="form-control" title="select any option" required>
-                      <option value="location not selected">Select Location</option>
-                      <option value="Delhi">Delhi</option>
-                      <option value="Gurugram">Gurugram</option>
-                      <option value="Noida">Noida</option>
-                      <option value="Gaziabad">Gaziabad</option>
+                    <select name="d_workshop_assign" class="form-control" title="select any option" required>
+                      <option value="">Select Workshop</option>
+                     <?php
+                        if(!empty($managers))
+                        {
+                          foreach($managers as $manager)
+                          {
+                        ?> 
+                       <option value="<?php echo $manager['id']; ?>"><?php echo $manager['m_name']."-".$manager['m_workshop_location']?></option>
+                      
+                    <?php }
+                    } ?>
                     </select>
+
                   </div>
               </div>
              <br></br>

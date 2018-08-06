@@ -8,10 +8,30 @@
         <form action="<?php echo base_url(); ?>admin/enquiry/save_enquiry_confirm" method="post">
         <input type="hidden" name="enquiry_id" value="<?php echo $enquiry['id']; ?>">
         <table class="table"> 
+
+           <tr>
+                <td><b>Assign Manager</b></td>
+                <td>
+                    <select class="form-control" name="wmanager" id="wmanager" required="required">
+                        <option value="">Please select</option>
+                        <?php
+                          if(!empty($wmanagers)) {
+                            foreach ($wmanagers as $index => $wmanager) {
+                        ?>
+                          <option value="<?php echo $wmanager['id']; ?>"><?php echo $wmanager['m_name']; ?></option>
+                        <?php
+                            }
+                          }
+                        ?>
+                    </select>
+                </td>
+            </tr>
+
+
             <tr>
                 <td><b>Assign driver</b></td>
                 <td>
-                    <select class="form-control" name="driver">
+                    <select class="form-control" name="driver" id="driver_id">
                         <option value="">Please select</option>
                         <?php
                           if(!empty($drivers)) {
@@ -37,24 +57,7 @@
           </tr>
           <tr>
 
-          <tr>
-                <td><b>Assign Manager</b></td>
-                <td>
-                    <select class="form-control" name="wmanager" required="required">
-                        <option value="">Please select</option>
-                        <?php
-                          if(!empty($wmanagers)) {
-                            foreach ($wmanagers as $index => $wmanager) {
-                        ?>
-                          <option value="<?php echo $wmanager['id']; ?>"><?php echo $wmanager['m_name']; ?></option>
-                        <?php
-                            }
-                          }
-                        ?>
-                    </select>
-                </td>
-            </tr>
-
+         
 
             <td>&nbsp;</td>
             <td><button type="submit" class="btn btn-primary" name="submit">Submit</button></td>
@@ -68,3 +71,22 @@
 </section>  
 
       
+<script type="text/javascript">
+ jQuery(document).ready(function(){
+   var manager_id = jQuery('#wmanager').val();
+    jQuery('#wmanager').on("change",function () {
+        var manager_id = jQuery(this).find('option:selected').val();
+    
+        jQuery.ajax({
+            url: "<?php echo base_url(); ?>admin/enquiry/get_AssignDriver",
+            type: "POST",
+            data: "manager_id="+manager_id,
+            success: function (response) {
+                //console.log(response);
+               jQuery("#driver_id").html(response);
+            },
+        });
+    });  
+  
+});
+</script>
