@@ -128,9 +128,9 @@ class Enquiry extends MY_Controller {
 				$msg=array('body'=>$driver_msg,'title'=>'Revive auto car','icon'=> base_url().'public/images/notify_icon.png','sound'=> 1,'enquiry_id'=>$enquiry['id']);
 					$notifymsg=array(
 						'notification'=>$msg,
-						'to'  =>$enquiry['device_id']
+						'to'  =>$enquiry['d_device_id']
 					);
-				$notification_result=send_push_notification($notifymsg,ANDRIOD_PUSH_AUTH_KEY);
+				$notification_result=send_push_notification($notifymsg,DRIVER_PUSH_AUTH_KEY);
 
 			}
 

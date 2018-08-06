@@ -121,6 +121,8 @@ class Driver extends MY_Controller {
 		if ($this->form_validation->run() == true){
 			$insert_data = array(
 				'enquiry_id' => $this->input->post('enquiry_id'),
+				'car_id' =>$this->input->post('car_id'),
+				'user_id' => $this->input->post('user_id'),
 				'date_of_accident' => $this->input->post('date_of_accident'),
 				'able_to_authorise' => $this->input->post('able_to_authorise'),
 				'taxable' => $this->input->post('taxable'),
@@ -136,15 +138,27 @@ class Driver extends MY_Controller {
 				'created_at' => date('Y-m-d H:i:s')
 			);
 			$insert_id = $this->JobcardModel->insert($insert_data);
-			$jobs = $this->input->post('jobs');
-			if(!empty($jobs) && $insert_id) {
-				foreach ($jobs as $index => $job) {
-					$jobs[$index]['job_card_id'] = $insert_id;
-					$jobs[$index]['created_at'] = date('Y-m-d H:i:s');
+			$painting_jobs = $this->input->post('painting_jobs');
+			if(!empty($painting_jobs) && $insert_id) {
+				foreach ($painting_jobs as $index => $painting_job) {
+					$painting_jobs[$index]['name'] = 'painting_job';
+					$painting_jobs[$index]['job_card_id'] = $insert_id;
+					$painting_jobs[$index]['created_at'] = date('Y-m-d H:i:s');
 				}
-				$this->JobModel->insert_batch($jobs);
+				$this->JobModel->insert_batch($painting_jobs);
 			}
-			$response = array();
+
+			$denting_jobs = $this->input->post('denting_jobs');
+			if(!empty($denting_jobs) && $insert_id) {
+				foreach ($denting_jobs as $index => $denting_job) {
+
+					$denting_jobs[$index]['name'] = 'denting_job';
+					$denting_jobs[$index]['job_card_id'] = $insert_id;
+					$denting_jobs[$index]['created_at'] = date('Y-m-d H:i:s');
+				}
+				$this->JobModel->insert_batch($denting_jobs);
+			}
+			$response = array('status'=>true,'message'=>'Record insertd successfully');
 
 		}else{
 			$errors = $this->form_validation->error_array();
