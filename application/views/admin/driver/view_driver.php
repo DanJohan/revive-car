@@ -37,6 +37,7 @@
             <td><?= $row['d_phone']; ?></td>
             <td class="text-right">
               <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/driver/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+              
             <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/driver/edit_driver/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
             <a class="btn btn-danger" data-toggle="tooltip" onclick="return confirm('Are you sure to delete this record?')" href="<?= base_url('admin/driver/del_driver/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
             

@@ -1,5 +1,9 @@
 <?php 
-$cur_tab = $this->uri->segment(3)==''?'dashboard': $this->uri->segment(3);  
+$cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
+$cur_tab_link =   $this->uri->segment(3)==''?'index': $this->uri->segment(3);
+if($cur_tab=='enquiry'){
+  $cur_tab_link="e_".$cur_tab_link;
+}
 ?>  
 
   <!-- Left side column. contains the logo and sidebar -->
@@ -37,7 +41,7 @@ $cur_tab = $this->uri->segment(3)==''?'dashboard': $this->uri->segment(3);
       </ul>
 
       <ul class="sidebar-menu">
-        <li id="users" class="treeview">
+        <li id="" class="treeview users enquiry">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Users</span>
               <span class="pull-right-container">
@@ -45,13 +49,13 @@ $cur_tab = $this->uri->segment(3)==''?'dashboard': $this->uri->segment(3);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="view_users" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
-                <li id="add_manager"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
+              <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
+                <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
             </ul>
           </li>
           </ul>
       <ul class="sidebar-menu">
-        <li id="users" class="treeview">
+        <li id="" class="treeview car">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Car Management</span>
               <span class="pull-right-container">
@@ -65,7 +69,7 @@ $cur_tab = $this->uri->segment(3)==''?'dashboard': $this->uri->segment(3);
         </li>
       </ul>
       <ul class="sidebar-menu">
-        <li id="users" class="treeview">
+        <li id="" class="treeview driver">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Driver Management</span>
               <span class="pull-right-container">
@@ -80,7 +84,7 @@ $cur_tab = $this->uri->segment(3)==''?'dashboard': $this->uri->segment(3);
       </ul>
        
       <ul class="sidebar-menu">
-        <li id="manager" class="treeview">
+        <li id="" class="treeview workshop">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Workshop Management</span>
               <span class="pull-right-container">
@@ -99,5 +103,10 @@ $cur_tab = $this->uri->segment(3)==''?'dashboard': $this->uri->segment(3);
 
   
 <script>
-  $("#<?= $cur_tab; ?>").addClass('active');
+  $(".<?php echo $cur_tab; ?>").addClass('active');
+  $("#<?php echo $cur_tab_link; ?>").addClass('active');
+  $(document).on('click','.treeview',function(){
+    console.log("here");
+    $(".treeview:not($(this))").removeClass('active');
+  });
 </script>
