@@ -1,23 +1,9 @@
 **************************************************************
-17 july 2018
+7 Aug 2018
 **************************************************************
-
-ALTER TABLE `users` CHANGE `username` `name` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-
-ALTER TABLE `users` CHANGE `email` `email` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-
-***************************************************************
-19 july 2018
-***************************************************************
-ALTER TABLE `users` ADD `change_password_otp` VARCHAR(10) NOT NULL AFTER `password`;
-
-ALTER TABLE `users` ADD `password_reset_hash` VARCHAR(255) NOT NULL AFTER `change_password_otp`;
-
-************************************************************************
-20 july 2018
-************************************************************************
-ALTER TABLE `users` ADD `gmail_id` INT NULL DEFAULT NULL AFTER `device_type`, ADD `facebook_id` INT NULL DEFAULT NULL AFTER `gmail_id`;
-
-ALTER TABLE `users` ADD `profile_image` VARCHAR(255) NOT NULL AFTER `password`;
-
-ALTER TABLE `users` ADD `changed_phone` VARCHAR(50) NULL DEFAULT NULL AFTER `phone`;
+ALTER TABLE `users` ADD UNIQUE(`phone`);
+ALTER TABLE `users` ADD UNIQUE(`email`);
+ALTER TABLE `driver` ADD UNIQUE(`d_email`);
+ALTER TABLE `driver` ADD UNIQUE(`d_phone`);
+ALTER TABLE `workshop_manager` ADD UNIQUE(`m_phone`);
+ALTER TABLE `workshop_manager` ADD UNIQUE(`m_email`);
