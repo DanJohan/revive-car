@@ -24,6 +24,7 @@
 		}
 		
 		public function insert_driver(){  //insert driver 
+			$this->session->set_flashdata('post_data',$this->input->post());
 			if($this->input->post('submit')){  //inserting image in DB
 					
 					$phone= $this->input->post('d_phone');
@@ -63,9 +64,7 @@
 							$this->session->set_flashdata('msg', 'Driver is Added Successfully!');
 							redirect(base_url('admin/driver/view_driver'));
 
-						}
-					
-					else{
+						}else{
 						$this->session->set_flashdata('msg', 'Some problem occur!');
 						redirect(base_url('admin/driver/add_driver'));
 						
@@ -89,13 +88,17 @@
 			$data['all_driver'] =  $this->DriverModel->get_all(NULL,array('id','desc'));
 			$data['view'] = 'admin/driver/view_driver';
 			$this->load->view('admin/layout', $data);
-			$this->load->view('common/modal', $data);  //include modal box layout
-
 		  }
 
 		  public function view_record_by_id($id){
 			$data=array();
-			$data['driver_by_id'] =  $this->DriverModel->get(array('id'=>$id));
+			$criteria['field'] = 'driver.*,workshop_manager.m_name,workshop_manager.m_workshop_location';
+			$criteria['join'] = array(
+				array('workshop_manager','driver.d_workshop_assign=workshop_manager.id','left'),
+			);
+			$criteria['conditions'] = array('driver.id'=>$id);
+			$criteria['returnType'] = 'single';
+			$data['driver_by_id'] =  $this->DriverModel->search($criteria);
 			echo $this->load->view('admin/driver/driver_view',$data,true);
 			
 		  }
@@ -116,8 +119,7 @@
 				 
 				if ($this->form_validation->run() == FALSE) {
 					$data['driver'] = $this->DriverModel->get(array('id'=>$id));
-					$data['view'] = 'admin/driver/edit_driver';
-					$this->load->view('admin/layout', $data);
+					redirect(base_url('admin/driver/edit_driver/'.$id));
 				}
 				else{
 				$phone= $this->input->post('d_phone');

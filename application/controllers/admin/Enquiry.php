@@ -33,6 +33,7 @@ class Enquiry extends MY_Controller {
 
 	public function show($id=null){
 		if($id){
+			$this->ServiceEnquiryModel->markEnquirySeen($id);
 			$data['enquiry'] = $this->ServiceEnquiryModel->getEnquiry($id);
 		}
 		if(empty($data['enquiry'])) {
@@ -83,7 +84,6 @@ class Enquiry extends MY_Controller {
 
 			$is_update = $this->ServiceEnquiryModel->update($update_data,array('id'=>$enquiry_id));
 			$enquiry = $this->ServiceEnquiryModel->getEnquiry($enquiry_id);
-
 			$data['phone'] = $enquiry['phone'];
 			
 			if(!empty($enquiry['driver_id'])) {
@@ -92,7 +92,7 @@ class Enquiry extends MY_Controller {
 			}else{
 				$data['body'] = 'Dear '.$enquiry['name'].', Thanks for Choosing Revive car care Service , we will glad to welcome you on our service center, please enter '.$otp.' , when you reach to our workshop manager to start service.';
 			}
-			$message = $this->textmessage->send($data);
+			//$message = $this->textmessage->send($data);
 			
 
 			$notification_data = array(
@@ -104,16 +104,15 @@ class Enquiry extends MY_Controller {
 			$this->NotificationModel->insert($notification_data);
 
 
-			$msg=array('body'=>$data['body'],'title'=>'Revive auto car','icon'=> base_url().'public/images/notify_icon.png','sound'=> 1);
+			$msg=array('body'=>$data['body'],'title'=>'Revive auto car','icon'=> base_url().'public/images/app/notify_icon.png','sound'=> 1);
 			$notifymsg=array(
 				'notification'=>$msg,
 				'to'  =>$enquiry['device_id']
 			);
 			$notification_result=send_push_notification($notifymsg,ANDRIOD_PUSH_AUTH_KEY);
-
 			// notify to driver
 			if(!empty($enquiry['driver_id'])){
-				$driver_msg = 'You are directed to provide your pickup service on below mentioned Address:\nUser name : '.$enquiry['name'].'\nAddress : '.$enquiry['address'].'\nPhone No : '.$enquiry['phone'].'\nReg. No : '.$enquiry['registration_no'];
+				$driver_msg = "You are directed to provide your pickup service on below mentioned Address:\nUser name : ".$enquiry['name']."\nAddress : ".$enquiry['address']."\nPhone No : ".$enquiry['phone']."\nReg. No : ".$enquiry['registration_no'];
 
 				$driver_notification = array(
 					'driver_id' => $enquiry['driver_id'],
@@ -125,7 +124,7 @@ class Enquiry extends MY_Controller {
 
 				$this->DriverNotificationModel->insert($driver_notification);
 
-				$msg=array('body'=>$driver_msg,'title'=>'Revive auto car','icon'=> base_url().'public/images/notify_icon.png','sound'=> 1,'enquiry_id'=>$enquiry['id']);
+				$msg=array('body'=>$driver_msg,'title'=>'Revive auto car','icon'=> base_url().'public/images/app/notify_icon.png','sound'=> 1,'enquiry_id'=>$enquiry['id']);
 					$notifymsg=array(
 						'notification'=>$msg,
 						'to'  =>$enquiry['d_device_id']
@@ -135,6 +134,7 @@ class Enquiry extends MY_Controller {
 			}
 
 			$this->session->set_flashdata('success_msg', 'Enquiry confirmed successfully!');
+
 
 		}
 		redirect('admin/enquiry/index');

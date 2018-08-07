@@ -9,6 +9,14 @@ class DriverModel extends MY_Model {
 	    parent::__construct();
 	}
 
+	public function check_user_exits($data = array()) {
+		$this->db->select('id,d_name,d_phone,d_email,d_password',false);
+		$this->db->where($data);
+		$query=$this->db->get($this->table);
+		$result=$query->row_array();
+		return (!empty($result))?$result:false;
+	}
+
 
 	public function checkEmailExistsExcept($id,$email){
 		$this->db->select('*');

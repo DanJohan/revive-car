@@ -3,10 +3,10 @@
         <h3 class="modal-title">Manager Details</h3>
       </div>
       <div class="modal-body model_view" align="center">&nbsp;
-        <div><?php if($manager_by_id['m_photo']){?>
+        <div><?php if(!empty($manager_by_id['m_photo'])) { ?>
               <img class="photo_img_round" height="150" width="150" src="<?= base_url() ?>uploads/admin/<?= $manager_by_id['m_photo']; ?>">
-              <?php }else {?>
-             <img class="photo_img_round" height="150" width="150" src="<?= base_url() ?>uploads/admin/download.jpg"><?php } ?></div>
+              <?php }else{ ?>
+             <img class="photo_img_round" height="150" width="150" src="<?= base_url() ?>public/images/admin/no_image.jpeg"><?php } ?></div>
         <div class="model_title"><b><?php echo $manager_by_id['m_name']; ?></b></div>
       </div>
       <div class="modal-body">

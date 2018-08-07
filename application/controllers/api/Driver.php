@@ -24,13 +24,17 @@ class Driver extends MY_Controller {
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
 		
 		if ($this->form_validation->run() == true){
-			$username = $this->input->post('username');
+			$phone = $this->input->post('phone');
 			$password = $this->input->post('password');
-			$user = $this->UserModel->check_user_exits(array('username'=>$username));
-			if($user){
-				$is_verified = password_verify($password,$user['password']);
+			$criteria['field']= 'id,d_name,d_phone,d_email,d_password';
+			$criteria['conditions'] = array('d_phone'=>$phone);
+			$criteria['returnType'] = 'single';
+			$driver = $this->DriverModel->search($criteria);
+			if($driver){
+				$is_verified = password_verify($password,$driver['d_password']);
 				if($is_verified){
-					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user);
+					unset($driver['d_password']);
+					$response = array('status'=>true,'message'=>'Login successfully','driver'=>$driver);
 				}else{
 					$response = array('status'=>false,'message'=>'Your password doesn\'t match');
 				}
@@ -96,6 +100,7 @@ class Driver extends MY_Controller {
 				unset($enquiry_data['image_id']);
 				unset($enquiry_data['image']);
 				$enquiry_data['images'] = $images;
+				$enquiry_data['profile_image']=(!empty($enquiry_data['profile_image'])) ?base_url()."uploads/app/".$enquiry_data['profile_image'] : '';
 				$response = array('status'=>true,'message'=>'Record found successfully', 'data'=>$enquiry_data);
 			}else{
 				$response = array('status'=>false,'message'=>'No deatil found');

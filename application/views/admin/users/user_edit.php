@@ -16,13 +16,21 @@
                   <?= isset($msg)? $msg: ''; ?>
               </div>
             <?php endif; ?>
+
+             <?php
+            if(!empty($this->session->flashdata('validation_error'))) {
+              echo "<div class='alert alert-danger'>"; 
+                echo $this->session->flashdata('validation_error'); 
+              echo "</div>"; 
+            }
+            ?>
            
             <form method="post" action="<?= base_url('admin/users/edit/'.$user['id']); ?>" class="form-horizontal">
               <div class="form-group">
                 <label for="firstname" class="col-sm-2 control-label">First Name</label>
 
                 <div class="col-sm-9">
-                  <input type="text" name="name" value="<?= $user['name']; ?>" class="form-control" pattern="[A-Za-z]+" title="only letters" required>
+                  <input type="text" name="name" value="<?= $user['name']; ?>" class="form-control" pattern="[A-Za-z\s]+" title="only letters" required>
                 </div>
               </div>
 

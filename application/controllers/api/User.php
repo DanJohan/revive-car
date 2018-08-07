@@ -508,7 +508,7 @@ class User extends MY_Controller {
 					);
 					if($login_type=='G'){
 						$register_data['gmail_id']= $this->input->post('gmail_id');
-					}elseif ($login_type=='F') {
+					}elseif ($login_type =='F') {
 						$register_data['facebook_id']= $this->input->post('facebook_id');
 					}
 					$user_id = $this->UserModel->insert($register_data);

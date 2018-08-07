@@ -27,7 +27,7 @@
                 <label for="firstname" class="col-sm-3 control-label">Driver Name</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_name" class="form-control" value="<?= $driver['d_name']; ?>" id="firstname" pattern="[A-Za-z]+" title="only letters" required>
+                  <input type="text" name="d_name" class="form-control" value="<?= $driver['d_name']; ?>" id="firstname" pattern="[A-Za-z\s]+" title="only letters" required>
                 </div>
               </div>
               <br><br></br>

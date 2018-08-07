@@ -45,7 +45,7 @@
                       ?>
                           <div class="col-md-4">
                             <div class="image-responsive">
-                                <img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$images[$index]; ?>" height="200" />
+                                <img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$images[$index]; ?>" width="200" />
                             </div>
                           </div>
                       <?php

@@ -3,11 +3,11 @@
         <h3 class="modal-title">Driver Details</h3>
       </div>
       <div class="modal-body model_view" align="center">&nbsp;
-        <div><?php if($driver_by_id['d_photo']){?>
+        <div><?php if(!empty($driver_by_id['d_photo'])){?>
               <img class="photo_img_round" height="150" width="150" src="<?= base_url() ?>uploads/admin/<?= $driver_by_id['d_photo']; ?>">
               <?php }else {?>
-             <img class="photo_img_round" height="150" width="150" src="<?= base_url() ?>uploads/admin/download.jpg"><?php } ?></div>
-        <div class="model_title"><b><?php echo $driver_by_id['d_name']; ?></b></div>
+             <img class="photo_img_round" height="150" width="150" src="<?= base_url() ?>public/images/admin/no_image.jpeg"><?php } ?></div>
+        <div class="model_title"><h3><b><?php echo $driver_by_id['d_name']; ?></b></h3></div>
       </div>
       <div class="modal-body">
         <h3 style="text-decoration:underline;">Details Infromation</h3>
@@ -21,7 +21,7 @@
           	<b>Address: </b> <?php echo $driver_by_id['d_address']; ?><br>
           	<b>ID Proof: </b> <?php echo $driver_by_id['d_idproof']; ?><br>
             <b>License: </b> <?php echo $driver_by_id['d_license']; ?><br>
-            <b>Workshop Assign: </b> <?php echo $driver_by_id['d_location_assign']; ?><br>
+            <b>Workshop Manager Assign: </b> <?php echo $driver_by_id['m_name']." - ".$driver_by_id['m_workshop_location']; ?><br>
           	
           </div>
         </div>

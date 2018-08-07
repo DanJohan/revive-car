@@ -13,7 +13,7 @@
 		}
  
 		public function index(){
-			$data['all_users'] =  $this->UserModel->get_all(NULL,array('id','desc'));
+			$data['all_users'] =  $this->UserModel->get_all(array('name !='=>'','email !='=>''),array('id','desc'));
 			$data['view'] = 'admin/users/user_list';
 			$this->load->view('admin/layout', $data);
 		}
@@ -30,19 +30,36 @@
 				
 				if ($this->form_validation->run() == FALSE) {
 					$data['user'] = $this->UserModel->get(array('id'=>$id));
-					$data['view'] = 'admin/users/user_edit';
-					$this->load->view('admin/layout', $data);
+					redirect(base_url('admin/users/edit/'.$id));
 				}
 				else{
-					$data = array(
-						'name' => $this->input->post('name'),
-						'email' => $this->input->post('email'),
-						'phone' => ($this->input->post('phone'))?'+91'.$this->input->post('phone'):'',
-					);
-					//$data = $this->security->xss_clean($data);
-					$result = $this->UserModel->update($data, array('id'=>$id));
-					$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-					redirect(base_url('admin/users'));
+					$phone= $this->input->post('phone');
+					$phone = "+91".$phone;
+					$email = $this->input->post('email');
+				    $userPhoneInfo =	$this->UserModel->checkPhoneExistsExcept($id,$phone);
+
+				    $userEmailInfo =	$this->UserModel->checkEmailExistsExcept($id,$email);
+				    if(!$userPhoneInfo && !$userEmailInfo) {
+						$data = array(
+							'name' => $this->input->post('name'),
+							'email' => $this->input->post('email'),
+							'phone' => ($this->input->post('phone'))?'+91'.$this->input->post('phone'):'',
+						);
+						//$data = $this->security->xss_clean($data);
+						$result = $this->UserModel->update($data, array('id'=>$id));
+						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
+						redirect(base_url('admin/users'));
+					}else{
+						$errors ='';
+						if(!empty($userPhoneInfo)){
+							$errors .= "<p>Phone number already exists</p>";
+						}
+						if(!empty($userEmailInfo)){
+							$errors .= "<p>Email already exists</p>";
+						}
+						$this->session->set_flashdata('validation_error',$errors);
+						redirect(base_url('admin/users/edit/'.$id));
+					}
 					
 				}
 			}
@@ -53,7 +70,15 @@
 				$this->load->view('admin/layout', $data);
 			}
 		}
-
+		public function view_record_by_id($id){
+			$data=array();
+			$criteria['field'] = 'phone,name,email,profile_image';
+			$criteria['conditions'] = array('id'=>$id);
+			$criteria['returnType'] = 'single';
+			$data['user'] =  $this->UserModel->search($criteria);
+			echo $this->load->view('admin/users/user_view',$data,true);
+			exit;
+		  }
 			
 		public function del($id = null){
 			if(!id){

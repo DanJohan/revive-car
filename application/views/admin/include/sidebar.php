@@ -1,5 +1,5 @@
 <?php 
-$cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);  
+$cur_tab = $this->uri->segment(3)==''?'dashboard': $this->uri->segment(3);  
 ?>  
 
   <!-- Left side column. contains the logo and sidebar -->

@@ -79,7 +79,7 @@
             <td><?= $row['updated_at']; ?></td>
             
             <td class="text-right">
-             <a class="btn btn-danger" data-toggle="tooltip" href="<?= base_url('admin/car/del_carmodel/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
+             <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/car/del_carmodel/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
             </tr>
           <?php endforeach; ?>
         </tbody>

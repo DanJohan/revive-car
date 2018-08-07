@@ -16,13 +16,20 @@
                   <?= isset($msg)? $msg: ''; ?>
               </div>
             <?php endif; ?>
+             <?php
+            if(!empty($this->session->flashdata('validation_error'))) {
+              echo "<div class='alert alert-danger'>"; 
+                echo $this->session->flashdata('validation_error'); 
+              echo "</div>"; 
+            }
+            ?>
            
             <form method="post" action="<?php echo base_url() . 'admin/workshop/edit_manager/'.$manager['id']; ?>">
               <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label">Manager Name</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="m_name" value="<?= $manager['m_name']; ?>" class="form-control" pattern="[A-Za-z]+" title="only letters" required>
+                  <input type="text" name="m_name" value="<?= $manager['m_name']; ?>" class="form-control" pattern="[A-Za-z\s]+" title="only letters" required>
                 </div>
               </div>
               <br><br></br>

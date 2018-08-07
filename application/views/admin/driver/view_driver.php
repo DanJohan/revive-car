@@ -30,15 +30,15 @@
             <td><?php if($row['d_photo']){?>
               <img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/<?= $row['d_photo']; ?>">
               <?php }else {?>
-             <img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/download.jpg"><?php } ?></td>
+             <img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>public/images/admin/no_image.jpeg"><?php } ?></td>
               
             <td><?= $row['d_name']; ?></td>
             <td><?= $row['d_email']; ?></td> 
             <td><?= $row['d_phone']; ?></td>
             <td class="text-right">
-              <a data-toggle="modal" data-target="#basicModal" class="btn btn-success" data-toggle="tooltip" href="<?= base_url('admin/driver/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+              <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/driver/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
             <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/driver/edit_driver/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-            <a class="btn btn-danger" data-toggle="tooltip" href="<?= base_url('admin/driver/del_driver/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
+            <a class="btn btn-danger" data-toggle="tooltip" onclick="return confirm('Are you sure to delete this record?')" href="<?= base_url('admin/driver/del_driver/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
             
             </td>
            
@@ -52,7 +52,7 @@
   </div>
   <!-- /.box -->
 </section>  
-
+<?php $this->load->view('common/modal'); ?>
 <script>
   $(function () {
     $("#example1").DataTable();
@@ -60,4 +60,18 @@
 </script> 
 <script>
 $("#view_users").addClass('active');
+
+$(document).on('click','#view-detail',function(){
+
+  $.ajax({
+    url:$(this).data('link'),
+    method:"POST",
+    success:function(response){
+        if(response) {
+          $('.modal-content').html(response);
+          $('#basicModal').modal();
+        }
+    }
+  });
+});
 </script>        

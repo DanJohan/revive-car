@@ -20,43 +20,61 @@
 			
 		}
 		public function insert_manager(){
-			if($this->input->post('submit')){  //inserting image in DB
-					$file_name = '';
-					if(isset($_FILES['m_photo']) && !empty($_FILES['m_photo']['name'])) {
-						$path= FCPATH.'uploads/admin/';
-						$upload= $this->do_upload('m_photo',$path);
-						if(isset($upload['upload_data'])){
-							$file_name = $upload['upload_data']['file_name'];
+			$this->session->set_flashdata('post_data',$this->input->post());
+			if($this->input->post('submit')){ //inserting image in DB
+				    $phone= $this->input->post('m_phone');
+					$phone = "+91".$phone;
+					$email = $this->input->post('m_email');
+				    $managerPhoneInfo =	$this->WorkshopModel->checkPhoneExists($phone);
+
+				    $managerEmailInfo =	$this->WorkshopModel->checkEmailExists($email);
+				    if(!$managerPhoneInfo && !$managerEmailInfo) {
+						$file_name = '';
+						//dd($_FILES);
+						if(isset($_FILES['m_photo']) && !empty($_FILES['m_photo']['name'])) {
+							$path= FCPATH.'uploads/admin/';
+							$upload= $this->do_upload('m_photo',$path);
+							if(isset($upload['upload_data'])){
+								$file_name = $upload['upload_data']['file_name'];
+							}
 						}
+						$data = array(
+							'm_name' => $this->input->post('m_name'),
+							'm_email' => $this->input->post('m_email'),
+							'm_password' => password_hash($this->input->post('m_password'), PASSWORD_BCRYPT),
+							'm_phone' => ($this->input->post('m_phone'))?'+91'.$this->input->post('m_phone'):'',
+							'm_address' => $this->input->post('m_address'),
+							'm_workshop_location' => $this->input->post('m_workshop_location'),
+							'm_id_proof' => $this->input->post('m_id_proof'),
+							'm_photo' => $file_name,
+							'created_at' => date('Y-m-d H:i:s')
+						
+						);
+
+						$data = $this->security->xss_clean($data);
+						//dd($data,false);
+						$result = $this->WorkshopModel->insert($data);
+
+						if($result){
+							$this->session->set_flashdata('msg', 'Manager is Added Successfully!');
+							redirect(base_url('admin/workshop/view_manager'));
+
+						}else{
+							$this->session->set_flashdata('msg', 'Some problem occur!');
+							die("here1");
+							redirect(base_url('admin/workshop/add_manager'));
+					   }
+				}else{
+					$errors ='';
+					if(!empty($managerPhoneInfo)){
+						$errors .= "<p>Phone number already exists</p>";
 					}
-					$data = array(
-						'm_name' => $this->input->post('m_name'),
-						'm_email' => $this->input->post('m_email'),
-						'm_password' => password_hash($this->input->post('m_password'), PASSWORD_BCRYPT),
-						'm_phone' => ($this->input->post('m_phone'))?'+91'.$this->input->post('m_phone'):'',
-						'm_address' => $this->input->post('m_address'),
-						'm_workshop_location' => $this->input->post('m_workshop_location'),
-						'm_id_proof' => $this->input->post('m_id_proof'),
-						'm_photo' => $file_name,
-						'created_at' => date('Y-m-d H:i:s')
-					
-					);
-
-					$data = $this->security->xss_clean($data);
-					//dd($data,false);
-					$result = $this->WorkshopModel->insert($data);
-
-					if($result){
-						$this->session->set_flashdata('msg', 'Manager is Added Successfully!');
-						redirect(base_url('admin/workshop/view_manager'));
-
+					if(!empty($managerEmailInfo)){
+						$errors .= "<p>Email already exists</p>";
 					}
-				
-				else{
-					$this->session->set_flashdata('msg', 'Some problem occur!');
+					$this->session->set_flashdata('validation_error',$errors);
 					redirect(base_url('admin/workshop/add_manager'));
-					
-				   }
+				}
 			}	
 		}
 
@@ -89,22 +107,40 @@
 				
 				if ($this->form_validation->run() == FALSE) {
 					$data['manager'] = $this->WorkshopModel->get(array('id'=>$id));
-					$data['view'] = 'admin/workshop/edit_workshop';
+					redirect(base_url('admin/workshop/edit_manager/'.$id));
 					$this->load->view('admin/layout', $data);
 				}
 				else{
-					$data = array(
-						'm_name' => $this->input->post('m_name'),
-						'm_email' => $this->input->post('m_email'),
-						'm_phone' => ($this->input->post('m_phone'))?'+91'.$this->input->post('m_phone'):'',
-						'm_address' => $this->input->post('m_address'),
-						'm_workshop_location' => $this->input->post('m_workshop_location'),
-						'm_id_proof' => $this->input->post('m_id_proof')
-					);
-				
-					$result = $this->WorkshopModel->update($data, array('id'=>$id));
-					$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
-					redirect(base_url('admin/workshop/view_manager'));
+					$phone= $this->input->post('m_phone');
+					$phone = "+91".$phone;
+					$email = $this->input->post('m_email');
+					$managerPhoneInfo =	$this->WorkshopModel->checkPhoneExistsExcept($id,$phone);
+
+					$managerEmailInfo =	$this->WorkshopModel->checkEmailExistsExcept($id,$email);
+					if(!$managerPhoneInfo && !$managerEmailInfo) {
+						$data = array(
+							'm_name' => $this->input->post('m_name'),
+							'm_email' => $this->input->post('m_email'),
+							'm_phone' => ($this->input->post('m_phone'))?'+91'.$this->input->post('m_phone'):'',
+							'm_address' => $this->input->post('m_address'),
+							'm_workshop_location' => $this->input->post('m_workshop_location'),
+							'm_id_proof' => $this->input->post('m_id_proof')
+						);
+					
+						$result = $this->WorkshopModel->update($data, array('id'=>$id));
+						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
+						redirect(base_url('admin/workshop/view_manager'));
+					}else{
+						$errors ='';
+						if(!empty($managerPhoneInfo)){
+							$errors .= "<p>Phone number already exists</p>";
+						}
+						if(!empty($managerEmailInfo)){
+							$errors .= "<p>Email already exists</p>";
+						}
+						$this->session->set_flashdata('validation_error',$errors);
+						redirect(base_url('admin/workshop/edit_manager/'.$id));
+					}
 				}
 			}
 			else{

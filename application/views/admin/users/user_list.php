@@ -33,8 +33,9 @@
             <!-- <td><?= $row['device_type']; ?></td> -->
             <td><?= $row['created_at']; ?></td>
            <td class="text-right">
+              <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/users/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
             <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/users/edit/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-            <a class="btn btn-danger" data-toggle="tooltip" href="<?= base_url('admin/users/del/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
+            <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/users/del/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
             
             </td>
           </tr>
@@ -47,7 +48,7 @@
   </div>
   <!-- /.box -->
 </section>  
-
+<?php $this->load->view('common/modal'); ?>
 <!-- DataTables -->
 <script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -58,4 +59,17 @@
 </script> 
 <script>
 $("#view_users").addClass('active');
+
+$(document).on('click','#view-detail',function(){
+  $.ajax({
+    url:$(this).data('link'),
+    method:"POST",
+    success:function(response){
+        if(response) {
+          $('.modal-content').html(response);
+          $('#basicModal').modal();
+        }
+    }
+  });
+});
 </script>        

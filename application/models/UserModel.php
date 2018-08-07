@@ -33,6 +33,14 @@ class UserModel extends MY_Model {
 		return (!empty($result))?true:false;
 	}
 
+	public function checkPhoneExistsExcept($id,$phone){
+		$this->db->select('*');
+		$this->db->where(array('id !='=>$id,'phone'=>$phone));
+		$query = $this->db->get($this->table);
+		$result = $query->result_array();
+		return (!empty($result))?true:false;
+	}
+
 	public function checkEmailExists($email){
 		$this->db->select('email');
 		$this->db->where(array('email'=>$email));
