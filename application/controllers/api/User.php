@@ -655,6 +655,9 @@ class User extends MY_Controller {
 				);
 				if($file_name != ''){
 					$update_data['profile_image']=$file_name;
+					if(@file_exists($url.$is_email_exist['profile_image'])) {
+						@unlink($url.$is_email_exist['profile_image']);
+					}
 				}
 
 				$this->UserModel->update($update_data,array('id'=>$user_id));

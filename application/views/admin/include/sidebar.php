@@ -40,9 +40,9 @@ if($cur_tab=='enquiry'){
         </li>
       </ul>
 
-      <ul class="sidebar-menu">
+      <ul class="sidebar-menu" data-widget="tree">
         <li id="" class="treeview users enquiry jobCard">
-            <a href="#">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
               <i class="fa fa-dashboard"></i> <span>Users</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -55,9 +55,9 @@ if($cur_tab=='enquiry'){
             </ul>
           </li>
           </ul>
-      <ul class="sidebar-menu">
+      <ul class="sidebar-menu" data-widget="tree">
         <li id="" class="treeview car">
-            <a href="#">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
               <i class="fa fa-dashboard"></i> <span>Car Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -69,9 +69,9 @@ if($cur_tab=='enquiry'){
            </ul>
         </li>
       </ul>
-      <ul class="sidebar-menu">
+      <ul class="sidebar-menu" data-widget="tree">
         <li id="" class="treeview driver">
-            <a href="#">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
               <i class="fa fa-dashboard"></i> <span>Driver Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -84,9 +84,9 @@ if($cur_tab=='enquiry'){
         </li>
       </ul>
        
-      <ul class="sidebar-menu">
+      <ul class="sidebar-menu" data-widget="tree">
         <li id="" class="treeview workshop">
-            <a href="#">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
               <i class="fa fa-dashboard"></i> <span>Workshop Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
