@@ -111,3 +111,5 @@ define('MAIL_PORT',587);
 define('ANDRIOD_PUSH_AUTH_KEY','AAAAstFVzas:APA91bEkb-hJQUHRsOKBp6JqiURWs4TuoRbfjdP7h9bwWRmsXob43cdoW4_Bx9fcfdqzpg28v-mnVxb4mbuHjg3fwM8Mq_d9wtd7vIXNOfnxeEUnagmhwe3VWiJyySfjifw5lBC_lLCneQ_i97GhFWhdYLquDQRGVA');
 
 define('DRIVER_PUSH_AUTH_KEY','AAAAwahzcU4:APA91bHusVsulEzKDfg38nRswaKVeUYalqbQst09l3dva4NVD4h-T7cB5U2t6f_LTarV0XExET8DawRvJWuc9SQMSZ8mSLxRHhxjRqtLSu-YOClNsL0WEreY3kVIdABqTQirwdtJRtmvWUfrXlcvAl_wdLYDGa9YmA');
+
+define('JWT_KEY','UY39E7IX3puWn+2z7uoEpY8WXzXl2D1v/96k4U7FFkyjM/D/nZKdkJPprfQpkzKQ6fT0btWqd5viMbXJcG2NKA==');

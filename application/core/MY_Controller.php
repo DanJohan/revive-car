@@ -39,12 +39,13 @@ class MY_Controller extends CI_Controller
       $config['max_width'] =(isset($params['max_width']))?$params['max_width']:0;
       $config['max_height']=(isset($params['max_height']))?$params['max_height']: 0;
 
-      if(!isset($params['encrypt_name'])) { 
-        $new_name = time().mt_rand(1000,9999).'_'.$_FILES[$file]['name'];
-        $config['file_name'] =  $new_name;
-      }else{
-        $config['encrypt_name'] =true;
-      }
+     // if(isset($params['encrypt_name']) && $params['encrypt_name'] ==true) { 
+      $config['encrypt_name'] =true;   
+     // }else{
+      // $new_name =  time().uniqid(rand()).'_'.$_FILES[$file]['name'];
+       // $new_name = time().mt_rand(1000,9999).'_'.$_FILES[$file]['name'];
+      //  $config['file_name'] =  $new_name;
+     // }
 
       $this->load->library('upload', $config);
 

@@ -8,6 +8,7 @@ class Driver extends MY_Controller {
 	    parent::__construct();
 	    $this->load->model('ServiceEnquiryModel');
 	    $this->load->model('JobcardModel');
+	    $this->load->model('JobCardImageModel');
 	    $this->load->model('JobModel');
 	    $this->load->model('DriverNotificationModel');
 	    $this->load->model('DriverModel');
@@ -114,20 +115,20 @@ class Driver extends MY_Controller {
 	}
 
 	public function createJob(){
-		//dd($_POST);
+
+		//dd($_POST,false);
+		//dd($_FILES);
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
-/*		$this->form_validation->set_rules('date_of_accident','Date of accident','trim');
-		$this->form_validation->set_rules('able_to_authorise','Able to authorise','trim');
-		$this->form_validation->set_rules('taxable','Taxable','trim');
-		$this->form_validation->set_rules('damage_area','Damage area','trim');
-		$this->form_validation->set_rules('vehicle_status','Damage area','trim');
-		$this->form_validation->set_rules('tyres','Tyres','trim');
-		$this->form_validation->set_rules('jobs','Jobs','trim');*/
+		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+
 		if ($this->form_validation->run() == true){
 			$insert_data = array(
 				'enquiry_id' => $this->input->post('enquiry_id'),
 				'car_id' =>$this->input->post('car_id'),
 				'user_id' => $this->input->post('user_id'),
+				'lv_provide' => $this->input->post('lv_provide'),
+				'lv_reg_no' => $this->input->post('lv_reg_no'),
 				'date_of_accident' => $this->input->post('date_of_accident'),
 				'able_to_authorise' => $this->input->post('able_to_authorise'),
 				'taxable' => $this->input->post('taxable'),
@@ -143,27 +144,58 @@ class Driver extends MY_Controller {
 				'created_at' => date('Y-m-d H:i:s')
 			);
 			$insert_id = $this->JobcardModel->insert($insert_data);
-			$painting_jobs = $this->input->post('painting_jobs');
-			if(!empty($painting_jobs) && $insert_id) {
-				foreach ($painting_jobs as $index => $painting_job) {
-					$painting_jobs[$index]['name'] = 'painting_job';
-					$painting_jobs[$index]['job_card_id'] = $insert_id;
-					$painting_jobs[$index]['created_at'] = date('Y-m-d H:i:s');
+
+			// insert jobs data
+			$jobs= $this->input->post('jobs');
+			if(!empty($jobs) && $insert_id){
+				foreach ($jobs as $index => $job) {
+					$jobs[$index]['job_card_id'] = $insert_id;
+					$jobs[$index]['created_at'] = date('Y-m-d H:i:s');
 				}
-				$this->JobModel->insert_batch($painting_jobs);
+			}
+			$this->JobModel->insert_batch($jobs);
+
+			// insert job card images
+			$files_data = array();
+			if($insert_id){
+				if(isset($_FILES['job_images']) && !empty($_FILES['job_images']['name'])){
+					$filesCount = count($_FILES['job_images']['name']);
+					for($i = 0; $i < $filesCount; $i++){
+		                $_FILES['file']['name']     = $_FILES['job_images']['name'][$i];
+		                $_FILES['file']['type']     = $_FILES['job_images']['type'][$i];
+		                $_FILES['file']['tmp_name'] = $_FILES['job_images']['tmp_name'][$i];
+		                $_FILES['file']['error']     = $_FILES['job_images']['error'][$i];
+		                $_FILES['file']['size']     = $_FILES['job_images']['size'][$i];
+
+		                $url = FCPATH.'uploads/app/';
+		               	$upload = $this->do_upload('file',$url);
+		                if(isset($upload['upload_data'])){
+							chmod($upload['upload_data']['full_path'], 0777);
+							$files_data[$i]['job_card_id'] = $insert_id;
+							$files_data[$i]['image'] = $upload['upload_data']['file_name'];
+							$files_data[$i]['created_at'] = date("Y-m-d H:i:s");
+						}
+
+		            }
+				}
+			}
+			if(!empty($files_data)) {
+				$this->JobCardImageModel->insert_batch($files_data);
+			}
+			
+			// insert user digital signature
+			if($insert_id && isset($_FILES['signature']) && !empty($_FILES['signature']['name'])) {
+				$file_name = '';
+				$url = FCPATH."uploads/app/";
+				$upload =$this->do_upload('signature',$url);
+				if(isset($upload['upload_data'])){
+					chmod($upload['upload_data']['full_path'], 0777);
+					$file_name = $upload['upload_data']['file_name'];
+					$this->JobcardModel->update(array('signature'=>$file_name),array('id'=>$insert_id));
+				}
 			}
 
-			$denting_jobs = $this->input->post('denting_jobs');
-			if(!empty($denting_jobs) && $insert_id) {
-				foreach ($denting_jobs as $index => $denting_job) {
-
-					$denting_jobs[$index]['name'] = 'denting_job';
-					$denting_jobs[$index]['job_card_id'] = $insert_id;
-					$denting_jobs[$index]['created_at'] = date('Y-m-d H:i:s');
-				}
-				$this->JobModel->insert_batch($denting_jobs);
-			}
-			$response = array('status'=>true,'message'=>'Record insertd successfully');
+			$response = array('status'=>true,'message'=>'Job card created successfully','data'=>array('job_card_id'=>$insert_id));
 
 		}else{
 			$errors = $this->form_validation->error_array();
@@ -216,6 +248,7 @@ class Driver extends MY_Controller {
 		$this->renderJson($response);
 
 	}// end of registerDevice method
+
 
 }// end of class
 ?>

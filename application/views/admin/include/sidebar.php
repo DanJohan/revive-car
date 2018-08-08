@@ -41,7 +41,7 @@ if($cur_tab=='enquiry'){
       </ul>
 
       <ul class="sidebar-menu">
-        <li id="" class="treeview users enquiry">
+        <li id="" class="treeview users enquiry jobCard">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Users</span>
               <span class="pull-right-container">
@@ -51,6 +51,7 @@ if($cur_tab=='enquiry'){
             <ul class="treeview-menu">
               <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
                 <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
+                <li id="list"><a href="<?= base_url('admin/jobcard/list'); ?>"><i class="fa fa-circle-o"></i>User job cards</a></li>
             </ul>
           </li>
           </ul>
@@ -105,8 +106,5 @@ if($cur_tab=='enquiry'){
 <script>
   $(".<?php echo $cur_tab; ?>").addClass('active');
   $("#<?php echo $cur_tab_link; ?>").addClass('active');
-  $(document).on('click','.treeview',function(){
-    console.log("here");
-    $(".treeview:not($(this))").removeClass('active');
-  });
+
 </script>

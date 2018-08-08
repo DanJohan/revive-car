@@ -7,6 +7,7 @@ class Car extends MY_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
+	   // $this->jwtauth->verify_request();
 	    $this->load->helper('api');
 	    $this->load->model('CarModel');
 	    $this->load->model('CarBrandModel');
@@ -224,8 +225,9 @@ class Car extends MY_Controller {
 			);
 
 			$insert_id = $this->ServiceEnquiryModel->insert($register_data);
+			$file_data = array();
 			if($insert_id){
-				$file_name = array();
+				
 				if(isset($_FILES['service_images']) && !empty($_FILES['service_images']['name'])){
 					$filesCount = count($_FILES['service_images']['name']);
 					for($i = 0; $i < $filesCount; $i++){
@@ -236,8 +238,7 @@ class Car extends MY_Controller {
 		                $_FILES['file']['size']     = $_FILES['service_images']['size'][$i];
 
 		                $url = FCPATH.'uploads/app/';
-		                $config ['encrypt_name'] = true;
-		               	$upload = $this->do_upload('file',$url,$config);
+		               	$upload = $this->do_upload('file',$url);
 
 		                if(isset($upload['upload_data'])){
 							chmod($upload['upload_data']['full_path'], 0777);
