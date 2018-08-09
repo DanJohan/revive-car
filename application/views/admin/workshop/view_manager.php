@@ -43,7 +43,7 @@
             <td><?php echo $row['m_name']; ?></td>
             <td><?php echo $row['m_email']; ?></td>
             <td><?php echo $row['m_phone']; ?></td>
-            <td><?php echo $row['created_at']; ?></td>
+            <td><?php echo date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
 
          
             <td class="text-right">

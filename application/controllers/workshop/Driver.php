@@ -24,6 +24,19 @@
 			//print_r($data['all_manager'][0]);die;
 			$this->load->view('workshop/layout', $data);
 
+		}
+
+		public function view_record_by_id($id){
+			$data=array();
+			$criteria['field'] = 'driver.*,workshop_manager.m_name,workshop_manager.m_workshop_location';
+			$criteria['join'] = array(
+				array('workshop_manager','driver.d_workshop_assign=workshop_manager.id','left'),
+			);
+			$criteria['conditions'] = array('driver.id'=>$id);
+			$criteria['returnType'] = 'single';
+			$data['driver_by_id'] =  $this->DriverModel->search($criteria);
+			echo $this->load->view('admin/driver/driver_view',$data,true);
+			
 		  }
 
 

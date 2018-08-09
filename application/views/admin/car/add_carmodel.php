@@ -76,7 +76,7 @@
             <td><?= $row['id']; ?></td>
             <td><?= $row['brand_name']; ?></td>
             <td><?= $row['model_name']; ?></td>
-            <td><?= $row['updated_at']; ?></td>
+            <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
             
             <td class="text-right">
              <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/car/del_carmodel/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>

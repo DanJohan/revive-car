@@ -16,8 +16,9 @@ class Driver extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To login driver
-	 *  API URL : http://localhost/car-service/api/driver/login
-	 *  PARAMETER : phone (required), password (required)
+	 *  @link http://localhost/car-service/api/driver/login
+	 *  @param : phone (required), password (required)
+	 *  @return  json array of driver detail on success
 	 */
 	public function login() {
 

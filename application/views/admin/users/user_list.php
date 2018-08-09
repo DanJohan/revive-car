@@ -4,7 +4,6 @@
 }
  </style>
  <!-- Datatable style -->
-<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
 
  <section class="content">
    <div class="box">
@@ -30,8 +29,7 @@
             <td><?= $row['name']; ?></td>
             <td><?= $row['email']; ?></td>
             <td><?= $row['phone']; ?></td>
-            <!-- <td><?= $row['device_type']; ?></td> -->
-            <td><?= $row['created_at']; ?></td>
+            <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
            <td class="text-right">
               <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/users/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
             <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/users/edit/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
@@ -49,9 +47,6 @@
   <!-- /.box -->
 </section>  
 <?php $this->load->view('common/modal'); ?>
-<!-- DataTables -->
-<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
     $("#example1").DataTable();

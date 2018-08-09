@@ -17,7 +17,7 @@
           <th>Username</th>
           <th>Email</th>
           <th>Mobile No.</th>
-          
+          <th>Created at</th>
           <th style="width: 150px;" class="text-right">Option</th>
         </tr>
         </thead>
@@ -35,6 +35,7 @@
             <td><?= $row['d_name']; ?></td>
             <td><?= $row['d_email']; ?></td> 
             <td><?= $row['d_phone']; ?></td>
+            <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
             <td class="text-right">
               <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/driver/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
               

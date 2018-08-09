@@ -36,7 +36,7 @@
             <td><?php echo $job['phone']; ?></td>
             <td><?php echo $job['brand_name']." - ".$job['model_name']; ?></td>
             <td><?php echo $job['registration_no']; ?></td>
-            <td><?php echo $job['created_at']; ?></td>
+            <td><?php echo date('d M Y h:i A',strtotime($job['created_at'])); ?></td>
 
          
             <td class="text-right">

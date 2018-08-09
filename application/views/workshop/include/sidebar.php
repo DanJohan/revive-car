@@ -45,7 +45,7 @@ if($cur_tab=='users'){
     <ul class="sidebar-menu">
         <li id="" class="treeview users enquiry">
             <a href="#">
-              <i class="fa fa-dashboard"></i> <span>Users</span>
+              <i class="fa fa-users"></i> <span>Users</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>

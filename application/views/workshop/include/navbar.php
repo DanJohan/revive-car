@@ -27,13 +27,21 @@
          <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <?php if($this->session->userdata('m_photo') != '') { ?>
               <img src="<?= base_url() ?>uploads/admin/<?= $this->session->userdata('m_photo'); ?>" class="user-image" alt="User Image">
+            <?php }else {?>
+              <img src="<?= base_url() ?>public/images/admin/no_image.jpeg" class="user-image" alt="User Image">
+            <?php } ?>
               <span class="hidden-xs"><?= ucwords($this->session->userdata('m_name')); ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
+                <?php if($this->session->userdata('m_photo') != '') { ?>
                 <img src="<?= base_url() ?>uploads/admin/<?= $this->session->userdata('m_photo'); ?>" class="user-image" alt="User Image">
+                <?php }else {?>
+                  <img src="<?= base_url() ?>public/images/admin/no_image.jpeg" class="user-image" alt="User Image">
+                <?php } ?>
              
                   <p style="text-transform:capitalize;">
                   <b style="color:#fff;font-weight:normal !important;"><?= ucwords($this->session->userdata('m_name')); ?></b>

@@ -40,7 +40,7 @@ if($cur_tab=='enquiry'){
         </li>
         <li id="" class="treeview users enquiry jobCard" >
             <a href="#" class="sidebar-toggle">
-              <i class="fa fa-dashboard"></i> <span>Users</span>
+              <i class="fa fa-users"></i> <span>Users</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -53,7 +53,7 @@ if($cur_tab=='enquiry'){
           </li>
         <li id="" class="treeview car">
             <a href="#" class="sidebar-toggle">
-              <i class="fa fa-dashboard"></i> <span>Car Management</span>
+              <i class="fa fa-car"></i> <span>Car Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>

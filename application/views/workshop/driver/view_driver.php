@@ -1,7 +1,4 @@
- <!-- Datatable style -->
-<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
-
- <section class="content">
+<section class="content">
    <div class="box">
     <div class="box-header bg-green">
       <h3 class="box-title">Workshop Drivers Detail</h3>
@@ -16,7 +13,7 @@
           <th>Mobile No.</th>
           <th>Address</th>
           <th>Created At</th>
-         <!-- <th style="width: 150px;" class="text-right">Option</th>-->
+          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -31,10 +28,10 @@
             <td><?= $row['d_email']; ?></td>
             <td><?= $row['d_phone']; ?></td>
             <td><?= $row['d_address']; ?></td>
-            <td><?= $row['created_at']; ?></td>
-            
-           <!-- <td class="text-right"><a href="" class="btn btn-info btn-flat">Edit</a>
-              <a href="" class="btn btn-danger btn-flat">Delete</a></td>-->
+            <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
+            <td class="text-right">
+              <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('workshop/driver/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+            </td>
           </tr>
           <?php }} ?>
         </tbody>
@@ -45,10 +42,7 @@
   </div>
   <!-- /.box -->
 </section>  
-
-<!-- DataTables -->
-<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<?php $this->load->view('common/modal'); ?>
 <script>
   $(function () {
     $("#example1").DataTable();
@@ -56,4 +50,17 @@
 </script> 
 <script>
 $("#view_users").addClass('active');
+$(document).on('click','#view-detail',function(){
+
+  $.ajax({
+    url:$(this).data('link'),
+    method:"POST",
+    success:function(response){
+        if(response) {
+          $('.modal-content').html(response);
+          $('#basicModal').modal();
+        }
+    }
+  });
+});
 </script>        
