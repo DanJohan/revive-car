@@ -22,13 +22,14 @@ class ServiceEnquiryModel extends MY_Model {
 	}
 
 	public function getEnquiryWithUser($id){
-		$this->db->select('e.id,e.car_id,e.user_id,e.address,e.location,e.loaner_vehicle,e.latitude,e.longitude,e.enquiry,CASE WHEN e.service_type =1 THEN "Denting and Painting" ELSE "" END AS service_type,e.pick_up_date,e.pick_up_time,e.created_at,GROUP_CONCAT(ei.id SEPARATOR "|") AS image_id,GROUP_CONCAT(ei.image SEPARATOR "|") AS image,u.phone,u.name,u.email,u.profile_image',false);
+		$this->db->select('e.id,e.car_id,e.user_id,e.address,e.location,e.loaner_vehicle,e.latitude,e.longitude,e.enquiry,c.registration_no,cb.brand_name,cm.model_name,CASE WHEN e.service_type =1 THEN "Denting and Painting" ELSE "" END AS service_type,e.pick_up_date,e.pick_up_time,e.created_at,GROUP_CONCAT(ei.id SEPARATOR "|") AS image_id,GROUP_CONCAT(ei.image SEPARATOR "|") AS image,u.phone,u.name,u.email,u.profile_image',false);
 		$this->db->from($this->table.' AS e');
 		$this->db->where(array('e.id'=>$id));
 		$this->db->join('enquiry_images AS ei','e.id=ei.enquiry_id','left');
 		$this->db->join('cars AS c','e.car_id=c.id');
+		$this->db->join('car_brands AS cb','c.brand_id=cb.id');
+		$this->db->join('car_models AS cm','c.model_id=cm.id');
 		$this->db->join('users AS u','c.user_id= u.id');
-		$this->db->group_by('e.id');
 		$query = $this->db->get();
 		$result = $query->row_array();
 		return (!empty($result))? $result : false;

@@ -37,12 +37,12 @@
 			<section id="container">
 				<!--header start-->
 				<header class="header white-bg">
-					<?php include('include/navbar.php'); ?>
+					<?php $this->load->view('admin/include/navbar.php'); ?>
 				</header>
 				<!--header end-->
 				<!--sidebar start-->
 				<aside>
-					<?php include('include/sidebar.php'); ?>
+					<?php $this->load->view('admin/include/sidebar.php'); ?>
 				</aside>
 				<!--sidebar end-->
 				<!--main content start-->
@@ -63,7 +63,7 @@
 			</section>
 
 			<!-- /.control-sidebar -->
-			<?php include('include/control_sidebar.php'); ?>
+			<?php $this->load->view('admin/include/control_sidebar.php'); ?>
 
 	</div>	
     
@@ -94,7 +94,7 @@
 					$('#notification-count').text(response.total);
 				}
 			}
-		})
+		});
 	</script>
 	</body>
 </html>

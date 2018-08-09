@@ -88,9 +88,9 @@
 			$data['all_driver'] =  $this->DriverModel->get_all(NULL,array('id','desc'));
 			$data['view'] = 'admin/driver/view_driver';
 			$this->load->view('admin/layout', $data);
-		  }
+		 }
 
-		  public function view_record_by_id($id){
+		public function view_record_by_id($id){
 			$data=array();
 			$criteria['field'] = 'driver.*,workshop_manager.m_name,workshop_manager.m_workshop_location';
 			$criteria['join'] = array(
@@ -101,7 +101,7 @@
 			$data['driver_by_id'] =  $this->DriverModel->search($criteria);
 			echo $this->load->view('admin/driver/driver_view',$data,true);
 			
-		  }
+		}
 
 		public function edit_driver($id = null){  // display record of selected id 
 			if(!$id){

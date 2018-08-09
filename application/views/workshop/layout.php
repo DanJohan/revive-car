@@ -94,7 +94,7 @@
 					$('#notification-count').text(response.total);
 				}
 			}
-		})
+		});
 	</script>
 	</body>
 </html>
