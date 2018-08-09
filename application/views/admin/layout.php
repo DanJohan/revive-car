@@ -72,8 +72,7 @@
 	<script src="<?= base_url() ?>public/bootstrap/js/bootstrap.min.js"></script>
 	<!-- AdminLTE App -->
 	<script src="<?= base_url() ?>public/dist/js/app.min.js"></script>
-	<!-- AdminLTE for demo purposes -->
-	<script src="<?= base_url() ?>public/dist/js/demo.js"></script>
+
 
 <!-- DataTables -->
 <script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>

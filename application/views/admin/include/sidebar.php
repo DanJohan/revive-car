@@ -32,72 +32,62 @@ if($cur_tab=='enquiry'){
       </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-        <li id="dashboard" class="treeview">
+      <ul class="sidebar-menu" >
+        <li id="" class="treeview dashboard">
           <a href="<?= base_url('admin/dashboard'); ?>">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
            </a>
         </li>
-      </ul>
-
-      <ul class="sidebar-menu" data-widget="tree">
-        <li id="" class="treeview users enquiry jobCard">
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <li id="" class="treeview users enquiry jobCard" >
+            <a href="#" class="sidebar-toggle">
               <i class="fa fa-dashboard"></i> <span>Users</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
-                <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
-                <li id="list"><a href="<?= base_url('admin/jobcard/list'); ?>"><i class="fa fa-circle-o"></i>User job cards</a></li>
+               <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o text-aqua"></i> View User Details</a></li>
+                <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o text-aqua"></i>User enquiries</a></li>
+                <li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-circle-o text-aqua"></i>User job cards</a></li>
             </ul>
           </li>
-          </ul>
-      <ul class="sidebar-menu" data-widget="tree">
         <li id="" class="treeview car">
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <a href="#" class="sidebar-toggle">
               <i class="fa fa-dashboard"></i> <span>Car Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="add_carbrand"><a href="<?= base_url('admin/car/add_carbrand'); ?>"><i class="fa fa-circle-o"></i> Add Car Brand</a></li>
-              <li id="add_carmodel"><a href="<?= base_url('admin/car/add_carmodel'); ?>"><i class="fa fa-circle-o"></i> Add Car Model</a></li>
+              <li id="add_carbrand"><a href="<?= base_url('admin/car/add_carbrand'); ?>"><i class="fa fa-circle-o text-aqua"></i> Add Car Brand</a></li>
+              <li id="add_carmodel"><a href="<?= base_url('admin/car/add_carmodel'); ?>"><i class="fa fa-circle-o text-aqua"></i> Add Car Model</a></li>
            </ul>
         </li>
-      </ul>
-      <ul class="sidebar-menu" data-widget="tree">
         <li id="" class="treeview driver">
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <a href="#" class="sidebar-toggle">
               <i class="fa fa-dashboard"></i> <span>Driver Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="add_driver"><a href="<?= base_url('admin/driver/add_driver'); ?>"><i class="fa fa-circle-o"></i> Add Driver</a></li>
-              <li id="view_driver" class=""><a href="<?= base_url('admin/driver/view_driver'); ?>"><i class="fa fa-circle-o"></i> View Driver Details</a></li>
+              <li id="add_driver"><a href="<?= base_url('admin/driver/add_driver'); ?>"><i class="fa fa-circle-o text-aqua"></i> Add Driver</a></li>
+              <li id="view_driver" class=""><a href="<?= base_url('admin/driver/view_driver'); ?>"><i class="fa fa-circle-o text-aqua"></i> View Driver Details</a></li>
             </ul>
         </li>
-      </ul>
-       
-      <ul class="sidebar-menu" data-widget="tree">
         <li id="" class="treeview workshop">
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <a href="#" class="sidebar-toggle">
               <i class="fa fa-dashboard"></i> <span>Workshop Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="add_manager"><a href="<?= base_url('admin/workshop/add_manager'); ?>"><i class="fa fa-circle-o"></i> Add Manager</a></li>
-              <li id="view_manager" class=""><a href="<?= base_url('admin/workshop/view_manager'); ?>"><i class="fa fa-circle-o"></i> View Manager</a></li>
+              <li id="add_manager"><a href="<?= base_url('admin/workshop/add_manager'); ?>"><i class="fa fa-circle-o text-aqua"></i> Add Manager</a></li>
+              <li id="view_manager" class=""><a href="<?= base_url('admin/workshop/view_manager'); ?>"><i class="fa fa-circle-o text-aqua"></i> View Manager</a></li>
             </ul>
         </li>
-      </ul>   
+      </ul>
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -106,5 +96,6 @@ if($cur_tab=='enquiry'){
 <script>
   $(".<?php echo $cur_tab; ?>").addClass('active');
   $("#<?php echo $cur_tab_link; ?>").addClass('active');
-
+  $("#<?php echo $cur_tab; ?>").parent().siblings('.sidebar-menu').find('.treeview').removeClass('active');
+  console.log($("#<?php echo $cur_tab; ?>").parents('ul'));
 </script>

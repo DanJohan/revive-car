@@ -18,13 +18,14 @@ class Car extends Rest_Controller {
 	}
 
 	public function index(){
-		$this->load->view('api/test');
+		//$this->load->view('api/test');
 	}
 
 	/**
 	 *  API DESCRIPTION : To get all car brands
-	 *  API URL : http://localhost/car-service/api/car/getCarBrands
-	 *  PARAMETER : not required
+	 *  @link: http://localhost/car-service/api/car/getCarBrands
+	 *  @param : not required
+	 *  @return [json array] [car brands detail]
 	 */
 	public function getCarBrands(){
 
@@ -40,8 +41,9 @@ class Car extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To get all car models via its brand id
-	 *  API URL : http://localhost/car-service/api/car/getCarModels
-	 *  PARAMETER : brand_id(required)
+	 *  @link : http://localhost/car-service/api/car/getCarModels
+	 *  @param : brand_id(required)
+	 *  @return : car models deatil
 	 */
 	public function getCarModels(){
 
@@ -69,8 +71,9 @@ class Car extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To add car of users
-	 *  API URL : http://localhost/car-service/api/car/getCarBrands
-	 *  PARAMETER : see validation rules in method
+	 *  @link: http://localhost/car-service/api/car/getCarBrands
+	 *  @param: see validation rules in method
+	 *  @return  : user car deatial on successfully insert
 	 */
 	
 	public function addCar(){
@@ -114,9 +117,9 @@ class Car extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To get all car of user
-	 *  @url: http://localhost/car-service/api/car/getUserCars
-	 *  @param : user_id (required)
-	 *  @return: users cars detail
+	 *  @link  http://localhost/car-service/api/car/getUserCars
+	 *  @param  user_id (required)
+	 *  @return user cars detail
 	 */
 	public function getUserCars() {
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
