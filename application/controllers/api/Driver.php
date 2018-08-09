@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Driver extends MY_Controller {
+class Driver extends Rest_Controller {
 
 	public function __construct()
 	{

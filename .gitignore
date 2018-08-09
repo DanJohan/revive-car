@@ -38,4 +38,5 @@ uploads/app/*
 uploads/admin/*
 !uploads/admin/.gitkeep
 migrations.txt
+jwt.php
 

@@ -61,4 +61,7 @@ class MY_Controller extends CI_Controller
       }
   }
 }
+
+// include other controllers that extent My_controller
+require_once 'Rest_Controller.php';
 ?>

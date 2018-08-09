@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Notification extends MY_Controller {
+class Notification extends Rest_Controller {
 
 	
 	public function __construct()

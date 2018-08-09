@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Car extends MY_Controller {
+class Car extends Rest_Controller {
 
 	public function __construct()
 	{
@@ -114,11 +114,11 @@ class Car extends MY_Controller {
 
 	/**
 	 *  API DESCRIPTION : To get all car of user
-	 *  API URL : http://localhost/car-service/api/car/getUserCars
-	 *  PARAMETER : user_id (required)
+	 *  @url: http://localhost/car-service/api/car/getUserCars
+	 *  @param : user_id (required)
+	 *  @return: users cars detail
 	 */
 	public function getUserCars() {
-
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		if ($this->form_validation->run() == true) {
 			$user_id = $this->input->post('user_id');
