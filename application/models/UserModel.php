@@ -29,7 +29,7 @@ class UserModel extends MY_Model {
 		$this->db->select('*');
 		$this->db->where(array('id !='=>$id,'email'=>$email));
 		$query = $this->db->get($this->table);
-		$result = $query->result_array();
+		$result = $query->row_array();
 		return (!empty($result))?true:false;
 	}
 
@@ -37,7 +37,7 @@ class UserModel extends MY_Model {
 		$this->db->select('*');
 		$this->db->where(array('id !='=>$id,'phone'=>$phone));
 		$query = $this->db->get($this->table);
-		$result = $query->result_array();
+		$result = $query->row_array();
 		return (!empty($result))?true:false;
 	}
 

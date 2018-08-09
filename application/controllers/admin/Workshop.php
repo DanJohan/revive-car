@@ -97,6 +97,7 @@
 			if(!$id){
 				redirect(base_url('admin/workshop/view_manager'));
 			}
+			$data['manager'] = $this->WorkshopModel->get(array('id'=>$id));
 			if($this->input->post('submit')){
 				$this->form_validation->set_rules('m_name', 'Username', 'trim|required');
 				$this->form_validation->set_rules('m_email', 'Email', 'trim|required');
@@ -118,13 +119,24 @@
 
 					$managerEmailInfo =	$this->WorkshopModel->checkEmailExistsExcept($id,$email);
 					if(!$managerPhoneInfo && !$managerEmailInfo) {
+						$file_name = $data['manager']['m_photo'];
+						//dd($_FILES);
+						if(isset($_FILES['m_photo']) && !empty($_FILES['m_photo']['name'])) {
+							$path= FCPATH.'uploads/admin/';
+							$upload= $this->do_upload('m_photo',$path);
+							if(isset($upload['upload_data'])){
+								$file_name = $upload['upload_data']['file_name'];
+								@unlink($path.$data['manager']['m_photo']);
+							}
+						}
 						$data = array(
 							'm_name' => $this->input->post('m_name'),
 							'm_email' => $this->input->post('m_email'),
 							'm_phone' => ($this->input->post('m_phone'))?'+91'.$this->input->post('m_phone'):'',
 							'm_address' => $this->input->post('m_address'),
 							'm_workshop_location' => $this->input->post('m_workshop_location'),
-							'm_id_proof' => $this->input->post('m_id_proof')
+							'm_id_proof' => $this->input->post('m_id_proof'),
+							'm_photo' =>$file_name
 						);
 					
 						$result = $this->WorkshopModel->update($data, array('id'=>$id));
@@ -144,7 +156,7 @@
 				}
 			}
 			else{
-				$data['manager'] = $this->WorkshopModel->get(array('id'=>$id));
+				
 				$data['manager']['m_phone'] = substr($data['manager']['m_phone'],-10);
 				$data['view'] = 'admin/workshop/edit_manager';
 				$this->load->view('admin/layout', $data);

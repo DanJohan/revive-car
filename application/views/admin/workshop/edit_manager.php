@@ -24,7 +24,7 @@
             }
             ?>
            
-            <form method="post" action="<?php echo base_url() . 'admin/workshop/edit_manager/'.$manager['id']; ?>">
+            <form method="post" action="<?php echo base_url() . 'admin/workshop/edit_manager/'.$manager['id']; ?>" enctype="multipart/form-data">
               <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label">Manager Name</label>
 
@@ -82,7 +82,13 @@
                   <textarea type="text" name="m_address" class="form-control" id="password" required ><?= $manager['m_address']; ?></textarea>
                 </div>
               </div>
-              
+              <br></br></br>
+               <div class="form-group">
+                <label for="exampleInputFile" class="col-sm-3 control-label">Upload Photo</label>
+                   <div class="col-sm-8">
+                      <input type="file" id="exampleInputFile" name="m_photo" class="form-control">
+                  </div>
+              </div>
               <br><br></br>
               <div class="form-group">
                 <div class="col-md-11">

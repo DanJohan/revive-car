@@ -22,7 +22,7 @@
               echo "</div>"; 
             }
             ?>
-             <form method="post" action="<?php echo base_url() . 'admin/driver/edit_driver/'.$driver['id']; ?>"> 
+             <form method="post" action="<?php echo base_url() . 'admin/driver/edit_driver/'.$driver['id']; ?>" enctype="multipart/form-data"> 
               <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label">Driver Name</label>
 

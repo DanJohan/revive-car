@@ -622,10 +622,16 @@ class User extends Rest_Controller {
 	}// end of sendOtpToChangeMobile method 
 
 
-	/*
+	/**
 	* Api : To edit a user profile
-	* Parameter : user_id , name, email
-	 */
+	* @link http://localhost/car-service/api/user/editProfile
+	* @param  int $user_id  id of user 
+	* @param string $name  name of user
+	* @param string $email email of user
+	* @param file $profile_image profile image of user
+	* @return jsonarry Updated record of user
+	*/
+
 	public function editProfile(){
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
@@ -636,7 +642,6 @@ class User extends Rest_Controller {
 			$user_id = $this->input->post('user_id');
 			$email = $this->input->post('email');
 			$is_email_exist = $this->UserModel->checkEmailExistsExcept($user_id,$email);
-
 			if(!$is_email_exist) {
 				$file_name = '';
 				if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
@@ -649,14 +654,20 @@ class User extends Rest_Controller {
 					}
 				}
 				$user_id = $this->input->post('user_id');
+				$criteria['field'] = 'profile_image';
+				$criteria['conditions'] = array('id'=>$user_id);
+				$criteria['returnType'] = 'single';
+				$user_img = $this->UserModel->search($criteria);
+				unset($criteria);
+
 				$update_data = array(
 					'name' =>$this->input->post('name'),
 					'email' =>$this->input->post('email')
 				);
 				if($file_name != ''){
 					$update_data['profile_image']=$file_name;
-					if(@file_exists($url.$is_email_exist['profile_image'])) {
-						@unlink($url.$is_email_exist['profile_image']);
+					if(@file_exists($url.$user_img['profile_image'])) {
+						@unlink($url.$user_img['profile_image']);
 					}
 				}
 
@@ -681,6 +692,12 @@ class User extends Rest_Controller {
 		$this->renderJson($response);
 	}// end of edit profile method
 
+	/**
+	* Api : To get a user profile
+	* @link http://localhost/car-service/api/user/getUserProfile
+	* @param  int $user_id  id of user 
+	* @return jsonarry record of user
+	*/
 
 	public function getUserProfile(){
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');

@@ -1,5 +1,12 @@
 <?php 
-$cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);  
+$cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
+$cur_tab_link =   $this->uri->segment(3)==''?'index': $this->uri->segment(3);
+if($cur_tab=='enquiry'){
+  $cur_tab_link="e_".$cur_tab_link;
+}
+if($cur_tab=='users'){
+  $cur_tab_link="u_".$cur_tab_link;
+}
 ?>  
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
@@ -28,7 +35,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li id="dashboard" class="treeview">
+        <li id="" class="treeview dashboard">
           <a href="<?= base_url('workshop/dashboard'); ?>">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
            </a>
@@ -36,7 +43,7 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
       </ul>
 
     <ul class="sidebar-menu">
-        <li id="users" class="treeview">
+        <li id="" class="treeview users enquiry">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Users</span>
               <span class="pull-right-container">
@@ -44,13 +51,12 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="view_users" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
-               <li id="manager_enquiry"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
+              <li id="u_index" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
+               <li id="e_index"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
             </ul>
           </li>
-          </ul>
-      <ul class="sidebar-menu">
-        <li id="users" class="treeview">
+
+        <li id="" class="treeview driver">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Driver Management</span>
               <span class="pull-right-container">
@@ -62,10 +68,8 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               <li id="view_driver" class=""><a href="<?= base_url('workshop/driver/view_driver'); ?>"><i class="fa fa-circle-o"></i> View Driver Details</a></li>
             </ul>
         </li>
-      </ul>
 
-       <ul class="sidebar-menu">
-        <li id="jobscard" class="treeview">
+        <li id="" class="treeview jobcard">
             <a href="#">
               <i class="fa fa-dashboard"></i> <span>Jobs Card</span>
               <span class="pull-right-container">
@@ -73,26 +77,10 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
               </span>
             </a>
             <ul class="treeview-menu">
-               <li id="view_driver" class=""><a href="<?= base_url('workshop/jobcard/view_jobcard'); ?>"><i class="fa fa-circle-o"></i> View Jobs Card</a></li>
+               <li id="view_jobcard" class=""><a href="<?= base_url('workshop/jobcard/view_jobcard'); ?>"><i class="fa fa-circle-o"></i> View Jobs Card</a></li>
             </ul>
         </li>
-      </ul>
-
-       
-      <!--<ul class="sidebar-menu">
-        <li id="manager" class="treeview">
-            <a href="#">
-              <i class="fa fa-dashboard"></i> <span>Workshop Management</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li id="add_manager"><a href="<?= base_url('admin/workshop/add_manager'); ?>"><i class="fa fa-circle-o"></i> Add Manager</a></li>
-              <li id="view_manager" class=""><a href="<?= base_url('admin/workshop/view_manager'); ?>"><i class="fa fa-circle-o"></i> View Manager</a></li>
-            </ul>-->
-        </li>
-      </ul>   
+      </ul> 
        
     </section>
     <!-- /.sidebar -->
@@ -100,5 +88,6 @@ $cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
 
   
 <script>
-  $("#<?= $cur_tab; ?>").addClass('active');
+  $(".<?php echo $cur_tab; ?>").addClass('active');
+  $("#<?php echo $cur_tab_link; ?>").addClass('active');
 </script>

@@ -96,6 +96,4 @@ if($cur_tab=='enquiry'){
 <script>
   $(".<?php echo $cur_tab; ?>").addClass('active');
   $("#<?php echo $cur_tab_link; ?>").addClass('active');
-  $("#<?php echo $cur_tab; ?>").parent().siblings('.sidebar-menu').find('.treeview').removeClass('active');
-  console.log($("#<?php echo $cur_tab; ?>").parents('ul'));
 </script>

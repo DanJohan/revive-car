@@ -107,6 +107,7 @@
 			if(!$id){
 				redirect(base_url('admin/driver/view_driver'));
 			}
+			$data['driver'] = $this->DriverModel->get(array('id'=>$id));
 			if($this->input->post('submit')){
 
 				$this->form_validation->set_rules('d_name', 'Username', 'trim|required');
@@ -122,6 +123,7 @@
 					redirect(base_url('admin/driver/edit_driver/'.$id));
 				}
 				else{
+				
 				$phone= $this->input->post('d_phone');
 				$phone = "+91".$phone;
 				$email = $this->input->post('d_email');
@@ -129,6 +131,15 @@
 
 				$driverEmailInfo =	$this->DriverModel->checkEmailExistsExcept($id,$email);
 				if(!$driverPhoneInfo && !$driverEmailInfo) {
+					$file_name = $data['driver']['d_photo'];
+					if(isset($_FILES['d_photo']) && !empty($_FILES['d_photo']['name'])) {
+						$path= FCPATH.'uploads/admin/';
+						$upload= $this->do_upload('d_photo',$path);
+						if(isset($upload['upload_data'])){
+							$file_name = $upload['upload_data']['file_name'];
+							@unlink($path.$data['driver']['d_photo']);
+						}
+					}	
 					$data = array(
 						'd_name' => $this->input->post('d_name'),
 						'd_email' => $this->input->post('d_email'),
@@ -136,7 +147,8 @@
 						'd_location' => $this->input->post('d_location'),
 						'd_address' => $this->input->post('d_address'),
 						'd_workshop_assign' => $this->input->post('d_workshop_assign'),
-						'd_license' => $this->input->post('d_license')
+						'd_license' => $this->input->post('d_license'),
+						'd_photo' =>$file_name
 					);
 				
 					$result = $this->DriverModel->update($data, array('id'=>$id));
@@ -155,7 +167,7 @@
 				}
 			}
 		}else{
-			$data['driver'] = $this->DriverModel->get(array('id'=>$id));
+			
 			$data['driver']['d_phone'] = substr($data['driver']['d_phone'],-10);
 			$data['managers']=$this->WorkshopModel->get_all();
 			$data['view'] = 'admin/driver/edit_driver';
