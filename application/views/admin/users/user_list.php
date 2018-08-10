@@ -1,9 +1,3 @@
- <style type="text/css">
-.btn{
-  padding: 3px 6px !important;
-}
- </style>
- <!-- Datatable style -->
 
  <section class="content">
    <div class="box">
@@ -15,6 +9,7 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
+          <th style="display:none;"></th>
           <th>Username</th>
           <th>Email</th>
           <th>Mobile No.</th>
@@ -24,20 +19,21 @@
         </tr>
         </thead>
         <tbody>
-          <?php foreach($all_users as $row): ?>
+          <?php foreach($all_users as $user){ ?>
           <tr>
-            <td><?= $row['name']; ?></td>
-            <td><?= $row['email']; ?></td>
-            <td><?= $row['phone']; ?></td>
-            <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
+            <td style="display: none;"><?php echo $user['id']; ?></td>
+            <td><?php echo $user['name']; ?></td>
+            <td><?php echo $user['email']; ?></td>
+            <td><?php echo $user['phone']; ?></td>
+            <td><?php echo date('d M Y h:i A',strtotime($user['created_at'])); ?></td>
            <td class="text-right">
-              <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/users/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
-            <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/users/edit/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-            <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/users/del/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
+              <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/users/view_record_by_id/'.$user['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+            <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/users/edit/'.$user['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
+            <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/users/del/'.$user['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
             
             </td>
           </tr>
-          <?php endforeach; ?>
+          <?php } ?>
         </tbody>
        
       </table>
@@ -49,7 +45,9 @@
 <?php $this->load->view('common/modal'); ?>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#example1").DataTable({
+      'order':[[0,'desc']]
+    });
   });
 </script> 
 <script>

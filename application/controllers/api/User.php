@@ -215,7 +215,11 @@ class User extends Rest_Controller {
 		$this->renderJson($response);
 
 	}// end of registerDevice method
-
+	/**
+	 * [sendOtpToChangePassword description]
+	 * @param int  $user_id [id of user]
+	 * @return json array of otp send to user with user detail
+	 */
 	public function sendOtpToChangePassword(){
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
@@ -223,7 +227,7 @@ class User extends Rest_Controller {
 
 			$user_id = $this->input->post('user_id');
 
-			$criteria['field'] = 'id,otp,otp_verify,name,phone,device_id,device_type,email,created_at,updated_at';
+			$criteria['field'] = 'id,phone,change_password_otp,created_at,updated_at';
 			$criteria['conditions'] = array('id'=>$user_id);
 			$criteria['returnType'] = 'single';
 
@@ -241,6 +245,7 @@ class User extends Rest_Controller {
 						'change_password_otp'=>$otp,
 					);
 					$this->UserModel->update($update_data,array('id'=>$user_id));
+					$user= $this->UserModel->search($criteria);
 					$response= array('status'=>true,'message'=>"OTP sent to your register phone",'user'=>$user);
 				}else{
 					$response = array('status'=>false,'message'=>$message); 
@@ -275,7 +280,7 @@ class User extends Rest_Controller {
 	   	   	$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
 	   	   }else{
 
-	   	   		$response = array('status'=>false,'message'=>array('otp'=>'OTP code doesn\'t match'));
+	   	   		$response = array('status'=>false,'message'=>'OTP code doesn\'t match');
 
 	   	   }
 		}else{
