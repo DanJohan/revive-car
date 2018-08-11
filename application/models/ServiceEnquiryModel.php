@@ -43,8 +43,8 @@ class ServiceEnquiryModel extends MY_Model {
 		$this->db->join('cars AS c','e.car_id = c.id');
 		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
 		$this->db->join('car_models AS cm','c.model_id = cm.id');
-		$this->db->join('users AS u','c.user_id = u.id');
-		$this->db->order_by('e.id','DESC');
+		$this->db->join('users AS u','e.user_id = u.id');
+		$this->db->order_by('e.id','desc');
 		$query = $this->db->get();
 		$result = $query->result_array();
 		return (!empty($result))? $result : false;

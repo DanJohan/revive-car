@@ -1,11 +1,3 @@
-  <style type="text/css">
-.btn{
-  padding: 3px 6px !important;
-}
- </style>
- <!-- Datatable style -->
-<link rel="stylesheet" href="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.css">  
-
  <section class="content">
     <?php 
      $this->load->view('common/flashmessage'); 
@@ -19,6 +11,8 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
+          <th>enquiry_id</th>
+          <th>user_id</th>
           <th>Username</th>
           <th>Car-Model</th>
           <th>Loaner vehicle</th>
@@ -34,6 +28,8 @@
               foreach ($enquiries as $index => $enquiry) {
           ?>
             <tr style="<?php //echo ($enquiry['confirmed'])?'background-color: lightgreen':''; ?>">
+                <td><?php echo $enquiry['id']; ?></td>
+                <td><?php echo $enquiry['user_id']; ?></td>
                 <td><?php echo $enquiry['name']; ?></td>
                 <td><?php echo $enquiry['brand_name']."-".$enquiry['model_name']; ?></td>
                 <td><?php echo ($enquiry['loaner_vehicle'])? 'Required' : 'Not required'; ?></td>
@@ -57,12 +53,23 @@
   <!-- /.box -->
 </section>  
 
-<!-- DataTables -->
-<script src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#example1").DataTable({
+      'order':[[0,'desc']],
+      "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [1],
+                "visible": false,
+                "searchable": true
+            }
+        ]
+    });
   });
 </script> 
 <script>

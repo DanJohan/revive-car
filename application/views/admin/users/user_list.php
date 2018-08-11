@@ -9,7 +9,7 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
-          <th style="display:none;"></th>
+          <th>User id</th>
           <th>Username</th>
           <th>Email</th>
           <th>Mobile No.</th>
@@ -21,7 +21,7 @@
         <tbody>
           <?php foreach($all_users as $user){ ?>
           <tr>
-            <td style="display: none;"><?php echo $user['id']; ?></td>
+            <td><?php echo $user['id']; ?></td>
             <td><?php echo $user['name']; ?></td>
             <td><?php echo $user['email']; ?></td>
             <td><?php echo $user['phone']; ?></td>

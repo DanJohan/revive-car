@@ -26,7 +26,7 @@ class Enquiry extends MY_Controller {
 			$this->ServiceEnquiryModel->markEnquirySeen($id);
 		}
 		$data['enquiries'] = $this->ServiceEnquiryModel->getAllEnquiries();
-		
+		//dd($data['enquiries']);
 		$data['view'] = 'admin/enquiry/index';
 		$this->load->view('admin/layout', $data);
 	}
