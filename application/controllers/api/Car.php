@@ -210,6 +210,7 @@ class Car extends Rest_Controller {
 		$this->form_validation->set_rules('enquiry', 'Enquiry', 'trim|required');
 		$this->form_validation->set_rules('pick_up_date','Pickup Date','trim|required');
 		$this->form_validation->set_rules('pick_up_time','Pickup Time', 'trim|required');
+		$this->form_validation->set_rules('service_type', 'Service Type' ,'trim|required');
 		//dd($_FILES);die;
 		if ($this->form_validation->run() == true) {
 			$register_data = array(
@@ -222,7 +223,7 @@ class Car extends Rest_Controller {
 				'loaner_vehicle' => $this->input->post('loaner_vehicle'),
 				'enquiry' => $this->input->post('enquiry'),
 				'pick_up_date'=> $this->input->post('pick_up_date'),
-				'service_type' => 1,
+				'service_type' => $this->input->post('service_type'),
 				'pick_up_time' => $this->input->post('pick_up_time'),
 				'created_at' => date("Y-m-d H:i:s") 
 			);

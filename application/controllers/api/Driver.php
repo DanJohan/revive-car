@@ -9,7 +9,7 @@ class Driver extends Rest_Controller {
 	    $this->load->model('ServiceEnquiryModel');
 	    $this->load->model('JobcardModel');
 	    $this->load->model('JobCardImageModel');
-	    $this->load->model('JobModel');
+	    $this->load->model('RepairOrderModel');
 	    $this->load->model('DriverNotificationModel');
 	    $this->load->model('DriverModel');
 	}
@@ -116,7 +116,6 @@ class Driver extends Rest_Controller {
 	}
 
 	public function createJob(){
-
 		//dd($_POST,false);
 		//dd($_FILES);
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
@@ -128,33 +127,38 @@ class Driver extends Rest_Controller {
 				'enquiry_id' => $this->input->post('enquiry_id'),
 				'car_id' =>$this->input->post('car_id'),
 				'user_id' => $this->input->post('user_id'),
-				'lv_provide' => $this->input->post('lv_provide'),
+				'alternate_no'=>$this->input->post('alternate_no'),
+				'vin_no' => $this->input->post('vin_no'),
+				'sa_name_no'=> $this->input->post('sa_name_no'),
+				'delivery_datetime'=>$this->input->post('delivery_datetime'),
+				'reporting_datetime'=>$this->input->post('reporting_datetime'),
+				'type_of_service' =>($this->input->post('type_of_service')) ? json_encode($this->input->post('type_of_service')) :'',
+				'ride_kms'=>$this->input->post('ride_kms'),
 				'lv_reg_no' => $this->input->post('lv_reg_no'),
-				'date_of_accident' => $this->input->post('date_of_accident'),
-				'able_to_authorise' => $this->input->post('able_to_authorise'),
-				'taxable' => $this->input->post('taxable'),
-				'registration_no' => $this->input->post('registration_no'),
-				'damage_area' =>($this->input->post('damage_area')) ? json_encode($this->input->post('damage_area')) :'',
-				'vehicle_status'=>($this->input->post('vehicle_status')) ? json_encode($this->input->post('vehicle_status')) :'',
-				'condition_description'=>($this->input->post('condition_description')) ? json_encode($this->input->post('condition_description')) :'',
-				'body_color'=>$this->input->post('body_color'),
-				'vehicle_identity'=>($this->input->post('vehicle_identity')) ? json_encode($this->input->post('vehicle_identity')) :'',
-				'body_style'=>($this->input->post('body_style')) ? json_encode($this->input->post('body_style')) :'',
-				'paint'=>($this->input->post('paint')) ? json_encode($this->input->post('paint')) :'',
-				'tyres'=>$this->input->post('tyres'),
+				'damage_mark'=>($this->input->post('damage_mark')) ? json_encode($this->input->post('damage_mark')) :'',
+				'car_properties'=>($this->input->post('car_properties'))? json_encode($this->input->post('car_properties')) :'',
+				'vehicle_qty'=>($this->input->post('vehicle_qty'))? json_encode($this->input->post('vehicle_qty')) :'',
 				'created_at' => date('Y-m-d H:i:s')
 			);
 			$insert_id = $this->JobcardModel->insert($insert_data);
 
 			// insert jobs data
-			$jobs= $this->input->post('jobs');
-			if(!empty($jobs) && $insert_id){
-				foreach ($jobs as $index => $job) {
-					$jobs[$index]['job_card_id'] = $insert_id;
-					$jobs[$index]['created_at'] = date('Y-m-d H:i:s');
+			$repair_orders= $this->input->post('repair_order');
+			if(!empty($repair_orders) && $insert_id){
+				foreach ($repair_orders as $index => $repair_order) {
+					$repair_orders[$index]['job_card_id'] = $insert_id;
+					$repair_orders[$index]['parts_name'] = $repair_order['parts_name'];
+					$repair_orders[$index]['customer_request'] = $repair_order['customer_request'];
+					$repair_orders[$index]['sa_remarks'] = $repair_order['sa_remarks'];
+					$repair_orders[$index]['qty'] = $repair_order['qty'];
+					$repair_orders[$index]['price_labour'] = $repair_order['price_labour'];
+					$repair_orders[$index]['price_parts'] = $repair_order['price_parts'];
+					$repair_orders[$index]['price_total'] = $repair_order['price_total'];
+					$repair_orders[$index]['created_at'] = date('Y-m-d H:i:s');
 				}
 			}
-			$this->JobModel->insert_batch($jobs);
+
+			$this->RepairOrderModel->insert_batch($repair_orders);
 
 			// insert job card images
 			$files_data = array();

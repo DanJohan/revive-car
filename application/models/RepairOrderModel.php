@@ -1,9 +1,9 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class JobModel extends MY_Model {
+	class RepairOrderModel extends MY_Model {
 
-		protected $table = 'jobs';
+		protected $table = 'repair_orders';
 
 		public function __construct()
 		{

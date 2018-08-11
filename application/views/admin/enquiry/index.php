@@ -23,6 +23,7 @@
           <th>Car-Model</th>
           <th>Loaner vehicle</th>
           <th>Enquiry</th>
+          <th>Status</th>
           <th>Created At</th>
           <th style="width: 150px;" class="text-right">Actions</th>
         </tr>
@@ -32,11 +33,12 @@
             if(!empty($enquiries)) {
               foreach ($enquiries as $index => $enquiry) {
           ?>
-            <tr style="<?php echo ($enquiry['confirmed'])?'background-color: lightgreen':''; ?>">
+            <tr style="<?php //echo ($enquiry['confirmed'])?'background-color: lightgreen':''; ?>">
                 <td><?php echo $enquiry['name']; ?></td>
                 <td><?php echo $enquiry['brand_name']."-".$enquiry['model_name']; ?></td>
                 <td><?php echo ($enquiry['loaner_vehicle'])? 'Required' : 'Not required'; ?></td>
                 <td><?php echo $enquiry['enquiry']; ?></td>
+                <td><?php echo ($enquiry['confirmed']) ? '<span class="label label-success">Confirmed</span>':'<span class="label label-warning">Pending</span>'?></td>
                 <td><?php echo date('d M Y h:i A',strtotime($enquiry['created_at'])); ?></td>
                 <td>
                   <a class="btn btn-success" data-toggle="tooltip" href="<?php echo base_url('admin/enquiry/show/'.$enquiry['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
