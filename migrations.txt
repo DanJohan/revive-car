@@ -1,9 +1,0 @@
-**************************************************************
-7 Aug 2018
-**************************************************************
-ALTER TABLE `users` ADD UNIQUE(`phone`);
-ALTER TABLE `users` ADD UNIQUE(`email`);
-ALTER TABLE `driver` ADD UNIQUE(`d_email`);
-ALTER TABLE `driver` ADD UNIQUE(`d_phone`);
-ALTER TABLE `workshop_manager` ADD UNIQUE(`m_phone`);
-ALTER TABLE `workshop_manager` ADD UNIQUE(`m_email`);
