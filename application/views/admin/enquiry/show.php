@@ -1,7 +1,49 @@
- <!-- Datatable style -->
-<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
-
  <section class="content">
+
+    <div class="box">
+        <div class="box-header">
+           <h3 class="box-title">User Detail</h3>
+        </div>
+    
+      <div class="box-body">
+           <div class="text-center">
+            <?php if(!empty($user['profile_image'])) { ?>
+              <img class="photo_img_round img-thumbnail" height="150" width="150" src="<?php echo base_url() ?>uploads/app/<?php echo $enquiry['profile_image']; ?>">
+            <?php }else{ ?>
+              <img class="photo_img_round img-thumbnail" height="150" width="150" src="<?= base_url() ?>public/images/admin/no_image.jpeg">
+            <?php } ?>
+          </div>
+          <table class="table">
+              <tr>
+                  <td><b>User Name</b></td>
+                  <td><?php echo $enquiry['name']; ?></td>
+              </tr>
+               <tr>
+                  <td><b>Phone</b></td>
+                  <td><?php echo $enquiry['phone']; ?></td>
+              </tr>
+              <tr>
+                  <td><b>Email</b></td>
+                  <td><?php echo $enquiry['email']; ?></td>
+              </tr>
+          </table>
+      </div>
+    </div><!-- end of user detail box -->
+  <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">User cars detail</h3>
+      </div>
+    <div class="box-body">
+        <table class="table">
+          <tr><td><b>Brand Name: </b></td><td><?php echo $enquiry['brand_name']; ?></td>
+          <tr><td><b>Model Name: </b></td><td><?php echo $enquiry['model_name']; ?></td>
+          <tr><td><b>Year: </b></td><td><?php echo $enquiry['year']; ?></td>
+          <tr><td><b>Colour: </b></td><td><?php echo ucfirst($enquiry['color']); ?></td>
+          <tr><td><b>Year: </b></td><td><?php echo $enquiry['year']; ?></td>
+          <tr><td><b>Registration No: </b> </td><td><?php echo $enquiry['registration_no']; ?></td>
+        </table>
+    </div>
+  </div>
    <div class="box">
     <div class="box-header">
       <h3 class="box-title">Customer enquiry</h3>
@@ -9,21 +51,13 @@
     <!-- /.box-header -->
     <div class="box-body">
         <table class="table">
-            <tr>
-                <td><b>User Name</b></td>
-                <td><?php echo $enquiry['name']; ?></td>
-            </tr>
-             <tr>
-                <td><b>Car</b></td>
-                <td><?php echo $enquiry['brand_name']; ?></td>
-            </tr>
-             <tr>
-                <td><b>Model</b></td>
-                <td><?php echo $enquiry['model_name']; ?></td>
-            </tr>
              <tr>
                 <td><b>Address</b></td>
                 <td><?php echo $enquiry['address']; ?></td>
+            </tr>
+            <tr>
+                <td><b>Location</b></td>
+                <td><?php echo $enquiry['location']; ?></td>
             </tr>
              <tr>
                 <td><b>Loaner vehicle</b></td>
@@ -32,6 +66,18 @@
              <tr>
                 <td><b>Enquiry</b></td>
                 <td><?php echo $enquiry['enquiry']; ?></td>
+            </tr>
+            <tr>
+                <td><b>Service</b></td>
+                <td><?php echo ($enquiry['service_type']==1)?"Denting":"Painting"; ?></td>
+            </tr>
+            <tr>
+                <td><b>Pick up date</b></td>
+                <td><?php echo $enquiry['pick_up_date']; ?></td>
+            </tr>
+            <tr>
+                <td><b>Pick up time</b></td>
+                <td><?php echo $enquiry['pick_up_time']; ?></td>
             </tr>
              <tr>
                 <td><b>Images</b></td>
@@ -53,12 +99,21 @@
                             echo "</div><div class='row'>";
                           }
                         }
+                      }else{
+                         echo "No image uploaded";
                       }
                     ?>
                    
                  </td>
             </tr>
-            <tr><td><a href="<?php echo base_url(); ?>admin/enquiry/confirm/<?php echo $enquiry['id']; ?>" class="btn btn-primary">Confirm</a></td></tr>
+            <tr>
+              <td style="width: 23%;">
+                <?php if(!$enquiry['confirmed']) { ?>
+                <a href="<?php echo base_url(); ?>admin/enquiry/confirm/<?php echo $enquiry['id']; ?>" class="btn btn-primary">Confirm</a>&nbsp;
+              <?php } ?>
+                <a href="<?php echo base_url(); ?>admin/enquiry/index" class="btn btn-primary">Go back</a>
+              </td>
+            </tr>
         </table>
     </div>
     <!-- /.box-body -->

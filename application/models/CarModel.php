@@ -8,6 +8,20 @@ class CarModel extends MY_Model {
 	{
 	    parent::__construct();
 	}
+
+
+	//used in crm
+	public function getCarWithUserByUserId($user_id) {
+		$this->db->select('c.*,cb.brand_name,cm.model_name,u.name,u.email,u.phone,u.profile_image');
+		$this->db->from($this->table." AS c");
+		$this->db->join('car_brands AS cb','cb.id=c.brand_id');
+		$this->db->join('car_models AS cm','cm.id = c.model_id');
+		$this->db->join('users AS u','c.user_id = u.id');
+		$this->db->where(array('c.user_id'=>$user_id));
+		$result = $this->db->get()->result_array();
+		return $result;
+	}
+
 	public function getCarById($id) {
 		$this->db->select('c.*,cb.brand_name,cm.model_name');
 		$this->db->from($this->table." AS c");

@@ -1,11 +1,3 @@
-   <style type="text/css">
-.btn{
-  padding: 3px 6px !important;
-}
- </style>
- <!-- Datatable style -->
-<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
-
  <section class="content">
    <div class="box">
     <div class="box-header">
@@ -16,6 +8,8 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
+          <th>Job card id</th>
+          <th>User id</th>
           <th>Username</th>
           <th>Phone</th>
           <th>Car</th>
@@ -32,6 +26,8 @@
           ?>
       
           <tr>
+            <td><?php echo $job['id']; ?></td>
+            <td><?php echo $job['user_id']; ?></td>
             <td><?php echo $job['name']; ?></td>
             <td><?php echo $job['phone']; ?></td>
             <td><?php echo $job['brand_name']." - ".$job['model_name']; ?></td>
@@ -56,12 +52,23 @@
   <!-- /.box -->
 </section>  
 
-<!-- DataTables -->
-<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#example1").DataTable({
+      'order':[[0,'desc']],
+      "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [1],
+                "visible": false,
+                "searchable": true
+            }
+        ]
+    });
   });
 </script> 
 <script>

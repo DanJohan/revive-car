@@ -39,7 +39,6 @@ class Enquiry extends MY_Controller {
 		if(empty($data['enquiry'])) {
 			redirect('admin/enquiry/index');
 		}
-		//dd($data);
 		$data['view'] = 'admin/enquiry/show';
 		$this->load->view('admin/layout', $data);
 	}

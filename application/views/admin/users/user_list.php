@@ -27,7 +27,7 @@
             <td><?php echo $user['phone']; ?></td>
             <td><?php echo date('d M Y h:i A',strtotime($user['created_at'])); ?></td>
            <td class="text-right">
-              <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/users/view_record_by_id/'.$user['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+              <a data-toggle="modal" class="btn btn-success" data-toggle="tooltip" href="<?= base_url('admin/users/show/'.$user['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
             <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/users/edit/'.$user['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
             <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/users/del/'.$user['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
             
@@ -52,17 +52,4 @@
 </script> 
 <script>
 $("#view_users").addClass('active');
-
-$(document).on('click','#view-detail',function(){
-  $.ajax({
-    url:$(this).data('link'),
-    method:"POST",
-    success:function(response){
-        if(response) {
-          $('.modal-content').html(response);
-          $('#basicModal').modal();
-        }
-    }
-  });
-});
 </script>        

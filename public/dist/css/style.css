@@ -324,3 +324,16 @@ label{
 .panel-heading{
 	margin-bottom:10px;
 }
+
+.admin-header{
+    background-color: #3c8dbc;
+    color: white;
+}
+.admin-body{
+    background-color: #ecf0f5;
+}
+
+.workshop-header{
+    background-color: #00a65a;
+    color: white;
+}

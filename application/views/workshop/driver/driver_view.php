@@ -1,4 +1,4 @@
-      <div class="modal-header admin-header">
+      <div class="modal-header workshop-header">
         <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
         <h3 class="modal-title">Driver Details</h3>
       </div>

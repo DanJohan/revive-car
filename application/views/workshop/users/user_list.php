@@ -9,6 +9,7 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
+          <th>User id</th>
           <th>Username</th>
           <th>Email</th>
           <th>Mobile No.</th>
@@ -24,12 +25,13 @@
             {
             ?>
               <tr>
-                <td><?= $row['name']; ?></td>
-                <td><?= $row['email']; ?></td>
-                <td><?= $row['phone']; ?></td>
-                <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo $row['name']; ?></td>
+                <td><?php echo $row['email']; ?></td>
+                <td><?php echo $row['phone']; ?></td>
+                <td><?php echo date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
                 <td class="text-right">
-                  <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('workshop//users/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+                  <a data-toggle="modal" class="btn btn-success" data-toggle="tooltip" href="<?php echo base_url('workshop/users/show/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
                 </td>
               </tr>
             <?php
@@ -47,21 +49,12 @@
 <?php $this->load->view('common/modal'); ?>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#example1").DataTable({
+      'order':[[0,'desc']]
+    });
   });
 </script> 
 <script>
 $("#users").addClass('active');
-$(document).on('click','#view-detail',function(){
-  $.ajax({
-    url:$(this).data('link'),
-    method:"POST",
-    success:function(response){
-        if(response) {
-          $('.modal-content').html(response);
-          $('#basicModal').modal();
-        }
-    }
-  });
-});
+
 </script>        

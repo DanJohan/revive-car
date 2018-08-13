@@ -51,8 +51,8 @@ if($cur_tab=='users'){
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="u_index" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i> View User Details</a></li>
-               <li id="e_index"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>User enquiries</a></li>
+              <li id="u_index" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i>Users Detail</a></li>
+               <li id="e_index"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>Users enquiry</a></li>
             </ul>
           </li>
 

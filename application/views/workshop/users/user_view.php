@@ -1,6 +1,6 @@
  <section class="content">
    <div class="box">
-    <div class="box-header">
+    <div class="box-header workshop-header">
       <h3 class="box-title">User deatail</h3>
     </div>
     <!-- /.box-header -->
@@ -31,7 +31,7 @@
   </div>
   <!-- /.box -->
   <div class="box">
-      <div class="box-header">
+      <div class="box-header workshop-header">
         <h3 class="box-title">User cars detail</h3>
       </div>
       <div class="box-body">
@@ -39,7 +39,7 @@
               foreach ($cars as $index => $car) {
             ?>
               <table class="table">
-                <tr style="background-color: #3c8cbd;color:white;"><td>Car No.</td><td><?php echo ($index+1); ?></td></tr>
+                <tr class="workshop-header"><td>Car No.</td><td><?php echo ($index+1); ?></td></tr>
                 <tr><td><b>Brand Name: </b></td><td><?php echo $car['brand_name']; ?></td>
                 <tr><td><b>Model Name: </b></td><td><?php echo $car['model_name']; ?></td>
                 <tr><td><b>Year: </b></td><td><?php echo $car['year']; ?></td>
@@ -50,7 +50,7 @@
             <?php } }else{ ?>
                 <p>No record found</p>
             <?php } ?>
-          <a href="<?php echo base_url(); ?>admin/users" class="btn btn-primary">Go back</a>
+          <a href="<?php echo base_url(); ?>workshop/users" class="btn btn-success">Go back</a>
       </div>
   </div>
 </section>  

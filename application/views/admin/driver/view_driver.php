@@ -13,6 +13,7 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
+          <th>Driver id</th>
           <th>Image</th>
           <th>Username</th>
           <th>Email</th>
@@ -26,7 +27,7 @@
           <?php foreach($all_driver as $row):?>
       
           <tr>
-
+            <td><?php echo $row['id']; ?></td>
             <td><?php if($row['d_photo']){?>
               <img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/<?= $row['d_photo']; ?>">
               <?php }else {?>
@@ -57,7 +58,16 @@
 <?php $this->load->view('common/modal'); ?>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#example1").DataTable({
+       'order':[[0,'desc']],
+        "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+    });
   });
 </script> 
 <script>

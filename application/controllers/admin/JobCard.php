@@ -16,7 +16,7 @@ class JobCard extends MY_Controller {
 
 	public function list(){
 
-		$data['jobs'] = $this->JobcardModel->JobcardDetails();
+		$data['jobs'] = $this->JobcardModel->jobCardDetails();
 		$data['view'] = 'admin/jobcard/list';
 	//	dd($data);
 		$this->load->view('admin/layout', $data);

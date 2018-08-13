@@ -3,15 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Car extends MY_Controller {
 
-	public function __construct(){
-		parent::__construct();
-		$this->load->model('CarBrandModel');
-		$this->load->model('CarModelsModel');
-		if (!$this->session->userdata['is_admin_login'] == TRUE)
-		{
-			   redirect('admin/auth/login'); //redirect to login page
+		public function __construct(){
+			parent::__construct();
+			if (!$this->session->userdata['is_admin_login'] == TRUE)
+			{
+				   redirect('admin/auth/login'); //redirect to login page
 			} 
+			$this->load->model('CarModel');
+			$this->load->model('CarBrandModel');
+			$this->load->model('CarModelsModel');
 		}
+
+		
 
 		public function add_carbrand(){ //display add carbrand page 
 			$data=array();
@@ -24,16 +27,7 @@ class Car extends MY_Controller {
 		public function add_carmodel(){ //display add carmodel page 
 			$data=array();
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
-
-			/*$c['field'] = 'car_models.*,car_brands.brand_name';
-			$c['join'] = array(
-				array('car_brands','car_models.brand_id=car_brands.id','inner'),
-			);
-			$data['all_carmodel'] =  $this->CarModelsModel->search($c);
-			echo $this->db->last_query()*/;
-
 			$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
-			//dd($data['all_carmodel']);
 			$data['view'] = 'admin/car/add_carmodel';
 			$this->load->view('admin/layout', $data);
 			
@@ -97,6 +91,15 @@ class Car extends MY_Controller {
 			$this->session->set_flashdata('msg', 'Model name is Deleted Successfully!');
 			redirect(base_url('admin/car/add_carmodel'));
 		}
+
+		/*public function show($car_id = null){
+			if($car_id) {
+				$data['car'] = $this->CarModel->getCarWithUserById($car_id);
+			}
+			//dd($data['car']);
+			echo $this->load->view('admin/car/car_view',$data,true);
+			exit;
+		}*/
 
 
 	}

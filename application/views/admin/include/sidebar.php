@@ -46,8 +46,8 @@ if($cur_tab=='enquiry'){
               </span>
             </a>
             <ul class="treeview-menu">
-               <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o text-aqua"></i> View User Details</a></li>
-                <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o text-aqua"></i>User enquiries</a></li>
+               <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o text-aqua"></i> Users Detail</a></li>
+                <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o text-aqua"></i>Users enquiry</a></li>
                 <li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-circle-o text-aqua"></i>User job cards</a></li>
             </ul>
           </li>

@@ -5,11 +5,12 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('UserModel');
 			if (!$this->session->userdata['is_admin_login'] == TRUE)
 			{
 			   redirect('admin/auth/login'); //redirect to login page
 			} 
+			$this->load->model('CarModel');
+			$this->load->model('UserModel');
 		}
  
 		public function index(){
@@ -70,14 +71,15 @@
 				$this->load->view('admin/layout', $data);
 			}
 		}
-		public function view_record_by_id($id){
+		public function show($id){
 			$data=array();
-			$criteria['field'] = 'phone,name,email,profile_image';
+			$criteria['field'] = 'id,phone,name,email,profile_image';
 			$criteria['conditions'] = array('id'=>$id);
 			$criteria['returnType'] = 'single';
 			$data['user'] =  $this->UserModel->search($criteria);
-			echo $this->load->view('admin/users/user_view',$data,true);
-			exit;
+			$data['cars'] = $this->CarModel->getCarWithUserByUserId($id);
+			$data['view'] = 'admin/users/user_view';
+			$this->load->view('admin/layout',$data);
 		  }
 			
 		public function del($id = null){
@@ -88,6 +90,12 @@
 			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
 			redirect(base_url('admin/users'));
 		}
+
+		/*public function carList(){
+			$data['cars'] = $this->CarModel->getAllCarsWithUsers();
+			$data['view'] = 'admin/car/car_list';
+			$this->load->view('admin/layout', $data);
+		}*/
 
 	}
 

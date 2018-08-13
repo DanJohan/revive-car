@@ -1,11 +1,3 @@
-   <style type="text/css">
-.btn{
-  padding: 3px 6px !important;
-}
- </style>
- <!-- Datatable style -->
-<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">  
-
  <section class="content">
    <div class="box">
     <div class="box-header">
@@ -16,6 +8,7 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
+          <th>Id</th>
           <th>Image</th>
           <th>Manager Name</th>
           <th>Email</th>
@@ -33,6 +26,7 @@
           ?>
       
           <tr>
+            <td><?php echo $row['id']; ?></td>
             <td><?php if($row['m_photo']){?>
               <img class="photo_img_round" height="50" width="50" src="<?= base_url() ?>uploads/admin/<?= $row['m_photo']; ?>">
               <?php }else {?>
@@ -67,12 +61,18 @@
 </section>  
 <?php $this->load->view('common/modal');?>
 
-<!-- DataTables -->
-<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#example1").DataTable({
+      'order':[[0,'desc']],
+        "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }
+        ]
+    });
   });
 </script> 
 <script>

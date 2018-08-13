@@ -5,32 +5,31 @@
 
 		public function __construct(){
 			parent::__construct();
-			$this->load->model('UserModel');
-		if (!$this->session->userdata['is_manager_login'] == TRUE)
+			if (!$this->session->userdata['is_manager_login'] == TRUE)
 
-		{
-		   redirect('workshop/auth/login'); //redirect to login page
-		} 
+			{
+			   redirect('workshop/auth/login'); //redirect to login page
+			}
+			$this->load->model('CarModel');
+			$this->load->model('UserModel');
 
 		}
 
 		public function index(){
-			$criteria['field'] = 'id,name,phone,email,created_at';
-
-			$data['userData'] =  $this->UserModel->search($criteria);
-			//$data['userData'] =array();
+			$data['userData'] =  $this->UserModel->get_all(array('name !='=>'','email !='=>''),array('id','desc'));
 			$data['view'] = 'workshop/users/user_list';
 			$this->load->view('workshop/layout', $data);
 		}
 
-		public function view_record_by_id($id){
+		public function show($id){
 			$data=array();
-			$criteria['field'] = 'phone,name,email,profile_image';
+			$criteria['field'] = 'id,phone,name,email,profile_image';
 			$criteria['conditions'] = array('id'=>$id);
 			$criteria['returnType'] = 'single';
 			$data['user'] =  $this->UserModel->search($criteria);
-			echo $this->load->view('admin/users/user_view',$data,true);
-			exit;
+			$data['cars'] = $this->CarModel->getCarWithUserByUserId($id);
+			$data['view'] = 'workshop/users/user_view';
+			$this->load->view('workshop/layout',$data);
 		  }
 		
 		
