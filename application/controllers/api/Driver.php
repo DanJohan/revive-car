@@ -116,8 +116,7 @@ class Driver extends Rest_Controller {
 	}
 
 	public function createJob(){
-		//dd($_POST,false);
-		//dd($_FILES);
+
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
@@ -264,7 +263,7 @@ class Driver extends Rest_Controller {
 			return;
 		}
 		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
-		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total')),SORT_REGULAR),'repair_order_id','');
+		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','price_labour','price_parts','price_total')),SORT_REGULAR),'repair_order_id','');
 		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
 		$job_card = $job_card[0];
 		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total','enquiry_image_id','enquiry_image');

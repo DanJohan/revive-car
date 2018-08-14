@@ -27,7 +27,7 @@ class User extends Rest_Controller {
 					'phone'=>$phone,
 					'body' =>$otp." otp for your mobile verification"
 			);
-			if(! $userInfo){
+			if(!$userInfo){
 				
 				$message = $this->textmessage->send($data);
 				//print_r($message);die;
