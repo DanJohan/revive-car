@@ -137,6 +137,7 @@ class Driver extends Rest_Controller {
 				'lv_reg_no' => $this->input->post('lv_reg_no'),
 				'damage_mark'=>($this->input->post('damage_mark')) ? json_encode($this->input->post('damage_mark')) :'',
 				'car_properties'=>($this->input->post('car_properties'))? json_encode($this->input->post('car_properties')) :'',
+				'fuel'=>$this->input->post('fuel'),
 				'vehicle_qty'=>($this->input->post('vehicle_qty'))? json_encode($this->input->post('vehicle_qty')) :'',
 				'created_at' => date('Y-m-d H:i:s')
 			);
@@ -253,6 +254,30 @@ class Driver extends Rest_Controller {
 		$this->renderJson($response);
 
 	}// end of registerDevice method
+
+	public function veiwJobCard($id=null) {
+		if($id){
+			$job_card=$this->JobcardModel->getJobCardById($id);
+		}
+
+		if(empty($job_card)){
+			return;
+		}
+		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
+		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total')),SORT_REGULAR),'repair_order_id','');
+		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
+		$job_card = $job_card[0];
+		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total','enquiry_image_id','enquiry_image');
+		foreach($removeKeys as $key) {
+		   unset($job_card[$key]);
+		}
+		$job_card['images_data']=$job_card_images;
+		$job_card['repair_orders']=$repair_orders;
+		$job_card['enquiry_images'] = $enquiry_images;
+		$data['job_card'] = $job_card;
+		//dd($data['job_card'],false);
+		$this->load->view('api/job_card_detail',$data);
+	}
 
 
 }// end of class

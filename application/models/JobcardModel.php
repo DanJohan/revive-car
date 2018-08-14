@@ -25,20 +25,11 @@ class JobcardModel extends MY_Model {
 	}
 
 	public function getJobCardById($id) {
-		$this->db->select('jc.*,
-			GROUP_CONCAT(DISTINCT jci.id SEPARATOR "|") AS image_ids,
-			GROUP_CONCAT(DISTINCT jci.image SEPARATOR "|") AS images,
-			GROUP_CONCAT(DISTINCT j.id SEPARATOR "|") AS job_ids,
-			GROUP_CONCAT(DISTINCT j.name SEPARATOR "|") AS job_names,
-			GROUP_CONCAT(DISTINCT j.description SEPARATOR "|") AS job_descriptions,
-			c.color,cb.brand_name,cm.model_name,u.phone,u.email,u.name,se.address,
-			GROUP_CONCAT(DISTINCT ei.id SEPARATOR "|") AS enquiry_image_ids,
-			GROUP_CONCAT(DISTINCT ei.image SEPARATOR "|") AS enquiry_images,
-			'
+		$this->db->select('jc.*,jci.id AS image_id,jci.image,ro.id AS repair_order_id,ro.parts_name,ro.customer_request,ro.sa_remarks,ro.qty,ro.price_labour,ro.price_parts,ro.price_total,c.color,cb.brand_name,cm.model_name,u.phone,u.email,u.name,se.address,ei.id AS enquiry_image_id,ei.image AS enquiry_image'
 		);
 		$this->db->from($this->table.' AS jc');
 		$this->db->join('job_card_images AS jci','jc.id=jci.job_card_id','left');
-		$this->db->join('jobs AS j','jc.id=j.job_card_id','left');
+		$this->db->join('repair_orders AS ro','jc.id=ro.job_card_id','left');
 		$this->db->join('users AS u','jc.user_id = u.id');
 		$this->db->join('cars AS c', 'jc.car_id = c.id');
 		$this->db->join('car_brands AS cb', 'c.brand_id=cb.id');
@@ -48,6 +39,6 @@ class JobcardModel extends MY_Model {
 		$this->db->where('jc.id',$id);
 		$query = $this->db->get();
 		//echo $this->db->last_query();die;
-		return $query->row_array();
+		return $query->result_array();
 	}
 }

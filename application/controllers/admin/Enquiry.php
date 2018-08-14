@@ -58,7 +58,7 @@ class Enquiry extends MY_Controller {
 			redirect('admin/enquiry/index');
 		}
 
-		$data['drivers'] = $this->DriverModel->get_all();
+		//$data['drivers'] = $this->DriverModel->get_all();
 		$data['wmanagers'] = $this->WorkshopModel->get_all();
 		//dd($data['wmanagers']);
 		$data['view'] = 'admin/enquiry/confirm';

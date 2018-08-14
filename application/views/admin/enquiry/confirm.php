@@ -33,15 +33,6 @@
                 <td>
                     <select class="form-control" name="driver" id="driver_id">
                         <option value="">Please select</option>
-                        <?php
-                          if(!empty($drivers)) {
-                            foreach ($drivers as $index => $driver) {
-                        ?>
-                          <option value="<?php echo $driver['id']; ?>"><?php echo $driver['d_name']; ?></option>
-                        <?php
-                            }
-                          }
-                        ?>
                     </select>
                 </td>
             </tr>
