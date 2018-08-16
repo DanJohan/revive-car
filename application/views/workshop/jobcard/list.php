@@ -1,7 +1,7 @@
  <section class="content">
     <?php  $this->load->view('common/flashmessage'); ?>
    <div class="box">
-    <div class="box-header">
+    <div class="box-header bg-green">
       <h3 class="box-title">User job cards</h3>
     </div>
     <!-- /.box-header -->
@@ -37,7 +37,7 @@
 
          
             <td class="text-right">
-              <a data-toggle="modal" class="btn btn-success" data-toggle="tooltip" href="<?php echo  base_url('admin/jobCard/show/'.$job['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+              <a data-toggle="modal" class="btn btn-success" data-toggle="tooltip" href="<?php echo  base_url('workshop/jobCard/show/'.$job['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
             
           </tr>
           <?php

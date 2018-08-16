@@ -10,10 +10,8 @@
 	<meta name="author" content="">
 	<link rel="icon" href="../../favicon.ico">
 
-	<title>Justified Nav Template for Bootstrap</title>
+	<title>Job card</title>
 
-	<!-- Bootstrap core CSS -->
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
 	<link rel="stylesheet" href="<?php echo base_url(); ?>public/bootstrap/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Raleway+Dots" rel="stylesheet">
 	<!-- Optional theme -->
@@ -24,7 +22,8 @@
 
 
 <!--=======TOP-SEC==========-->
-
+<body>
+<div class="main-wrapper">
 <section>
 	<div class="container">
 		<div class="row">
@@ -61,18 +60,41 @@
 						<h3 class="details">Customer Details</h3>
 						<div class="Cusomer-details customer-detail-wrapper">
 							<div class="regi">
-								<p><b>Owner  Name  : </b><span><?php echo $job_card['name']; ?></span></p>
-								<p><b>Email Id  : </b><span><?php echo $job_card['email']; ?></span></p>
-								<p><b>Mobile No : </b><span><?php echo $job_card['phone']; ?></span></p>
-								<p><b> Address : </b><span><?php echo $job_card['address']; ?></span></p>
-								<p><b>Alternate No :</b><span><?php echo $job_card['alternate_no']; ?></span></p>
-								<p><b>Loaner Car: Yes/No:</b>:<span><?php echo ($job_card['loaner_vehicle'])?"Yes":"No"; ?></span></p>
-
-
-								<ul class="fs">
-									<li><p><b>Walk-in:</b>:<span>Text</span></p></li>
-									<li><p><b>Appointment:</b>:<span>Text</span></p></li>
-								</ul>
+								<div class="row">
+									<div class="col-xs-5"><b>Owner  Name</b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span><?php echo $job_card['name']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Email Id  : </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['email']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Mobile No : </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['phone']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b> Address : </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['address']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Alternate No :</b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['alternate_no']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Loaner Car: </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo ($job_card['loaner_vehicle'])?"Yes":"No"; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Visit: </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data">Walk in</span></div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -80,27 +102,69 @@
 						<h3 class="details">Vehicle Details</h3>
 						<div class="Cusomer-details">
 							<div class="regi">
-								<p><b>Registertion No</b>:<span><?php echo $job_card['registration_no']; ?></span></p>
-								<p><b>Brand Name</b>:<span><?php echo $job_card['brand_name']; ?></span></p>
-								<p><b>Model:</b>:<span><?php echo $job_card['model_name']; ?></span></p>
-								<p><b>VIN No:</b>:<span><?php echo $job_card['vin_no']; ?></span></p>
-								<p><b>S A Name & No :</b>:<span><?php echo $job_card['sa_name_no']; ?></span></p>
-								<p><b>Delivery Date And Time :</b>:<span><?php echo $job_card['delivery_datetime']; ?></span></p>
-								<p><b>Reporting Date and Time:</b>:<span><?php echo $job_card['reporting_datetime']; ?></span></p>
-								<p><b>Km:</b>:<span><?php echo $job_card['ride_kms']; ?></span></p>
-								<p><b>Type Of Services:</b></p>
-								<ul class="fs">
-									<?php
+								<div class="row">
+									<div class="col-xs-5"><b>Registertion No</b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['registration_no']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Brand Name</b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['brand_name']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Model Name</b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['model_name']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>VIN No</b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['vin_no']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>S A Name & No </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['sa_name_no']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Delivery Date And Time </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['delivery_datetime']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Reporting Date and Time </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['reporting_datetime']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>KM </b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['ride_kms']; ?></span></div>
+								</div>
+								<div class="row">
+									<div class="col-xs-5"><b>Type Of Services</b></div>
+									<div class="col-xs-2">:</div>
+									<div class="col-xs-5">
+										
+											<?php
 										$type_of_services=json_decode($job_card['type_of_service']);
 										if(!empty($type_of_services)) {
 											foreach ($type_of_services as $index => $type_of_service) {
-									?>
-										<li><p><?php echo $type_of_service; ?></p></li>
-									<?php
+												if(($index+1) < count($type_of_services)){
+						                          $suffix=", ";
+						                        }else{
+						                          $suffix='';
+						                        }
+										?>
+											<span><?php echo $type_of_service.$suffix; ?></span>
+										<?php
+												}
 											}
-										}
-									?>
-								</ul>
+										?>
+										
+									</div>
+								</div>
 							</div>
 						</div>  
 					</div>
@@ -111,67 +175,26 @@
 					?>
 					<section class="model-sec">
 						<div class="container">
-							<div class="row">
-								<div class="col-md-3">
-									<ul class="check-list">
-										<li><span class="box1"><?php echo $damage_mark[0]; ?></span></li>
-										<li><span class="box1"><?php echo $damage_mark[1]; ?></span></li>
-										<li><span class="box1"><?php echo $damage_mark[2]; ?></span></li>
-									</ul>
-								</div>
-
-								<div class="col-md-6 text-center">
-									<span class="box1"><?php echo $damage_mark[3]; ?></span>
-									<div class="car_img"><img src="<?php echo base_url(); ?>public/images/app/car.jpg"></div>
-									<span class="box1"><?php echo $damage_mark[4]; ?></span>
-									<span class="box1"><?php echo $damage_mark[5]; ?></span>
-								</div>
-
-								<div class="col-md-3">
-									<ul class="check-list">
-										<li><span class="box1"><?php echo $damage_mark[6]; ?></span></li>
-										<li><span class="box1"><?php echo $damage_mark[7]; ?></span></li>
-										<li><span class="box1"><?php echo $damage_mark[8]; ?></span></li>
-									</ul>
-								</div>
-<!-- 										</div> -->
+							<div class="img-wrapper text-center">
+								<img  src="<?php echo base_url(); ?>public/images/app/car.jpg" style="width:70%;height:500px;">
+								  <div class="left-top damage-mark-box"><?php echo $damage_mark[0]; ?></div>
+								  <div class="left-center damage-mark-box"><?php echo $damage_mark[1]; ?></div>
+								  <div class="left-bottom damage-mark-box"><?php echo $damage_mark[2]; ?></div>
+								  <div class="middle-top damage-mark-box"><?php echo $damage_mark[3]; ?></div>
+								  <div class="middle-center damage-mark-box"><?php echo $damage_mark[4]; ?></div>
+								  <div class="middle-bottom damage-mark-box"><?php echo $damage_mark[5]; ?></div>
+								  <div class="right-top damage-mark-box"><?php echo $damage_mark[6]; ?></div>
+								  <div class="right-center damage-mark-box"><?php echo $damage_mark[7]; ?></div>
+								  <div class="right-bottom damage-mark-box"><?php echo $damage_mark[8]; ?></div>
 							</div>
 						</div>
 					</section>
-
-
-					<section class="model-sec">
-						<div class="container">
-							<div class="row">
-								<div class="col-sm-12 col-md-12 col-xs-12">
-									<ul class="fs2">
-										
-									</ul>
-								</div>
-							</div>
-						</div>
-					</section>
-
-
-			<!-- 		<section class="model-sec">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-12 col-md-12 col-xs-12">
-							<span class="qty">Vechicle Qty</span>
-			
-							<div class="fuel"><img src="<?php echo base_url(); ?>public/images/app/fuel.jpg"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-							</section> -->
 
 
 			<section class="model-sec2">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
-							<h3 class="details">Car accessiories</h3>
 							<div class="Cusomer-details">
 								<div class="regi">
 									<?php
@@ -180,7 +203,11 @@
 										if(!empty($car_properties)){
 											foreach ($car_properties as $index => $car_property) {
 									?>
-									<p><b><?php echo $car_property['name']; ?></b>:<span><?php echo $car_property['value']; ?></span></p>
+									<div class="row">
+										<div class="col-xs-3"><b><?php echo $car_property['name']; ?></b></div>
+										<div class="col-xs-2">:</div>
+										<div class="col-xs-4"><span ><?php echo $car_property['value']; ?></span></div>
+									</div>
 									<?php
 											}
 										}
@@ -191,20 +218,48 @@
 					</div>
 				</div>
 			</section>
+
+			<section class="model-sec2">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="Cusomer-details progress-wrapper">
+								<h3 class="details">Fuel</h3>
+								<div class="progress">
+					                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $job_card['fuel']; ?>"
+					                  aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $job_card['fuel']; ?>%">
+					                    <?php echo $job_card['fuel']."%"; ?>
+					                  </div>
+					              </div>
+			              		</div>
+		              		</div>
+					</div>
+				</div>
+			</section>
+
 			<section class="model-sec2">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
-							<h3 class="details">Item & Qty</h3>
+							<h3 class="details">Vehicle items</h3>
 							<div class="Cusomer-details">
 								<div class="regi">
+									<div class="row">
+										<div class="col-xs-3"><b>Item</b></div>
+										<div class="col-xs-2"></div>
+										<div class="col-xs-4"><b>Quantity</b></div>
+									</div>
 									<?php
 										$vehicle_qtys=json_decode($job_card['vehicle_qty'],true);
 										//dd($car_properties,false);
 										if(!empty($vehicle_qtys)){
 											foreach ($vehicle_qtys as $index => $vehicle_qty) {
 									?>
-									<p><b><?php echo $vehicle_qty['item']; ?></b>:<span><?php echo $vehicle_qty['qty']; ?></span></p>
+									<div class="row">
+										<div class="col-xs-3"><b><?php echo $vehicle_qty['item']; ?></b></div>
+										<div class="col-xs-2">:</div>
+										<div class="col-xs-4"><span ><?php echo $vehicle_qty['qty']; ?></span></div>
+									</div>
 									<?php
 											}
 										}
@@ -280,17 +335,19 @@
 						 <?php 
 						$job_card_images = $job_card['images_data'];
 	                      if(!empty($job_card_images)) {
+	                      	$i=1;
 	                        foreach ($job_card_images as $index => $job_card_image) {
 	                      ?>
-	                          <div class="col-md-4 col-sm-4 col-xs-12">
+	                          <div class="col-md-4 col-sm-4 col-xs-6">
 	                            <div class="image-responsive">
 	                                <img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$job_card_image['image']; ?>" style="height:200px;width:100%;" />
 	                            </div>
 	                          </div>
 	                      <?php
-	                          if(($index+1) % 3 == 0) {
+	                          if($i % 3 == 0) {
 	                            echo "</div><div class='row'>";
 	                          }
+	                          $i++;
 	                        }
 	                      }else{
 	                         echo "No image uploaded";
@@ -304,7 +361,7 @@
 				<div class="container">
 					<div class="row">
 						<h3 class="details">Signature</h3>
-						<div class="col-md-4 col-sm-4 col-xs-12">
+						<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 							<div class="image-responsive">
 								<img class="img-thumbnail" src="<?php echo base_url(); ?>uploads/app/<?php echo $job_card['signature']; ?>">   
 							</div>
@@ -312,3 +369,6 @@
 					</div>
 				</div>
 			</section> 
+		</div>
+	</body>
+</html>

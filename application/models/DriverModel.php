@@ -52,7 +52,13 @@ class DriverModel extends MY_Model {
 		return (!empty($result))? $result :false;
 	}
 
-
+	public function getDriversByWorkshop($manager_id) {
+		$this->db->select('id');
+		$this->db->where(array('d_workshop_assign'=>$manager_id));
+		$query = $this->db->get($this->table);
+		$result = $query->result_array();
+		return (!empty($result))? $result :null;
+	}
 
 
 }

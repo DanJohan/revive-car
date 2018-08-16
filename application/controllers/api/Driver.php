@@ -120,12 +120,14 @@ class Driver extends Rest_Controller {
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('driver_id', 'Driver id', 'trim|required');
 
 		if ($this->form_validation->run() == true){
 			$insert_data = array(
 				'enquiry_id' => $this->input->post('enquiry_id'),
 				'car_id' =>$this->input->post('car_id'),
 				'user_id' => $this->input->post('user_id'),
+				'driver_id'=>$this->input->post('driver_id'),
 				'alternate_no'=>$this->input->post('alternate_no'),
 				'vin_no' => $this->input->post('vin_no'),
 				'sa_name_no'=> $this->input->post('sa_name_no'),
@@ -162,6 +164,7 @@ class Driver extends Rest_Controller {
 
 			// insert job card images
 			$files_data = array();
+			$file_not_uploaded = array();
 			if($insert_id){
 				if(isset($_FILES['job_images']) && !empty($_FILES['job_images']['name'])){
 					$filesCount = count($_FILES['job_images']['name']);
@@ -174,11 +177,15 @@ class Driver extends Rest_Controller {
 
 		                $url = FCPATH.'uploads/app/';
 		               	$upload = $this->do_upload('file',$url);
+		               //	dd($upload,false);
 		                if(isset($upload['upload_data'])){
 							chmod($upload['upload_data']['full_path'], 0777);
 							$files_data[$i]['job_card_id'] = $insert_id;
 							$files_data[$i]['image'] = $upload['upload_data']['file_name'];
 							$files_data[$i]['created_at'] = date("Y-m-d H:i:s");
+						}else{
+							$file_not_uploaded[$i]['file'] =  $_FILES['file']['name'] ;
+							$file_not_uploaded[$i]['error'] =  strip_tags($upload['error']) ;
 						}
 
 		            }
@@ -200,7 +207,7 @@ class Driver extends Rest_Controller {
 				}
 			}
 
-			$response = array('status'=>true,'message'=>'Job card created successfully','data'=>array('job_card_id'=>$insert_id));
+			$response = array('status'=>true,'message'=>'Job card created successfully','data'=>array('job_card_id'=>$insert_id),'file_not_uploaded'=>$file_not_uploaded);
 
 		}else{
 			$errors = $this->form_validation->error_array();

@@ -6,20 +6,30 @@ class JobCard extends MY_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		if(!$this->session->has_userdata('is_admin_login'))
+		if(!$this->session->has_userdata('is_manager_login'))
 		{
-			redirect('admin/auth/login');
+			redirect('workshop/auth/login');
 		}
 		$this->load->model('JobcardModel');
 	    $this->load->model('JobCardImageModel');
+	    $this->load->model('DriverModel');
 	}
 
 	public function list(){
-
-		$data['jobs'] = $this->JobcardModel->jobCardDetails();
-		$data['view'] = 'admin/jobcard/list';
+		$manager_id = $this->session->userdata('id');
+		if(!$manager_id){
+			redirect('workshop/auth/login');
+		}
+		$driver_ids = $this->DriverModel->getDriversByWorkshop($manager_id);
+		if($driver_ids) {
+			$driver_ids = array_column($driver_ids, 'id');
+			$data['jobs'] = $this->JobcardModel->jobCardDetailsForWorkshop($driver_ids);
+		}else{
+			$data['jobs'] = array();
+		}
+		$data['view'] = 'workshop/jobcard/list';
 	//	dd($data);
-		$this->load->view('admin/layout', $data);
+		$this->load->view('workshop/layout', $data);
 	}
 
 	public function show($id = null) {
@@ -43,8 +53,8 @@ class JobCard extends MY_Controller {
 		$job_card['repair_orders']=$repair_orders;
 		$job_card['enquiry_images'] = $enquiry_images;
 		$data['job_card'] = $job_card;
-		$data['view'] = 'admin/jobcard/show';
-		$this->load->view('admin/layout',$data);
+		$data['view'] = 'workshop/jobcard/show';
+		$this->load->view('workshop/layout',$data);
 	}
 }// end of class
 ?>

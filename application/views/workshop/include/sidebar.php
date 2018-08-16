@@ -43,7 +43,7 @@ if($cur_tab=='users'){
       </ul>
 
     <ul class="sidebar-menu">
-        <li id="" class="treeview users enquiry">
+        <li id="" class="treeview users enquiry jobCard">
             <a href="#">
               <i class="fa fa-users"></i> <span>Users</span>
               <span class="pull-right-container">
@@ -53,6 +53,7 @@ if($cur_tab=='users'){
             <ul class="treeview-menu">
               <li id="u_index" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i>Users Detail</a></li>
                <li id="e_index"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>Users enquiry</a></li>
+                 <li id="list"><a href="<?= base_url('workshop/jobCard/list'); ?>"><i class="fa fa-circle-o text-aqua"></i>User job cards</a></li>
             </ul>
           </li>
 
@@ -64,20 +65,7 @@ if($cur_tab=='users'){
               </span>
             </a>
             <ul class="treeview-menu">
-           <!--<li id="add_driver"><a href="<?= base_url('workshop/driver/add_driver'); ?>"><i class="fa fa-circle-o"></i> Add Driver</a></li>-->
               <li id="view_driver" class=""><a href="<?= base_url('workshop/driver/view_driver'); ?>"><i class="fa fa-circle-o"></i> View Driver Details</a></li>
-            </ul>
-        </li>
-
-        <li id="" class="treeview jobcard">
-            <a href="#">
-              <i class="fa fa-dashboard"></i> <span>Jobs Card</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-               <li id="view_jobcard" class=""><a href="<?= base_url('workshop/jobcard/view_jobcard'); ?>"><i class="fa fa-circle-o"></i> View Jobs Card</a></li>
             </ul>
         </li>
       </ul> 

@@ -30,15 +30,19 @@
                     <?= isset($msg)? $msg: ''; ?>
                 </div>
                 <?php endif; ?>
-                <div class="form-box">
+                <div class="form-box" style="border-top: 5px solid green;">
                     <div class="caption">
                         <h4>Sign in to start your session</h4>
                     </div>
                     <?php echo form_open(base_url('workshop/auth/login'), 'class="login-form" '); ?>
-                        <div class="input-group">
+                        <div class="form-group">
                             <input type="email" name="m_email" id="m_email" class="form-control" placeholder="Email" >
+                        </div>
+                        <div class="form-group">
                             <input type="password" name="m_password" id="m_password" class="form-control" placeholder="Password" >
-                            <input type="submit" name="submit" id="submit" class="form-control" value="Submit">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" style="background-color: green;" name="submit" id="submit" class="form-control" value="Submit">
                         </div>
                     <?php echo form_close(); ?>
                 </div>

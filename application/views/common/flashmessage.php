@@ -7,3 +7,13 @@ if($this->session->flashdata('success_msg') != '') {
 <?php
 }
 ?>
+
+<?php
+if($this->session->flashdata('error_msg') != '') {
+?>
+<div class="alert alert-danger">
+  <?php echo $this->session->flashdata('error_msg'); ?>
+</div>
+<?php
+}
+?>
