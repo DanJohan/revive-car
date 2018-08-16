@@ -37,6 +37,7 @@
 
          
             <td class="text-right">
+              <a href="<?php echo base_url('workshop/jobCard/completeJobs/'.$job['id'])?>" class="btn btn-primary">Fill status</a>
               <a data-toggle="modal" class="btn btn-success" data-toggle="tooltip" href="<?php echo  base_url('workshop/jobCard/show/'.$job['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
             
           </tr>

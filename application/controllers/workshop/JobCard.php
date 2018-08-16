@@ -13,6 +13,7 @@ class JobCard extends MY_Controller {
 		$this->load->model('JobcardModel');
 	    $this->load->model('JobCardImageModel');
 	    $this->load->model('DriverModel');
+	    $this->load->model('RepairOrderModel');
 	}
 
 	public function list(){
@@ -55,6 +56,41 @@ class JobCard extends MY_Controller {
 		$data['job_card'] = $job_card;
 		$data['view'] = 'workshop/jobcard/show';
 		$this->load->view('workshop/layout',$data);
+	}
+
+	public function completeJobs($id=null){
+		if($id){
+			$job_card=$this->JobcardModel->getJobCardById($id);
+		}
+
+		if(empty($job_card)){
+			$this->session->set_flashdata('error_msg','No detail found!');
+			redirect('admin/jobCard/list');
+		}
+		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
+		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','price_labour','price_parts','price_total','status')),SORT_REGULAR),'repair_order_id','');
+		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
+		$job_card = $job_card[0];
+		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total','enquiry_image_id','enquiry_image');
+		foreach($removeKeys as $key) {
+		   unset($job_card[$key]);
+		}
+		$job_card['images_data']=$job_card_images;
+		$job_card['repair_orders']=$repair_orders;
+		$job_card['enquiry_images'] = $enquiry_images;
+		$data['job_card'] = $job_card;
+		$data['view'] = 'workshop/jobcard/complete-job';
+		$this->load->view('workshop/layout',$data);
+	}
+
+	public function markJobComplete(){
+		$job_id = $this->input->post('job_id');
+		if($job_id){
+			$this->RepairOrderModel->update(array('status'=>1),array('id'=>$job_id));
+			$response = array('status'=>true,"message"=>"Record updated successfully!");
+		}else{
+			$response = array('status'=>false,"message"=>"Smothing went wrong");
+		}
 	}
 }// end of class
 ?>
