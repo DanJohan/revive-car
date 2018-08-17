@@ -230,6 +230,7 @@ class Car extends Rest_Controller {
 
 			$insert_id = $this->ServiceEnquiryModel->insert($register_data);
 			$file_data = array();
+			$file_not_uploaded = array();
 			if($insert_id){
 				
 				if(isset($_FILES['service_images']) && !empty($_FILES['service_images']['name'])){
@@ -249,6 +250,9 @@ class Car extends Rest_Controller {
 							$files_data[$i]['enquiry_id'] = $insert_id;
 							$files_data[$i]['image'] = $upload['upload_data']['file_name'];
 							$files_data[$i]['created_at'] = date("Y-m-d H:i:s");
+						}else{
+							$file_not_uploaded[$i]['file'] =  $_FILES['file']['name'] ;
+							$file_not_uploaded[$i]['error'] =  strip_tags($upload['error']) ;
 						}
 
 		            }
@@ -269,7 +273,7 @@ class Car extends Rest_Controller {
 				unset($enquiry['image_id']);
 				unset($enquiry['image']);
 				$enquiry['images'] = $images;
-				$response = array('status'=>true,'message'=>'Record inserted successfully','data'=>$enquiry);
+				$response = array('status'=>true,'message'=>'Record inserted successfully','data'=>$enquiry,'file_not_uploaded'=>$file_not_uploaded);
 			}else{
 				$response = array('status'=> false,'message'=>'An error occured!Please try again' );
 			}

@@ -485,15 +485,16 @@ class User extends Rest_Controller {
 			$email = $this->input->post('email');
 			if($login_type =="G"){
 				$social_id = $this->input->post('gmail_id');
-				$criteria['conditions'] = array('external_user_id'=>$social_id);
+				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'1');
 			}else if($login_type == 'F'){
 				$social_id = $this->input->post('facebook_id');
-				$criteria['conditions'] = array('external_user_id'=>$social_id);
+				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'2');
 			}
 
 			$criteria['field'] = 'id,user_id';
 			$criteria['returnType'] = 'single';
 			$user = $this->UserExternalLoginModel->search($criteria);
+			//echo $this->db->last_query();die;
 			unset($criteria);
 			if(!empty($user)){
 				$user_id= $user['user_id'];

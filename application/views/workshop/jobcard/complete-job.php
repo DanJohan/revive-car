@@ -10,7 +10,7 @@
             <?php if(!empty($job_card['profile_image'])) { ?>
               <img class="photo_img_round img-thumbnail" height="150" width="150" src="<?php echo base_url() ?>uploads/app/<?php echo $job_card['profile_image']; ?>">
             <?php }else{ ?>
-              <img class="photo_img_round img-thumbnail" height="150" width="150" src="<?= base_url() ?>public/images/admin/no_image.jpeg">
+              <img class="photo_img_round img-thumbnail" height="150" width="150" src="<?php echo base_url() ?>public/images/admin/no_image.jpeg">
             <?php } ?>
           </div>
           <table class="table">
@@ -127,9 +127,9 @@
                             <td><?php echo $repair_order['sa_remarks']; ?></td>
                             <td><?php echo $repair_order['parts_name']; ?></td>
                             <td><?php echo $repair_order['qty']; ?></td>
-                            <td><?php echo $repair_order['price_parts']; ?></td>
-                            <td><?php echo $repair_order['price_labour']; ?></td>
-                            <td><?php echo $repair_order['price_total']; ?></td>
+                            <td><?php echo number_format($repair_order['price_parts'],2,'.',','); ?></td>
+                            <td><?php echo number_format($repair_order['price_labour'],2,'.',','); ?></td>
+                            <td><?php echo number_format($repair_order['price_total'],2,'.',','); ?></td>
                             <td>
                               <?php if($repair_order['status']) { ?>
                                 <a href="javascript:void(0)" class="btn btn-success">Completed</a>
