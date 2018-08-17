@@ -77,6 +77,7 @@
 	<!-- DataTables -->
 	<script src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
 	<script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+	
 	<!-- page script -->
 	<script type="text/javascript">
 	  $(".flash-msg").fadeTo(2000, 500).slideUp(500, function(){

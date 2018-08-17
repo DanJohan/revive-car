@@ -43,7 +43,7 @@ class JobCard extends MY_Controller {
 			redirect('admin/jobCard/list');
 		}
 		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
-		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','price_labour','price_parts','price_total')),SORT_REGULAR),'repair_order_id','');
+		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','price_labour','price_parts','price_total','status')),SORT_REGULAR),'repair_order_id','');
 		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
 		$job_card = $job_card[0];
 		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total','enquiry_image_id','enquiry_image');
@@ -85,12 +85,34 @@ class JobCard extends MY_Controller {
 
 	public function markJobComplete(){
 		$job_id = $this->input->post('job_id');
+
 		if($job_id){
 			$this->RepairOrderModel->update(array('status'=>1),array('id'=>$job_id));
 			$response = array('status'=>true,"message"=>"Record updated successfully!");
 		}else{
 			$response = array('status'=>false,"message"=>"Smothing went wrong");
 		}
+		$this->renderJson($response);
+	}
+
+	public function addOrder(){
+		if(count($_POST)>0) {
+			$insert_data = array(
+				'job_card_id'=>$this->input->post('job_card_id'),
+				'parts_name' => $this->input->post('parts_name'),
+				'customer_request'=>$this->input->post('customer_request'),
+				'sa_remarks'=>$this->input->post('sa_remarks'),
+				'qty'=>$this->input->post('quantity'),
+				'price_labour'=>$this->input->post('labour_price'),
+				'price_parts'=>$this->input->post('parts_price'),
+				'price_total' =>$this->input->post('total_price')
+			);
+			$this->RepairOrderModel->insert($insert_data);
+			$this->session->set_flashdata('success_msg',"Record inserted successfully");
+		}else{
+			$this->session->set_flashdata('error_msg',"An error occured! Please try again");
+		}
+		redirect('workshop/jobCard/completeJobs/'.$this->input->post('job_card_id'));
 	}
 }// end of class
 ?>

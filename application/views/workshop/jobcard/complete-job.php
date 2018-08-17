@@ -1,5 +1,5 @@
  <section class="content">
-
+    <?php $this->load->view('common/flashmessage'); ?>
     <div class="box">
         <div class="box-header bg-green">
            <h3 class="box-title">Customer detail</h3>
@@ -103,6 +103,7 @@
                       <table class="table ">
                         <thead>
                           <tr>
+                            <th>S.No.</th>
                             <th>Customer Request</th>
                             <th>S.A  Remarks</th>
                             <th>Parts Name</th>
@@ -117,9 +118,11 @@
                           <?php
                           $repair_orders = $job_card['repair_orders'];
                           if(!empty($repair_orders)) {
+                            $i=1;
                             foreach ($repair_orders as $index => $repair_order) {
                           ?>
                             <tr>
+                            <td><?php echo $i; ?></td>
                             <td><?php echo $repair_order['customer_request']; ?></td>
                             <td><?php echo $repair_order['sa_remarks']; ?></td>
                             <td><?php echo $repair_order['parts_name']; ?></td>
@@ -132,11 +135,12 @@
                                 <a href="javascript:void(0)" class="btn btn-success">Completed</a>
                             <?php }else { ?>
 
-                              <a href="javascript:void(0)" data-job-id="<?php echo $repair_order['repair_order_id']; ?>" class="btn btn-danger job-complete">Mark as complete</a>
+                              <a href="javascript:void(0)" data-user-id="<?php echo $job_card['user_id']; ?>" data-job-id="<?php echo $repair_order['repair_order_id']; ?>" class="btn btn-danger job-complete">Mark as complete</a>
                             <?php } ?>
                             </td>
                           </tr>
                           <?php
+                           $i++;
                             }
                           }
                           ?>
@@ -152,6 +156,63 @@
         </div>
     </div><!-- end of repair order box -->
 
+        <div class="box">
+          <div class="box-header bg-green">
+            <h3 class="box-title">Add Repair orders</h3>
+          </div>
+          <div class="box-body">
+               <form id="order-form" method="post" class="form-horizontal" action="<?php echo base_url()?>workshop/jobCard/addOrder">
+                <input type="hidden" name="job_card_id" value="<?php echo $job_card['id']; ?>">
+                <input type="hidden" name="user_id" value="<?php echo $job_card['user_id']; ?>">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="customer_request">Customer Request:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="customer_request" id="customer_request">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="sa_remarks">S.A Remarks:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="sa_remarks" id="sa_remarks">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="parts_name">Parts Name:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="parts_name" id="parts_name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="qty">Quantity:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="quantity" id="qty">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="parts_price">Parts price:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="parts_price" id="parts_price">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="labour_price">Labour price:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="labour_price" id="labour_price">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="total_price">Total price:</label>
+                  <div class="col-sm-10">
+                      <input type="text" class="form-control" name="total_price" id="total_price">
+                  </div>
+                </div>
+                <div class="col-xs-offset-2">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+              </form>
+        </div>
+    </div><!-- end of repair order box -->
+
     <div class="box">
     
       <div class="box-body">
@@ -160,6 +221,7 @@
     </div><!-- end of button box -->
 
 </section>
+<script src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
 <script>
   $(document).on('click','.job-complete',function(){
     var btn = $(this);
@@ -170,11 +232,49 @@
         method:"POST",
         data:{'job_id':jobId},
         success:function(response){
+          if(response.status){
+            btn.removeClass('btn-danger job-complete');
+            btn.addClass('btn-success');
+            btn.text('Completed');
 
+          }
         }
       });
     }
   });
+
+  (function(){
+    $("#order-form").validate({
+      errorClass: "error",
+      rules: {
+        customer_request:{
+          required:true
+        },
+        sa_remarks: {
+          required: true,
+        },
+        parts_name: {
+          required: true,
+        },
+        parts_price: {
+          required: true,
+          digits: true
+        },
+        labour_price: {
+          required: true,
+          digits: true
+        },
+        quantity: {
+          required: true,
+          digits: true
+        },
+        total_price: {
+          required: true,
+          digits: true
+        },
+      },
+    });
+  })();
 </script>
 
 

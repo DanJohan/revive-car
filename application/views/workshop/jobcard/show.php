@@ -190,11 +190,13 @@
                             <th>Parts Price</th>
                             <th>Labour Price</th>
                             <th>Total Price</th>
+                            <th>Status</th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php
                           $repair_orders = $job_card['repair_orders'];
+                          //dd($repair_orders);
                           if(!empty($repair_orders)) {
                             foreach ($repair_orders as $index => $repair_order) {
                           ?>
@@ -206,6 +208,7 @@
                             <td><?php echo $repair_order['price_parts']; ?></td>
                             <td><?php echo $repair_order['price_labour']; ?></td>
                             <td><?php echo $repair_order['price_total']; ?></td>
+                            <td><?php echo ($repair_order['status']) ? '<span class="label label-success">Completed</span>':'<span class="label label-warning">Pending</span>'?></td>
                           </tr>
                           <?php
                             }

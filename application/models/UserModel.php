@@ -42,10 +42,10 @@ class UserModel extends MY_Model {
 	}
 
 	public function checkEmailExists($email){
-		$this->db->select('email');
+		$this->db->select('id,email');
 		$this->db->where(array('email'=>$email));
 		$query = $this->db->get($this->table);
-		$result = $query->result_array();
+		$result = $query->row_array();
 		return (!empty($result))? $result : false;
 	}
 

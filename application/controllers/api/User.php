@@ -11,6 +11,7 @@ class User extends Rest_Controller {
 	    $this->load->model('UserModel');
 	    $this->load->library('mailer');
 	    $this->load->library('textMessage');
+	    $this->load->model('UserExternalLoginModel');
 	}
 
 	
@@ -484,48 +485,97 @@ class User extends Rest_Controller {
 			$email = $this->input->post('email');
 			if($login_type =="G"){
 				$social_id = $this->input->post('gmail_id');
-				$criteria['conditions'] = array('gmail_id'=>$social_id);
+				$criteria['conditions'] = array('external_user_id'=>$social_id);
 			}else if($login_type == 'F'){
 				$social_id = $this->input->post('facebook_id');
-				$criteria['conditions'] = array('facebook_id'=>$social_id);
+				$criteria['conditions'] = array('external_user_id'=>$social_id);
 			}
 
-			$criteria['field'] = 'id,phone,otp,otp_verify,gmail_id,facebook_id,name,device_id,device_type,email,created_at,updated_at';
+			$criteria['field'] = 'id,user_id';
 			$criteria['returnType'] = 'single';
-			$user = $this->UserModel->search($criteria);
+			$user = $this->UserExternalLoginModel->search($criteria);
 			unset($criteria);
 			if(!empty($user)){
-				if($user['otp_verify']){
-					$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$user);
+				$user_id= $user['user_id'];
+				$criteria['field'] = 'id,name,email,created_at,updated_at';
+				$criteria['conditions'] = array('id'=>$user_id);
+				$criteria['returnType'] = 'single';
+				$user_data = $this->UserModel->search($criteria);
+				unset($criteria);
+				if($user_data['otp_verify']){
+					$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$user_data);
 				}else{
-					$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$user);
+					$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$user_data);
 				}
 			}else{
 				$email = $this->input->post('email');
-				$is_exits_email = $this->UserModel->checkEmailExists($email);
-				if($is_exits_email) {
-					$response = array('status'=>false,'message'=>'User email already registered');
+				$is_exists_email = $this->UserModel->checkEmailExists($email);
+				//dd($is_exists_email);
+				if(!empty($is_exists_email)){
+					$user_id = $is_exists_email['id'];
+		 			 $insert_data= array(
+		 			 	'user_id' =>$user_id,
+		 			 	'name'=>$this->input->post('name'),
+		 			 	'email'=>$this->input->post('email'),
+		 			 	'created_at' => date("Y-m-d H:i:s")
+		 			 );
+
+		 			 if($login_type =="G"){
+						$insert_data['external_authentication_provider'] ="1";
+						$insert_data['external_user_id']=$this->input->post('gmail_id');
+					}else if($login_type == 'F'){
+						$insert_data['external_authentication_provider'] ="2";
+						$insert_data['external_user_id']=$this->input->post('facebook_id');
+					}
+					$this->UserExternalLoginModel->insert($insert_data);
+					$criteria['field'] = 'id,phone,otp_verify,name,email,created_at,updated_at';
+					$criteria['conditions'] = array('id'=>$user_id);
+					$criteria['returnType'] = 'single';
+					$user_data = $this->UserModel->search($criteria);
+					unset($criteria);
+					if($userInfo['otp_verify']){
+						$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$user_data);
+					}else{
+						$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$user_data);
+					}
+					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user_data);
 				}else{
 					$register_data =array(
 						'name' => $this->input->post('name'),
 						'email'=>$email,
 						'created_at'=>date("Y-m-d H:i:s")
 					);
-					if($login_type=='G'){
-						$register_data['gmail_id']= $this->input->post('gmail_id');
-					}elseif ($login_type =='F') {
-						$register_data['facebook_id']= $this->input->post('facebook_id');
-					}
-					$user_id = $this->UserModel->insert($register_data);
 
-					$criteria['field'] = 'id,phone,otp,otp_verify,gmail_id,facebook_id,name,device_id,device_type,email,created_at,updated_at';
-					$criteria['conditions'] = array('id'=>$user_id);
-					$criteria['returnType'] = 'single';
-					$userInfo = $this->UserModel->search($criteria);
-					if($userInfo['otp_verify']){
-						$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$userInfo);
+					$insert_id = $this->UserModel->insert($register_data);
+					if($insert_id) {
+						$insert_data= array(
+			 			 	'user_id' =>$insert_id,
+			 			 	'name'=>$this->input->post('name'),
+			 			 	'email'=>$this->input->post('email'),
+			 			 	'created_at' => date("Y-m-d H:i:s")
+			 			 );
+
+			 			if($login_type =="G"){
+							$insert_data['external_authentication_provider'] ="1";
+							$insert_data['external_user_id']=$this->input->post('gmail_id');
+						}else if($login_type == 'F'){
+							$insert_data['external_authentication_provider'] ="2";
+							$insert_data['external_user_id']=$this->input->post('facebook_id');
+						}
+						//dd($insert_data);
+						$this->UserExternalLoginModel->insert($insert_data);
+						$criteria['field'] = 'id,otp_verify,name,email,phone,created_at,updated_at';
+						$criteria['conditions'] = array('id'=>$insert_id);
+						$criteria['returnType'] = 'single';
+						$userInfo = $this->UserModel->search($criteria);
+						unset($criteria);
+						if($userInfo['otp_verify']){
+							$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$userInfo);
+						}else{
+							$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$userInfo);
+						}
 					}else{
-						$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$userInfo);
+						$response = array('status'=>false,'message'=>'An error occured!Please try again');
 					}
 
 				}

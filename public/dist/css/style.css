@@ -418,3 +418,6 @@ label{
     bottom: 0px;
     right: 100px;
 }
+.error{
+    color:red;
+}
