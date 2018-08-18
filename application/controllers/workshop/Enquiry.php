@@ -34,6 +34,7 @@ class Enquiry extends MY_Controller {
 
 	public function show($id=null){
 		if($id){
+			$this->ServiceEnquiryModel->markEnquiryManagerSeen($id);
 			$data['enquiry'] = $this->ServiceEnquiryModel->getEnquiry($id);
 		}
 		if(empty($data['enquiry'])) {
