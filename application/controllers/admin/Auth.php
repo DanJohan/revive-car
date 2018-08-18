@@ -70,7 +70,7 @@
 					);
 					$result = $this->AuthModel->change_pwd($data, $id);
 					if($result){
-						$this->session->set_flashdata('msg', 'Password has been changed successfully!');
+						$this->session->set_flashdata('success_msg', 'Password has been changed successfully!');
 						redirect(base_url('admin/auth/change_pwd'));
 					}
 				}

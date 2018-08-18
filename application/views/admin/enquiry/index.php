@@ -1,7 +1,4 @@
  <section class="content">
-    <?php 
-     $this->load->view('common/flashmessage'); 
-    ?>
    <div class="box">
     <div class="box-header">
       <h3 class="box-title">Customer enquiry</h3>

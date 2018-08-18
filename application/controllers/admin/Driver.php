@@ -61,11 +61,11 @@
 						$result = $this->DriverModel->insert($data);
 						
 						if($result){
-							$this->session->set_flashdata('msg', 'Driver is Added Successfully!');
+							$this->session->set_flashdata('success_msg', 'Driver is Added Successfully!');
 							redirect(base_url('admin/driver/view_driver'));
 
 						}else{
-						$this->session->set_flashdata('msg', 'Some problem occur!');
+						$this->session->set_flashdata('error_msg', 'Some problem occur!');
 						redirect(base_url('admin/driver/add_driver'));
 						
 					   }
@@ -152,7 +152,7 @@
 					);
 				
 					$result = $this->DriverModel->update($data, array('id'=>$id));
-					$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
+					$this->session->set_flashdata('success_msg', 'Record is Updated Successfully!');
 					redirect(base_url('admin/driver/view_driver'));
 				}else{
 					$errors ='';
@@ -181,7 +181,7 @@
 				redirect(base_url('admin/driver/view_driver'));
 			}
 			$this->DriverModel->delete(array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
+			$this->session->set_flashdata('success_msg', 'Record is Deleted Successfully!');
 			redirect(base_url('admin/driver/view_driver')); 
 		}
 

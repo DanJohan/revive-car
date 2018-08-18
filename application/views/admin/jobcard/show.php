@@ -238,7 +238,7 @@
                         ?>
                             <div class="col-md-4 col-sm-4 col-xs-6">
                               <div class="image-responsive">
-                                  <img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$job_card_image['image']; ?>" style="height:200px;width:100%;" />
+                                  <a target="_blank" href="<?php echo base_url().'uploads/app/'.$job_card_image['image']; ?>"><img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$job_card_image['image']; ?>" style="height:200px;width:100%;" /></a>
                               </div>
                             </div>
                         <?php

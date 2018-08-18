@@ -46,12 +46,12 @@ class Car extends MY_Controller {
 
 
 				if($result){
-					$this->session->set_flashdata('msg', 'Car Brand is Added Successfully!');
+					$this->session->set_flashdata('success_msg', 'Car Brand is Added Successfully!');
 					redirect(base_url('admin/car/add_carbrand'));
 					}
 
 				else{
-					$this->session->set_flashdata('msg', 'Some problem occur!');
+					$this->session->set_flashdata('error_msg', 'Some problem occur!');
 					redirect(base_url('admin/car/add_carbrand'));
 
 				}
@@ -69,38 +69,28 @@ class Car extends MY_Controller {
 				
 				$result = $this->CarModelsModel->insert($data);
 			    if($result){
-					$this->session->set_flashdata('msg', 'Car Model is Added Successfully!');
+					$this->session->set_flashdata('success_msg', 'Car Model is Added Successfully!');
 					redirect(base_url('admin/car/add_carmodel'));
 
 				}
 				
 				else{
-					$this->session->set_flashdata('msg', 'Some problem occur!');
+					$this->session->set_flashdata('error_msg', 'Some problem occur!');
 					redirect(base_url('admin/car/add_carmodel'));
 					
 				}
 			}	
 
-			public function del_carbrand($id = 0){
+		public function del_carbrand($id = 0){
 			$this->db->delete('car_brands', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Brand name is Deleted Successfully!');
+			$this->session->set_flashdata('success_msg', 'Brand name is Deleted Successfully!');
 			redirect(base_url('admin/car/add_carbrand'));
 		}
 		public function del_carmodel($id = 0){
 			$this->db->delete('car_models', array('id' => $id));
-			$this->session->set_flashdata('msg', 'Model name is Deleted Successfully!');
+			$this->session->set_flashdata('success_msg', 'Model name is Deleted Successfully!');
 			redirect(base_url('admin/car/add_carmodel'));
 		}
-
-		/*public function show($car_id = null){
-			if($car_id) {
-				$data['car'] = $this->CarModel->getCarWithUserById($car_id);
-			}
-			//dd($data['car']);
-			echo $this->load->view('admin/car/car_view',$data,true);
-			exit;
-		}*/
-
 
 	}
 

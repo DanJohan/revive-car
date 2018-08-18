@@ -7,9 +7,6 @@
 <link rel="stylesheet" href="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.css">  
 
  <section class="content">
-    <?php 
-     $this->load->view('common/flashmessage'); 
-    ?>
    <div class="box">
     <div class="box-header bg-green">
       <h3 class="box-title">Customer Confirm enquiry</h3>

@@ -50,6 +50,4 @@
     });
   });
 </script> 
-<script>
-$("#view_users").addClass('active');
-</script>        
+     

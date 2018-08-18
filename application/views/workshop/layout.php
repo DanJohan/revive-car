@@ -26,13 +26,7 @@
 	</head>
 	<body class="hold-transition skin-green sidebar-mini">
 		<div class="wrapper" style="height: auto;">
-			 <?php if($this->session->flashdata('msg') != ''): ?>
-			    <div class="alert alert-warning flash-msg alert-dismissible">
-			      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			      <h4> Success!</h4>
-			      <?= $this->session->flashdata('msg'); ?> 
-			    </div>
-			  <?php endif; ?> 
+			<?php $this->load->view('common/flashmessage'); ?>
 			
 			<section id="container">
 				<!--header start-->

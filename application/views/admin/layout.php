@@ -26,13 +26,7 @@
 	</head>
 	<body class="hold-transition skin-blue sidebar-mini">
 		<div class="wrapper" style="height: auto;">
-			 <?php if($this->session->flashdata('msg') != ''): ?>
-			    <div class="alert alert-warning flash-msg alert-dismissible">
-			      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			      <h4> Alert!</h4>
-			      <?= $this->session->flashdata('msg'); ?> 
-			    </div>
-			  <?php endif; ?> 
+			<?php $this->load->view('common/flashmessage'); ?>
 			
 			<section id="container">
 				<!--header start-->
@@ -79,11 +73,11 @@
 <script src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 
 	<!-- page script -->
-	<script type="text/javascript">
-	  $(".flash-msg").fadeTo(2000, 500).slideUp(500, function(){
+<script type="text/javascript">
+	$(".flash-msg").fadeTo(2000, 500).slideUp(500, function(){
 	    $(".flash-msg").slideUp(500);
 	});
-	</script>
+</script>
 	<script type="text/javascript">
 		$.ajax({
 			url:"<?php echo base_url(); ?>admin/enquiry/get_notifications",

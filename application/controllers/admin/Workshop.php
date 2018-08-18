@@ -56,11 +56,11 @@
 						$result = $this->WorkshopModel->insert($data);
 
 						if($result){
-							$this->session->set_flashdata('msg', 'Manager is Added Successfully!');
+							$this->session->set_flashdata('success_msg', 'Manager is Added Successfully!');
 							redirect(base_url('admin/workshop/view_manager'));
 
 						}else{
-							$this->session->set_flashdata('msg', 'Some problem occur!');
+							$this->session->set_flashdata('error_msg', 'Some problem occur!');
 							die("here1");
 							redirect(base_url('admin/workshop/add_manager'));
 					   }
@@ -140,7 +140,7 @@
 						);
 					
 						$result = $this->WorkshopModel->update($data, array('id'=>$id));
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
+						$this->session->set_flashdata('success_msg', 'Record is Updated Successfully!');
 						redirect(base_url('admin/workshop/view_manager'));
 					}else{
 						$errors ='';
@@ -171,7 +171,7 @@
 				redirect(base_url('admin/workshop/view_manager'));
 			}
 			$this->WorkshopModel->delete(array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
+			$this->session->set_flashdata('success_msg', 'Record is Deleted Successfully!');
 			redirect(base_url('admin/workshop/view_manager'));
 		}
 

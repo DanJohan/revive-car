@@ -42,7 +42,7 @@ class JobcardModel extends MY_Model {
 
 	}
 
-	public function getJobCardById($id) {
+	public function getJobCardById($id,$driver_ids=null) {
 		$this->db->select('jc.*,jci.id AS image_id,jci.image,ro.id AS repair_order_id,ro.parts_name,ro.customer_request,ro.sa_remarks,ro.qty,ro.price_labour,ro.price_parts,ro.price_total,ro.status,c.registration_no,c.color,cb.brand_name,cm.model_name,u.phone,u.email,u.name,u.profile_image,se.loaner_vehicle,se.address,ei.id AS enquiry_image_id,ei.image AS enquiry_image'
 		);
 		$this->db->from($this->table.' AS jc');
@@ -55,6 +55,9 @@ class JobcardModel extends MY_Model {
 		$this->db->join('service_enquiries AS se','jc.enquiry_id=se.id');
 		$this->db->join('enquiry_images AS ei','se.id=ei.enquiry_id','left');
 		$this->db->where('jc.id',$id);
+		if($driver_ids){
+			$this->db->where_in('jc.driver_id', $driver_ids);
+		}
 		$query = $this->db->get();
 		//echo $this->db->last_query();die;
 		return $query->result_array();

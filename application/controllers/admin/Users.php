@@ -48,7 +48,7 @@
 						);
 						//$data = $this->security->xss_clean($data);
 						$result = $this->UserModel->update($data, array('id'=>$id));
-						$this->session->set_flashdata('msg', 'Record is Updated Successfully!');
+						$this->session->set_flashdata('success_msg', 'Record is Updated Successfully!');
 						redirect(base_url('admin/users'));
 					}else{
 						$errors ='';
@@ -87,7 +87,7 @@
 				redirect('admin/users');
 			}
 			$this->UserModel->delete(array('id' => $id));
-			$this->session->set_flashdata('msg', 'Record is Deleted Successfully!');
+			$this->session->set_flashdata('success_msg', 'Record is Deleted Successfully!');
 			redirect(base_url('admin/users'));
 		}
 

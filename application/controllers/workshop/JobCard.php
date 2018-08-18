@@ -34,13 +34,20 @@ class JobCard extends MY_Controller {
 	}
 
 	public function show($id = null) {
+		$manager_id = $this->session->userdata('id');
+		$driver_ids = $this->DriverModel->getDriversByWorkshop($manager_id);
+		if($driver_ids) {
+			$driver_ids = array_column($driver_ids, 'id');
+		}else{
+			$driver_ids=array();
+		}
 		if($id){
-			$job_card=$this->JobcardModel->getJobCardById($id);
+			$job_card=$this->JobcardModel->getJobCardById($id,$driver_ids);
 		}
 
 		if(empty($job_card)){
 			$this->session->set_flashdata('error_msg','No detail found!');
-			redirect('admin/jobCard/list');
+			redirect('workshop/jobCard/list');
 		}
 		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
 		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','price_labour','price_parts','price_total','status')),SORT_REGULAR),'repair_order_id','');
@@ -59,13 +66,20 @@ class JobCard extends MY_Controller {
 	}
 
 	public function completeJobs($id=null){
+		$manager_id = $this->session->userdata('id');
+		$driver_ids = $this->DriverModel->getDriversByWorkshop($manager_id);
+		if($driver_ids) {
+			$driver_ids = array_column($driver_ids, 'id');
+		}else{
+			$driver_ids=array();
+		}
 		if($id){
-			$job_card=$this->JobcardModel->getJobCardById($id);
+			$job_card=$this->JobcardModel->getJobCardById($id,$driver_ids);
 		}
 
 		if(empty($job_card)){
 			$this->session->set_flashdata('error_msg','No detail found!');
-			redirect('admin/jobCard/list');
+			redirect('workshop/jobCard/list');
 		}
 		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
 		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','price_labour','price_parts','price_total','status')),SORT_REGULAR),'repair_order_id','');
