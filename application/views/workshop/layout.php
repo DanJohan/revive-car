@@ -22,6 +22,12 @@
 		  <script src="<?= base_url() ?>public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 		  <!-- jQuery UI 1.11.4 -->
 		  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+		  <script>
+				var config = {
+					'baseUrl':"<?php echo base_url(); ?>",
+					'siteUrl' : "<?php echo site_url(); ?>"
+				}
+		  </script>
 		
 	</head>
 	<body class="hold-transition skin-green sidebar-mini">

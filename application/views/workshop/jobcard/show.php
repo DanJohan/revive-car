@@ -1,5 +1,6 @@
  <section class="content">
-
+    <div class="row">
+    <div class="col-xs-6">
     <div class="box">
         <div class="box-header bg-green">
            <h3 class="box-title">Customer detail</h3>
@@ -29,8 +30,8 @@
           </table>
       </div>
     </div><!-- end of user detail box -->
-
-
+</div>
+  <div class="col-xs-6">
         <div class="box">
         <div class="box-header bg-green">
            <h3 class="box-title">Vehicle detail</h3>
@@ -93,7 +94,8 @@
           </table>
       </div>
     </div><!-- end of vehicle detail box -->
-
+  </div>
+</div>
     <div class="box">
     
           <div class="box-body">
@@ -205,10 +207,20 @@
                             <td><?php echo $repair_order['sa_remarks']; ?></td>
                             <td><?php echo $repair_order['parts_name']; ?></td>
                             <td><?php echo $repair_order['qty']; ?></td>
-                            <td><?php echo number_format($repair_order['price_parts'],2,'.',','); ?></td>
-                            <td><?php echo number_format($repair_order['price_labour'],2,'.',','); ?></td>
-                            <td><?php echo number_format($repair_order['price_total'],2,'.',','); ?></td>
-                            <td><?php echo ($repair_order['status']) ? '<span class="label label-success">Completed</span>':'<span class="label label-warning">Pending</span>'?></td>
+                            <td><?php echo number_format($repair_order['parts_price'],2,'.',','); ?></td>
+                            <td><?php echo number_format($repair_order['labour_price'],2,'.',','); ?></td>
+                            <td><?php echo number_format($repair_order['total_price'],2,'.',','); ?></td>
+                            <td>
+                              <?php 
+                                if($repair_order['status']==0){
+                                  echo "<span class='label label-danger'>Pending</span>";
+                                }elseif($repair_order['status']==1){
+                                  echo "<span class='label label-warning'>Processing</span>";
+                                }elseif($repair_order['status']==2){
+                                  echo "<span class='label label-success'>completed</span>";
+                                }
+                              ?>
+                            </td>
                           </tr>
                           <?php
                             }

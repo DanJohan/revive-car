@@ -43,7 +43,7 @@ class JobcardModel extends MY_Model {
 	}
 
 	public function getJobCardById($id,$driver_ids=null) {
-		$this->db->select('jc.*,jci.id AS image_id,jci.image,ro.id AS repair_order_id,ro.parts_name,ro.customer_request,ro.sa_remarks,ro.qty,ro.price_labour,ro.price_parts,ro.price_total,ro.status,c.registration_no,c.color,cb.brand_name,cm.model_name,u.phone,u.email,u.name,u.profile_image,se.loaner_vehicle,se.address,ei.id AS enquiry_image_id,ei.image AS enquiry_image'
+		$this->db->select('jc.*,jci.id AS image_id,jci.image,ro.id AS repair_order_id,ro.parts_name,ro.customer_request,ro.sa_remarks,ro.qty,ro.labour_price,ro.parts_price,ro.total_price,ro.status,c.registration_no,c.color,cb.brand_name,cm.model_name,u.phone,u.email,u.name,u.profile_image,se.loaner_vehicle,se.address,ei.id AS enquiry_image_id,ei.image AS enquiry_image'
 		);
 		$this->db->from($this->table.' AS jc');
 		$this->db->join('job_card_images AS jci','jc.id=jci.job_card_id','left');
@@ -60,6 +60,20 @@ class JobcardModel extends MY_Model {
 		}
 		$query = $this->db->get();
 		//echo $this->db->last_query();die;
+		return $query->result_array();
+	}
+
+
+	public function getUserAllJobCard($user_id){
+		$this->db->select('jc.id as job_card_id,ro.id AS repair_order_id,ro.parts_name,ro.customer_request,ro.sa_remarks,ro.qty,ro.labour_price,ro.parts_price,ro.total_price,ro.status,ro.start_date,ro.end_date,ro.delay_reason,c.registration_no,c.color,cb.brand_name,cm.model_name'
+		);
+		$this->db->from($this->table.' AS jc');
+		$this->db->join('repair_orders AS ro','jc.id=ro.job_card_id','left');
+		$this->db->join('cars AS c', 'jc.car_id = c.id');
+		$this->db->join('car_brands AS cb', 'c.brand_id=cb.id');
+		$this->db->join('car_models AS cm', 'c.model_id=cm.id');
+		$this->db->where('jc.user_id',$user_id);
+		$query = $this->db->get();
 		return $query->result_array();
 	}
 }

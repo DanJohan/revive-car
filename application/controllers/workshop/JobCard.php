@@ -50,10 +50,10 @@ class JobCard extends MY_Controller {
 			redirect('workshop/jobCard/list');
 		}
 		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
-		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','price_labour','price_parts','price_total','status')),SORT_REGULAR),'repair_order_id','');
+		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price','status')),SORT_REGULAR),'repair_order_id','');
 		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
 		$job_card = $job_card[0];
-		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total','enquiry_image_id','enquiry_image');
+		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','labour_price','parts_price','total_price','enquiry_image_id','enquiry_image');
 		foreach($removeKeys as $key) {
 		   unset($job_card[$key]);
 		}
@@ -82,10 +82,10 @@ class JobCard extends MY_Controller {
 			redirect('workshop/jobCard/list');
 		}
 		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
-		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','price_labour','price_parts','price_total','status')),SORT_REGULAR),'repair_order_id','');
+		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price','status')),SORT_REGULAR),'repair_order_id','');
 		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
 		$job_card = $job_card[0];
-		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total','enquiry_image_id','enquiry_image');
+		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','labour_price','parts_price','total_price','enquiry_image_id','enquiry_image');
 		foreach($removeKeys as $key) {
 		   unset($job_card[$key]);
 		}
@@ -95,6 +95,81 @@ class JobCard extends MY_Controller {
 		$data['job_card'] = $job_card;
 		$data['view'] = 'workshop/jobcard/complete-job';
 		$this->load->view('workshop/layout',$data);
+	}
+
+	public function editRepairOrder(){
+		if($this->input->post('submit')){
+			$job_card_id = $this->input->post('job_card_id');
+			$job_id = $this->input->post('job_id');
+			//echo $job_id,$job_card_id;die;
+			$update_data = array(
+				'customer_request'=>$this->input->post('customer_request'),
+				'sa_remarks'=>$this->input->post('sa_remarks'),
+				'parts_name' => $this->input->post('parts_name'),
+				'qty' => $this->input->post('quantity'),
+				'parts_price' =>$this->input->post('parts_price'),
+				'labour_price'=> $this->input->post('labour_price'),
+				'total_price' => $this->input->post('total_price'),
+			);
+			$this->RepairOrderModel->update($update_data,array('id'=>$job_id));
+			$this->session->set_flashdata('success_msg','Record updated successfully!');
+		}else{
+			$this->session->set_flashdata('error_msg','Something went wrong!');
+		}
+		redirect('workshop/jobCard/completeJobs/'.$job_card_id);
+	}
+
+	public function editRepairOrderView(){
+		if($this->input->post('job_id')){
+			$job_id = $this->input->post('job_id');
+			$job_card_id = $this->input->post('job_card_id');
+			$criteria['conditions'] = array('id'=>$job_id);
+			$criteria['returnType'] = 'single';
+			$data['job'] = $this->RepairOrderModel->search($criteria);
+			$data['job_card_id'] = $job_card_id;
+			$template = $this->load->view('workshop/jobcard/edit-repair-order',$data,true);
+			$response = array('status'=>true,"message"=>"Record found successfully",'template'=>$template);
+		}else{
+			$response = array('status'=>false,'message'=>"No detail found");
+		}
+		$this->renderJson($response);
+	}
+
+	public function changeStatusView(){
+		if($this->input->post('job_id')){
+			$job_id = $this->input->post('job_id');
+			$job_card_id = $this->input->post('job_card_id');
+			$criteria['conditions'] = array('id'=>$job_id);
+			$criteria['returnType'] = 'single';
+			$data['job'] = $this->RepairOrderModel->search($criteria);
+			$data['job_card_id'] = $job_card_id;
+			$template = $this->load->view('workshop/jobcard/job-status',$data,true);
+			$response = array('status'=>true,"message"=>"Record found successfully",'template'=>$template);
+		}else{
+			$response = array('status'=>false,'message'=>"No detail found");
+		}
+		$this->renderJson($response);
+	}
+
+	public function updateStatus(){
+		if($this->input->post('submit')){
+			$job_card_id = $this->input->post('job_card_id');
+			$job_id = $this->input->post('job_id');
+			//echo $job_id,$job_card_id;die;
+			$update_data = array(
+				'start_date'=>$this->input->post('start_date'),
+				'end_date'=>$this->input->post('end_date'),
+				'status' => $this->input->post('status'),
+			);
+			if($this->input->post('delay_reason')){
+				$update_data['delay_reason']= $this->input->post('delay_reason');
+			}
+			$this->RepairOrderModel->update($update_data,array('id'=>$job_id));
+			$this->session->set_flashdata('success_msg','Record updated successfully!');
+		}else{
+			$this->session->set_flashdata('error_msg','Something went wrong!');
+		}
+		redirect('workshop/jobCard/completeJobs/'.$job_card_id);
 	}
 
 	public function markJobComplete(){
@@ -117,9 +192,9 @@ class JobCard extends MY_Controller {
 				'customer_request'=>$this->input->post('customer_request'),
 				'sa_remarks'=>$this->input->post('sa_remarks'),
 				'qty'=>$this->input->post('quantity'),
-				'price_labour'=>$this->input->post('labour_price'),
-				'price_parts'=>$this->input->post('parts_price'),
-				'price_total' =>$this->input->post('total_price')
+				'labour_price'=>$this->input->post('labour_price'),
+				'parts_price'=>$this->input->post('parts_price'),
+				'total_price' =>$this->input->post('total_price')
 			);
 			$this->RepairOrderModel->insert($insert_data);
 			$this->session->set_flashdata('success_msg',"Record inserted successfully");

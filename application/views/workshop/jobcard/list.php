@@ -36,10 +36,14 @@
 
          
             <td class="text-right">
-              <a href="<?php echo base_url('workshop/jobCard/generateBill/'.$job['id'])?>" class="btn btn-primary">Bill</a>
-              <a href="<?php echo base_url('workshop/jobCard/completeJobs/'.$job['id'])?>" class="btn btn-primary">Fill status</a>
-              <a data-toggle="modal" class="btn btn-success" data-toggle="tooltip" href="<?php echo  base_url('workshop/jobCard/show/'.$job['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
-            
+              <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                     <li><a href="<?php echo base_url('workshop/jobCard/generateBill/'.$job['id'])?>" >Bill</a></li>
+                    <li><a href="<?php echo base_url('workshop/jobCard/completeJobs/'.$job['id'])?>">Fill status</a></li>
+                    <li><a href="<?php echo  base_url('workshop/jobCard/show/'.$job['id']); ?>">View</a></li>
+                </ul>
+            </div>
           </tr>
           <?php
                }

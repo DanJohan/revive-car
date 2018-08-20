@@ -303,9 +303,9 @@
 														<td><?php echo $repair_order['sa_remarks']; ?></td>
 														<td><?php echo $repair_order['parts_name']; ?></td>
 														<td><?php echo $repair_order['qty']; ?></td>
-														<td><?php echo number_format($repair_order['price_parts'],2,'.',','); ?></td>
-                            							<td><?php echo number_format($repair_order['price_labour'],2,'.',','); ?></td>
-                            							<td><?php echo number_format($repair_order['price_total'],2,'.',','); ?></td>
+														<td><?php echo number_format($repair_order['parts_price'],2,'.',','); ?></td>
+                            							<td><?php echo number_format($repair_order['labour_price'],2,'.',','); ?></td>
+                            							<td><?php echo number_format($repair_order['total_price'],2,'.',','); ?></td>
 													</tr>
 													<?php
 														}
