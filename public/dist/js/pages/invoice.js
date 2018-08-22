@@ -3,13 +3,13 @@ $(function(){
 	var wrapper = $('.labour-table'); //table wrapper
 	var x = 1; //Initial field counter is 1
 	var fieldHTML = '<tr>'+
-                          '<td><input type="text" class="form-control" /></td>'+
-                          '<td><input type="text" class="form-control labour-hour" /></td>'+
-                          '<td><input type="text" class="form-control labour-rate" /></td>'+
-                          '<td><input type="text" class="form-control labour-cost" /></td>'+
-                          '<td><input type="text" class="form-control labour-gst" /><input type="hidden"'+
-                          'class="gst-amount" value="0.00"></td>'+
-                          '<td><input type="text" class="form-control labour-total" /></td>'+
+                          '<td><input type="text" class="form-control" name="labour['+x+'][item]"  /></td>'+
+                          '<td><input type="text" class="form-control labour-hour" name="labour['+x+'][hour]" /></td>'+
+                          '<td><input type="text" class="form-control labour-rate" name="labour['+x+'][rate]" /></td>'+
+                          '<td><input type="text" class="form-control labour-cost" name="labour['+x+'][cost]" /></td>'+
+                          '<td><input type="text" class="form-control labour-gst" name="labour['+x+'][gst]" /><input type="hidden"'+
+                          'class="gst-amount" value="0.00" name="labour['+x+'][gst_amount]"></td>'+
+                          '<td><input type="text" class="form-control labour-total" name="labour['+x+'][total]" /></td>'+
                           '<td><button class="btn btn-success labour-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
                       '</tr>'; //New input field html
 
@@ -28,6 +28,7 @@ $(function(){
         e.preventDefault();
         $(this).parents('tr').remove(); //Remove field html
         x--; //Decrement field counter
+        $('.labour-hour:first').trigger('keyup');
     });
 });  // function for labour table add field dynamically
 
@@ -36,12 +37,12 @@ $(function(){
 	var wrapper = $('.parts-table'); //table wrapper
 	var x = 1; //Initial field counter is 1
 	var fieldHTML = '<tr>'+
-                          '<td><input type="text" class="form-control" /></td>'+
-                          '<td><input type="text" class="form-control parts-qty" /></td>'+
-                          '<td><input type="text" class="form-control parts-cost" /></td>'+
-                          '<td><input type="text" class="form-control parts-gst" /><input type="hidden"'+
-                          'class="gst-amount" value="0.00"></td>'+
-                          '<td><input type="text" class="form-control parts-total" /></td>'+
+                          '<td><input type="text" class="form-control" name="parts['+x+'][item]" /></td>'+
+                          '<td><input type="text" class="form-control parts-qty" name="parts['+x+'][qty]" /></td>'+
+                          '<td><input type="text" class="form-control parts-cost" name="parts['+x+'][cost]" /></td>'+
+                          '<td><input type="text" class="form-control parts-gst" name="parts['+x+'][gst]" /><input type="hidden"'+
+                          'class="gst-amount" name="parts['+x+'][gst_amount]" value="0.00"></td>'+
+                          '<td><input type="text" class="form-control parts-total" name="parts['+x+'][total]" /></td>'+
                           '<td><button class="btn btn-success parts-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
                       '</tr>'; //New input field html
 
@@ -82,7 +83,9 @@ $(function(){
 		for (var i = 0;i<labourTotal.length; i++) {
 			labourTotalSum += parseFloat(labourTotal[i]);
 		}
+		//console.log(labourTotalSum);
 		$("#total-labour-amount").html('&#x20b9; '+labourTotalSum.toFixed(2));
+		$('input[name="labour_total"]').val(labourTotalSum.toFixed(2));
 		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
 		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
 	}
@@ -102,6 +105,7 @@ $(function(){
 			partsTotalSum += parseFloat(partsTotal[i]);
 		}
 		$("#total-parts-amount").html('&#x20b9; '+partsTotalSum.toFixed(2));
+		$('input[name="parts_total"]').val(partsTotalSum.toFixed(2));
 		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
 		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
 	}
@@ -116,6 +120,7 @@ $(function(){
 			gstTotalSum += parseFloat(gstTotal[i]);
 		}
 		$("#total-gst-amount").html('&#x20b9; '+gstTotalSum.toFixed(2));
+		$('input[name="gst_total"]').val(gstTotalSum.toFixed(2));
 		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
 		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
 	}

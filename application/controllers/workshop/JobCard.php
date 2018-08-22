@@ -14,6 +14,9 @@ class JobCard extends MY_Controller {
 	    $this->load->model('JobCardImageModel');
 	    $this->load->model('DriverModel');
 	    $this->load->model('RepairOrderModel');
+	    $this->load->model('InvoiceModel');
+	    $this->load->model('InvoiceLabourItemModel');
+	    $this->load->model('InvoicePartsItemModel');
 	}
 
 	public function list(){
@@ -195,6 +198,9 @@ class JobCard extends MY_Controller {
 
 
 	public function invoice($id=null){
+		$this->load->library('sequence');
+		$this->sequence->createSequence('invoice');
+		$data['sequence']=$this->sequence->getNextSequence();
 		$manager_id = $this->session->userdata('id');
 		$driver_ids = $this->DriverModel->getDriversByWorkshop($manager_id);
 		if($driver_ids) {
@@ -209,21 +215,77 @@ class JobCard extends MY_Controller {
 			$this->session->set_flashdata('error_msg','No detail found!');
 			redirect('workshop/jobCard/list');
 		}
-		//$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
-		//$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price','status')),SORT_REGULAR),'repair_order_id','');
-		//$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
 		$job_card = $job_card[0];
 		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','labour_price','parts_price','total_price','enquiry_image_id','enquiry_image');
 		foreach($removeKeys as $key) {
 		   unset($job_card[$key]);
 		}
-		//$job_card['images_data']=$job_card_images;
-		//$job_card['repair_orders']=$repair_orders;
-		//$job_card['enquiry_images'] = $enquiry_images;
-		//dd($job_card,false);
 		$data['job_card'] = $job_card;
 		$data['view'] = 'workshop/jobcard/invoice';
 		$this->load->view('workshop/layout',$data);
+	}
+
+	public function createInvoice(){
+		//dd($_POST);
+		$this->load->library('sequence');
+		$this->sequence->createSequence('invoice');
+		$sequence = $this->sequence->updateSequence();
+		if($this->input->post('submit')){
+			$insert_invoice_data = array(
+				'invoice_number'=>$sequence['sequence'],
+				'job_card_id' =>$this->input->post('job_card_id'),
+				'user_id' => $this->input->post('user_id'),
+				'client_name' => $this->input->post('client_name'),
+				'client_phone' => $this->input->post('client_phone'),
+				'client_email' => $this->input->post('client_email'),
+				'client_address'=> $this->input->post('client_address'),
+				'vehicle_reg_no'=> $this->input->post('vehicle_reg_no'),
+				'vehicle_brand_name'=>$this->input->post('vehicle_brand_name'),
+				'vehicle_model_name'=>$this->input->post('vehicle_model_name'),
+				'vehicle_vin_no'=>$this->input->post('vehicle_vin_no'),
+				'vehicle_kms'=>$this->input->post('vehicle_kms'),
+				'labour_total'=> $this->input->post('labour_total'),
+				'parts_total'=> $this->input->post('parts_total'),
+				'gst_total'=>$this->input->post('gst_total'),
+				'discount'=>$this->input->post('discount'),
+				'total_amount_after_discount'=>$this->input->post('total_amount_after_discount'),
+				'total_amount'=>$this->input->post('total_amount'),
+				'discount_amount'=>$this->input->post('discount_amount'),
+				'notes'=> $this->input->post('notes'),
+				'created_at'=>date('Y-m-d H:i:s')
+			);
+			$invoice_id = $this->InvoiceModel->insert($insert_invoice_data);
+			if($invoice_id){
+				$labour_items = $this->input->post('labour');
+				foreach ($labour_items as $index => $data) {
+					$labour_items[$index]['invoice_id'] = $invoice_id;
+					$labour_items[$index]['item'] = $data['item'];
+					$labour_items[$index]['hour'] = $data['hour'];
+					$labour_items[$index]['rate'] = $data['rate'];
+					$labour_items[$index]['cost'] = $data['cost'];
+					$labour_items[$index]['gst'] = $data['gst'];
+					$labour_items[$index]['gst_amount'] = $data['gst_amount'];
+					$labour_items[$index]['total'] = $data['total'];
+				}
+				$this->InvoiceLabourItemModel->insert_batch($labour_items);
+
+				$part_items = $this->input->post('parts');
+				foreach ($part_items as $index => $data) {
+					$part_items[$index]['invoice_id'] = $invoice_id;
+					$part_items[$index]['item'] = $data['item'];
+					$part_items[$index]['quantity'] = $data['qty'];
+					$part_items[$index]['cost'] = $data['cost'];
+					$part_items[$index]['gst'] = $data['gst'];
+					$part_items[$index]['gst_amount'] = $data['gst_amount'];
+					$part_items[$index]['total'] = $data['total'];
+					unset($part_items[$index]['qty']);
+				}
+				$this->InvoicePartsItemModel->insert_batch($part_items);
+				$this->session->set_flashdata('success_msg','Invoice generated successfully');
+			}
+
+		}
+		redirect('workshop/jobCard/list');
 	}
 }// end of class
 ?>
