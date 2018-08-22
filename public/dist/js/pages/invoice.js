@@ -1,0 +1,249 @@
+$(function(){
+	var maxField = 10; //Input fields increment limitation
+	var wrapper = $('.labour-table'); //table wrapper
+	var x = 1; //Initial field counter is 1
+	var fieldHTML = '<tr>'+
+                          '<td><input type="text" class="form-control" /></td>'+
+                          '<td><input type="text" class="form-control labour-hour" /></td>'+
+                          '<td><input type="text" class="form-control labour-rate" /></td>'+
+                          '<td><input type="text" class="form-control labour-cost" /></td>'+
+                          '<td><input type="text" class="form-control labour-gst" /><input type="hidden"'+
+                          'class="gst-amount" value="0.00"></td>'+
+                          '<td><input type="text" class="form-control labour-total" /></td>'+
+                          '<td><button class="btn btn-success labour-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
+                      '</tr>'; //New input field html
+
+        //Once add button is clicked
+    $(document).on('click','.labour-add-button',function(e){
+    	e.preventDefault();
+        //Check maximum number of input fields
+        if(x < maxField){ 
+            x++; //Increment field counter
+            $(wrapper).append(fieldHTML); //Add field html
+        }
+    });
+
+     //Once remove button is clicked
+    $(document).on('click', '.labour-delete-button', function(e){
+        e.preventDefault();
+        $(this).parents('tr').remove(); //Remove field html
+        x--; //Decrement field counter
+    });
+});  // function for labour table add field dynamically
+
+$(function(){
+	var maxField = 10; //Input fields increment limitation
+	var wrapper = $('.parts-table'); //table wrapper
+	var x = 1; //Initial field counter is 1
+	var fieldHTML = '<tr>'+
+                          '<td><input type="text" class="form-control" /></td>'+
+                          '<td><input type="text" class="form-control parts-qty" /></td>'+
+                          '<td><input type="text" class="form-control parts-cost" /></td>'+
+                          '<td><input type="text" class="form-control parts-gst" /><input type="hidden"'+
+                          'class="gst-amount" value="0.00"></td>'+
+                          '<td><input type="text" class="form-control parts-total" /></td>'+
+                          '<td><button class="btn btn-success parts-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
+                      '</tr>'; //New input field html
+
+        //Once add button is clicked
+    $(document).on('click','.parts-add-button',function(e){
+    	e.preventDefault();
+        //Check maximum number of input fields
+        if(x < maxField){ 
+            x++; //Increment field counter
+            $(wrapper).append(fieldHTML); //Add field html
+        }
+    });
+
+     //Once remove button is clicked
+    $(document).on('click', '.parts-delete-button', function(e){
+        e.preventDefault();
+        $(this).parents('tr').remove(); //Remove field html
+        x--; //Decrement field counter
+
+      $('.parts-qty:first').trigger('keyup');
+    });
+});  // function for parts table add field dynamically
+
+$(function(){
+	var labourTotal=[];
+	var labourTotalSum=0.00;
+	var partsTotal=[];
+	var partsTotalSum=0.00;
+	var gstTotal=[];
+	var gstTotalSum=0.00;
+	var totalAmount=0.00;
+
+	function getLabourTotal(){
+		labourTotalSum=0.00;
+		$('.labour-table').find('.labour-cost').each(function(index,el){
+			labourTotal[index]=($(this).val())?$(this).val():0.00;
+		});
+		for (var i = 0;i<labourTotal.length; i++) {
+			labourTotalSum += parseFloat(labourTotal[i]);
+		}
+		$("#total-labour-amount").html('&#x20b9; '+labourTotalSum.toFixed(2));
+		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
+		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
+	}
+
+	function getPartsTotal(){
+		partsTotalSum=0.00;
+		var partsQtyFields=$('.parts-table').find('.parts-qty');
+		$('.parts-table').find('.parts-cost').each(function(index,el){
+			var partsCost=($(this).val())?$(this).val():0.00;
+			var partsQty=partsQtyFields[index].value;
+			//console.log(partsQty.value);
+			partsTotal[index]=(Number(partsQty)*Number(partsCost)).toFixed(2);
+			//partsTotal[index]=($(this).val())?$(this).val():0.00;
+		});
+		//console.log(partsTotal);
+		for (var i = 0;i<partsTotal.length; i++) {
+			partsTotalSum += parseFloat(partsTotal[i]);
+		}
+		$("#total-parts-amount").html('&#x20b9; '+partsTotalSum.toFixed(2));
+		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
+		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
+	}
+
+	function getGstTotal(){
+		gstTotalSum=0.00;
+		$('.labour-table,.parts-table').find('.gst-amount').each(function(index,el){
+			gstTotal[index]=($(this).val())?$(this).val():0.00;
+		});
+		//console.log(gstTotal);
+		for (var i = 0;i<gstTotal.length; i++) {
+			gstTotalSum += parseFloat(gstTotal[i]);
+		}
+		$("#total-gst-amount").html('&#x20b9; '+gstTotalSum.toFixed(2));
+		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
+		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
+	}
+	$(document).on('keyup','.labour-hour',function(e){
+		//e.stopPropagation();
+		var rateField = $(this).parents('tr').find('.labour-rate');
+		var gstAmountField = $(this).parents('tr').find('.gst-amount');
+		var rate=(rateField.val())?rateField.val():0;
+		var totalField = $(this).parents('tr').find('.labour-total');
+		var costField = $(this).parents('tr').find('.labour-cost');
+		var gstField = $(this).parents('tr').find('.labour-gst');
+		var gst =(gstField.val())?gstField.val():0;
+		var hour = $(this).val();
+		costField.val((hour*rate).toFixed(2));
+		cost=(costField.val())?costField.val():0.00;
+		gstAmountField.val((cost/100*gst).toFixed(2));
+		gstAmount=gstAmountField.val();
+		totalField.val((Number(cost)+Number((cost/100*gst))).toFixed(2));
+		getLabourTotal();
+		getGstTotal();
+		calculateDiscount($('#discount'));
+	});
+
+	$(document).on('keyup','.labour-rate',function(){
+		var totalField = $(this).parents('tr').find('.labour-total');
+		var gstAmountField = $(this).parents('tr').find('.gst-amount');
+		var hourField = $(this).parents('tr').find('.labour-hour');
+		var hour = (hourField.val())?hourField.val():0;
+		var costField = $(this).parents('tr').find('.labour-cost');
+		var gstField = $(this).parents('tr').find('.labour-gst');
+		var gst= (gstField.val())?gstField.val():0;
+		var rate = $(this).val();
+		costField.val((hour*rate).toFixed(2));
+		cost=(costField.val())?costField.val():0.00;
+		gstAmountField.val((cost/100*gst).toFixed(2));
+		gstAmount=gstAmountField.val();
+		totalField.val((Number(cost)+Number(gstAmount)).toFixed(2));
+		getLabourTotal();
+		getGstTotal();
+		calculateDiscount($('#discount'));
+	});
+
+	$(document).on('keyup','.labour-gst',function(){
+		var totalField = $(this).parents('tr').find('.labour-total');
+		var gstAmountField = $(this).parents('tr').find('.gst-amount');
+		var costField = $(this).parents('tr').find('.labour-cost');
+		var cost=(costField.val())?costField.val():0.00;
+		var gst = $(this).val();
+		gstAmountField.val((cost/100*gst).toFixed(2));
+		gstAmount=gstAmountField.val();
+		totalField.val((Number(cost)+Number(gstAmount)).toFixed(2));
+		getLabourTotal();
+		getGstTotal();
+		calculateDiscount($('#discount'));
+	});
+
+	$(document).on('keyup','.parts-qty',function(){
+		var totalField = $(this).parents('tr').find('.parts-total');
+		var gstAmountField = $(this).parents('tr').find('.gst-amount');
+		var costField = $(this).parents('tr').find('.parts-cost');
+		var gstField = $(this).parents('tr').find('.parts-gst');
+		var cost=(costField.val())?costField.val():0.00;
+		var gst = (gstField.val())?gstField.val():0;
+		var qty = $(this).val();
+		var amount = cost*qty;
+		gstAmountField.val((amount/100*gst).toFixed(2));
+		gstAmount=gstAmountField.val();
+		//console.log(gstAmount);
+		totalField.val((Number(amount)+Number(gstAmount)).toFixed(2));
+		getPartsTotal();
+		getGstTotal();
+		calculateDiscount($('#discount'));
+	});
+
+	$(document).on('keyup','.parts-cost',function(){
+		var qtyField = $(this).parents('tr').find('.parts-qty');
+		var gstAmountField = $(this).parents('tr').find('.gst-amount');
+		var totalField = $(this).parents('tr').find('.parts-total');
+		var gstField = $(this).parents('tr').find('.parts-gst');
+		var gst = (gstField.val())?gstField.val():0;
+		var qty=(qtyField.val())?qtyField.val():0;
+		var cost = $(this).val();
+		var amount = cost*qty;
+		gstAmountField.val((amount/100*gst).toFixed(2));
+		gstAmount=gstAmountField.val();
+		totalField.val((Number(amount)+Number(gstAmount)).toFixed(2));
+		getPartsTotal();
+		getGstTotal();
+		calculateDiscount($('#discount'));
+	});
+
+	$(document).on('keyup','.parts-gst',function(){
+		var qtyField = $(this).parents('tr').find('.parts-qty');
+		var gstAmountField = $(this).parents('tr').find('.gst-amount');
+		var totalField = $(this).parents('tr').find('.parts-total');
+		var costField = $(this).parents('tr').find('.parts-cost');
+		var cost=(costField.val())?costField.val():0.00;
+		var gst = $(this).val();
+		var qty=(qtyField.val())?qtyField.val():0;
+		var amount = cost*qty;
+		gstAmountField.val((amount/100*gst).toFixed(2));
+		gstAmount=gstAmountField.val();
+		totalField.val((Number(amount)+Number(gstAmount)).toFixed(2));
+		getPartsTotal();
+		getGstTotal();
+		calculateDiscount($('#discount'));
+	});
+	function calculateDiscount(el){
+		console.log(el);
+		var discount=el.val()/100;
+		tempTotalAmount=totalAmount;
+		var discountAmount = tempTotalAmount*discount;
+		$('#discountAmount').val(discountAmount.toFixed(2));
+		tempTotalAmount=(tempTotalAmount-discountAmount).toFixed(2);
+		$("#total-amount").html('&#x20b9; '+tempTotalAmount);
+		$('#totalAmountAfterDiscount').val(tempTotalAmount);
+		$('#totalAmount').val(totalAmount.toFixed(2));
+	}
+	$(document).on('keyup','#discount',function(){
+		calculateDiscount($(this));
+	});
+});
+
+$(document).on('submit','#invoice-form',function(e){
+	//return false;
+	/*console.log(e);
+	if(e.keyCode==13){
+		e.preventDefault();
+		return false;
+	}*/
+});

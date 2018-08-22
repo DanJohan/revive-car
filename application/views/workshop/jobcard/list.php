@@ -39,8 +39,8 @@
               <div class="dropdown">
                 <button class="btn btn-success dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                     <li><a href="<?php echo base_url('workshop/jobCard/generateBill/'.$job['id'])?>" >Bill</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/completeJobs/'.$job['id'])?>">Fill status</a></li>
+                     <li><a href="<?php echo base_url('workshop/jobCard/invoice/'.$job['id'])?>" >Make invoice</a></li>
+                    <li><a href="<?php echo base_url('workshop/jobCard/completeJobs/'.$job['id'])?>">Create estimate</a></li>
                     <li><a href="<?php echo  base_url('workshop/jobCard/show/'.$job['id']); ?>">View</a></li>
                 </ul>
             </div>
