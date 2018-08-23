@@ -13,8 +13,8 @@
 		}
 
 		public function login(){
-		if ($this->session->has_userdata['is_manager_login'] == TRUE)
-
+			//dd($this->session->userdata());
+		if ($this->session->userdata('is_manager_login')==true)
 		{
 		   redirect('workshop/dashboard'); //redirect to login page
 		} 
@@ -58,8 +58,7 @@
 		}	
 
 		public function change_pwd(){
-			if (!$this->session->userdata['is_manager_login'] == TRUE)
-
+		if ($this->session->userdata('is_manager_login') != TRUE)
 		{
 		   redirect('workshop/auth/login'); //redirect to login page
 		} 

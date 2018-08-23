@@ -13,7 +13,7 @@
 		}
 
 		public function login(){
-			if ($this->session->has_userdata('is_admin_login'))
+			if ($this->session->userdata('is_admin_login')==true)
 			{ 
 			   redirect('admin/dashboard'); //redirect to login page
 			} 

@@ -1,22 +1,37 @@
+function isNumber(evt, element) {
+
+        var charCode = (evt.which) ? evt.which : event.keyCode
+
+        if (
+            (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
+            (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+            (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+ } 
+
+$(document).on('keypress','.validateNumeric',function(e){
+   return isNumber(e,$(this));
+})
 $(function(){
-	var maxField = 10; //Input fields increment limitation
-	var wrapper = $('.labour-table'); //table wrapper
-	var x = 1; //Initial field counter is 1
+	var maxField = 10; 
+	var wrapper = $('.labour-table'); 
+	var x = 1; 
 	var fieldHTML = '<tr>'+
-                          '<td><input type="text" class="form-control" name="labour['+x+'][item]"  /></td>'+
-                          '<td><input type="text" class="form-control labour-hour" name="labour['+x+'][hour]" /></td>'+
-                          '<td><input type="text" class="form-control labour-rate" name="labour['+x+'][rate]" /></td>'+
-                          '<td><input type="text" class="form-control labour-cost" name="labour['+x+'][cost]" /></td>'+
-                          '<td><input type="text" class="form-control labour-gst" name="labour['+x+'][gst]" /><input type="hidden"'+
+                          '<td><input type="text" class="form-control labour-item invoice-item" name="labour['+x+'][item]"  /></td>'+
+                          '<td><input type="text" class="form-control labour-hour validateNumeric" name="labour['+x+'][hour]" /></td>'+
+                          '<td><input type="text" class="form-control labour-rate validateNumeric" name="labour['+x+'][rate]" /></td>'+
+                          '<td><input type="text" class="form-control labour-cost" readonly name="labour['+x+'][cost]" /></td>'+
+                          '<td><input type="text" class="form-control labour-gst validateNumeric" name="labour['+x+'][gst]" value="0.00" /><input type="hidden"'+
                           'class="gst-amount" value="0.00" name="labour['+x+'][gst_amount]"></td>'+
-                          '<td><input type="text" class="form-control labour-total" name="labour['+x+'][total]" /></td>'+
+                          '<td><input type="text" readonly class="form-control labour-total validateNumeric" name="labour['+x+'][total]" /></td>'+
                           '<td><button class="btn btn-success labour-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
                       '</tr>'; //New input field html
 
         //Once add button is clicked
     $(document).on('click','.labour-add-button',function(e){
     	e.preventDefault();
-        //Check maximum number of input fields
         if(x < maxField){ 
             x++; //Increment field counter
             $(wrapper).append(fieldHTML); //Add field html
@@ -26,9 +41,10 @@ $(function(){
      //Once remove button is clicked
     $(document).on('click', '.labour-delete-button', function(e){
         e.preventDefault();
+        $(this).parents('tr').find('.labour-hour').val(0);
+        $(this).parents('tr').find('.labour-hour').trigger('keyup');
         $(this).parents('tr').remove(); //Remove field html
         x--; //Decrement field counter
-        $('.labour-hour:first').trigger('keyup');
     });
 });  // function for labour table add field dynamically
 
@@ -37,12 +53,12 @@ $(function(){
 	var wrapper = $('.parts-table'); //table wrapper
 	var x = 1; //Initial field counter is 1
 	var fieldHTML = '<tr>'+
-                          '<td><input type="text" class="form-control" name="parts['+x+'][item]" /></td>'+
-                          '<td><input type="text" class="form-control parts-qty" name="parts['+x+'][qty]" /></td>'+
-                          '<td><input type="text" class="form-control parts-cost" name="parts['+x+'][cost]" /></td>'+
-                          '<td><input type="text" class="form-control parts-gst" name="parts['+x+'][gst]" /><input type="hidden"'+
+                          '<td><input type="text" class="form-control parts-item" name="parts['+x+'][item]" /></td>'+
+                          '<td><input type="text" class="form-control parts-qty validateNumeric" name="parts['+x+'][qty]" /></td>'+
+                          '<td><input type="text" class="form-control parts-cost validateNumeric" name="parts['+x+'][cost]" /></td>'+
+                          '<td><input type="text" class="form-control parts-gst validateNumeric" name="parts['+x+'][gst]" value="0.00" /><input type="hidden"'+
                           'class="gst-amount" name="parts['+x+'][gst_amount]" value="0.00"></td>'+
-                          '<td><input type="text" class="form-control parts-total" name="parts['+x+'][total]" /></td>'+
+                          '<td><input type="text" readonly class="form-control parts-total" name="parts['+x+'][total]" /></td>'+
                           '<td><button class="btn btn-success parts-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
                       '</tr>'; //New input field html
 
@@ -59,6 +75,8 @@ $(function(){
      //Once remove button is clicked
     $(document).on('click', '.parts-delete-button', function(e){
         e.preventDefault();
+        $(this).parents('tr').find('.parts-qty').val(0);
+        $(this).parents('tr').find('.parts-qty').trigger('keyup');
         $(this).parents('tr').remove(); //Remove field html
         x--; //Decrement field counter
 
@@ -124,7 +142,7 @@ $(function(){
 		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
 		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
 	}
-	$(document).on('keyup','.labour-hour',function(e){
+	$(document).on('keyup mousewheel','.labour-hour',function(e){
 		//e.stopPropagation();
 		var rateField = $(this).parents('tr').find('.labour-rate');
 		var gstAmountField = $(this).parents('tr').find('.gst-amount');
@@ -229,7 +247,6 @@ $(function(){
 		calculateDiscount($('#discount'));
 	});
 	function calculateDiscount(el){
-		console.log(el);
 		var discount=el.val()/100;
 		tempTotalAmount=totalAmount;
 		var discountAmount = tempTotalAmount*discount;
@@ -245,10 +262,9 @@ $(function(){
 });
 
 $(document).on('submit','#invoice-form',function(e){
-	//return false;
-	/*console.log(e);
-	if(e.keyCode==13){
-		e.preventDefault();
+	if($('#totalAmountAfterDiscount').val()=="0.00"){
+		alert("Your total amount is zero! Please create amount.");
 		return false;
-	}*/
+	}
+	return true;
 });

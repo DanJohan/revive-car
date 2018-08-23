@@ -198,6 +198,7 @@ class JobCard extends MY_Controller {
 
 
 	public function invoice($id=null){
+
 		$this->load->library('sequence');
 		$this->sequence->createSequence('invoice');
 		$data['sequence']=$this->sequence->getNextSequence();
@@ -229,7 +230,7 @@ class JobCard extends MY_Controller {
 		//dd($_POST);
 		$this->load->library('sequence');
 		$this->sequence->createSequence('invoice');
-		$sequence = $this->sequence->updateSequence();
+		$sequence = $this->sequence->getNextSequence();
 		if($this->input->post('submit')){
 			$insert_invoice_data = array(
 				'invoice_number'=>$sequence['sequence'],
@@ -244,6 +245,9 @@ class JobCard extends MY_Controller {
 				'vehicle_model_name'=>$this->input->post('vehicle_model_name'),
 				'vehicle_vin_no'=>$this->input->post('vehicle_vin_no'),
 				'vehicle_kms'=>$this->input->post('vehicle_kms'),
+				'date_created'=>$this->input->post('invoice_created_date'),
+				'due_date'=>$this->input->post('invoice_due_date'),
+				'sa_name'=>$this->input->post('sa_name'),
 				'labour_total'=> $this->input->post('labour_total'),
 				'parts_total'=> $this->input->post('parts_total'),
 				'gst_total'=>$this->input->post('gst_total'),
@@ -252,35 +256,46 @@ class JobCard extends MY_Controller {
 				'total_amount'=>$this->input->post('total_amount'),
 				'discount_amount'=>$this->input->post('discount_amount'),
 				'notes'=> $this->input->post('notes'),
+				'created_by'=>$this->session->userdata('id'),
 				'created_at'=>date('Y-m-d H:i:s')
 			);
 			$invoice_id = $this->InvoiceModel->insert($insert_invoice_data);
 			if($invoice_id){
+				$this->sequence->updateSequence();
 				$labour_items = $this->input->post('labour');
+				$insert_labour_items= array();
 				foreach ($labour_items as $index => $data) {
-					$labour_items[$index]['invoice_id'] = $invoice_id;
-					$labour_items[$index]['item'] = $data['item'];
-					$labour_items[$index]['hour'] = $data['hour'];
-					$labour_items[$index]['rate'] = $data['rate'];
-					$labour_items[$index]['cost'] = $data['cost'];
-					$labour_items[$index]['gst'] = $data['gst'];
-					$labour_items[$index]['gst_amount'] = $data['gst_amount'];
-					$labour_items[$index]['total'] = $data['total'];
+					if(!empty($data['item'])){
+						$insert_labour_items[$index]['invoice_id'] = $invoice_id;
+						$insert_labour_items[$index]['item'] = $data['item'];
+						$insert_labour_items[$index]['hour'] = $data['hour'];
+						$insert_labour_items[$index]['rate'] = $data['rate'];
+						$insert_labour_items[$index]['cost'] = $data['cost'];
+						$insert_labour_items[$index]['gst'] = $data['gst'];
+						$insert_labour_items[$index]['gst_amount'] = $data['gst_amount'];
+						$insert_labour_items[$index]['total'] = $data['total'];
+					}
 				}
-				$this->InvoiceLabourItemModel->insert_batch($labour_items);
-
+				if(!empty($insert_labour_items)) {
+					$this->InvoiceLabourItemModel->insert_batch($insert_labour_items);
+				}
 				$part_items = $this->input->post('parts');
+				$insert_part_items = array();
 				foreach ($part_items as $index => $data) {
-					$part_items[$index]['invoice_id'] = $invoice_id;
-					$part_items[$index]['item'] = $data['item'];
-					$part_items[$index]['quantity'] = $data['qty'];
-					$part_items[$index]['cost'] = $data['cost'];
-					$part_items[$index]['gst'] = $data['gst'];
-					$part_items[$index]['gst_amount'] = $data['gst_amount'];
-					$part_items[$index]['total'] = $data['total'];
-					unset($part_items[$index]['qty']);
+					if(!empty($data['item'])) {
+						$insert_part_items[$index]['invoice_id'] = $invoice_id;
+						$insert_part_items[$index]['item'] = $data['item'];
+						$insert_part_items[$index]['quantity'] = $data['qty'];
+						$insert_part_items[$index]['cost'] = $data['cost'];
+						$insert_part_items[$index]['gst'] = $data['gst'];
+						$insert_part_items[$index]['gst_amount'] = $data['gst_amount'];
+						$insert_part_items[$index]['total'] = $data['total'];
+						//unset($part_items[$index]['qty']);
+					}
 				}
-				$this->InvoicePartsItemModel->insert_batch($part_items);
+				if(!empty($insert_part_items)) {
+					$this->InvoicePartsItemModel->insert_batch($insert_part_items);
+				}
 				$this->session->set_flashdata('success_msg','Invoice generated successfully');
 			}
 
