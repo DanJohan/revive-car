@@ -8,6 +8,7 @@ class JobCard extends Rest_Controller {
 	{
 	    parent::__construct();
 	    $this->load->model('JobcardModel'); 
+	    $this->load->model('invoiceModel');
 	}
 
 	public function getUserJobCard(){
@@ -57,5 +58,50 @@ class JobCard extends Rest_Controller {
 			$response = array('status'=>false,'message'=>$errors);
 		}
 		$this->renderJson($response);
+	}
+
+
+	public function viewInvoice($id=null,$pdf=false) {
+		if($id){
+			$invoice = $this->invoiceModel->getInvoiceById($id);
+		}
+		if(empty($invoice)){
+			return;
+		}
+		$invoice_labour_keys =  array('invoice_labour_id','invoice_labour_item','invoice_labour_hour','invoice_labour_rate','invoice_labour_cost','invoice_labour_gst','invoice_labour_gst_amount','invoice_labour_total');
+		$invoice_labour = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_labour_keys),SORT_REGULAR),'invoice_labour_id','');
+
+		$invoice_parts_keys =  array('invoice_parts_id','invoice_parts_item','invoice_parts_quantity','invoice_parts_cost','invoice_parts_gst','invoice_parts_gst_amount','invoice_parts_total');
+		$invoice_parts = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_parts_keys),SORT_REGULAR),'invoice_parts_id','');
+
+		$invoice = $invoice[0];
+
+		$removeKeys = array_merge($invoice_parts_keys,$invoice_labour_keys);
+		foreach($removeKeys as $key) {
+		   unset($invoice[$key]);
+		}
+
+		$invoice['labour'] = $invoice_labour;
+		$invoice['parts'] = $invoice_parts;
+		if($pdf){
+			return $this->load->view('api/invoice',compact('invoice'),true);
+		}
+		$this->load->view('api/invoice',compact('invoice'));
+	}
+
+	public function printInvoicePdf($id=null) {
+		$this->load->library('myPdf');
+		// create new PDF document
+		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$pdf->SetFont('dejavusans', '', 14, '', true);
+		$pdf->AddPage();
+		$html = self::viewInvoice($id,true);
+		//dd($html);
+		// Print text using writeHTMLCell()
+		$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+		$pdf->Output('example_001.pdf', 'I');
+		print_r($pdf);
 	}
 }
