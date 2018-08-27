@@ -18,21 +18,22 @@ $(function(){
 	var maxField = 10; 
 	var wrapper = $('.labour-table'); 
 	var x = 1; 
-	var fieldHTML = '<tr>'+
-                          '<td><input type="text" class="form-control labour-item invoice-item" name="labour['+x+'][item]"  /></td>'+
-                          '<td><input type="text" class="form-control labour-hour validateNumeric" name="labour['+x+'][hour]" /></td>'+
-                          '<td><input type="text" class="form-control labour-rate validateNumeric" name="labour['+x+'][rate]" /></td>'+
-                          '<td><input type="text" class="form-control labour-cost" readonly name="labour['+x+'][cost]" /></td>'+
-                          '<td><input type="text" class="form-control labour-gst validateNumeric" name="labour['+x+'][gst]" value="0.00" /><input type="hidden"'+
-                          'class="gst-amount" value="0.00" name="labour['+x+'][gst_amount]"></td>'+
-                          '<td><input type="text" readonly class="form-control labour-total validateNumeric" name="labour['+x+'][total]" /></td>'+
-                          '<td><button class="btn btn-success labour-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
-                      '</tr>'; //New input field html
+
 
         //Once add button is clicked
     $(document).on('click','.labour-add-button',function(e){
     	e.preventDefault();
         if(x < maxField){ 
+			var fieldHTML = '<tr>'+
+	                  '<td><input type="text" class="form-control labour-item invoice-item" name="labour['+x+'][item]"  /></td>'+
+	                  '<td><input type="text" class="form-control labour-hour validateNumeric" name="labour['+x+'][hour]" /></td>'+
+	                  '<td><input type="text" class="form-control labour-rate validateNumeric" name="labour['+x+'][rate]" /></td>'+
+	                  '<td><input type="text" class="form-control labour-cost" readonly name="labour['+x+'][cost]" /></td>'+
+	                  '<td><input type="text" class="form-control labour-gst validateNumeric" name="labour['+x+'][gst]" value="0.00" /><input type="hidden"'+
+	                  'class="gst-amount" value="0.00" name="labour['+x+'][gst_amount]"></td>'+
+	                  '<td><input type="text" readonly class="form-control labour-total validateNumeric" name="labour['+x+'][total]" /></td>'+
+	                  '<td><button class="btn btn-success labour-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
+	              '</tr>'; //New input field html
             x++; //Increment field counter
             $(wrapper).append(fieldHTML); //Add field html
         }
@@ -52,21 +53,23 @@ $(function(){
 	var maxField = 10; //Input fields increment limitation
 	var wrapper = $('.parts-table'); //table wrapper
 	var x = 1; //Initial field counter is 1
-	var fieldHTML = '<tr>'+
-                          '<td><input type="text" class="form-control parts-item" name="parts['+x+'][item]" /></td>'+
-                          '<td><input type="text" class="form-control parts-qty validateNumeric" name="parts['+x+'][qty]" /></td>'+
-                          '<td><input type="text" class="form-control parts-cost validateNumeric" name="parts['+x+'][cost]" /></td>'+
-                          '<td><input type="text" class="form-control parts-gst validateNumeric" name="parts['+x+'][gst]" value="0.00" /><input type="hidden"'+
-                          'class="gst-amount" name="parts['+x+'][gst_amount]" value="0.00"></td>'+
-                          '<td><input type="text" readonly class="form-control parts-total" name="parts['+x+'][total]" /></td>'+
-                          '<td><button class="btn btn-success parts-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
-                      '</tr>'; //New input field html
+ //New input field html
 
         //Once add button is clicked
     $(document).on('click','.parts-add-button',function(e){
+    	console.log('here',x);
     	e.preventDefault();
         //Check maximum number of input fields
         if(x < maxField){ 
+    		var fieldHTML = '<tr>'+
+                      '<td><input type="text" class="form-control parts-item" name="parts['+x+'][item]" /></td>'+
+                      '<td><input type="text" class="form-control parts-qty validateNumeric" name="parts['+x+'][qty]" /></td>'+
+                      '<td><input type="text" class="form-control parts-cost validateNumeric" name="parts['+x+'][cost]" /></td>'+
+                      '<td><input type="text" class="form-control parts-gst validateNumeric" name="parts['+x+'][gst]" value="0.00" /><input type="hidden"'+
+                      'class="gst-amount" name="parts['+x+'][gst_amount]" value="0.00"></td>'+
+                      '<td><input type="text" readonly class="form-control parts-total" name="parts['+x+'][total]" /></td>'+
+                      '<td><button class="btn btn-success parts-delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'+
+                  '</tr>';
             x++; //Increment field counter
             $(wrapper).append(fieldHTML); //Add field html
         }

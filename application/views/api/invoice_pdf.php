@@ -1,226 +1,145 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="../../favicon.ico">
-<title>Invoice</title>
-
-<!-- Bootstrap core CSS -->
-<link rel="stylesheet" href="<?php echo base_url(); ?>public/bootstrap/css/bootstrap.min.css">
-
-<link rel="stylesheet" href="<?php echo base_url(); ?>public/dist/css/invoice.css" >
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 <style>
-  body {
-  font-family: 'Open Sans', sans-serif;
+
+div.top-main-head{
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
 }
-h1, h2, h3, h4, h5, h6, p {
-  margin: 0px;
-  padding: 0px;
-}
-section.top-sec {
-  margin-bottom: 20px;
-}
-{
- text-align: center;
- font-size: 24px;
- font-weight: bold;
- color: #3e3e3e;
-}
-h2.top-head {
+div.top-head {
     border: 1px solid #ddd;
     background-color: #ededed;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
 }
-p.top-phr {
-  font-size: 14px;
-}
-.cust-border {
-  border-right: 1px solid #ddd;
-  height: -webkit-fill-available;
-  padding: 0px 1px;
-  margin: 0px;
-  height: 219px;
-}
-.cust-inner {
-  padding: 10px 10px;
-}
-h2.cust-head {
+
+div.top-phr{
   text-align: center;
-  border: 1px solid #ddd;
-  border-left: none;
-  border-top: none;
-  border-right: none;
 }
-/*.cust-wrapper {
-  height: 100%;
-  min-height: 200px;
-}*/
-section.middle tr td {
-  border: none;
-}
-section.middle thead th {
-  border: 1px solid #ddd;
-}
-thead.border {
-  border-top: 1px solid #ddd;
-}
-section.bottom tbody td {
-  border: none;
-  border-bottom: 1px solid #ddd;
-  text-align: right;
-}
-section.bottom thead th {
-  border-right: none;
-  border: none;
-  border-bottom: 1px solid #ddd;
-  text-align: right;
-}
-.b-text
-{
-  float:right;
-}
-.sign
-{
-  float:right;
-}
-.top-text{
-  padding-bottom: 20px;
-}
-</style>
-</head>
 
+.item-table, th {
+    border: 1px solid black;
+}
 
-<!--=======TOP-SEC==========-->
-<section class="top-sec">
-  <div class="container">
-    <div class="top-text text-center">
-      <h1>Tax Invoice</h1>
-      <h2 class="top-head">Shekhawati Electronics Private Ltd</h2>
-      <p class="top-phr">39/3, Site-IV Ind Area, Sahibabad, Ghazibad, Uttar pradesh India-201010<br>
-        Phone:9911440398, Email:crm@zedexnissan.co.in CIN:U74899DL1984PTCO18299, GSTIN #: 09aaacs3634F1Z1,PAN: AAACS3634F </p>
-    </div>
-    <div class="row " style="
-   border: 1px solid #ddd;
+.item-table {
+    border-collapse: collapse;
     width: 100%;
-    margin: 0 auto;
-">
-      <div class="col-md-4 cust-border">
-        <div class="cust-wrapper">
-          <h2 class="cust-head">Customer Details</h2>
-          <div class="cust-inner">
-            <div class="row">
-              <div class="col-xs-5"><b>Client name </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['client_name']; ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-5"><b>Client phone </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['client_phone']; ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-5"><b>Client email </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['client_email']; ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-5"><b>Client address </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['client_address']; ?></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 cust-border">
-        <div class="cust-wrapper">
-          <h2 class="cust-head">Vehicle Details</h2>
-          <div class="cust-inner">
-            <div class="row">
-              <div class="col-xs-5"><b>Registration No  </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['vehicle_reg_no']; ?></div>
-            </div>
-             <div class="row">
-              <div class="col-xs-5"><b>Brand </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['vehicle_brand_name']; ?></div>
-            </div>
-             <div class="row">
-              <div class="col-xs-5"><b>Model </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['vehicle_model_name']; ?></div>
-            </div>
-             <div class="row">
-              <div class="col-xs-5"><b>VIN </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['vehicle_vin_no']; ?></div>
-            </div>
-             <div class="row">
-              <div class="col-xs-5"><b>KMS </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['vehicle_kms']; ?></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 cust-border">
-        <div class="cust-wrapper">
-          <h2 class="cust-head">Invoice Details</h2>
-          <div class="cust-inner">
-            <div class="row">
-              <div class="col-xs-5"><b>Invoice </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['invoice_number']; ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-5"><b>Invoice Date </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo date('d-m-Y',strtotime($invoice['date_created'])); ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-5"><b>Invoice Due Date </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo date('d-m-Y',strtotime($invoice['due_date'])); ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-5"><b>SA Name </b></div>
-              <div class="col-xs-1">:</div>
-              <div class="col-xs-6"><?php echo $invoice['sa_name']; ?></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+}
+.text-center{
+  text-align: center;
+}
+.text-bold{
+  font-weight: bold;
+}
 
-<section class="middle">
-  <div class="container">
-    <table class="table">
-      <thead class="border">
+
+
+</style>
+<div>
+      <div class="text-center"><img src="<?php base_url()?>public/images/revive-logo.png" style="width:100px;height: 50px;"></div>
+      <div class="top-main-head">Tax Invoice</div>
+      <div class="top-head">Revive auto car care</div>
+      <div class="top-phr">9/11 Near Atul Kataria Chowk Kila No. , Opp Huda Nursery,
+Sector 17A, Gurgaon, Haryana-122001 GSTIN: 06AFVPJ6337B1ZD 
+Email:customercare@reviveauto.in</div>
+</div>
+<!--=======TOP-SEC==========-->
+<div>
+
+    <table class="item-table">
+      <tr>
+        <th class="text-center text-bold">Customer Details</th>
+        <th class="text-center text-bold">Vehicle Details</th>
+        <th class="text-center text-bold">Invoice Details</th>
+      </tr>
+      <tr>
+        <td>
+            <table>
+              <tr>
+                <td><b>Client name </b>:</td>
+                <td><?php echo $invoice['client_name']; ?></td>
+              </tr>
+              <tr>
+                <td><b>Client phone </b>:</td>
+                <td><?php echo $invoice['client_phone']; ?></td>
+              </tr>
+              <tr>
+                <td><b>Client email </b>:</td>
+                <td><?php echo $invoice['client_email']; ?></td>
+              </tr>
+              <tr>
+                <td><b>Client address </b>:</td>
+                <td><?php echo $invoice['client_address']; ?></td>
+              </tr>
+            </table>
+        </td>
+        <td>
+            <table>
+            <tr>
+              <td><b>Registration No </b>:</td>
+              <td><?php echo $invoice['vehicle_reg_no']; ?></td>
+            </tr>
+            <tr>
+              <td><b>Brand </b>:</td>
+              <td><?php echo $invoice['vehicle_brand_name']; ?></td>
+            </tr>
+            <tr>
+              <td><b>Model </b>:</td>
+              <td><?php echo $invoice['vehicle_model_name']; ?></td>
+            </tr>
+            <tr>
+              <td><b>VIN </b>:</td>
+              <td><?php echo $invoice['vehicle_vin_no']; ?></td>
+            </tr>
+            <tr>
+              <td><b>KMS </b>:</td>
+              <td><?php echo $invoice['vehicle_kms']; ?></td>
+            </tr>
+          </table>
+      </td>
+        <td>
+          <table>
+          <tr>
+            <td><b>Invoice No </b>:</td>
+            <td><?php echo $invoice['invoice_number']; ?></td>
+          </tr>
+          <tr>
+            <td><b>Invoice Date </b>:</td>
+            <td><?php echo date('d-m-Y',strtotime($invoice['date_created'])); ?></td>
+          </tr>
+          <tr>
+            <td><b>Invoice Due Date </b>:</td>
+            <td><?php echo date('d-m-Y',strtotime($invoice['due_date'])); ?></td>
+          </tr>
+          <tr>
+            <td><b>SA Name </b>:</td>
+            <td><?php echo $invoice['sa_name']; ?></td>
+          </tr>
+        </table>
+      </td>
+      </tr>
+    </table>
+</div>
+
+  <div>
+    <table class="item-table">
         <tr>
-          <th>SR</th>
-          <th>Labor</th>
-          <th>Hour</th>
-          <th>Rate/Day</th>
-          <th>Cost</th>
-          <th>GST (%)</th>
-          <th>Total Amount</th>
+          <th style="width: 5%;" class="text-center text-bold">SR</th>
+          <th style="width: 45%;" class="text-center text-bold">Labor</th>
+          <th style="width: 10%;" class="text-center text-bold">Hour</th>
+          <th style="width: 10%;" class="text-center text-bold">Rate/Day</th>
+          <th style="width: 10%;" class="text-center text-bold">Cost</th>
+          <th style="width: 10%;" class="text-center text-bold">GST (%)</th>
+          <th style="width: 10%;" class="text-center text-bold">Total Amount</th>
         </tr>
-      </thead>
-      <tbody>
         <?php 
           if(!empty($invoice['labour'])) {
               $i=1;
              foreach ($invoice['labour'] as $index => $data) {
         ?>
           <tr>
-            <td><?php echo $i; ?></td>
+            <td><?php echo $i.'.'; ?></td>
             <td><?php echo $data['invoice_labour_item']; ?></td>
             <td><?php echo $data['invoice_labour_hour']; ?></td>
             <td><?php echo $data['invoice_labour_rate']; ?></td>
@@ -233,42 +152,32 @@ section.bottom thead th {
               } 
           }
         ?>
-       
-
-      </tbody>
-      <thead class="border">
         <tr>
-          <th colspan="6">Total</th>
-          <th><?php echo $invoice['labour_total']; ?></th>
+          <th class="text-bold" colspan="6">Total</th>
+          <th class="text-bold"><?php echo $invoice['labour_total']; ?></th>
         </tr>
-      </thead>
     </table>
-  </div>
-</section>
+</div>
 
 
 <!-----------------Middle---------------->
-<section class="middle">
-  <div class="container">
-    <table class="table">
-      <thead class="border">
+<div>
+    <table class="item-table">
         <tr>
-          <th>SR</th>
-          <th>Parts</th>
-          <th>Quantity</th>
-          <th>Cost</th>
-          <th>GST (%)</th>
-          <th>Total</th>
+          <th style="width: 5%;" class="text-center text-bold">SR</th>
+          <th style="width: 55%;" class="text-center text-bold">Parts</th>
+          <th style="width: 10%;" class="text-center text-bold">Quantity</th>
+          <th style="width: 10%;" class="text-center text-bold">Cost</th>
+          <th style="width: 10%;" class="text-center text-bold">GST (%)</th>
+          <th style="width: 10%;" class="text-center text-bold">Total</th>
         </tr>
-      </thead>
-      <tbody>
         <?php 
           if(!empty($invoice['parts'])){
              $i=1;
              foreach ($invoice['parts'] as $index => $data) {
           ?>
           <tr>
-            <td><?php echo $i; ?></td>
+            <td><?php echo $i.'.'; ?></td>
             <td><?php echo $data['invoice_parts_item']; ?></td>
             <td><?php echo $data['invoice_parts_quantity']; ?></td>
             <td><?php echo $data['invoice_parts_cost']; ?></td>
@@ -280,58 +189,42 @@ section.bottom thead th {
              }
           } 
         ?>
-       
-
-      </tbody>
-      <thead class="border">
         <tr>
-          <th colspan="5">Total</th>
-          <th><?php echo $invoice['parts_total']; ?></th>
+          <th class="text-bold" colspan="5">Total</th>
+          <th class="text-bold"><?php echo $invoice['parts_total']; ?></th>
         </tr>
-      </thead>
     </table>
-  </div>
-</section>
+</div>
 
-<section class="bottom">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-6">
-        <h3>Notes</h3>
-        <p><?php echo $invoice['notes']; ?></p>
-      </div>
-      <div class="col-sm-6">
-        <table class="table table-bordered table-sm">
-          <thead>
-            <tr>
-              <th>Summary</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Total labour</td>
-              <td><?php echo $invoice['labour_total']; ?></td>
-            </tr>
-            <tr>
-              <td>Total Parts </td>
-              <td><?php echo $invoice['parts_total']; ?></td>
-            </tr>
-            <tr>
-              <td>GST</td>
-              <td><?php echo $invoice['gst_total']; ?></td>
-            </tr>
-            <tr>
-              <td>Discount</td>
-              <td><?php echo $invoice['discount_amount']; ?></td>
-            </tr>
-            <tr>
-              <td>Grand Total</td>
-              <td><?php echo $invoice['total_amount_after_discount']; ?></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
+<div>
+  <table class="item-table">
+      <tr>
+        <th colspan="2" class="text-bold text-center">Summary</th>
+      </tr>
+      <tr>
+        <td class="text-bold">Total labour</td>
+        <td><?php echo $invoice['labour_total']; ?></td>
+      </tr>
+      <tr>
+        <td class="text-bold">Total Parts </td>
+        <td><?php echo $invoice['parts_total']; ?></td>
+      </tr>
+      <tr>
+        <td class="text-bold">GST</td>
+        <td><?php echo $invoice['gst_total']; ?></td>
+      </tr>
+      <tr>
+        <td class="text-bold">Discount</td>
+        <td><?php echo $invoice['discount_amount']; ?></td>
+      </tr>
+      <tr>
+        <td class="text-bold" >Grand Total</td>
+        <td><?php echo $invoice['total_amount_after_discount']; ?></td>
+      </tr>
+  </table>
+</div>
+
+<div>
+  <h3>Notes</h3>
+  <pre><?php echo $invoice['notes']; ?></pre>
+</div>

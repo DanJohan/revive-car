@@ -84,7 +84,7 @@ class JobCard extends Rest_Controller {
 		$invoice['labour'] = $invoice_labour;
 		$invoice['parts'] = $invoice_parts;
 		if($pdf){
-			return $this->load->view('api/invoice',compact('invoice'),true);
+			return $this->load->view('api/invoice_pdf',compact('invoice'),true);
 		}
 		$this->load->view('api/invoice',compact('invoice'));
 	}
@@ -93,15 +93,17 @@ class JobCard extends Rest_Controller {
 		$this->load->library('myPdf');
 		// create new PDF document
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$pdf->setPrintHeader(false);
+
 		// set auto page breaks
 		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-		$pdf->SetFont('dejavusans', '', 14, '', true);
+		$pdf->SetFont('times', 12);
 		$pdf->AddPage();
 		$html = self::viewInvoice($id,true);
 		//dd($html);
-		// Print text using writeHTMLCell()
-		$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
-		$pdf->Output('example_001.pdf', 'I');
-		print_r($pdf);
+		// output the HTML content
+		$pdf->writeHTML($html, true, false, true, false, '');
+		$pdf->Output('invoice.pdf', 'I');
+		//print_r($pdf);
 	}
 }

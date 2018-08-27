@@ -27,28 +27,25 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="logo"><img src="<?php echo base_url(); ?>public/images/app/logo.png" alt=""></div>	 
-				<h1 class="shew">Shekhawati Electronices Pvt.Ltd</h1>
+				<div class="logo"><img src="<?php echo base_url(); ?>public/images/revive-logo.png" alt="" style="width: 150px;height: 70px;"></div>	 
+				<h1 class="shew">Revive auto car care</h1>
 				<div class="border"><img src="<?php echo base_url(); ?>public/images/app/border.png" alt=""></div>
-				<span class="zex">Zedex Nission</span>
-				<p class="add">Workshop:39/3, Site-IV Ind Area, Sahibabad, Ghazibad, Phone 0120-435566
-					<br>Email: Service@zedexnissan.co.in</p>
-					<p class="add">Showroom : 89,FIE , Patparganj Industrial Area, Delhi-110 092, Phone : +91-11-49320000<br>
-						Email : Sales@zedexnissan.co.in
+				<p class="add">9/11 Near Atul Kataria Chowk Kila No. , Opp Huda Nursery, Sector 17A, Gurgaon, Haryana-122001 GSTIN: 06AFVPJ6337B1ZD 
+					<br>Email:customercare@reviveauto.in</p>
 						<h2 class="services">SERVICE REQUEST FORM</h2>
 					</div>
 
-					<div class="main">
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<span class="time">Workshop Timing : 900 a.m to 6.pm</span>
-						</div>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<span class="date">Warranty Start Date</span>
-						</div>
-					</div>
+			<div class="main">
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<span class="time">Workshop Timing : 900 a.m to 6.pm</span>
 				</div>
-			</div>  
-		</section>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<span class="date">Warranty Start Date</span>
+				</div>
+			</div>
+		</div>
+	</div>  
+</section>
 		<!--=======TOP-SEC-END==========-->
 
 		<!--=======FORM-SECTION=========-->
