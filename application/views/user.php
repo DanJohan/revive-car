@@ -33,6 +33,7 @@
 		<div class="container-login100" style="background-image: url('<?php echo base_url();?>public/login/images/bg-01.jpg');">
 			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
 				<form class="login100-form validate-form" method="post" action="<?php echo base_url(); ?>user/login">
+				
 					<span class="login100-form-title p-b-49">
 						Login
 					</span>

@@ -13,7 +13,7 @@ class User extends MY_Controller {
 	}
 
 	public function login(){
-		//dd($_POST);die;
+		dd($_POST);die;
 		//echo password_hash("password", PASSWORD_DEFAULT);die;
 		$data =array();
 		if($this->input->post('submit')){
