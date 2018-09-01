@@ -59,8 +59,12 @@ class User extends MY_Controller {
 	}// end of login method
 
 	public function dashboard() {
-
-		die("You are signed in");
+		$this->load->view('user/dashboard');
+		//die("You are signed in");
+	}
+	public function service() {
+		$this->load->view('user/service');
+		//die("You are signed in");
 	}
   }
 ?>

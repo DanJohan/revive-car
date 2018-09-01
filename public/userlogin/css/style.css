@@ -1,10 +1,10 @@
 body {
     background-image: url(../img/bg.jpg);
-    /*background-repeat: no-repeat;*/
+    background-repeat: no-repeat;
     background-size: cover;
 }
 section.login {
-    padding: 150px 0px 0px 0px;
+    padding: 97px 0px 0px 0px;
 }
 .login-wrapper {
     border-bottom: 8px solid #2da080;
@@ -147,4 +147,130 @@ label {
 }.social.icon {
     /* margin: 0 auto; */
     text-align: center;
+}
+
+/**************Dashboard****************/
+#dash {
+    background-image: none;
+}
+.top_bar {
+    background-color: #333a73;
+}
+.email a {
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-align: left;
+    text-decoration: none;
+	padding-right: 20px;
+}
+.lo_gin {
+    text-align: right;
+}
+.lo_gin img {
+    border-radius: 50px;
+}
+.email {
+    padding-top: 10px;
+    display: block;
+}
+.lo_gin b {
+    color: #fff;
+    font-weight: normal;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+.right_side {
+    float: right;
+}
+.left_pen img {
+    width: 48%;
+}
+.left_pen {
+    text-align: center;
+    margin: 0 auto;
+}
+h1.title {
+    font-size: 40px;
+    text-align: left;
+    text-transform: uppercase;
+}
+.cn_diver {
+    background-color: white;
+    width: 87%;
+    margin: 0 auto;
+    box-shadow: 7px 9px 8px 8px #ccc;
+    margin-top: 35px;
+    border-radius: 7px;
+}
+.left_pen img {
+    float: left;
+    padding-top: 30px;
+    margin-right: 38px;
+    padding-bottom: 30px;
+    margin-left: 14px;
+}
+h1.title {
+    font-size: 29px;
+    text-align: left;
+    text-transform: uppercase;
+    margin-top: 29px;
+}
+/************Nav************/
+.bg-info {
+    background-color: #ffffff!important;
+    box-shadow: 0px 4px 8px 3px #e4e4e4;
+}
+.custom_nav {
+    width: 85%;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+.navbar-brand1 img {
+    float: left;
+    width: 100px;
+}
+.navbar-nav.ml-auto {
+    padding-top: 10px;
+}
+.text-center {
+    border: 1px solid;
+    margin-top: 30px;
+}
+.show-on-hover:hover > ul.dropdown-menu {
+    display: block;    
+}
+@media only screen and (min-width: 100px) and (max-width: 768px){
+	
+	.navbar-toggler:not(:disabled):not(.disabled) {
+    cursor: pointer;
+    float: right !important;
+}
+.email a {
+    color: #fff;
+    font-size: 10px;
+}
+.lo_gin {
+    display: block;
+    text-align: right;
+    display: none;
+}
+.email {
+    padding-top: 5px;
+    display: block;
+    padding-bottom: 10px;
+}
+.navbar-brand1 img {
+    float: left;
+    width: 80px;
+}
+.custom_nav {
+    width: 100%;
+    margin: 0 auto;
+    /* max-width: 1200px; */
+}
+.navbar-nav.ml-auto {
+    padding-top: 52px;
+    text-align: center;
+}
 }
