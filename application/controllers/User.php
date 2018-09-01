@@ -6,6 +6,7 @@ class User extends MY_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('UserModel');
+		
 	}
 
 	public function index(){
@@ -13,16 +14,18 @@ class User extends MY_Controller {
 	}
 
 	public function login(){
-		dd($_POST);die;
+		//dd($_POST);die;
 		//echo password_hash("password", PASSWORD_DEFAULT);die;
+
 		$data =array();
 		if($this->input->post('submit')){
+			//dd($_POST);die;
 			$this->form_validation->set_rules('username', 'Email|Phone', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 
 			if ($this->form_validation->run() == TRUE) {
 				
-				$username = $this->input->post('username');
+				$username = $this->input->post('username');   
 				$password = $this->input->post('password');
 				
 				$user = $this->UserModel->check_user_exits(array('username'=>$username));
@@ -34,6 +37,7 @@ class User extends MY_Controller {
 							'id' => $user['id'],
 						 	'is_user_login' => TRUE
 						);
+
 							$this->session->set_userdata($user_data);
 							redirect(base_url('user/dashboard'), 'refresh');
 						}else{
@@ -44,14 +48,19 @@ class User extends MY_Controller {
 					
 				}
 			}
+				else {
+					$data['msg'] = 'Missing Email/Phone Or Password';
+					
+
+				}
 
 		}
-			$this->load->view('site/user',$data);
+			$this->load->view('user/login',$data);
 	}// end of login method
 
 	public function dashboard() {
 
 		die("You are signed in");
 	}
-}	
+  }
 ?>
