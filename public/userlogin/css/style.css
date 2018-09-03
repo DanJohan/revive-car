@@ -23,12 +23,28 @@ form.login-wrapper .btn-primary {
     margin-bottom: 20px;
 }
 form.login-wrapper .btn-primary:hover 
-	{
-	 background: #000;	}
+  {
+   background: #000;  }
 .login-wrapper .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
     color: #fff;
     background-color: #000000;
     border-color: #000000;
+}
+.btn-default {
+    color: #fff;
+    background-color: #333a73;
+    border-color: #333a73;
+}
+.btn-default:hover {
+    color: #fff;
+    background-color: #333a73;
+    border-color: #333a73;
+}
+.btn-default.focus, .btn-default:focus {
+   color: #fff !important;
+    background-color: #333a73 !important;
+    border-color: #333a73 !important;
+    
 }
 .login-wrapper.btn-primary.focus, .btn-primary:focus {
     box-shadow: 0 0 0 0.2rem rgb(247, 41, 111);
@@ -162,16 +178,21 @@ label {
     letter-spacing: 1px;
     text-align: left;
     text-decoration: none;
-	padding-right: 20px;
+  padding-right: 20px;
 }
 .lo_gin {
+    display: block;
     text-align: right;
+    cursor: pointer !important;
+    color: #fff !important;
 }
 .lo_gin img {
-    border-radius: 50px;
+    /*border-radius: 50px;*/
+    width: 25px;
+    height: auto;
 }
 .email {
-    padding-top: 10px;
+    padding-top: 14px;
     display: block;
 }
 .lo_gin b {
@@ -241,19 +262,14 @@ h1.title {
     display: block;    
 }
 @media only screen and (min-width: 100px) and (max-width: 768px){
-	
-	.navbar-toggler:not(:disabled):not(.disabled) {
+  
+  .navbar-toggler:not(:disabled):not(.disabled) {
     cursor: pointer;
     float: right !important;
 }
 .email a {
     color: #fff;
     font-size: 10px;
-}
-.lo_gin {
-    display: block;
-    text-align: right;
-    display: none;
 }
 .email {
     padding-top: 5px;
@@ -273,4 +289,28 @@ h1.title {
     padding-top: 52px;
     text-align: center;
 }
+}
+
+.dropdown-toggle::after {
+    display: none;
+  
+}
+.btn.btn-primary.dropdown-toggle {
+    background-color: #333a73;
+    border: 1px solid;
+    color: #fff;
+}
+.btn-primary:hover {
+    color: #fff !important;
+}
+.navbar-nav {
+    float: right;
+    margin: 0;
+}
+.navbar-nav>li {
+    float: right;
+    padding: 30px;
+    padding-right: 0px;
+    padding-bottom: 0;
+    padding-top: 5px;
 }
