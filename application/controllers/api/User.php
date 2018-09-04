@@ -241,7 +241,9 @@ class User extends Rest_Controller {
 					'body' =>"Your one time password to change password is ".$otp
 				);
 				$message = $this->textmessage->send($data);
-				if($message->sid){
+
+				//dd(is_object($message));
+				if(is_object($message) && $message->sid){
 					$update_data=array(
 						'change_password_otp'=>$otp,
 					);
