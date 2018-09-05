@@ -899,7 +899,6 @@ class CI_Upload {
 		{
 			return FALSE;
 		}
-
 		// Images get some additional checks
 		if (in_array($ext, array('gif', 'jpg', 'jpeg', 'jpe', 'png'), TRUE) && @getimagesize($this->file_temp) === FALSE)
 		{

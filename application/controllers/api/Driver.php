@@ -116,7 +116,7 @@ class Driver extends Rest_Controller {
 	}
 
 	public function createJob(){
-
+		//$this->renderJson(array('post'=>$_POST,'file'=>$_FILES,'raw'=>$this->input->raw_input_stream));
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
@@ -153,10 +153,13 @@ class Driver extends Rest_Controller {
 					$repair_orders[$index]['customer_request'] = $repair_order['customer_request'];
 					$repair_orders[$index]['sa_remarks'] = $repair_order['sa_remarks'];
 					$repair_orders[$index]['qty'] = $repair_order['qty'];
-					$repair_orders[$index]['price_labour'] = $repair_order['price_labour'];
-					$repair_orders[$index]['price_parts'] = $repair_order['price_parts'];
-					$repair_orders[$index]['price_total'] = $repair_order['price_total'];
+					$repair_orders[$index]['labour_price'] = $repair_order['price_labour'];
+					$repair_orders[$index]['parts_price'] = $repair_order['price_parts'];
+					$repair_orders[$index]['total_price'] = $repair_order['price_total'];
 					$repair_orders[$index]['created_at'] = date('Y-m-d H:i:s');
+					unset($repair_orders[$index]['price_labour']);
+					unset($repair_orders[$index]['price_parts']);
+					unset($repair_orders[$index]['price_total']);
 				}
 			}
 

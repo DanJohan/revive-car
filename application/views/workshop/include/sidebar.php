@@ -45,15 +45,15 @@ if($cur_tab=='users'){
     <ul class="sidebar-menu">
         <li id="" class="treeview users enquiry jobCard">
             <a href="#">
-              <i class="fa fa-users"></i> <span>Users</span>
+              <i class="fa fa-users"></i> <span>Customers</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li id="u_index" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i>Users Detail</a></li>
-               <li id="e_index"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>Users enquiry</a></li>
-                 <li id="list"><a href="<?= base_url('workshop/jobCard/list'); ?>"><i class="fa fa-circle-o text-aqua"></i>User job cards</a></li>
+              <li id="u_index" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-circle-o"></i>Customers Detail</a></li>
+               <li id="e_index"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-circle-o"></i>Customers enquiry</a></li>
+                 <li id="list"><a href="<?= base_url('workshop/jobCard/list'); ?>"><i class="fa fa-circle-o text-aqua"></i>Customers job cards</a></li>
             </ul>
           </li>
 

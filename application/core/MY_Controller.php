@@ -39,6 +39,7 @@ class MY_Controller extends CI_Controller
       $config['max_width'] =(isset($params['max_width']))?$params['max_width']:0;
       $config['max_height']=(isset($params['max_height']))?$params['max_height']: 0;
 
+      //dd($config);
      // if(isset($params['encrypt_name']) && $params['encrypt_name'] ==true) { 
       $config['encrypt_name'] =true;   
      // }else{

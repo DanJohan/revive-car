@@ -199,7 +199,7 @@ class Car extends Rest_Controller {
 	}
 
 	public function serviceEnquiry() {
-
+		//$this->renderJson(array('post'=>$_POST, 'files'=>$_FILES));
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
@@ -231,30 +231,41 @@ class Car extends Rest_Controller {
 			$insert_id = $this->ServiceEnquiryModel->insert($register_data);
 			$file_data = array();
 			$file_not_uploaded = array();
+			$allowed_types = array('png','jpg','jpeg');
+
+			//dd($_FILES);
 			if($insert_id){
 				
 				if(isset($_FILES['service_images']) && !empty($_FILES['service_images']['name'])){
 					$filesCount = count($_FILES['service_images']['name']);
 					for($i = 0; $i < $filesCount; $i++){
 		                $_FILES['file']['name']     = $_FILES['service_images']['name'][$i];
+		                $info = new SplFileInfo($_FILES['file']['name']);
 		                $_FILES['file']['type']     = $_FILES['service_images']['type'][$i];
 		                $_FILES['file']['tmp_name'] = $_FILES['service_images']['tmp_name'][$i];
 		                $_FILES['file']['error']     = $_FILES['service_images']['error'][$i];
 		                $_FILES['file']['size']     = $_FILES['service_images']['size'][$i];
+		                // this check is inserted to check file extension as codeigniter not supporting it
+		                if (in_array(strtolower($info->getExtension()),$allowed_types)) {
+			                $url = FCPATH.'uploads/app/';
+			                $config['allowed_types'] = '*';
+			               	$upload = $this->do_upload('file',$url, $config);
+			               /*$config['allowed_types'] = 'png|jpeg|jpg';
+			               	$upload = $this->do_upload('file',$url);*/
 
-		                $url = FCPATH.'uploads/app/';
-		               	$upload = $this->do_upload('file',$url);
-
-		                if(isset($upload['upload_data'])){
-							chmod($upload['upload_data']['full_path'], 0777);
-							$files_data[$i]['enquiry_id'] = $insert_id;
-							$files_data[$i]['image'] = $upload['upload_data']['file_name'];
-							$files_data[$i]['created_at'] = date("Y-m-d H:i:s");
+			                if(isset($upload['upload_data'])){
+								chmod($upload['upload_data']['full_path'], 0777);
+								$files_data[$i]['enquiry_id'] = $insert_id;
+								$files_data[$i]['image'] = $upload['upload_data']['file_name'];
+								$files_data[$i]['created_at'] = date("Y-m-d H:i:s");
+							}else{
+								$file_not_uploaded[$i]['file'] =  $_FILES['file']['name'] ;
+								$file_not_uploaded[$i]['error'] =  strip_tags($upload['error']) ;
+							}
 						}else{
 							$file_not_uploaded[$i]['file'] =  $_FILES['file']['name'] ;
-							$file_not_uploaded[$i]['error'] =  strip_tags($upload['error']) ;
+							$file_not_uploaded[$i]['error'] = 'The file type not allowed';
 						}
-
 		            }
 				}
 				if(!empty($files_data)) {

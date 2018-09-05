@@ -40,15 +40,15 @@ if($cur_tab=='enquiry'){
         </li>
         <li id="" class="treeview users enquiry jobCard" >
             <a href="#" class="sidebar-toggle">
-              <i class="fa fa-users"></i> <span>Users</span>
+              <i class="fa fa-users"></i> <span>Customers</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-               <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o text-aqua"></i> Users Detail</a></li>
-                <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o text-aqua"></i>Users enquiry</a></li>
-                <li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-circle-o text-aqua"></i>User job cards</a></li>
+               <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-circle-o text-aqua"></i> Customers Detail</a></li>
+                <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-circle-o text-aqua"></i>Customers enquiry</a></li>
+                <li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-circle-o text-aqua"></i>Customers job cards</a></li>
             </ul>
           </li>
         <li id="" class="treeview car">
