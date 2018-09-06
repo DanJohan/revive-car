@@ -343,7 +343,7 @@ class User extends Rest_Controller {
 				$password_hash= md5(uniqid(mt_rand(1000,9999),true));
 				$link = base_url()."api/user/resetPassword/".$user['email']."/".$password_hash;
 
-				$this->mailer->setFrom('info@revivecare.com');
+				$this->mailer->setFrom(MAIL_USERNAME);
 				$this->mailer->addAddress($user['email']);
 				$this->mailer->subject('Change password');
 				$this->mailer->body($this->load->view('api/email/changePassword',array('user'=>$user,'link'=>$link),true));
@@ -355,7 +355,7 @@ class User extends Rest_Controller {
 
 				$this->UserModel->update($update_data,array('id'=>$user['id']));
 
-		   		$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
+		   		$criteria['field'] = 'id,email,created_at,updated_at';
 				$criteria['conditions'] = array('id'=>$user['id']);
 				$criteria['returnType'] = 'single';
 

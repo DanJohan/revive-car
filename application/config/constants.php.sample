@@ -85,27 +85,18 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 // Twilio credentials
-define('TWILIO_SID','ACe60f8f7e7f6b5c76f244ed687d7e555f');
-define('TWILIO_TOKEN','3fd9ddd4b66dcd39a37a93eb1108ab4c');
-define('TWILIO_NUMBER','+1 856 281 3441');
+define('TWILIO_SID','');
+define('TWILIO_TOKEN','');
+define('TWILIO_NUMBER','');
 
 
-// smtp mail credentials
+define('MAIL_HOST','');
+define('MAIL_USERNAME','');
+define('MAIL_PASSWORD','');
+define('MAIL_PORT');
 
-/*define('MAIL_HOST','smtp.mailtrap.io');
-define('MAIL_USERNAME','c4f3f72a8e133a');
-define('MAIL_PASSWORD','500f8fd814ede7');
-define('MAIL_PORT',25);*/
+define('ANDRIOD_PUSH_AUTH_KEY','');
 
+define('DRIVER_PUSH_AUTH_KEY','');
 
-
-define('MAIL_HOST','smtp.gmail.com');
-define('MAIL_USERNAME','kumaranuj.smartserve@gmail.com');
-define('MAIL_PASSWORD','aNuj@123');
-define('MAIL_PORT',587);
-
-define('ANDRIOD_PUSH_AUTH_KEY','AAAAstFVzas:APA91bEkb-hJQUHRsOKBp6JqiURWs4TuoRbfjdP7h9bwWRmsXob43cdoW4_Bx9fcfdqzpg28v-mnVxb4mbuHjg3fwM8Mq_d9wtd7vIXNOfnxeEUnagmhwe3VWiJyySfjifw5lBC_lLCneQ_i97GhFWhdYLquDQRGVA');
-
-define('DRIVER_PUSH_AUTH_KEY','AAAAwahzcU4:APA91bHusVsulEzKDfg38nRswaKVeUYalqbQst09l3dva4NVD4h-T7cB5U2t6f_LTarV0XExET8DawRvJWuc9SQMSZ8mSLxRHhxjRqtLSu-YOClNsL0WEreY3kVIdABqTQirwdtJRtmvWUfrXlcvAl_wdLYDGa9YmA');
-
-define('JWT_KEY','UY39E7IX3puWn+2z7uoEpY8WXzXl2D1v/96k4U7FFkyjM/D/nZKdkJPprfQpkzKQ6fT0btWqd5viMbXJcG2NKA==');
+define('JWT_KEY','');

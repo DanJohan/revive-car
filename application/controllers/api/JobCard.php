@@ -80,9 +80,9 @@ class JobCard extends Rest_Controller {
 		foreach($removeKeys as $key) {
 		   unset($invoice[$key]);
 		}
-
 		$invoice['labour'] = $invoice_labour;
 		$invoice['parts'] = $invoice_parts;
+		//dd($invoice);
 		if($pdf){
 			return $this->load->view('api/invoice_pdf',compact('invoice'),true);
 		}

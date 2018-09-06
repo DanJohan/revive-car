@@ -40,3 +40,4 @@ uploads/admin/*
 migrations.txt
 jwt.php
 
+application/constants.php
