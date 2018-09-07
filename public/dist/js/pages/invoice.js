@@ -17,7 +17,7 @@ $(document).on('keypress','.validateNumeric',function(e){
 $(function(){
 	var maxField = 10; 
 	var wrapper = $('.labour-table'); 
-	var x = 1; 
+	var x = invoiceConfig.labourFieldStart; 
 
 
         //Once add button is clicked
@@ -42,7 +42,7 @@ $(function(){
      //Once remove button is clicked
     $(document).on('click', '.labour-delete-button', function(e){
         e.preventDefault();
-        $(this).parents('tr').find('.labour-hour').val(0);
+        $(this).parents('tr').find('.labour-hour').val(0.00);
         $(this).parents('tr').find('.labour-hour').trigger('keyup');
         $(this).parents('tr').remove(); //Remove field html
         x--; //Decrement field counter
@@ -52,7 +52,7 @@ $(function(){
 $(function(){
 	var maxField = 10; //Input fields increment limitation
 	var wrapper = $('.parts-table'); //table wrapper
-	var x = 1; //Initial field counter is 1
+	var x = invoiceConfig.partsFieldStart; //Initial field counter is 1
  //New input field html
 
         //Once add button is clicked
@@ -78,7 +78,7 @@ $(function(){
      //Once remove button is clicked
     $(document).on('click', '.parts-delete-button', function(e){
         e.preventDefault();
-        $(this).parents('tr').find('.parts-qty').val(0);
+        $(this).parents('tr').find('.parts-qty').val(0.00);
         $(this).parents('tr').find('.parts-qty').trigger('keyup');
         $(this).parents('tr').remove(); //Remove field html
         x--; //Decrement field counter
@@ -89,12 +89,12 @@ $(function(){
 
 $(function(){
 	var labourTotal=[];
-	var labourTotalSum=0.00;
+	var labourTotalSum=invoiceConfig.labourTotalSum;
 	var partsTotal=[];
-	var partsTotalSum=0.00;
+	var partsTotalSum=invoiceConfig.partsTotalSum;
 	var gstTotal=[];
-	var gstTotalSum=0.00;
-	var totalAmount=0.00;
+	var gstTotalSum=invoiceConfig.gstTotalSum;
+	var totalAmount=invoiceConfig.totalAmount;
 
 	function getLabourTotal(){
 		labourTotalSum=0.00;
@@ -104,10 +104,11 @@ $(function(){
 		for (var i = 0;i<labourTotal.length; i++) {
 			labourTotalSum += parseFloat(labourTotal[i]);
 		}
+		labourTotalSum = labourTotalSum.toFixed(2);
 		//console.log(labourTotalSum);
-		$("#total-labour-amount").html('&#x20b9; '+labourTotalSum.toFixed(2));
-		$('input[name="labour_total"]').val(labourTotalSum.toFixed(2));
-		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
+		$("#total-labour-amount").html('&#x20b9; '+labourTotalSum);
+		$('input[name="labour_total"]').val(labourTotalSum);
+		totalAmount = parseFloat(labourTotalSum)+parseFloat(partsTotalSum)+parseFloat(gstTotalSum);
 		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
 	}
 
@@ -118,16 +119,20 @@ $(function(){
 			var partsCost=($(this).val())?$(this).val():0.00;
 			var partsQty=partsQtyFields[index].value;
 			//console.log(partsQty.value);
-			partsTotal[index]=(Number(partsQty)*Number(partsCost)).toFixed(2);
+			partsTotal[index]=(parseFloat(partsQty)*parseFloat(partsCost)).toFixed(2);
 			//partsTotal[index]=($(this).val())?$(this).val():0.00;
 		});
-		//console.log(partsTotal);
 		for (var i = 0;i<partsTotal.length; i++) {
 			partsTotalSum += parseFloat(partsTotal[i]);
 		}
-		$("#total-parts-amount").html('&#x20b9; '+partsTotalSum.toFixed(2));
-		$('input[name="parts_total"]').val(partsTotalSum.toFixed(2));
-		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
+
+		partsTotalSum = partsTotalSum.toFixed(2);
+
+		$("#total-parts-amount").html('&#x20b9; '+partsTotalSum);
+		$('input[name="parts_total"]').val(partsTotalSum);
+
+		totalAmount = parseFloat(labourTotalSum)+parseFloat(partsTotalSum)+parseFloat(gstTotalSum);
+
 		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
 	}
 
@@ -136,24 +141,24 @@ $(function(){
 		$('.labour-table,.parts-table').find('.gst-amount').each(function(index,el){
 			gstTotal[index]=($(this).val())?$(this).val():0.00;
 		});
-		//console.log(gstTotal);
+
 		for (var i = 0;i<gstTotal.length; i++) {
 			gstTotalSum += parseFloat(gstTotal[i]);
 		}
 		$("#total-gst-amount").html('&#x20b9; '+gstTotalSum.toFixed(2));
 		$('input[name="gst_total"]').val(gstTotalSum.toFixed(2));
-		totalAmount = labourTotalSum+partsTotalSum+gstTotalSum;
+		totalAmount = parseFloat(labourTotalSum)+parseFloat(partsTotalSum)+parseFloat(gstTotalSum);
 		$("#total-amount").html('&#x20b9; '+totalAmount.toFixed(2));
 	}
-	$(document).on('keyup mousewheel','.labour-hour',function(e){
+	$(document).on('keyup','.labour-hour',function(e){
 		//e.stopPropagation();
 		var rateField = $(this).parents('tr').find('.labour-rate');
 		var gstAmountField = $(this).parents('tr').find('.gst-amount');
-		var rate=(rateField.val())?rateField.val():0;
+		var rate=(rateField.val())?rateField.val():0.00;
 		var totalField = $(this).parents('tr').find('.labour-total');
 		var costField = $(this).parents('tr').find('.labour-cost');
 		var gstField = $(this).parents('tr').find('.labour-gst');
-		var gst =(gstField.val())?gstField.val():0;
+		var gst =(gstField.val())?gstField.val():0.00;
 		var hour = $(this).val();
 		costField.val((hour*rate).toFixed(2));
 		cost=(costField.val())?costField.val():0.00;
@@ -169,10 +174,10 @@ $(function(){
 		var totalField = $(this).parents('tr').find('.labour-total');
 		var gstAmountField = $(this).parents('tr').find('.gst-amount');
 		var hourField = $(this).parents('tr').find('.labour-hour');
-		var hour = (hourField.val())?hourField.val():0;
+		var hour = (hourField.val())?hourField.val():0.00;
 		var costField = $(this).parents('tr').find('.labour-cost');
 		var gstField = $(this).parents('tr').find('.labour-gst');
-		var gst= (gstField.val())?gstField.val():0;
+		var gst= (gstField.val())?gstField.val():0.00;
 		var rate = $(this).val();
 		costField.val((hour*rate).toFixed(2));
 		cost=(costField.val())?costField.val():0.00;
@@ -204,7 +209,7 @@ $(function(){
 		var costField = $(this).parents('tr').find('.parts-cost');
 		var gstField = $(this).parents('tr').find('.parts-gst');
 		var cost=(costField.val())?costField.val():0.00;
-		var gst = (gstField.val())?gstField.val():0;
+		var gst = (gstField.val())?gstField.val():0.00;
 		var qty = $(this).val();
 		var amount = cost*qty;
 		gstAmountField.val((amount/100*gst).toFixed(2));
@@ -221,8 +226,8 @@ $(function(){
 		var gstAmountField = $(this).parents('tr').find('.gst-amount');
 		var totalField = $(this).parents('tr').find('.parts-total');
 		var gstField = $(this).parents('tr').find('.parts-gst');
-		var gst = (gstField.val())?gstField.val():0;
-		var qty=(qtyField.val())?qtyField.val():0;
+		var gst = (gstField.val())?gstField.val():0.00;
+		var qty=(qtyField.val())?qtyField.val():0.00;
 		var cost = $(this).val();
 		var amount = cost*qty;
 		gstAmountField.val((amount/100*gst).toFixed(2));
@@ -240,7 +245,7 @@ $(function(){
 		var costField = $(this).parents('tr').find('.parts-cost');
 		var cost=(costField.val())?costField.val():0.00;
 		var gst = $(this).val();
-		var qty=(qtyField.val())?qtyField.val():0;
+		var qty=(qtyField.val())?qtyField.val():0.00;
 		var amount = cost*qty;
 		gstAmountField.val((amount/100*gst).toFixed(2));
 		gstAmount=gstAmountField.val();
@@ -257,7 +262,7 @@ $(function(){
 		tempTotalAmount=(tempTotalAmount-discountAmount).toFixed(2);
 		$("#total-amount").html('&#x20b9; '+tempTotalAmount);
 		$('#totalAmountAfterDiscount').val(tempTotalAmount);
-		$('#totalAmount').val(totalAmount.toFixed(2));
+		$('#totalAmount').val(parseFloat(totalAmount).toFixed(2));
 	}
 	$(document).on('keyup','#discount',function(){
 		calculateDiscount($(this));
