@@ -121,6 +121,16 @@ class MY_Model extends CI_Model
     }
     return false;
   }
+
+
+  public function update_batch($columns_arr,$key='id'){
+    if(is_array($columns_arr)) {
+      if($this->db->update_batch($this->table,$columns_arr,$key)){
+        return true;
+      }
+    }
+    return false;
+  }
   /**
    * Update record(s)
    * @param type $columns_arr

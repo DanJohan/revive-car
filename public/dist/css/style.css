@@ -431,3 +431,9 @@ label{
   -webkit-appearance: none;
   margin: 0;
 }
+
+.dropdown-menu {
+    box-shadow: 1px 1px 5px grey;
+    border-color: lightgray;
+    background-color: #f9f9f9; 
+}

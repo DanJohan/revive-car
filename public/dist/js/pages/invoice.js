@@ -141,7 +141,7 @@ $(function(){
 		$('.labour-table,.parts-table').find('.gst-amount').each(function(index,el){
 			gstTotal[index]=($(this).val())?$(this).val():0.00;
 		});
-
+		console.log(gstTotal);
 		for (var i = 0;i<gstTotal.length; i++) {
 			gstTotalSum += parseFloat(gstTotal[i]);
 		}

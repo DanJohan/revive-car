@@ -183,7 +183,7 @@
                           </td>
                           <td><input type="text" class="form-control parts-qty validateNumeric" name="parts[<?php echo $index; ?>][qty]" value="<?php echo $parts['invoice_parts_quantity']; ?>" /></td>
                           <td><input type="text" class="form-control parts-cost validateNumeric" name="parts[<?php echo $index; ?>][cost]" value="<?php echo $parts['invoice_parts_cost']; ?>" /></td>
-                          <td><input type="text" class="form-control parts-gst validateNumeric" name="parts[<?php echo $index; ?>][gst]" value="<?php echo $parts['invoice_parts_gst']; ?>" /><input type="hidden" class="gst-amount" value="0.00" name="parts[<?php echo $index; ?>][gst_amount]" value="<?php echo $parts['invoice_parts_gst_amount']; ?>" ></td>
+                          <td><input type="text" class="form-control parts-gst validateNumeric" name="parts[<?php echo $index; ?>][gst]" value="<?php echo $parts['invoice_parts_gst']; ?>" /><input type="hidden" class="gst-amount" name="parts[<?php echo $index; ?>][gst_amount]" value="<?php echo $parts['invoice_parts_gst_amount']; ?>" ></td>
                           <td><input type="text" class="form-control parts-total" name="parts[<?php echo $index; ?>][total]" value="<?php echo $parts['invoice_parts_total']; ?>" readonly /></td>
                           <?php if($index == 0) { ?>
                           <td><button type="button" class="btn btn-success parts-add-button"><i class="fa fa-plus" aria-hidden="true"></i></button></td>

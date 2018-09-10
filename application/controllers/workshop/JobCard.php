@@ -300,7 +300,7 @@ class JobCard extends MY_Controller {
 			}
 
 		}
-		redirect('workshop/jobCard/list');
+		redirect('workshop/jobCard/invoiceShow/'.$invoice_id);
 	}
 
 	public function invoiceList($job_card_id=null){
@@ -389,7 +389,7 @@ class JobCard extends MY_Controller {
 	}
 
 	public function invoiceUpdate(){
-
+		//dd($_POST);
 		if($this->input->post('submit')){
 			$invoice_id = $this->input->post('invoice_id');
 			$update_data = array(
@@ -408,45 +408,69 @@ class JobCard extends MY_Controller {
 
 			$this->InvoiceModel->update($update_data,array('id'=>$invoice_id));
 
-			$this->InvoiceLabourItemModel->delete(array('invoice_id'=>$invoice_id));
 			$labour_items = $this->input->post('labour');
+			$labour_items_ids = array_column($labour_items, 'id');
+
+			$this->InvoiceLabourItemModel->deleteItems($invoice_id,$labour_items_ids);
 			$insert_labour_items= array();
+			$update_labour_items = array();
 				foreach ($labour_items as $index => $data) {
 					if(!empty($data['item'])){
-						$insert_labour_items[$index]['invoice_id'] = $invoice_id;
-						$insert_labour_items[$index]['item'] = $data['item'];
-						$insert_labour_items[$index]['hour'] = $data['hour'];
-						$insert_labour_items[$index]['rate'] = $data['rate'];
-						$insert_labour_items[$index]['cost'] = $data['cost'];
-						$insert_labour_items[$index]['gst'] = $data['gst'];
-						$insert_labour_items[$index]['gst_amount'] = $data['gst_amount'];
-						$insert_labour_items[$index]['total'] = $data['total'];
+						if(isset($data['id'])){
+							$items = 'update_labour_items';
+							${$items}[$index]['id'] = $data['id']; 
+						}else{
+							$items = 'insert_labour_items';
+						}
+						${$items}[$index]['invoice_id'] = $invoice_id;
+						${$items}[$index]['item'] = $data['item'];
+						${$items}[$index]['hour'] = $data['hour'];
+						${$items}[$index]['rate'] = $data['rate'];
+						${$items}[$index]['cost'] = $data['cost'];
+						${$items}[$index]['gst'] = $data['gst'];
+						${$items}[$index]['gst_amount'] = $data['gst_amount'];
+						${$items}[$index]['total'] = $data['total'];
 					}
+				}
+				if(!empty($update_labour_items)){
+					$this->InvoiceLabourItemModel->update_batch($update_labour_items,'id');
 				}
 				if(!empty($insert_labour_items)) {
 					$this->InvoiceLabourItemModel->insert_batch($insert_labour_items);
 				}
 
-				$this->InvoicePartsItemModel->delete(array('invoice_id'=> $invoice_id));
 				$part_items = $this->input->post('parts');
+				$part_items_ids = array_column($part_items, 'id');
+				$this->InvoicePartsItemModel->deleteItems($invoice_id,$part_items_ids);
+				//echo $this->db->last_query();die;
 				$insert_part_items = array();
+				$update_part_items = array();
 				foreach ($part_items as $index => $data) {
 					if(!empty($data['item'])) {
-						$insert_part_items[$index]['invoice_id'] = $invoice_id;
-						$insert_part_items[$index]['item'] = $data['item'];
-						$insert_part_items[$index]['quantity'] = $data['qty'];
-						$insert_part_items[$index]['cost'] = $data['cost'];
-						$insert_part_items[$index]['gst'] = $data['gst'];
-						$insert_part_items[$index]['gst_amount'] = $data['gst_amount'];
-						$insert_part_items[$index]['total'] = $data['total'];
+						if(isset($data['id'])){
+							$items = 'update_part_items';
+							${$items}[$index]['id'] = $data['id']; 
+						}else{
+							$items = 'insert_part_items';
+						}
+						${$items}[$index]['invoice_id'] = $invoice_id;
+						${$items}[$index]['item'] = $data['item'];
+						${$items}[$index]['quantity'] = $data['qty'];
+						${$items}[$index]['cost'] = $data['cost'];
+						${$items}[$index]['gst'] = $data['gst'];
+						${$items}[$index]['gst_amount'] = $data['gst_amount'];
+						${$items}[$index]['total'] = $data['total'];
 						//unset($part_items[$index]['qty']);
 					}
+				}
+				if(!empty($update_part_items)){
+					$this->InvoicePartsItemModel->update_batch($update_part_items);
 				}
 				if(!empty($insert_part_items)) {
 					$this->InvoicePartsItemModel->insert_batch($insert_part_items);
 				}
 		}
-		redirect('workshop/jobCard/invoiceEdit/'.$invoice_id);
+		redirect('workshop/jobCard/invoiceShow/'.$invoice_id);
 	}
 
 }// end of class
