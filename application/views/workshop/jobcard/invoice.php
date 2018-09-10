@@ -190,7 +190,7 @@
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-5">
                       <span id="total-labour-amount">&#x20b9; 0.00</span>
-                      <input type="hidden" name="labour_total">
+                      <input type="hidden" id="labourTotal"  name="labour_total" value="0.00">
                     </div>
                 </div>
                 <div class="row">
@@ -198,7 +198,7 @@
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-5">
                       <span id="total-parts-amount">&#x20b9; 0.00</span>
-                      <input type="hidden" name="parts_total">
+                      <input type="hidden" id="partsTotal" name="parts_total" value="0.00">
                     </div>
                 </div>
                 <div class="row">
@@ -206,7 +206,7 @@
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-5">
                       <span id="total-gst-amount">&#x20b9; 0.00</span>
-                      <input type="hidden" name="gst_total">
+                      <input type="hidden" id="gstTotal" name="gst_total" value="0.00">
                     </div>
                 </div>
                 <div class="row">
@@ -237,6 +237,17 @@
       </form>
 </div>
 </section>
+<script type="text/javascript">
+  var invoiceConfig = {
+          'labourFieldStart':"1",
+          'partsFieldStart':"1",
+          'labourTotalSum':$('#labourTotal').val(),
+          'partsTotalSum' : $('#partsTotal').val(),
+          'gstTotalSum':$('#gstTotal').val(),
+          'totalAmount':$('#totalAmount').val()
+  };
+
+</script>
 <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/pages/invoice.js"></script>
 
 

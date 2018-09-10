@@ -302,5 +302,152 @@ class JobCard extends MY_Controller {
 		}
 		redirect('workshop/jobCard/list');
 	}
+
+	public function invoiceList($job_card_id=null){
+		if(!$job_card_id){
+			redirect('workshop/jobCard/list');
+		}
+		$manager_id = $this->session->userdata('id');
+		$invoices = $this->InvoiceModel->get_all(array('job_card_id'=>$job_card_id,'created_by'=>$manager_id),array('id','desc'));
+		//dd($invoices);
+		//echo $this->db->last_query();die;
+		if(empty($invoices)) {
+			redirect('workshop/jobCard/list');
+		}
+		//dd($invoices);
+		$this->load->view('workshop/layout',array(
+			'invoices'=> $invoices,
+			'view'	  => 'workshop/jobcard/invoice_list'
+		));
+
+	}
+
+
+	public function invoiceShow($invoice_id = null) {
+		if(! $invoice_id) {
+			redirect('workshop/jobCard/list');
+		}
+		$manager_id = $this->session->userdata('id');
+		$invoice = $this->InvoiceModel->getInvoiceById($invoice_id,$manager_id);
+
+		if(empty($invoice)){
+			redirect('workshop/jobCard/list');
+		}
+		$invoice_labour_keys =  array('invoice_labour_id','invoice_labour_item','invoice_labour_hour','invoice_labour_rate','invoice_labour_cost','invoice_labour_gst','invoice_labour_gst_amount','invoice_labour_total');
+		$invoice_labour = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_labour_keys),SORT_REGULAR),'invoice_labour_id','');
+
+		$invoice_parts_keys =  array('invoice_parts_id','invoice_parts_item','invoice_parts_quantity','invoice_parts_cost','invoice_parts_gst','invoice_parts_gst_amount','invoice_parts_total');
+		$invoice_parts = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_parts_keys),SORT_REGULAR),'invoice_parts_id','');
+
+		$invoice = $invoice[0];
+
+		$removeKeys = array_merge($invoice_parts_keys,$invoice_labour_keys);
+		foreach($removeKeys as $key) {
+		   unset($invoice[$key]);
+		}
+		$invoice['labour'] = $invoice_labour;
+		$invoice['parts'] = $invoice_parts;
+		$this->load->view('workshop/layout',array(
+			'invoice'=> $invoice,
+			'view'	  => 'workshop/jobcard/invoice_show'
+		));
+
+	}
+
+	public function invoiceEdit($invoice_id = null) {
+		//dd($_POST);
+		if(! $invoice_id) {
+			redirect('workshop/jobCard/list');
+		}
+		$manager_id = $this->session->userdata('id');
+		$invoice = $this->InvoiceModel->getInvoiceById($invoice_id,$manager_id);
+
+		if(empty($invoice)){
+			redirect('workshop/jobCard/list');
+		}
+		$invoice_labour_keys =  array('invoice_labour_id','invoice_labour_item','invoice_labour_hour','invoice_labour_rate','invoice_labour_cost','invoice_labour_gst','invoice_labour_gst_amount','invoice_labour_total');
+		$invoice_labour = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_labour_keys),SORT_REGULAR),'invoice_labour_id','');
+
+		$invoice_parts_keys =  array('invoice_parts_id','invoice_parts_item','invoice_parts_quantity','invoice_parts_cost','invoice_parts_gst','invoice_parts_gst_amount','invoice_parts_total');
+		$invoice_parts = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_parts_keys),SORT_REGULAR),'invoice_parts_id','');
+
+		$invoice = $invoice[0];
+
+		$removeKeys = array_merge($invoice_parts_keys,$invoice_labour_keys);
+		foreach($removeKeys as $key) {
+		   unset($invoice[$key]);
+		}
+		//dd($invoice_parts);
+		$invoice['labour'] = array_values($invoice_labour);
+		$invoice['parts'] = array_values($invoice_parts);
+		//dd($invoice);
+		$this->load->view('workshop/layout',array(
+			'invoice'=> $invoice,
+			'view'	  => 'workshop/jobcard/invoice_edit'
+		));
+
+	}
+
+	public function invoiceUpdate(){
+
+		if($this->input->post('submit')){
+			$invoice_id = $this->input->post('invoice_id');
+			$update_data = array(
+				'date_created'=>$this->input->post('invoice_created_date'),
+				'due_date'=>$this->input->post('invoice_due_date'),
+				'sa_name' => $this->input->post('sa_name'),
+				'notes' => $this->input->post('notes'),
+				'labour_total' => $this->input->post('labour_total'),
+				'parts_total' => $this->input->post('parts_total'),
+				'gst_total' => $this->input->post('gst_total'),
+				'discount' => $this->input->post('discount'),
+				'discount_amount'=> $this->input->post('discount_amount'),
+				'total_amount' => $this->input->post('total_amount'),
+				'total_amount_after_discount'=>$this->input->post('total_amount_after_discount'),
+			);
+
+			$this->InvoiceModel->update($update_data,array('id'=>$invoice_id));
+
+			$this->InvoiceLabourItemModel->delete(array('invoice_id'=>$invoice_id));
+			$labour_items = $this->input->post('labour');
+			$insert_labour_items= array();
+				foreach ($labour_items as $index => $data) {
+					if(!empty($data['item'])){
+						$insert_labour_items[$index]['invoice_id'] = $invoice_id;
+						$insert_labour_items[$index]['item'] = $data['item'];
+						$insert_labour_items[$index]['hour'] = $data['hour'];
+						$insert_labour_items[$index]['rate'] = $data['rate'];
+						$insert_labour_items[$index]['cost'] = $data['cost'];
+						$insert_labour_items[$index]['gst'] = $data['gst'];
+						$insert_labour_items[$index]['gst_amount'] = $data['gst_amount'];
+						$insert_labour_items[$index]['total'] = $data['total'];
+					}
+				}
+				if(!empty($insert_labour_items)) {
+					$this->InvoiceLabourItemModel->insert_batch($insert_labour_items);
+				}
+
+				$this->InvoicePartsItemModel->delete(array('invoice_id'=> $invoice_id));
+				$part_items = $this->input->post('parts');
+				$insert_part_items = array();
+				foreach ($part_items as $index => $data) {
+					if(!empty($data['item'])) {
+						$insert_part_items[$index]['invoice_id'] = $invoice_id;
+						$insert_part_items[$index]['item'] = $data['item'];
+						$insert_part_items[$index]['quantity'] = $data['qty'];
+						$insert_part_items[$index]['cost'] = $data['cost'];
+						$insert_part_items[$index]['gst'] = $data['gst'];
+						$insert_part_items[$index]['gst_amount'] = $data['gst_amount'];
+						$insert_part_items[$index]['total'] = $data['total'];
+						//unset($part_items[$index]['qty']);
+					}
+				}
+				if(!empty($insert_part_items)) {
+					$this->InvoicePartsItemModel->insert_batch($insert_part_items);
+				}
+		}
+		redirect('workshop/jobCard/invoiceEdit/'.$invoice_id);
+	}
+
 }// end of class
 ?>

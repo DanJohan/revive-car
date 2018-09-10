@@ -8,5 +8,6 @@ class InvoiceLabourItemModel extends MY_Model {
 	{
 	    parent::__construct();
 	}
+
 }
 ?>

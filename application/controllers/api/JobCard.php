@@ -8,7 +8,7 @@ class JobCard extends Rest_Controller {
 	{
 	    parent::__construct();
 	    $this->load->model('JobcardModel'); 
-	    $this->load->model('invoiceModel');
+	    $this->load->model('InvoiceModel');
 	}
 
 	public function getUserJobCard(){
@@ -63,7 +63,7 @@ class JobCard extends Rest_Controller {
 
 	public function viewInvoice($id=null,$pdf=false) {
 		if($id){
-			$invoice = $this->invoiceModel->getInvoiceById($id);
+			$invoice = $this->InvoiceModel->getInvoiceById($id);
 		}
 		if(empty($invoice)){
 			return;

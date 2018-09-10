@@ -1,18 +1,19 @@
  <section class="content">
    <div class="box">
     <div class="box-header bg-green">
-      <h3 class="box-title">User job cards</h3>
+      <h3 class="box-title">Invoices</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
-          <th>Job card id</th>
+          <th>Invoice id</th>
           <th>User id</th>
+          <th>Invoice no</th>
           <th>Username</th>
           <th>Phone</th>
-          <th>Car</th>
+          <th>Email</th>
           <th>Registration no.</th>
           <th>Created At</th>
           <th style="width: 150px;" class="text-right">Option</th>
@@ -21,28 +22,27 @@
         <tbody>
           
           <?php 
-          if(!empty($jobs)) {
-            foreach($jobs as $index=>$job) {
+          if(!empty($invoices)) {
+            foreach($invoices as $index=>$invoice) {
           ?>
       
           <tr>
-            <td><?php echo $job['id']; ?></td>
-            <td><?php echo $job['user_id']; ?></td>
-            <td><?php echo $job['name']; ?></td>
-            <td><?php echo $job['phone']; ?></td>
-            <td><?php echo $job['brand_name']." - ".$job['model_name']; ?></td>
-            <td><?php echo $job['registration_no']; ?></td>
-            <td><?php echo date('d M Y h:i A',strtotime($job['created_at'])); ?></td>
+            <td><?php echo $invoice['id']; ?></td>
+            <td><?php echo $invoice['user_id']; ?></td>
+            <td><?php echo $invoice['invoice_number']; ?></td>
+            <td><?php echo $invoice['client_name']; ?></td>
+            <td><?php echo $invoice['client_phone']; ?></td>
+            <td><?php echo $invoice['client_email']; ?></td>
+            <td><?php echo $invoice['vehicle_reg_no']; ?></td>
+            <td><?php echo date('d M Y h:i A',strtotime($invoice['created_at'])); ?></td>
 
          
             <td class="text-right">
               <div class="dropdown">
                 <button class="btn btn-success dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    <li><a href="<?php echo  base_url('workshop/jobCard/show/'.$job['id']); ?>">View job card</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/completeJobs/'.$job['id'])?>">Change jobs status</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/invoice/'.$job['id'])?>" >Generate invoice</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/invoiceList/'.$job['id'])?>" >View invoices</a></li>
+                    <li><a href="<?php echo  base_url('workshop/jobCard/invoiceShow/'.$invoice['id']); ?>">View</a></li>
+                    <li><a href="<?php echo base_url('workshop/jobCard/invoiceEdit/'.$invoice['id'])?>">Edit</a></li>
                 </ul>
             </div>
           </tr>
@@ -66,20 +66,13 @@
       "columnDefs": [
             {
                 "targets": [0],
-                "visible": true,
-                "searchable": false
-            },
-            {
-                "targets": [1],
                 "visible": false,
-                "searchable": true
+                "searchable": false
             }
         ]
     });
   });
 </script> 
-<script>
-$("#view_users").addClass('active');
-</script>
+
 
       
