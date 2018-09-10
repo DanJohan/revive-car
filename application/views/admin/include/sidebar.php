@@ -52,6 +52,7 @@ if($cur_tab=='enquiry'){
                <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Customers Detail</a></li>
                 <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers enquiry</a></li>
                 <li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers job cards</a></li>
+                <li id="list"><a href="<?= base_url('admin/jobCard/invoiceList'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers invoices</a></li>
             </ul>
           </li>
         <li id="" class="treeview car active">

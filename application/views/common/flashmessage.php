@@ -21,3 +21,15 @@ if($this->session->flashdata('error_msg') != '') {
 <?php
 }
 ?>
+
+<?php
+if($this->session->flashdata('info_msg') != '') {
+?>
+<div class="alert alert-info flash-msg alert-dismissible">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	<h4>Information!</h4>
+  	<?php echo $this->session->flashdata('info_msg'); ?>
+</div>
+<?php
+}
+?>

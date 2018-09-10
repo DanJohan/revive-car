@@ -1,6 +1,6 @@
    <section class="content">
     <div class="box">
-      <div class="box-header bg-green">
+      <div class="box-header">
          <h3 class="box-title">Invoice detail</h3>
      </div>
 
@@ -214,7 +214,7 @@
 <section class="content">
   <div class="box">
     <div class="box-body">
-      <a href="<?php echo base_url();?>workshop/jobCard/invoiceList/<?php echo $invoice['job_card_id']; ?>" class="btn btn-success">Go back</a>
+      <a href="<?php echo base_url();?>admin/jobCard/invoiceList" class="btn btn-primary">Go back</a>
     </div>
   </div><!-- end of button box -->
 </section>

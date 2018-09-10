@@ -137,7 +137,7 @@ class Driver extends Rest_Controller {
 				'ride_kms'=>$this->input->post('ride_kms'),
 				'lv_reg_no' => $this->input->post('lv_reg_no'),
 				'damage_mark'=>($this->input->post('damage_mark')) ? json_encode($this->input->post('damage_mark')) :'',
-				'car_properties'=>($this->input->post('car_properties'))? json_encode($this->input->post('car_properties')) :'',
+				'car_properties'=>($this->input->post('car_properties'))? json_encode(json_encode($this->input->post('car_properties'))):'',
 				'fuel'=>$this->input->post('fuel'),
 				'vehicle_qty'=>($this->input->post('vehicle_qty'))? json_encode($this->input->post('vehicle_qty')) :'',
 				'created_at' => date('Y-m-d H:i:s')
@@ -268,7 +268,7 @@ class Driver extends Rest_Controller {
 		if($id){
 			$job_card=$this->JobcardModel->getJobCardById($id);
 		}
-
+		dd($job_card);
 		if(empty($job_card)){
 			return;
 		}
@@ -284,7 +284,7 @@ class Driver extends Rest_Controller {
 		$job_card['repair_orders']=$repair_orders;
 		$job_card['enquiry_images'] = $enquiry_images;
 		$data['job_card'] = $job_card;
-		//dd($data['job_card'],false);
+		//dd($data['job_card']);
 		$this->load->view('api/job_card_detail',$data);
 	}
 

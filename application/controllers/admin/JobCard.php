@@ -11,7 +11,8 @@ class JobCard extends MY_Controller {
 			redirect('admin/auth/login');
 		}
 		$this->load->model('JobcardModel');
-	    $this->load->model('JobCardImageModel');
+	    	$this->load->model('JobCardImageModel');
+	    	$this->load->model('InvoiceModel');
 	}
 
 	public function list(){
@@ -46,5 +47,53 @@ class JobCard extends MY_Controller {
 		$data['view'] = 'admin/jobcard/show';
 		$this->load->view('admin/layout',$data);
 	}
+
+	public function invoiceList(){
+
+		$manager_id = $this->session->userdata('id');
+		$invoices = $this->InvoiceModel->get_all(array('fwd_to_admin'=>1),array('id','desc'));
+		//dd($invoices);
+		//echo $this->db->last_query();die;
+		if(empty($invoices)) {
+			redirect('admin/jobCard/invoiceList');
+		}
+		//dd($invoices);
+		$this->load->view('admin/layout',array(
+			'invoices'=> $invoices,
+			'view'	  => 'admin/jobcard/invoice_list'
+		));
+
+	}
+
+	public function invoiceShow($invoice_id = null) {
+		if(! $invoice_id) {
+			redirect('admin/jobCard/invoiceList');
+		}
+		$invoice = $this->InvoiceModel->getInvoiceById($invoice_id);
+
+		if(empty($invoice)){
+			redirect('admin/jobCard/invoiceList');
+		}
+		$invoice_labour_keys =  array('invoice_labour_id','invoice_labour_item','invoice_labour_hour','invoice_labour_rate','invoice_labour_cost','invoice_labour_gst','invoice_labour_gst_amount','invoice_labour_total');
+		$invoice_labour = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_labour_keys),SORT_REGULAR),'invoice_labour_id','');
+
+		$invoice_parts_keys =  array('invoice_parts_id','invoice_parts_item','invoice_parts_quantity','invoice_parts_cost','invoice_parts_gst','invoice_parts_gst_amount','invoice_parts_total');
+		$invoice_parts = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_parts_keys),SORT_REGULAR),'invoice_parts_id','');
+
+		$invoice = $invoice[0];
+
+		$removeKeys = array_merge($invoice_parts_keys,$invoice_labour_keys);
+		foreach($removeKeys as $key) {
+		   unset($invoice[$key]);
+		}
+		$invoice['labour'] = $invoice_labour;
+		$invoice['parts'] = $invoice_parts;
+		$this->load->view('admin/layout',array(
+			'invoice'=> $invoice,
+			'view'	  => 'admin/jobcard/invoice_show'
+		));
+
+	}
+
 }// end of class
 ?>

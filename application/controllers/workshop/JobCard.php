@@ -473,5 +473,21 @@ class JobCard extends MY_Controller {
 		redirect('workshop/jobCard/invoiceShow/'.$invoice_id);
 	}
 
+	public function invoiceFwdToCust($invoice_id=null,$job_card_id){
+		if($invoice_id){
+			$this->InvoiceModel->update(array('fwd_to_customer'=>1),array('id'=>$invoice_id));
+			$this->session->set_flashdata('info_msg','Invoice has been forward to customer successfully');
+		}
+		redirect('workshop/jobCard/invoiceList/'.$job_card_id);
+	}
+
+	public function invoiceFwdToAdmin($invoice_id=null,$job_card_id){
+		if($invoice_id){
+			$this->InvoiceModel->update(array('fwd_to_admin'=>1),array('id'=>$invoice_id));
+			$this->session->set_flashdata('info_msg','Invoice has been forward to admin successfully');
+		}
+		redirect('workshop/jobCard/invoiceList/'.$job_card_id);
+	}
+
 }// end of class
 ?>
