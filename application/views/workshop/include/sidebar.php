@@ -62,7 +62,7 @@ if($cur_tab=='users'){
 
         <li id="" class="treeview driver active">
             <a href="#">
-              <i class="fa fa-dashboard"></i> <span>Driver Management</span>
+              <img src="<?php echo base_url()?>public/images/admin/driver.png" style="height: 20px;width: 20px;"><span>Driver Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>

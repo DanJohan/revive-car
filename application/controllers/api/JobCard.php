@@ -103,7 +103,44 @@ class JobCard extends Rest_Controller {
 		//dd($html);
 		// output the HTML content
 		$pdf->writeHTML($html, true, false, true, false, '');
+		ob_end_clean();
 		$pdf->Output('invoice.pdf', 'I');
 		//print_r($pdf);
 	}
+
+	public function getUserInvoices(){
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$user_id = $this->input->post('user_id');
+			$invoices = $this->InvoiceModel->getInvoiceByUserId($user_id);
+			if(!empty($invoices)){
+				$newInvoices = array();
+				$invoices = array_values(array_group_by($invoices,'id'));
+				//dd($invoices);
+				foreach ($invoices as $index => $invoice) {
+					$invoice_labour_keys =  array('invoice_labour_id','invoice_labour_item','invoice_labour_hour','invoice_labour_rate','invoice_labour_cost','invoice_labour_gst','invoice_labour_gst_amount','invoice_labour_total');
+					$invoice_labour = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_labour_keys),SORT_REGULAR),'invoice_labour_id','');
+
+					$invoice_parts_keys =  array('invoice_parts_id','invoice_parts_item','invoice_parts_quantity','invoice_parts_cost','invoice_parts_gst','invoice_parts_gst_amount','invoice_parts_total');
+					$invoice_parts = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_parts_keys),SORT_REGULAR),'invoice_parts_id','');
+					$invoice=$invoice[0];
+					$removeKeys = array_merge($invoice_parts_keys,$invoice_labour_keys);
+					foreach($removeKeys as $key) {
+					   unset($invoice[$key]);
+					}
+					$invoice['labour'] = $invoice_labour;
+					$invoice['parts'] = $invoice_parts;
+					$newInvoices[]=$invoice;	
+				}
+
+				$response = array('status'=>true,'message'=>'Record found successfully','data'=>$newInvoices);
+			}else{
+				$response = array('status'=>false,'message'=>"No record found!");
+			}
+		} else { 
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}// end of getUserrInvoices
 }

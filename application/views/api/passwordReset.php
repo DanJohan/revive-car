@@ -24,7 +24,7 @@
 <div class="form-top">
 	<div class="container-fluid">
 		<div class="row flex-container ">
-			<div id="form-container" class="col-xs-6 col-sm-6 col-md-4 well">
+			<div id="form-container" class="col-xs-12 col-sm-6 col-md-4 well">
 				<form id="password_reset" action="/action_page.php">
 					<input type="hidden" id="email" name="email" value="<?php echo $email; ?>">
 					<input type="hidden" id="hash" name="hash" value="<?php echo $hash; ?>">

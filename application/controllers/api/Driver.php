@@ -179,7 +179,8 @@ class Driver extends Rest_Controller {
 		                $_FILES['file']['size']     = $_FILES['job_images']['size'][$i];
 
 		                $url = FCPATH.'uploads/app/';
-		               	$upload = $this->do_upload('file',$url);
+		                	$config['allowed_types'] = '*';
+		               	$upload = $this->do_upload('file',$url,$config);
 		               //	dd($upload,false);
 		                if(isset($upload['upload_data'])){
 							chmod($upload['upload_data']['full_path'], 0777);
@@ -264,11 +265,11 @@ class Driver extends Rest_Controller {
 
 	}// end of registerDevice method
 
-	public function veiwJobCard($id=null) {
+	public function viewJobCard($id=null) {
 		if($id){
 			$job_card=$this->JobcardModel->getJobCardById($id);
 		}
-		dd($job_card);
+		//dd($job_card);
 		if(empty($job_card)){
 			return;
 		}

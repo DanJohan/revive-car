@@ -196,7 +196,7 @@ Email:customercare@reviveauto.in</div>
     </table>
 </div>
 
-<div>
+<div nobr="true">
   <table class="item-table">
       <tr>
         <th colspan="2" class="text-bold text-center">Summary</th>
@@ -224,7 +224,7 @@ Email:customercare@reviveauto.in</div>
   </table>
 </div>
 
-<div>
+<div nobr="true">
   <h3>Notes</h3>
-  <pre><?php echo $invoice['notes']; ?></pre>
+<?php echo $invoice['notes']; ?>
 </div>
