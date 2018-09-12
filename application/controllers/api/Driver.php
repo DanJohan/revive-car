@@ -116,6 +116,8 @@ class Driver extends Rest_Controller {
 	}
 
 	public function createJob(){
+		//dd($_POST);
+		//dd($_FILES,false);
 		//$this->renderJson(array('post'=>$_POST,'file'=>$_FILES,'raw'=>$this->input->raw_input_stream));
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
@@ -137,7 +139,7 @@ class Driver extends Rest_Controller {
 				'ride_kms'=>$this->input->post('ride_kms'),
 				'lv_reg_no' => $this->input->post('lv_reg_no'),
 				'damage_mark'=>($this->input->post('damage_mark')) ? json_encode($this->input->post('damage_mark')) :'',
-				'car_properties'=>($this->input->post('car_properties'))? json_encode(json_encode($this->input->post('car_properties'))):'',
+				'car_properties'=>($this->input->post('car_properties'))? json_encode($this->input->post('car_properties')):'',
 				'fuel'=>$this->input->post('fuel'),
 				'vehicle_qty'=>($this->input->post('vehicle_qty'))? json_encode($this->input->post('vehicle_qty')) :'',
 				'created_at' => date('Y-m-d H:i:s')
@@ -179,8 +181,8 @@ class Driver extends Rest_Controller {
 		                $_FILES['file']['size']     = $_FILES['job_images']['size'][$i];
 
 		                $url = FCPATH.'uploads/app/';
-		                	$config['allowed_types'] = '*';
-		               	$upload = $this->do_upload('file',$url,$config);
+		                	//$config['allowed_types'] = '*';
+		               	$upload = $this->do_upload('file',$url);
 		               //	dd($upload,false);
 		                if(isset($upload['upload_data'])){
 							chmod($upload['upload_data']['full_path'], 0777);

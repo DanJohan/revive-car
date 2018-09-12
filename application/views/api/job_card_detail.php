@@ -167,7 +167,8 @@
 				</section>
 				<!--=======FORM-SECTION-END=========-->
 					<?php 
-					 $damage_mark = json_decode($job_card['damage_mark']);
+					 $damage_mark = json_decode($job_card['damage_mark'],true);
+					// dd($damage_mark);
 					?>
 					<section class="model-sec">
 						<div class="container">
@@ -183,6 +184,12 @@
 								  <div class="right-center damage-mark-box"><?php echo $damage_mark[7]; ?></div>
 								  <div class="right-bottom damage-mark-box"><?php echo $damage_mark[8]; ?></div>
 							</div>
+						</div>
+						<div class="container text-center" style="margin-top: 20px;">
+							<span><b>O = Body damage</b></span>&nbsp;&nbsp;
+							<span><b>X = Paint damage</b></span>&nbsp;&nbsp;
+							<span><b># = Glass damage</b></span>&nbsp;&nbsp;
+							<span><b>Z = Exterior lightsdamage</b></span>&nbsp;&nbsp;
 						</div>
 					</section>
 
