@@ -50,19 +50,19 @@ class Enquiry extends MY_Controller {
 		}
 
 		if(empty($data['enquiry'])) {
-			redirect('admin/enquiry/index');
+			$this->renderJson(array('status'=>false,'message'=>'No detail found!'));
+
 		}
 
 		if($data['enquiry']['confirmed']) {
-			$this->session->set_flashdata('success_msg', 'This enquiry is alredy confirmed!');
-			redirect('admin/enquiry/index');
+			$this->renderJson(array('status'=>false,'message'=>'Enquiry already confirmed!'));
 		}
 
 		//$data['drivers'] = $this->DriverModel->get_all();
 		$data['wmanagers'] = $this->WorkshopModel->get_all();
-		//dd($data['wmanagers']);
-		$data['view'] = 'admin/enquiry/confirm';
-		$this->load->view('admin/layout', $data);
+
+		$template = $this->load->view('admin/enquiry/confirm', $data,true);
+		$this->renderJson(array('status'=>true,'message'=>'Record found successfully','template'=>$template));
 		
 		
 	}
@@ -108,7 +108,11 @@ class Enquiry extends MY_Controller {
 				'notification'=>$msg,
 				'to'  =>$enquiry['device_id']
 			);
-			$notification_result=send_push_notification($notifymsg,ANDRIOD_PUSH_AUTH_KEY);
+			if($enquiry['device_type'] == 'A'){
+				$notification_result=send_push_notification($notifymsg,ANDRIOD_PUSH_AUTH_KEY);
+			}else if($enquiry['device_type'] == 'I'){
+				$notification_result=send_push_notification($notifymsg,IOS_PUSH_AUTH_KEY);
+			}
 			// notify to driver
 			if(!empty($enquiry['driver_id'])){
 				$driver_msg = "You are directed to provide your pickup service on below mentioned Address:\nUser name : ".$enquiry['name']."\nAddress : ".$enquiry['address']."\nPhone No : ".$enquiry['phone']."\nReg. No : ".$enquiry['registration_no'];

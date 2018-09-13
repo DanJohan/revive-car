@@ -33,7 +33,8 @@
 						//dd($_FILES);
 						if(isset($_FILES['m_photo']) && !empty($_FILES['m_photo']['name'])) {
 							$path= FCPATH.'uploads/admin/';
-							$upload= $this->do_upload('m_photo',$path);
+							$config['new_name']=true;
+							$upload= $this->do_upload('m_photo',$path,$config);
 							if(isset($upload['upload_data'])){
 								$file_name = $upload['upload_data']['file_name'];
 							}
@@ -123,7 +124,8 @@
 						//dd($_FILES);
 						if(isset($_FILES['m_photo']) && !empty($_FILES['m_photo']['name'])) {
 							$path= FCPATH.'uploads/admin/';
-							$upload= $this->do_upload('m_photo',$path);
+							$config['new_name']=true;
+							$upload= $this->do_upload('m_photo',$path,$config);
 							if(isset($upload['upload_data'])){
 								$file_name = $upload['upload_data']['file_name'];
 								@unlink($path.$data['manager']['m_photo']);

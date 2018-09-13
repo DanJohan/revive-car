@@ -2,12 +2,12 @@
   <div class="row">
     <div class="col-md-12">
       <div class="box">
-        <div class="box-header with-border">
+        <div class="box-header with-border bg-green">
           <h3 class="box-title">Change Password</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <div class="box-body my-form-body">
+        <div class="box-body my-form-body ">
           <?php if(validation_errors() !== ''): ?>
               <div class="alert alert-warning alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

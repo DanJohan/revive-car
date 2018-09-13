@@ -69,7 +69,18 @@
             </tr>
             <tr>
                 <td><b>Service</b></td>
-                <td><?php echo ($enquiry['service_type']==1)?"Denting":"Painting"; ?></td>
+                <td><?php 
+                    if($enquiry['service_type']==0){
+                      echo "Denting and Painting";
+                    }elseif($enquiry['service_type']==1){
+                      echo "Denting";
+                    }elseif($enquiry['service_type']==2){
+                      echo "Painting";
+                    }else{
+                      echo "N/A";
+                    }
+                  ?>
+                </td>
             </tr>
             <tr>
                 <td><b>Pick up date</b></td>
@@ -109,7 +120,7 @@
             <tr>
               <td style="width: 23%;">
                 <?php if(!$enquiry['confirmed']) { ?>
-                <a href="<?php echo base_url(); ?>admin/enquiry/confirm/<?php echo $enquiry['id']; ?>" class="btn btn-primary">Confirm</a>&nbsp;
+                <button class="btn btn-primary" id="enquiry-confirm-btn" data-enquiry-id="<?php echo $enquiry['id']; ?>">Confirm</button>&nbsp;
               <?php } ?>
                 <a href="<?php echo base_url(); ?>admin/enquiry/index" class="btn btn-primary">Go back</a>
               </td>
@@ -120,5 +131,24 @@
   </div>
   <!-- /.box -->
 </section>  
+<?php $this->load->view('common/modal'); ?>
+<script type="text/javascript">
+$(document).on('click','#enquiry-confirm-btn',function(e){
+  var enquiryId= $(this).data('enquiry-id');
+  if(enquiryId){
+      $.ajax({
+          'url':config.baseUrl+"admin/enquiry/confirm/"+enquiryId,
+          'method':"GET",
+          success:function(response){
+            if(response.status) {
+              $('.modal-content').html(response.template);
+              $('#basicModal').modal();
+            }
+          }    
+      });
+  }
+
+});
+</script>
 
       

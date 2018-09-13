@@ -182,7 +182,8 @@ class Driver extends Rest_Controller {
 
 		                $url = FCPATH.'uploads/app/';
 		                	//$config['allowed_types'] = '*';
-		               	$upload = $this->do_upload('file',$url);
+		                	$config['new_name']=true;
+		               	$upload = $this->do_upload('file',$url,$config);
 		               //	dd($upload,false);
 		                if(isset($upload['upload_data'])){
 							chmod($upload['upload_data']['full_path'], 0777);
@@ -205,7 +206,8 @@ class Driver extends Rest_Controller {
 			if($insert_id && isset($_FILES['signature']) && !empty($_FILES['signature']['name'])) {
 				$file_name = '';
 				$url = FCPATH."uploads/app/";
-				$upload =$this->do_upload('signature',$url);
+				$config['new_name']=true;
+				$upload =$this->do_upload('signature',$url,$config);
 				if(isset($upload['upload_data'])){
 					chmod($upload['upload_data']['full_path'], 0777);
 					$file_name = $upload['upload_data']['file_name'];

@@ -98,7 +98,7 @@
     
           <div class="box-body">
                 <?php 
-                   $damage_mark = json_decode($job_card['damage_mark']);
+                   $damage_mark = json_decode($job_card['damage_mark'],true);
                 ?>
                <div class="img-wrapper text-center">
                 <img src="<?php echo base_url(); ?>public/images/app/car.jpg" style="width:70%;height:500px;">

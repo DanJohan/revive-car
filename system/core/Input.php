@@ -331,6 +331,7 @@ class CI_Input {
 	{
 		// Prior to PHP 5.6, the input stream can only be read once,
 		// so we'll need to check if we have already done that first.
+		
 		if ( ! is_array($this->_input_stream))
 		{
 			// $this->raw_input_stream will trigger __get().

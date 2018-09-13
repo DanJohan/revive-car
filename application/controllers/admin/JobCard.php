@@ -52,12 +52,7 @@ class JobCard extends MY_Controller {
 
 		$manager_id = $this->session->userdata('id');
 		$invoices = $this->InvoiceModel->get_all(array('fwd_to_admin'=>1),array('id','desc'));
-		//dd($invoices);
-		//echo $this->db->last_query();die;
-		if(empty($invoices)) {
-			redirect('admin/jobCard/invoiceList');
-		}
-		//dd($invoices);
+
 		$this->load->view('admin/layout',array(
 			'invoices'=> $invoices,
 			'view'	  => 'admin/jobcard/invoice_list'

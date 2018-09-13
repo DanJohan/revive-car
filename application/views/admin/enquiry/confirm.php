@@ -1,10 +1,8 @@
-<section class="content">
-   <div class="box">
-    <div class="box-header">
-      <h3 class="box-title">Confirm enquiry</h3>
-    </div>
-    <!-- /.box-header -->
-    <div class="box-body">
+<div class="modal-header admin-header">
+  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+  <h3 class="modal-title">Confirm Enquiry</h3>
+</div>
+<div class="modal-body model_view admin-body" align="center">&nbsp;
         <form action="<?php echo base_url(); ?>admin/enquiry/save_enquiry_confirm" method="post">
         <input type="hidden" name="enquiry_id" value="<?php echo $enquiry['id']; ?>">
         <table class="table"> 
@@ -38,8 +36,8 @@
             </tr>
           <?php if($enquiry['loaner_vehicle']) { ?>
             <tr>
-              <td><b>Loaner vechicle cost</b></td>
-              <td>150 / Day <input type="hidden" class="form-control" name="loaner_vehicle_cost" value="150" /></td>
+              <td><b>Loaner vechicle cost/Day</b></td>
+              <td><input type="text" class="form-control" name="loaner_vehicle_cost" value=""  required="" /></td>
           </tr>
           <?php } ?>
           <tr>
@@ -54,14 +52,7 @@
             <td><button type="submit" class="btn btn-primary" name="submit">Submit</button></td>
           </tr>
         </table>
-      </form>
-    </div>
-    <!-- /.box-body -->
-  </div>
-  <!-- /.box -->
-</section>  
-
-      
+      </form>     
 <script type="text/javascript">
  jQuery(document).ready(function(){
    var manager_id = jQuery('#wmanager').val();

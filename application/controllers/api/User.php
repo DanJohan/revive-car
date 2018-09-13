@@ -16,8 +16,7 @@ class User extends Rest_Controller {
 
 	
 	public function registerPhone()
-	{
-		
+	{	
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|required');
 		if ($this->form_validation->run() == true) {
 			$phone= $this->input->post('phone');
@@ -32,7 +31,7 @@ class User extends Rest_Controller {
 				
 				$message = $this->textmessage->send($data);
 				//print_r($message);die;
-				if($message->sid){
+				if(is_object($message) && $message->sid){
 					$register_data = array(
 						'phone'=>$phone,
 						'otp' => $otp,
@@ -705,7 +704,8 @@ class User extends Rest_Controller {
 				if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
 
 					$url = FCPATH."uploads/app/";	
-					$upload =$this->do_upload('profile_image',$url);
+					$config['new_name']=true;
+					$upload =$this->do_upload('profile_image',$url,$config);
 					if(isset($upload['upload_data'])){
 						chmod($upload['upload_data']['full_path'], 0777);
 						$file_name = $upload['upload_data']['file_name'];

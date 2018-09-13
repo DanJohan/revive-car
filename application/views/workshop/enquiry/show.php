@@ -69,7 +69,17 @@
             </tr>
             <tr>
                 <td><b>Service</b></td>
-                <td><?php echo ($enquiry['service_type']==1)?"Denting":"Painting"; ?></td>
+                <td><?php 
+                    if($enquiry['service_type']==0){
+                      echo "Denting and Painting";
+                    }elseif($enquiry['service_type']==1){
+                      echo "Denting";
+                    }elseif($enquiry['service_type']==2){
+                      echo "Painting";
+                    }else{
+                      echo "N/A";
+                    }
+                  ?></td>
             </tr>
             <tr>
                 <td><b>Pick up date</b></td>

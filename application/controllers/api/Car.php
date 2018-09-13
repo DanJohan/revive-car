@@ -236,7 +236,7 @@ class Car extends Rest_Controller {
 			//dd($_FILES);
 			if($insert_id){
 				
-				if(isset($_FILES['service_images']) && !empty($_FILES['service_images']['name'])){
+			if(isset($_FILES['service_images']) && !empty($_FILES['service_images']['name'])){
 					$filesCount = count($_FILES['service_images']['name']);
 					for($i = 0; $i < $filesCount; $i++){
 		                $_FILES['file']['name']     = $_FILES['service_images']['name'][$i];
@@ -249,9 +249,8 @@ class Car extends Rest_Controller {
 		                if (in_array(strtolower($info->getExtension()),$allowed_types)) {
 			                $url = FCPATH.'uploads/app/';
 			                $config['allowed_types'] = '*';
-			               	$upload = $this->do_upload('file',$url, $config);
-			               /*$config['allowed_types'] = 'png|jpeg|jpg';
-			               	$upload = $this->do_upload('file',$url);*/
+			               $config['new_name']=true;
+			                $upload = $this->do_upload('file',$url, $config);
 
 			                if(isset($upload['upload_data'])){
 								chmod($upload['upload_data']['full_path'], 0777);
@@ -268,6 +267,7 @@ class Car extends Rest_Controller {
 						}
 		            }
 				}
+
 				if(!empty($files_data)) {
 					$this->EnquiryImagesModel->insert_batch($files_data);
 				}

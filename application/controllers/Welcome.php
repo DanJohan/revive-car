@@ -25,4 +25,14 @@ class Welcome extends CI_Controller {
 		$this->load->view('user');
 		
 	}
+
+	public function test(){
+		if(!empty($_FILES) || $this->input->is_ajax_request()) {
+			echo "here";
+			dd($_POST['files'][0],false);
+			dd($_FILES);
+
+		}
+		$this->load->view('test/file_upload');
+	}
 }

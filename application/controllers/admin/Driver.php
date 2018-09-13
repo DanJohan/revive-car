@@ -37,7 +37,8 @@
 						$file_name = '';
 						if(isset($_FILES['d_photo']) && !empty($_FILES['d_photo']['name'])) {
 							$path= FCPATH.'uploads/admin/';
-							$upload= $this->do_upload('d_photo',$path);
+							$config['new_name']=true;
+							$upload= $this->do_upload('d_photo',$path,$config);
 							if(isset($upload['upload_data'])){
 								$file_name = $upload['upload_data']['file_name'];
 
@@ -134,7 +135,8 @@
 					$file_name = $data['driver']['d_photo'];
 					if(isset($_FILES['d_photo']) && !empty($_FILES['d_photo']['name'])) {
 						$path= FCPATH.'uploads/admin/';
-						$upload= $this->do_upload('d_photo',$path);
+						$config['new_name']=true;
+						$upload= $this->do_upload('d_photo',$path,$config);
 						if(isset($upload['upload_data'])){
 							$file_name = $upload['upload_data']['file_name'];
 							@unlink($path.$data['driver']['d_photo']);
