@@ -15,7 +15,6 @@
           <th>Phone</th>
           <th>Registration no.</th>
           <th>Forward to customer</th>
-          <th>Forward to admin</th>
           <th>Paid</th>
           <th>Created At</th>
           <th style="width: 150px;" class="text-right">Option</th>
@@ -36,7 +35,6 @@
             <td><?php echo $invoice['client_phone']; ?></td>
             <td><?php echo $invoice['vehicle_reg_no']; ?></td>
             <td><?php echo ($invoice['fwd_to_customer'])?'<span class="label label-success">Yes</span>':'<span class="label label-danger">No</span>'; ?></td>
-            <td><?php echo ($invoice['fwd_to_admin'])?'<span class="label label-success">Yes</span>':'<span class="label label-danger">No</span>'; ?></td>
             <td><?php echo ($invoice['paid'])?'<span class="label label-success">Yes</span>':'<span class="label label-danger">No</span>'; ?></td>
             <td><?php echo date('d M Y h:i A',strtotime($invoice['created_at'])); ?></td>
 

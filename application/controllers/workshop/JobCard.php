@@ -226,6 +226,20 @@ class JobCard extends MY_Controller {
 		$this->load->view('workshop/layout',$data);
 	}
 
+	public function searchJobs(){
+		if($this->input->post('job_card_id')){
+			$job_card_id = $this->input->post('job_card_id');
+			$jobs = $this->RepairOrderModel->searchJobs($job_card_id);
+
+			if(!empty($jobs)) {
+				$data = array_column($jobs, 'customer_request');
+				$this->withStatus(200)->renderJson(array('status'=>true,'message'=>'Record found successfully','data'=>$data));
+			}else{
+				$this->withStatus(404)->renderJson(array('status'=>false,'message'=>'No data found'));
+			}
+		}
+	}
+
 	public function createInvoice(){
 		//dd($_POST);
 		$this->load->library('sequence');
@@ -410,8 +424,9 @@ class JobCard extends MY_Controller {
 
 			$labour_items = $this->input->post('labour');
 			$labour_items_ids = array_column($labour_items, 'id');
-
-			$this->InvoiceLabourItemModel->deleteItems($invoice_id,$labour_items_ids);
+			if(!empty($labour_items_ids)){
+				$this->InvoiceLabourItemModel->deleteItems($invoice_id,$labour_items_ids);
+			}
 			$insert_labour_items= array();
 			$update_labour_items = array();
 				foreach ($labour_items as $index => $data) {
@@ -441,7 +456,9 @@ class JobCard extends MY_Controller {
 
 				$part_items = $this->input->post('parts');
 				$part_items_ids = array_column($part_items, 'id');
-				$this->InvoicePartsItemModel->deleteItems($invoice_id,$part_items_ids);
+				if(!empty($part_items_ids)) {
+					$this->InvoicePartsItemModel->deleteItems($invoice_id,$part_items_ids);
+				}
 				//echo $this->db->last_query();die;
 				$insert_part_items = array();
 				$update_part_items = array();
@@ -477,14 +494,6 @@ class JobCard extends MY_Controller {
 		if($invoice_id){
 			$this->InvoiceModel->update(array('fwd_to_customer'=>1),array('id'=>$invoice_id));
 			$this->session->set_flashdata('info_msg','Invoice has been forward to customer successfully');
-		}
-		redirect('workshop/jobCard/invoiceList/'.$job_card_id);
-	}
-
-	public function invoiceFwdToAdmin($invoice_id=null,$job_card_id){
-		if($invoice_id){
-			$this->InvoiceModel->update(array('fwd_to_admin'=>1),array('id'=>$invoice_id));
-			$this->session->set_flashdata('info_msg','Invoice has been forward to admin successfully');
 		}
 		redirect('workshop/jobCard/invoiceList/'.$job_card_id);
 	}

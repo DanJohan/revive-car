@@ -25,7 +25,7 @@ $(function(){
     	e.preventDefault();
         if(x < maxField){ 
 			var fieldHTML = '<tr>'+
-	                  '<td><input type="text" class="form-control labour-item invoice-item" name="labour['+x+'][item]"  /></td>'+
+	                  '<td><input type="text" class="form-control labour-item invoice-item" name="labour['+x+'][item]"  /><div id="livesearch"></div></td>'+
 	                  '<td><input type="text" class="form-control labour-hour validateNumeric" name="labour['+x+'][hour]" /></td>'+
 	                  '<td><input type="text" class="form-control labour-rate validateNumeric" name="labour['+x+'][rate]" /></td>'+
 	                  '<td><input type="text" class="form-control labour-cost" readonly name="labour['+x+'][cost]" /></td>'+
@@ -57,12 +57,12 @@ $(function(){
 
         //Once add button is clicked
     $(document).on('click','.parts-add-button',function(e){
-    	console.log('here',x);
+
     	e.preventDefault();
         //Check maximum number of input fields
         if(x < maxField){ 
     		var fieldHTML = '<tr>'+
-                      '<td><input type="text" class="form-control parts-item" name="parts['+x+'][item]" /></td>'+
+                      '<td><input type="text" class="form-control parts-item invoice-item" name="parts['+x+'][item]" /></td>'+
                       '<td><input type="text" class="form-control parts-qty validateNumeric" name="parts['+x+'][qty]" /></td>'+
                       '<td><input type="text" class="form-control parts-cost validateNumeric" name="parts['+x+'][cost]" /></td>'+
                       '<td><input type="text" class="form-control parts-gst validateNumeric" name="parts['+x+'][gst]" value="0.00" /><input type="hidden"'+
@@ -276,3 +276,37 @@ $(document).on('submit','#invoice-form',function(e){
 	}
 	return true;
 });
+
+$(function(){
+	var availableJobs=[];
+	var jobCarId = $('input[name="job_card_id"]').val();
+	$.ajax({
+		'url':config.baseUrl+"workshop/jobCard/searchJobs",
+		'method':'POST',
+		'async':true,
+		'data':{'job_card_id':jobCarId},
+		success:function(response){
+
+			if(response.status) {
+				availableJobs = response.data;
+				console.log(availableJobs);
+			}
+		}
+	});
+
+	$(document).on('focus keyup','.invoice-item',function(){
+		var item = $(this);
+		var searchKey = item.val();
+		
+		item.autocomplete({
+		      source: availableJobs,
+		      autoFocus: true,
+		      minLength: 0
+		}).bind('focus',function(){
+			$(this).autocomplete("search");
+		});
+	
+	});
+});
+
+

@@ -14,6 +14,7 @@
 	      <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/AdminLTE.min.css">
 	           <!-- Datatable style -->
 		  <link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css"> 
+		  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	       <!-- Custom CSS -->
 		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/style.css">
 		  <!-- AdminLTE Skins. Choose a skin from the css/skins. -->
@@ -22,6 +23,8 @@
 		  <script src="<?= base_url() ?>public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 		  <!-- jQuery UI 1.11.4 -->
 		  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+  		   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		  <script>
 				var config = {
 					'baseUrl':"<?php echo base_url(); ?>",

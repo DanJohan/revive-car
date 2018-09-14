@@ -15,7 +15,6 @@
           <th>Phone</th>
           <th>Registration no.</th>
           <th>Forward to customer</th>
-          <th>Forward to admin</th>
           <th>Paid</th>
           <th>Created At</th>
           <th style="width: 150px;" class="text-right">Option</th>
@@ -36,7 +35,6 @@
             <td><?php echo $invoice['client_phone']; ?></td>
             <td><?php echo $invoice['vehicle_reg_no']; ?></td>
             <td><?php echo ($invoice['fwd_to_customer'])?'<span class="label label-success">Yes</span>':'<span class="label label-danger">No</span>'; ?></td>
-            <td><?php echo ($invoice['fwd_to_admin'])?'<span class="label label-success">Yes</span>':'<span class="label label-danger">No</span>'; ?></td>
             <td><?php echo ($invoice['paid'])?'<span class="label label-success">Yes</span>':'<span class="label label-danger">No</span>'; ?></td>
             <td><?php echo date('d M Y h:i A',strtotime($invoice['created_at'])); ?></td>
 
@@ -48,7 +46,6 @@
                     <li><a href="<?php echo  base_url('workshop/jobCard/invoiceShow/'.$invoice['id']); ?>">View</a></li>
                     <li><a href="<?php echo base_url('workshop/jobCard/invoiceEdit/'.$invoice['id'])?>">Edit</a></li>
                     <li><a href="<?php echo base_url('workshop/jobCard/invoiceFwdToCust/'.$invoice['id'].'/'.$invoice['job_card_id'])?>">Forward to customer</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/invoiceFwdToAdmin/'.$invoice['id'].'/'.$invoice['job_card_id'])?>">Forward to Admin</a></li>
                 </ul>
             </div>
           </tr>

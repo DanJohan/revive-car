@@ -139,7 +139,7 @@
                         <td>Actions</td>
                     </tr>
                     <tr>
-                          <td><input type="text" class="form-control labour-item" name="labour[0][item]" /></td>
+                          <td><input type="text" class="form-control labour-item invoice-item" name="labour[0][item]" autocomplete="off"/></td>
                           <td><input type="text" class="form-control labour-hour validateNumeric" name="labour[0][hour]" /></td>
                           <td><input type="text" class="form-control labour-rate validateNumeric" name="labour[0][rate]" /></td>
                           <td><input type="text" class="form-control labour-cost" name="labour[0][cost]" readonly /></td>

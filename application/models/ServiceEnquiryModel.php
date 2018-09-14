@@ -53,7 +53,7 @@ class ServiceEnquiryModel extends MY_Model {
 
 	// used in crm
 	public function getEnquiry($id){
-		$this->db->select('e.id,e.address,e.location,e.loaner_vehicle,e.enquiry,e.service_type,e.pick_up_date,e.pick_up_time,e.confirmed,e.created_at,GROUP_CONCAT(em.id SEPARATOR "|")AS image_id,GROUP_CONCAT(em.image SEPARATOR "|") AS images,cb.brand_name,cm.model_name,c.color,c.year,c.registration_no,u.id as user_id,u.name,u.phone,u.email,u.profile_image,u.device_id,u.device_type,d.d_name,d.id AS driver_id,d.d_phone,d.d_device_id,d.d_device_type');
+		$this->db->select('e.id,e.address,e.location,e.loaner_vehicle,e.enquiry,e.service_type,e.pick_up_date,e.pick_up_time,e.confirmed,e.created_at,(loaner_vehicle_cost + estimated_cost) AS total_cost,GROUP_CONCAT(em.id SEPARATOR "|")AS image_id,GROUP_CONCAT(em.image SEPARATOR "|") AS images,cb.brand_name,cm.model_name,c.color,c.year,c.registration_no,u.id as user_id,u.name,u.phone,u.email,u.profile_image,u.device_id,u.device_type,d.d_name,d.id AS driver_id,d.d_phone,d.d_device_id,d.d_device_type');
 		$this->db->from($this->table.' AS e');
 		$this->db->join('cars AS c','e.car_id = c.id');
 		$this->db->join('car_brands AS cb','c.brand_id = cb.id');

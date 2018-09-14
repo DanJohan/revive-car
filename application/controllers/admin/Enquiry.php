@@ -83,13 +83,14 @@ class Enquiry extends MY_Controller {
 
 			$is_update = $this->ServiceEnquiryModel->update($update_data,array('id'=>$enquiry_id));
 			$enquiry = $this->ServiceEnquiryModel->getEnquiry($enquiry_id);
+			//dd($enquiry);
 			$data['phone'] = $enquiry['phone'];
 			
 			if(!empty($enquiry['driver_id'])) {
 
-				$data['body'] = 'Dear '.$enquiry['name'].', On confirmation of your enquiry , REVIVE driver '.$enquiry['d_name'].' is coming to pick your car. Insert OTP '.$otp.' for Confirmation to start assistance and service';
+				$data['body'] = 'Dear '.$enquiry['name'].', On confirmation of your enquiry , REVIVE driver '.$enquiry['d_name'].' is coming to pick your car. Estimated cost for your car services will be INR '.$enquiry['total_cost'].' Insert OTP '.$otp.' for Confirmation to start assistance and service';
 			}else{
-				$data['body'] = 'Dear '.$enquiry['name'].', Thanks for Choosing Revive car care Service , we will glad to welcome you on our service center, please enter '.$otp.' , when you reach to our workshop manager to start service.';
+				$data['body'] = 'Dear '.$enquiry['name'].', Thanks for Choosing Revive car care Service , we will glad to welcome you on our service center.Estimated cost for your car services will be INR '.$enquiry['total_cost'].'. Please enter '.$otp.' , when you reach to our workshop manager to start service.';
 			}
 			//$message = $this->textmessage->send($data);
 			

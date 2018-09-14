@@ -293,6 +293,25 @@ class Driver extends Rest_Controller {
 		$this->load->view('api/job_card_detail',$data);
 	}
 
+	public function getAllJobCards() {
+		$this->form_validation->set_rules('driver_id', 'Driver id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$driver_id = $this->input->post('driver_id');
+			$job_cards = $this->JobcardModel->getJobCardByDriverId($driver_id);
+			if(!empty($job_cards)){
+				$response = array('status'=>true,'message'=>'Record found successfully','data'=>$job_cards);
+			}else{
+				$response = array('status'=>false,'message'=>'Detail not found');
+			}
+ 
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}
+
 
 }// end of class
 ?>

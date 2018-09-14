@@ -51,7 +51,7 @@ class JobCard extends MY_Controller {
 	public function invoiceList(){
 
 		$manager_id = $this->session->userdata('id');
-		$invoices = $this->InvoiceModel->get_all(array('fwd_to_admin'=>1),array('id','desc'));
+		$invoices = $this->InvoiceModel->get_all(array('fwd_to_customer'=>1),array('id','desc'));
 
 		$this->load->view('admin/layout',array(
 			'invoices'=> $invoices,

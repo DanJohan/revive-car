@@ -24,6 +24,10 @@ class MY_Controller extends CI_Controller
     }
   }
 
+  protected function withStatus($code) {
+     http_response_code($code);
+     return $this;
+  }
 
   protected function renderJson($data) {
     header('Content-Type: application/json');

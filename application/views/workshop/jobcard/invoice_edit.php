@@ -14,6 +14,7 @@
                     <div class="col-xs-7">
                       <?php echo $invoice['client_name']; ?>
                       <input type="hidden" name="invoice_id" value="<?php echo $invoice['id']; ?>" />
+                      <input type="hidden" name="job_card_id" value="<?php echo $invoice['job_card_id']; ?>" />
                       <input type="hidden" name="user_id" value="<?php echo $invoice['user_id']; ?>" />
                     </div>
                 </div>
@@ -136,7 +137,7 @@
                     <tr>
                           <td>
                             <input type="hidden" name="labour[<?php echo $index; ?>][id]"  value="<?php echo $labour['invoice_labour_id']?>"/>
-                            <input type="text" class="form-control labour-item" name="labour[<?php echo $index; ?>][item]"  value="<?php echo $labour['invoice_labour_item']?>"/>
+                            <input type="text" class="form-control labour-item invoice-item" name="labour[<?php echo $index; ?>][item]"  value="<?php echo $labour['invoice_labour_item']?>"/>
                           </td>
                           <td><input type="text" class="form-control labour-hour validateNumeric" name="labour[<?php echo $index; ?>][hour]" value="<?php echo $labour['invoice_labour_hour']?>" /></td>
                           <td><input type="text" class="form-control labour-rate validateNumeric" name="labour[<?php echo $index; ?>][rate]" value="<?php echo $labour['invoice_labour_rate']?>" /></td>
@@ -150,8 +151,20 @@
                         <?php } ?>
                     </tr>
                     <?php
+                      } }else {
+                    ?>
+                        <tr>
+                          <td><input type="text" class="form-control labour-item invoice-item" name="labour[0][item]" autocomplete="off"/></td>
+                          <td><input type="text" class="form-control labour-hour validateNumeric" name="labour[0][hour]" /></td>
+                          <td><input type="text" class="form-control labour-rate validateNumeric" name="labour[0][rate]" /></td>
+                          <td><input type="text" class="form-control labour-cost" name="labour[0][cost]" readonly /></td>
+                          <td><input type="text" class="form-control labour-gst validateNumeric" name="labour[0][gst]" value="0.00" /><input type="hidden" class="gst-amount" name="labour[0][gst_amount]" value="0.00"></td>
+                          <td><input type="text" class="form-control labour-total" name="labour[0][total]" readonly /></td>
+                          <td><button type="button" class="btn btn-success labour-add-button"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                        </tr>
+                  <?php
                       }
-                    }
+
                     ?>
                   </table>
               </div>
@@ -193,7 +206,18 @@
                       </tr>
                     <?php
                        }
-                    }
+                    }else{
+                    ?>
+                        <tr>
+                          <td><input type="text" class="form-control parts-item invoice-item" name="parts[0][item]" /></td>
+                          <td><input type="text" class="form-control parts-qty validateNumeric" name="parts[0][qty]" /></td>
+                          <td><input type="text" class="form-control parts-cost validateNumeric" name="parts[0][cost]" /></td>
+                          <td><input type="text" class="form-control parts-gst validateNumeric" name="parts[0][gst]" value="0.00" /><input type="hidden" class="gst-amount" value="0.00" name="parts[0][gst_amount]"></td>
+                          <td><input type="text" class="form-control parts-total" name="parts[0][total]" readonly /></td>
+                          <td><button type="button" class="btn btn-success parts-add-button"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                      </tr>
+                    <?php
+                  }
                     ?>
                   </table>
               </div>
