@@ -216,6 +216,7 @@ class Car extends Rest_Controller {
 			$register_data = array(
 				'car_id' => $this->input->post('car_id'),
 				'user_id' =>$this->input->post('user_id'),
+				'enquiry_id'=>time(),
 				'address' => $this->input->post('address'),
 				'latitude' => $this->input->post('latitude'),
 				'longitude' => $this->input->post('longitude'),
@@ -295,5 +296,24 @@ class Car extends Rest_Controller {
 		}
 		$this->renderJson($response);
 	}// end of serviceEnquiry method
+
+
+	public function getUserEnquiries() {
+		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$user_id = $this->input->post('user_id');
+			$enquiries = $this->ServiceEnquiryModel->getEnquiryByUser($user_id);
+			if(!empty($enquiries)){
+				$response = array('status'=>true,'message'=>'Record found successfully!','data'=>$enquiries);
+			}else{
+				$response = array('status'=>true,'message'=>'No detail found!');
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
 
 }

@@ -35,4 +35,16 @@ class Welcome extends CI_Controller {
 		}
 		$this->load->view('test/file_upload');
 	}
+
+	public function updataEno(){
+		die();
+		$this->load->model('ServiceEnquiryModel');
+		$es= $this->ServiceEnquiryModel->get_all(NULL,NULL,'id');
+		foreach ($es as $index => $e) {
+			$this->ServiceEnquiryModel->update(array('enquiry_no'=>time()),array('id'=>$e['id']));
+			usleep(800000);
+			# code...
+		}
+		dd($es);
+	}
 }

@@ -104,7 +104,7 @@ class JobCard extends Rest_Controller {
 		// output the HTML content
 		$pdf->writeHTML($html, true, false, true, false, '');
 		ob_end_clean();
-		$pdf->Output('invoice.pdf', 'I');
+		$pdf->Output('invoice.pdf', 'D');
 		//print_r($pdf);
 	}
 
