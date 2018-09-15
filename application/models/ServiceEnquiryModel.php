@@ -53,7 +53,7 @@ class ServiceEnquiryModel extends MY_Model {
 
 	// used in crm
 	public function getEnquiry($id){
-		$this->db->select('e.id,e.address,e.location,e.loaner_vehicle,e.enquiry,e.service_type,e.pick_up_date,e.pick_up_time,e.confirmed,e.created_at,(loaner_vehicle_cost + estimated_cost) AS total_cost,GROUP_CONCAT(em.id SEPARATOR "|")AS image_id,GROUP_CONCAT(em.image SEPARATOR "|") AS images,cb.brand_name,cm.model_name,c.color,c.year,c.registration_no,u.id as user_id,u.name,u.phone,u.email,u.profile_image,u.device_id,u.device_type,d.d_name,d.id AS driver_id,d.d_phone,d.d_device_id,d.d_device_type');
+		$this->db->select('e.id,e.address,e.location,e.loaner_vehicle,e.enquiry,e.service_type,e.pick_up_date,e.pick_up_time,e.confirmed,e.created_at,e.loaner_vehicle_cost,e.estimated_cost,GROUP_CONCAT(em.id SEPARATOR "|")AS image_id,GROUP_CONCAT(em.image SEPARATOR "|") AS images,cb.brand_name,cm.model_name,c.color,c.year,c.registration_no,u.id as user_id,u.name,u.phone,u.email,u.profile_image,u.device_id,u.device_type,d.d_name,d.id AS driver_id,d.d_phone,d.d_device_id,d.d_device_type');
 		$this->db->from($this->table.' AS e');
 		$this->db->join('cars AS c','e.car_id = c.id');
 		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
@@ -131,7 +131,7 @@ class ServiceEnquiryModel extends MY_Model {
 	
 	// used in api
 	public function getEnquiryByUser($id){
-		$this->db->select('e.id,e.enquiry_no,e.address,e.loaner_vehicle,e.enquiry,CASE WHEN e.service_type =1 THEN "Denting" WHEN e.service_type=2 THEN "Painting" ELSE "Denting and Painting" END AS service_type,e.pick_up_date,e.pick_up_time,e.loaner_vehicle_cost,e.estimated_cost,(e.loaner_vehicle_cost + e.estimated_cost) AS total_estimated_cost,e.confirmed,c.registration_no,e.created_at,m.model_name,b.brand_name',false);
+		$this->db->select('e.id,e.enquiry_no,e.address,e.loaner_vehicle,e.enquiry,CASE WHEN e.service_type =1 THEN "Denting" WHEN e.service_type=2 THEN "Painting" ELSE "Denting and Painting" END AS service_type,e.pick_up_date,e.pick_up_time,e.loaner_vehicle_cost,e.estimated_cost,e.confirmed,c.registration_no,e.created_at,m.model_name,b.brand_name',false);
 		$this->db->from($this->table.' AS e');
 		$this->db->join('users AS u', 'e.user_id=u.id');
 		$this->db->join('cars AS c', 'e.car_id=c.id');

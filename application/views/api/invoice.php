@@ -27,11 +27,7 @@
 Sector 17A, Gurgaon, Haryana-122001 GSTIN: 06AFVPJ6337B1ZD 
 Email:customercare@reviveauto.in</p>
     </div>
-    <div class="row " style="
-   border: 1px solid #ddd;
-    width: 100%;
-    margin: 0 auto;
-">
+    <div class="row" style="margin:0px;">
       <div class="col-xs-12 col-md-4 cust-border">
         <div class="cust-wrapper">
           <h2 class="cust-head">Customer Details</h2>
@@ -174,7 +170,7 @@ Email:customercare@reviveauto.in</p>
 
 <!-----------------Middle---------------->
 <section class="middle">
-  <div class="container table-responsive">
+  <div class="container">
     <div class="table-responsive">
     <table class="table">
       <thead class="border">
@@ -223,11 +219,11 @@ Email:customercare@reviveauto.in</p>
 <section class="bottom">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 col-sm-6 col-sm-push-12">
+      <div class="col-xs-12 col-sm-6 invoice-notes">
         <h3>Notes</h3>
         <p style="white-space: pre-line;"><?php echo $invoice['notes']; ?></p>
       </div>
-      <div class="col-xs-12 col-sm-6 col-sm-pull-12">
+      <div class="col-xs-12 col-sm-6">
         <table class="table table-bordered table-sm">
           <thead>
             <tr>

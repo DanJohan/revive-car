@@ -34,15 +34,21 @@
                     </select>
                 </td>
             </tr>
-          <?php if($enquiry['loaner_vehicle']) { ?>
-            <tr>
-              <td><b>Loaner vechicle cost/Day</b></td>
-              <td><input type="text" class="form-control" name="loaner_vehicle_cost" value=""  required="" /></td>
+          <tr>
+              <td style="width: 252px;"><b>Loander vechicle</b></td>
+              <td>
+                  <label class="radio-inline"><input type="radio"  class="loaner_vehicle" name="loaner_vehicle" value="1" <?php echo ($enquiry['loaner_vehicle'])?"checked":""; ?>/>Required</label>
+                  <label class="radio-inlin"><input type="radio" class="loaner_vehicle" name="loaner_vehicle" value="0" <?php echo ($enquiry['loaner_vehicle'])?"":"checked"; ?> />Not Required</label>
+              </td>
           </tr>
-          <?php } ?>
+          <tr id="loaner-vehicle-cost">
+              <td><b>Loaner vechicle cost per day</b></td>
+              <td><div class="input-group"><span class="input-group-addon">&#x20b9;</span><input type="text" class="form-control price-field" name="loaner_vehicle_cost" value="0.00"  required="" /></div></td>
+          </tr>
+          
           <tr>
               <td><b>Estimated cost</b></td>
-              <td><input type="text" class="form-control" name="estimated_cost"  required="required"/></td>
+              <td><div class="input-group"><span class="input-group-addon">&#x20b9;</span><input type="text" class="form-control price-field" name="estimated_cost" value="0.00"  required="required"/></div></td>
           </tr>
           <tr>
 
@@ -52,23 +58,43 @@
             <td><button type="submit" class="btn btn-primary" name="submit">Submit</button></td>
           </tr>
         </table>
-      </form>     
+      </form>
+
 <script type="text/javascript">
- jQuery(document).ready(function(){
-   var manager_id = jQuery('#wmanager').val();
-    jQuery('#wmanager').on("change",function () {
-        var manager_id = jQuery(this).find('option:selected').val();
+ $(document).ready(function(){
+
+   var manager_id = $('#wmanager').val();
+    $('#wmanager').on("change",function () {
+        var manager_id = $(this).find('option:selected').val();
     
-        jQuery.ajax({
+        $.ajax({
             url: "<?php echo base_url(); ?>admin/enquiry/get_AssignDriver",
             type: "POST",
             data: "manager_id="+manager_id,
             success: function (response) {
                 //console.log(response);
-               jQuery("#driver_id").html(response);
+               $("#driver_id").html(response);
             },
         });
-    });  
+    });
+
+    function toggleLoanerCost(value) {
+      if(value==1){
+            $('#loaner-vehicle-cost').show();
+        }else{
+          $('#loaner-vehicle-cost').find('input').val('0.00');
+          $('#loaner-vehicle-cost').hide();
+        }
+    }
+    var loaner_value = $('.loaner_vehicle:checked').val();
+    toggleLoanerCost(loaner_value);
+
+    $(document).on('change','.loaner_vehicle',function(){
+        var loaner_vehicle = $(this).val();
+        toggleLoanerCost(loaner_vehicle);
+        
+    });
+     $('.price-field').number(true,2);
   
 });
 </script>

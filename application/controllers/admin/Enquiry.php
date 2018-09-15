@@ -68,6 +68,7 @@ class Enquiry extends MY_Controller {
 	}
 
 	public function save_enquiry_confirm() {
+		//dd($_POST);
 		if(count($_POST) > 0) {
 
 			$enquiry_id = $this->input->post('enquiry_id');
@@ -75,22 +76,26 @@ class Enquiry extends MY_Controller {
 			$update_data = array(
 				'assign_driver' => ($this->input->post('driver'))?$this->input->post('driver'):null,
 				'assign_manager' => ($this->input->post('wmanager'))?$this->input->post('wmanager'):null,
-				'loaner_vehicle_cost' => ($this->input->post('loaner_vehicle_cost'))? $this->input->post('loaner_vehicle_cost') : null,
-				'estimated_cost' => $this->input->post('estimated_cost'),
+				'loaner_vehicle' => $this->input->post('loaner_vehicle'),
+				'loaner_vehicle_cost' => str_replace(',', '', $this->input->post('loaner_vehicle_cost')),
+				'estimated_cost' => str_replace(',','',$this->input->post('estimated_cost')),
 				'confirmed' => 1,
 				'verification_code' =>$otp
 			);
-
+			//dd($update_data);
 			$is_update = $this->ServiceEnquiryModel->update($update_data,array('id'=>$enquiry_id));
 			$enquiry = $this->ServiceEnquiryModel->getEnquiry($enquiry_id);
-			//dd($enquiry);
-			$data['phone'] = $enquiry['phone'];
-			
-			if(!empty($enquiry['driver_id'])) {
 
-				$data['body'] = 'Dear '.$enquiry['name'].', On confirmation of your enquiry , REVIVE driver '.$enquiry['d_name'].' is coming to pick your car. Estimated cost for your car services will be INR '.$enquiry['total_cost'].' Insert OTP '.$otp.' for Confirmation to start assistance and service';
+			$data['phone'] = $enquiry['phone'];
+			$loaner_cost_msg = '';
+			if($enquiry['loaner_vehicle_cost'] != '0.00'){
+				$loaner_cost_msg = " and loaner vehicle cost will be ".$enquiry['loaner_vehicle_cost']." per day.";
+			}
+			if(!empty($enquiry['driver_id'])) {
+				
+				$data['body'] = 'Dear '.$enquiry['name'].', On confirmation of your enquiry , REVIVE driver '.$enquiry['d_name'].' is coming to pick your car. Estimated cost for your car services will be INR '.$enquiry['estimated_cost'].$loaner_cost_msg.' Insert OTP '.$otp.' for Confirmation to start assistance and service';
 			}else{
-				$data['body'] = 'Dear '.$enquiry['name'].', Thanks for Choosing Revive car care Service , we will glad to welcome you on our service center.Estimated cost for your car services will be INR '.$enquiry['total_cost'].'. Please enter '.$otp.' , when you reach to our workshop manager to start service.';
+				$data['body'] = 'Dear '.$enquiry['name'].', Thanks for Choosing Revive car care Service , we will glad to welcome you on our service center.Estimated cost for your car services will be INR '.$enquiry['estimated_cost'].$loaner_cost_msg.' Please enter '.$otp.' , when you reach to our workshop manager to start service.';
 			}
 			//$message = $this->textmessage->send($data);
 			

@@ -265,7 +265,6 @@ class User extends Rest_Controller {
 
 	public function verifyOtpToChangePassword() {
 
-
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('otp', 'OTP', 'trim|required');
 		if ($this->form_validation->run() == true){
@@ -281,9 +280,7 @@ class User extends Rest_Controller {
 			$user= $this->UserModel->search($criteria);
 	   	   	$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
 	   	   }else{
-
 	   	   		$response = array('status'=>false,'message'=>'OTP code doesn\'t match');
-
 	   	   }
 		}else{
 			$errors = $this->form_validation->error_array();

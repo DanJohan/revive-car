@@ -36,15 +36,19 @@ class Welcome extends CI_Controller {
 		$this->load->view('test/file_upload');
 	}
 
-	public function updataEno(){
-		die();
-		$this->load->model('ServiceEnquiryModel');
-		$es= $this->ServiceEnquiryModel->get_all(NULL,NULL,'id');
-		foreach ($es as $index => $e) {
-			$this->ServiceEnquiryModel->update(array('enquiry_no'=>time()),array('id'=>$e['id']));
-			usleep(800000);
-			# code...
-		}
-		dd($es);
+	public function testauth(){
+
+		 // function authenticate() {
+		    header('WWW-Authenticate: Basic realm="Sistema autentificaci�n UnoAutoSur"');
+		    header('HTTP/1_0 401 Unauthorized');
+		//    header("Status: 401 Access Denied"); 
+		    echo "Unauthorized\n";
+		    dd(getallheaders(),false);
+		    dd($_SERVER);
+		    exit;
+		//  }
+
 	}
+
+
 }

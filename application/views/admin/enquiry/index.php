@@ -16,7 +16,7 @@
           <th>Enquiry</th>
           <th>Status</th>
           <th>Created At</th>
-          <th style="width: 150px;" class="text-right">Actions</th>
+          <th style="width: 100px;" class="text-right">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
                 <td><?php echo ($enquiry['confirmed']) ? '<span class="label label-success">Confirmed</span>':'<span class="label label-warning">Pending</span>'?></td>
                 <td><?php echo date('d M Y h:i A',strtotime($enquiry['created_at'])); ?></td>
                 <td>
-                  <a class="btn btn-success" data-toggle="tooltip" href="<?php echo base_url('admin/enquiry/show/'.$enquiry['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
+                  <a class="btn btn-success btn-sm" data-toggle="tooltip" href="<?php echo base_url('admin/enquiry/show/'.$enquiry['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
                 </td>
             </tr>
           <?php

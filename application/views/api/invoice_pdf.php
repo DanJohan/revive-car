@@ -226,5 +226,5 @@ Email:customercare@reviveauto.in</div>
 
 <div nobr="true">
   <h3>Notes</h3>
-<?php echo $invoice['notes']; ?>
+<?php echo nl2br($invoice['notes']); ?>
 </div>

@@ -132,6 +132,7 @@
   <!-- /.box -->
 </section>  
 <?php $this->load->view('common/modal'); ?>
+
 <script type="text/javascript">
 $(document).on('click','#enquiry-confirm-btn',function(e){
   var enquiryId= $(this).data('enquiry-id');
@@ -142,6 +143,7 @@ $(document).on('click','#enquiry-confirm-btn',function(e){
           success:function(response){
             if(response.status) {
               $('.modal-content').html(response.template);
+              $('body').css('overflow','hidden');
               $('#basicModal').modal();
             }
           }    
@@ -150,5 +152,6 @@ $(document).on('click','#enquiry-confirm-btn',function(e){
 
 });
 </script>
+
 
       

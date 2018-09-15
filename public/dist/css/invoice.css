@@ -22,21 +22,29 @@ p.top-phr {
 	font-size: 14px;
 }
 .cust-border {
-	border-right: 1px solid #ddd;
+	border: 1px solid #ddd;
 	height: -webkit-fill-available;
 	padding: 0px 1px;
 	margin: 0px;
 	height: 219px;
+}
+@media screen and (min-width: 769px) {
+	.cust-border:not(:first-child){
+		border-left:none;
+	}
+}
+@media screen and (max-width: 768px) {
+	.cust-border:not(:first-child){
+		border-top:none;
+	}
 }
 .cust-inner {
 	padding: 10px 10px;
 }
 h2.cust-head {
 	text-align: center;
-	border: 1px solid #ddd;
-	border-left: none;
-	border-top: none;
-	border-right: none;
+	border-bottom: 1px solid #ddd;
+
 }
 /*.cust-wrapper {
 	height: 100%;
@@ -72,4 +80,10 @@ section.bottom thead th {
 }
 .top-text{
 	padding-bottom: 20px;
+}
+
+@media screen and (max-width: 425px) {
+	.invoice-notes{
+		margin-bottom: 20px;
+	}
 }
