@@ -216,7 +216,7 @@ class Car extends Rest_Controller {
 			$register_data = array(
 				'car_id' => $this->input->post('car_id'),
 				'user_id' =>$this->input->post('user_id'),
-				'enquiry_id'=>time(),
+				'enquiry_no'=>time(),
 				'address' => $this->input->post('address'),
 				'latitude' => $this->input->post('latitude'),
 				'longitude' => $this->input->post('longitude'),

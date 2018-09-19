@@ -78,9 +78,10 @@ class JobcardModel extends MY_Model {
 	}
 
 	public function getJobCardByDriverId($driver_id) {
-		$this->db->select('jc.id, u.name,e.address,jc.created_at');
+		$this->db->select('jc.id, u.name,c.registration_no,e.address,jc.created_at');
 		$this->db->from($this->table.' AS jc');
 		$this->db->join('users AS u','jc.user_id=u.id');
+		$this->db->join('cars AS c','jc.car_id=c.id');
 		$this->db->join('service_enquiries AS e','jc.enquiry_id=e.id');
 		$this->db->where('jc.driver_id', $driver_id);
 		$query = $this->db->get();
