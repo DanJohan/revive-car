@@ -1,7 +1,7 @@
  <section class="content">
    <div class="box">
     <div class="box-header bg-green">
-      <h3 class="box-title">User job cards</h3>
+      <h3 class="box-title">Customer job cards</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
@@ -10,7 +10,7 @@
         <tr>
           <th>Job card id</th>
           <th>User id</th>
-          <th>Username</th>
+          <th>Customer name</th>
           <th>Phone</th>
           <th>Car</th>
           <th>Registration no.</th>

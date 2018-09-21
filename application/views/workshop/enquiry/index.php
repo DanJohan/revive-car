@@ -16,7 +16,8 @@
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
-          <th>Username</th>
+          <th>Enquiry No</th>
+          <th>Customer Name</th>
           <th>Car-Model</th>
           <th>Loaner vehicle</th>
           <th>Enquiry</th>
@@ -31,6 +32,7 @@
           ?>
             <!--<tr style="<?php //echo ($enquiry['confirmed'])?'background-color: lightgreen':''; ?>">-->
               <tr>
+                <td><label class="label label-default"><?php echo $enquiry['enquiry_no']; ?></label></td>
                 <td><?php echo $enquiry['name']; ?></td>
                 <td><?php echo $enquiry['brand_name']."-".$enquiry['model_name']; ?></td>
                 <td><?php echo ($enquiry['loaner_vehicle'])? 'Required' : 'Not required'; ?></td>

@@ -28,7 +28,7 @@
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="logo"><img src="<?php echo base_url(); ?>public/images/revive-logo.png" alt="" style="width: 150px;height: 70px;"></div>	 
-				<h1 class="shew">Revive auto car care</h1>
+				<h1 class="shew">Revive Auto Care</h1>
 				<div class="border"><img src="<?php echo base_url(); ?>public/images/app/border.png" alt=""></div>
 				<p class="add">9/11 Near Atul Kataria Chowk Kila No. , Opp Huda Nursery, Sector 17A, Gurgaon, Haryana-122001 GSTIN: 06AFVPJ6337B1ZD 
 					<br>Email:customercare@reviveauto.in</p>

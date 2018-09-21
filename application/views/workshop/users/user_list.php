@@ -2,14 +2,14 @@
  <section class="content">
    <div class="box">
     <div class="box-header bg-green">
-      <h3 class="box-title">Registered Users</h3>
+      <h3 class="box-title">Registered Customers</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
       <table id="example1" class="table table-bordered table-striped ">
         <thead>
         <tr>
-          <th>User id</th>
+          <th>Customer id</th>
           <th>Username</th>
           <th>Email</th>
           <th>Mobile No.</th>

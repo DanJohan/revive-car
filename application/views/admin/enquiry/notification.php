@@ -4,9 +4,9 @@
 <?php 
 if(!empty($enquiries)) {
 	foreach ($enquiries as $index => $enquiry) {
-		$str = $enquiry['brand_name']." - ".$enquiry['model_name']." Car service enquiry by ".$enquiry['name'];
+		$str = "<b>".$enquiry['brand_name']." - ".$enquiry['model_name']."</b> car service request from customer <b>".$enquiry['name']."</b>";
 ?>
-<li style="<?php echo ($enquiry['seen'])? 'background-color:lightgrey' : ''; ?>" >
+<li >
     <a href="<?php echo base_url();?>admin/enquiry/index/<?php echo $enquiry['id']; ?>">
          <i class="fa fa-users text-aqua"></i><?php echo wordwrap($str,32,"<br>\n"); ?></a>
 </li>

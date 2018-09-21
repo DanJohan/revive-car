@@ -90,8 +90,9 @@
 	</script>
 	<script type="text/javascript">
 		$.ajax({
-			url:"<?php echo base_url(); ?>workshop/enquiry/get_notifications",
-			method:"POST",
+			'url':"<?php echo base_url(); ?>workshop/enquiry/get_notifications",
+			'method':"POST",
+			'async':false,
 			success:function(response){
 				if(response.status){
 					$('#notification-list').html(response.template);

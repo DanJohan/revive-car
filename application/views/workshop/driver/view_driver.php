@@ -1,7 +1,7 @@
 <section class="content">
    <div class="box">
     <div class="box-header bg-green">
-      <h3 class="box-title">Workshop Drivers Detail</h3>
+      <h3 class="box-title">Driver Details</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
@@ -9,7 +9,7 @@
         <thead>
         <tr>
           <th>Image</th>
-          <th>Username</th>
+          <th>Name</th>
           <th>Email</th>
           <th>Mobile No.</th>
           <th>Address</th>

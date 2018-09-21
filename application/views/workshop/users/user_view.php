@@ -1,7 +1,7 @@
  <section class="content">
    <div class="box">
     <div class="box-header workshop-header">
-      <h3 class="box-title">User deatail</h3>
+      <h3 class="box-title">Customer detail</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
@@ -14,7 +14,7 @@
         </div>
         <table class="table" style="width:100%;">
             <tr>
-                <td><b>User Name</b></td>
+                <td><b>Customer Name</b></td>
                 <td><?php echo $user['name']; ?></td>
             </tr>
              <tr>
@@ -32,7 +32,7 @@
   <!-- /.box -->
   <div class="box">
       <div class="box-header workshop-header">
-        <h3 class="box-title">User cars detail</h3>
+        <h3 class="box-title">Customer cars detail</h3>
       </div>
       <div class="box-body">
             <?php if(!empty($cars)) { 

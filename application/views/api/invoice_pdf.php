@@ -39,7 +39,7 @@ div.top-phr{
 <div>
       <div class="text-center"><img src="<?php base_url()?>public/images/revive-logo.png" style="width:100px;height: 50px;"></div>
       <div class="top-main-head">Tax Invoice</div>
-      <div class="top-head">Revive auto car care</div>
+      <div class="top-head">Revive Auto Care</div>
       <div class="top-phr">9/11 Near Atul Kataria Chowk Kila No. , Opp Huda Nursery,
 Sector 17A, Gurgaon, Haryana-122001 GSTIN: 06AFVPJ6337B1ZD 
 Email:customercare@reviveauto.in</div>

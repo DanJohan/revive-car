@@ -15,7 +15,7 @@
             <div class="inner">
               <h3><?php echo $userCount; ?></h3>
 
-              <p>Users</p>
+              <p>Customers</p>
             </div>
             <div class="icon">
               <img height="80" width="80" src="<?= base_url() ?>public/dist/img/customer.png">

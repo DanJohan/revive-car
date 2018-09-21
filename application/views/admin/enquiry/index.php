@@ -10,7 +10,8 @@
         <tr>
           <th>enquiry_id</th>
           <th>user_id</th>
-          <th>Username</th>
+          <th>Enquiry No</th>
+          <th>Customer name</th>
           <th>Car-Model</th>
           <th>Loaner vehicle</th>
           <th>Enquiry</th>
@@ -27,6 +28,7 @@
             <tr style="<?php //echo ($enquiry['confirmed'])?'background-color: lightgreen':''; ?>">
                 <td><?php echo $enquiry['id']; ?></td>
                 <td><?php echo $enquiry['user_id']; ?></td>
+                <td><label class="label label-default"><?php echo $enquiry['enquiry_no']; ?></label></td>
                 <td><?php echo $enquiry['name']; ?></td>
                 <td><?php echo $enquiry['brand_name']."-".$enquiry['model_name']; ?></td>
                 <td><?php echo ($enquiry['loaner_vehicle'])? 'Required' : 'Not required'; ?></td>

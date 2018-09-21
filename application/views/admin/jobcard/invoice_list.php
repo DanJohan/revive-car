@@ -9,9 +9,9 @@
         <thead>
         <tr>
           <th>Invoice id</th>
-          <th>User id</th>
+          <th>Customer id</th>
           <th>Invoice no</th>
-          <th>Username</th>
+          <th>Customer name</th>
           <th>Phone</th>
           <th>Registration no.</th>
           <th>Forward to customer</th>

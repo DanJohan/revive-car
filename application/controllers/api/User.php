@@ -88,7 +88,8 @@ class User extends Rest_Controller {
 	   	   $is_verified = $this->UserModel->verifyOtp(array('id'=>$user_id,'otp'=>$otp));
 	   	   if($is_verified){
 	   	   		$update_data = array(
-		   			'otp_verify'=>1
+		   			'otp_verify'=>1,
+		   			'otp'=>null,
 		   		);
 	   	   		$this->UserModel->update($update_data,array('id'=>$user_id));
 	   	   		$criteria['field'] = 'id,otp,otp_verify,created_at,updated_at';
@@ -588,7 +589,7 @@ class User extends Rest_Controller {
 		$this->renderJson($response);
 	} // end of socialLogin method
 
-	public function changeMobile() {
+	public function changeMobile() {	
 
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('otp', 'OTP', 'trim|required');
