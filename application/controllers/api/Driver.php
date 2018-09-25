@@ -66,6 +66,7 @@ class Driver extends Rest_Controller {
 			$criteria['returnType'] = 'single';
 			$enquiry = $this->ServiceEnquiryModel->search($criteria);
 			if($enquiry){
+				$this->ServiceEnquiryModel->update(array('verification_code'=>null),array('id'=>$enquiry['enquiry_id']));
 				$response = array('status'=>true,'message'=>'Record found successfully!','data'=>$enquiry);
 			}else{
 				$response = array('status'=>false,'message'=>'No detail found!');

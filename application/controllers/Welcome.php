@@ -50,5 +50,14 @@ class Welcome extends CI_Controller {
 
 	}
 
+	public function testHasH() {
+		//dd("here");
+		$factory = new RandomLib\Factory;
+		$generator =$factory->getMediumStrengthGenerator();
+		$randomInt = $generator->generateInt(100000, 999999);
+		echo $randomInt,"<br>";
+		echo $generator->generateString(3,'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+	}
+
 
 }

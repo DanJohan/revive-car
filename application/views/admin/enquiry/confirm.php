@@ -35,7 +35,7 @@
                 </td>
             </tr>
           <tr>
-              <td style="width: 252px;"><b>Loander vechicle</b></td>
+              <td style="width: 252px;"><b>Loaner vechicle</b></td>
               <td>
                   <label class="radio-inline"><input type="radio"  class="loaner_vehicle" name="loaner_vehicle" value="1" <?php echo ($enquiry['loaner_vehicle'])?"checked":""; ?>/>Required</label>
                   <label class="radio-inlin"><input type="radio" class="loaner_vehicle" name="loaner_vehicle" value="0" <?php echo ($enquiry['loaner_vehicle'])?"":"checked"; ?> />Not Required</label>

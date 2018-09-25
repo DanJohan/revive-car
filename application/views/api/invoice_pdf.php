@@ -136,6 +136,7 @@ Email:customercare@reviveauto.in</div>
         <?php 
           if(!empty($invoice['labour'])) {
               $i=1;
+              $labour_sum=0;
              foreach ($invoice['labour'] as $index => $data) {
         ?>
           <tr>
@@ -148,13 +149,14 @@ Email:customercare@reviveauto.in</div>
             <td><?php echo $data['invoice_labour_total']; ?></td>
           </tr>
         <?php
+          $labour_sum += $data['invoice_labour_total'];
               $i++;
               } 
           }
         ?>
         <tr>
           <th class="text-bold" colspan="6">Total</th>
-          <th class="text-bold"><?php echo $invoice['labour_total']; ?></th>
+          <th class="text-bold"><?php echo number_format($labour_sum,'2','.',''); ?></th>
         </tr>
     </table>
 </div>
@@ -174,6 +176,7 @@ Email:customercare@reviveauto.in</div>
         <?php 
           if(!empty($invoice['parts'])){
              $i=1;
+             $parts_sum=0;
              foreach ($invoice['parts'] as $index => $data) {
           ?>
           <tr>
@@ -185,13 +188,14 @@ Email:customercare@reviveauto.in</div>
             <td><?php echo $data['invoice_parts_total']; ?></td>
           </tr>
           <?php
+              $parts_sum +=$data['invoice_parts_total']; 
               $i++;
              }
           } 
         ?>
         <tr>
           <th class="text-bold" colspan="5">Total</th>
-          <th class="text-bold"><?php echo $invoice['parts_total']; ?></th>
+          <th class="text-bold"><?php echo number_format($parts_sum,'2','.',''); ?></th>
         </tr>
     </table>
 </div>

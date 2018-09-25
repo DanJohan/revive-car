@@ -117,11 +117,12 @@ $(function(){
 		var partsQtyFields=$('.parts-table').find('.parts-qty');
 		$('.parts-table').find('.parts-cost').each(function(index,el){
 			var partsCost=($(this).val())?$(this).val():0.00;
-			var partsQty=partsQtyFields[index].value;
+			var partsQty=(partsQtyFields[index].value)?partsQtyFields[index].value : 0.00;
 			//console.log(partsQty.value);
 			partsTotal[index]=(parseFloat(partsQty)*parseFloat(partsCost)).toFixed(2);
 			//partsTotal[index]=($(this).val())?$(this).val():0.00;
 		});
+
 		for (var i = 0;i<partsTotal.length; i++) {
 			partsTotalSum += parseFloat(partsTotal[i]);
 		}
@@ -141,7 +142,7 @@ $(function(){
 		$('.labour-table,.parts-table').find('.gst-amount').each(function(index,el){
 			gstTotal[index]=($(this).val())?$(this).val():0.00;
 		});
-		console.log(gstTotal);
+
 		for (var i = 0;i<gstTotal.length; i++) {
 			gstTotalSum += parseFloat(gstTotal[i]);
 		}
@@ -239,6 +240,7 @@ $(function(){
 	});
 
 	$(document).on('keyup','.parts-gst',function(){
+
 		var qtyField = $(this).parents('tr').find('.parts-qty');
 		var gstAmountField = $(this).parents('tr').find('.gst-amount');
 		var totalField = $(this).parents('tr').find('.parts-total');
@@ -253,6 +255,7 @@ $(function(){
 		getPartsTotal();
 		getGstTotal();
 		calculateDiscount($('#discount'));
+
 	});
 	function calculateDiscount(el){
 		var discount=el.val()/100;

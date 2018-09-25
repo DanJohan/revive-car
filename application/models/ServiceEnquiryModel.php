@@ -67,8 +67,67 @@ class ServiceEnquiryModel extends MY_Model {
 		return (!empty($result))? $result : false;
 	}
 
+	public function getEnquiryNotification() {
+		$this->db->select('e.id,e.address,e.loaner_vehicle,e.enquiry,e.seen,e.created_at,cb.brand_name,cm.model_name,u.name');
+		$this->db->from($this->table.' AS e');
+		$this->db->join('cars AS c','e.car_id = c.id');
+		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
+		$this->db->join('car_models AS cm','c.model_id = cm.id');
+		$this->db->join('users AS u','e.user_id = u.id');
+		$this->db->where('e.seen',0);
+		$this->db->order_by('e.id','DESC');
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return (!empty($result))? $result : false;
+	}
 
+	public function markEnquirySeen($id){
+		$this->db->where(array('id'=>$id));
+		$this->db->update($this->table, array('seen'=>1));
+	}
+	
+	
+//Confirm enquiries used in workshop crm
+	public function getWorkshopConfirmedEnquiries($manager_id){
+		$this->db->select('e.*,cb.brand_name,cm.model_name,u.name');
+		$this->db->from($this->table.' AS e');
+		$this->db->join('cars AS c','e.car_id = c.id');
+		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
+		$this->db->join('car_models AS cm','c.model_id = cm.id');
+		$this->db->join('users AS u','e.user_id = u.id');
+		$this->db->order_by('e.id','DESC');
+	    $this->db->where('e.confirmed=1 AND e.assign_manager='.$manager_id);
+		$query = $this->db->get();
+		//echo $this->db->last_query();die;
+		$result = $query->result_array();
+		return (!empty($result))? $result : false;
 
+	}
+
+//Confirm enquiries used in workshop crm
+
+//Workshop Enquiry notification workshop crm
+	public function getWorkshopEnquiryNotification($manager_id) {
+		$this->db->select('e.id,e.address,e.loaner_vehicle,e.enquiry,e.seen,e.created_at,cb.brand_name,cm.model_name,u.name');
+		$this->db->from($this->table.' AS e');
+		$this->db->join('cars AS c','e.car_id = c.id');
+		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
+		$this->db->join('car_models AS cm','c.model_id = cm.id');
+		$this->db->join('users AS u','e.user_id = u.id');
+		$this->db->where('e.manager_seen=0 AND e.confirmed=1 AND e.assign_manager='.$manager_id);
+		$this->db->order_by('e.id','DESC');
+ 		$query = $this->db->get();
+
+		$result = $query->result_array();
+		return (!empty($result))? $result : false;
+	}
+	
+	public function markEnquiryManagerSeen($id){
+		$this->db->where(array('id'=>$id));
+		$this->db->update($this->table, array('manager_seen'=>1));
+	}
+
+	//Workshop Enquiry notification End
 	
 	// used in api
 	public function getEnquiryByUser($id){

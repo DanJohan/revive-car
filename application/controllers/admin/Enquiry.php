@@ -64,7 +64,6 @@ class Enquiry extends MY_Controller {
 		$template = $this->load->view('admin/enquiry/confirm', $data,true);
 		$this->renderJson(array('status'=>true,'message'=>'Record found successfully','template'=>$template));
 		
-		
 	}
 
 	public function save_enquiry_confirm() {
@@ -72,7 +71,11 @@ class Enquiry extends MY_Controller {
 		if(count($_POST) > 0) {
 
 			$enquiry_id = $this->input->post('enquiry_id');
-			$otp = randomString();
+			$factory = new RandomLib\Factory;
+			$generator =$factory->getMediumStrengthGenerator();
+			$randomInt = $generator->generateInt(100000, 999999);
+			$randomChar = $generator->generateString(3,'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+			$otp = $randomChar.$randomInt;
 			$update_data = array(
 				'assign_driver' => ($this->input->post('driver'))?$this->input->post('driver'):null,
 				'assign_manager' => ($this->input->post('wmanager'))?$this->input->post('wmanager'):null,

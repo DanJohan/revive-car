@@ -83,6 +83,7 @@ class JobCard extends MY_Controller {
 		}
 		$invoice['labour'] = $invoice_labour;
 		$invoice['parts'] = $invoice_parts;
+		//dd($invoice);
 		$this->load->view('admin/layout',array(
 			'invoice'=> $invoice,
 			'view'	  => 'admin/jobcard/invoice_show'
