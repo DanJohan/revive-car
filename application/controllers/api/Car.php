@@ -83,7 +83,7 @@ class Car extends Rest_Controller {
 		$this->form_validation->set_rules('color', 'Color', 'trim|required');
 		$this->form_validation->set_rules('year', 'Year', 'trim|required');
 		$this->form_validation->set_rules('registration_no', 'Registration number', 'trim|required');
-		$this->form_validation->set_rules('avg_mileage', 'Avg mileage', 'trim|required');
+		//$this->form_validation->set_rules('avg_mileage', 'Avg mileage', 'trim|required');
 
 		if ($this->form_validation->run() == true) {
 			$user_id = $this->input->post('user_id');
@@ -96,7 +96,7 @@ class Car extends Rest_Controller {
 				'year' => $this->input->post('year'),
 				'is_default' => (!$have_cars) ? 1 : 0 ,
 				'registration_no' => $this->input->post('registration_no'),
-				'avg_mileage' => $this->input->post('avg_mileage'),
+				//'avg_mileage' => $this->input->post('avg_mileage'),
 				'created_at' => date("Y-m-d H:i:s")
 			);
 			$insert_id = $this->CarModel->insert($register_data);
@@ -114,6 +114,48 @@ class Car extends Rest_Controller {
 		}
 		$this->renderJson($response);
 	}// end of addCar method
+
+	public function addUserTempCars() {
+		$post_data = $this->input->post('cars');
+		//dd($post_data);
+		foreach ($post_data as $index => $data) {
+			$this->form_validation->set_rules('cars['.$index.'][user_id]', 'User id', 'trim|required');
+			$this->form_validation->set_rules('cars['.$index.'][brand_id]', 'Brand id', 'trim|required');
+			$this->form_validation->set_rules('cars['.$index.'][model_id]', 'Model id', 'trim|required');
+			$this->form_validation->set_rules('cars['.$index.'][color]', 'Color', 'trim|required');
+			$this->form_validation->set_rules('cars['.$index.'][year]', 'Year', 'trim|required');
+			$this->form_validation->set_rules('cars['.$index.'][registration_no]', 'Registration number', 'trim|required');
+		}
+
+		if ($this->form_validation->run() == true) {
+			foreach ($post_data as $index => $data) {
+				$register_data[$index]=array(
+					'user_id'=>$data['user_id'],
+					'brand_id' => $data['brand_id'],
+					'model_id' => $data['model_id'],
+					'color' => $data['color'],
+					'year' => $data['year'],
+					'is_default' => ($index==0) ? 1 : 0 ,
+					'registration_no' => $data['registration_no'],
+					//'avg_mileage' => $this->input->post('avg_mileage'),
+					'created_at' => date("Y-m-d H:i:s")
+				);
+			}
+
+			$is_insert = $this->CarModel->insert_batch($register_data);
+			//echo $this->db->last_query();die;
+			if($is_insert){
+				$response = array('status'=>true,'message'=>'Record inserted successfully');
+			}else{
+				$response = array('status'=> false,'message'=>'An error occured!Please try again' );
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
 
 	/**
 	 *  API DESCRIPTION : To get all car of user

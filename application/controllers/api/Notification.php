@@ -12,7 +12,6 @@ class Notification extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To get all notification of an user
-	 *  API URL : http://localhost/car-service/api/notification/getUserNotification
 	 *  PARAMETER : user_id (required)
 	 */
 
@@ -37,7 +36,6 @@ class Notification extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To change notification status to seen
-	 *  API URL : http://localhost/car-service/api/notification/markNotificationToSeen
 	 *  PARAMETER : notification_id (required)
 	 */
 	public function markNotificationToSeen(){
@@ -55,7 +53,6 @@ class Notification extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To delete single notification via its id
-	 *  API URL : http://localhost/car-service/api/notification/deleteNotification
 	 *  PARAMETER : notification_id (required)
 	 */
 
@@ -74,7 +71,6 @@ class Notification extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To delete all notification of user
-	 *  API URL : http://localhost/car-service/api/notification/deleteAllNotifications
 	 *  PARAMETER : user_id (required)
 	 */
 

@@ -313,6 +313,45 @@ class Driver extends Rest_Controller {
 		$this->renderJson($response);
 	}
 
+	public function updateDriverLatLong(){
+		$this->form_validation->set_rules('driver_id', 'driver id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$driver_id = $this->input->post('driver_id');
+			$update_data = array(
+				'd_latitude'=>$this->input->post('latitude'),
+				'd_longitude'=>$this->input->post('longitude')
+			);
+			$this->DriverModel->update($update_data,array('id'=>$driver_id));
+			$response = array('status'=>true,'message'=>'Record updated successfully!');
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
+
+	public function getDriverLatLong(){
+		$this->form_validation->set_rules('driver_id', 'driver id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$driver_id = $this->input->post('driver_id');
+			$criteria['field'] = 'id,d_latitude as latitude, d_longitude as longitude';
+			$criteria['conditions'] = array('id'=>$driver_id);
+			$criteria['returnType'] = 'single';
+			$result = $this->DriverModel->search($criteria);
+
+			if(!empty($result)) {
+				$response = array('status'=>true,'message'=>'Record found successfully!','data'=>$result);
+			}else{
+				$response = array('status'=>false,'message'=>'No data found!');
+			}
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
+
 
 }// end of class
 ?>

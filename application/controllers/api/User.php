@@ -115,34 +115,32 @@ class User extends Rest_Controller {
 	}// end of otpVerify method
 
 	public function register() {
-
-
-			$this->form_validation->set_rules('name', 'Name', 'trim|required');
-
-		   $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
-
-		   $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
-
-		   $this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('name', 'Name', 'trim|required');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
 
 		   if ($this->form_validation->run() == true){
 		   		$user_id = $this->input->post('user_id');
 		   		$options = [
 				    'cost' => 12,
 				];
-		   		$update_data=array(
+		   		$insert_data=array(
 		   			'name'=>$this->input->post('name'),
 		   			'email'=>$this->input->post('email'),
-		   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT,$options)
+		   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT,$options),
+		   			'created_at'=>date('Y-m-d H:i:s')
 		   		);
 
-		   		$this->UserModel->update($update_data,array('id'=>$user_id));
-		   		$criteria['field'] = 'id,otp,otp_verify,name,email,created_at,updated_at';
-				$criteria['conditions'] = array('id'=>$user_id);
-				$criteria['returnType'] = 'single';
-
-				$user= $this->UserModel->search($criteria);
-		   	   	$response = array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
+		   		$insert_id = $this->UserModel->insert($insert_data);
+		   		if($insert_id) {
+			   		$criteria['field'] = 'id,name,email,created_at';
+					$criteria['conditions'] = array('id'=>$insert_id);
+					$criteria['returnType'] = 'single';
+					$user= $this->UserModel->search($criteria);
+			   	   	$response = array('status'=>true,'message'=>'Record inserted successfully','user'=>$user);
+				}else{
+					$response = array('status'=>false,'message'=>'Something went wrong! Please try again.');
+				}
 
 		   }else{
 
@@ -497,15 +495,14 @@ class User extends Rest_Controller {
 			unset($criteria);
 			if(!empty($user)){
 				$user_id= $user['user_id'];
-				$criteria['field'] = 'id,name,email,created_at,updated_at';
+				$criteria['field'] = 'id,name,email,created_at';
 				$criteria['conditions'] = array('id'=>$user_id);
 				$criteria['returnType'] = 'single';
 				$user_data = $this->UserModel->search($criteria);
-				unset($criteria);
-				if($user_data['otp_verify']){
-					$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$user_data);
+				if(!empty($user_data)){
+					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user_data);
 				}else{
-					$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$user_data);
+					$response = array('status'=>false,'message'=>"User not found!");
 				}
 			}else{
 				$email = $this->input->post('email');
@@ -528,17 +525,16 @@ class User extends Rest_Controller {
 						$insert_data['external_user_id']=$this->input->post('facebook_id');
 					}
 					$this->UserExternalLoginModel->insert($insert_data);
-					$criteria['field'] = 'id,phone,otp_verify,name,email,created_at,updated_at';
+					$criteria['field'] = 'id,name,email,created_at';
 					$criteria['conditions'] = array('id'=>$user_id);
 					$criteria['returnType'] = 'single';
 					$user_data = $this->UserModel->search($criteria);
 					unset($criteria);
-					if($userInfo['otp_verify']){
-						$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$user_data);
+					if(!empty($user_data)){
+						$response = array('status'=>true,'message'=>'Login successfully','user'=>$user_data);
 					}else{
-						$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$user_data);
+						$response = array('status'=>false,'message'=>"User not found");
 					}
-					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user_data);
 				}else{
 					$register_data =array(
 						'name' => $this->input->post('name'),
@@ -564,15 +560,15 @@ class User extends Rest_Controller {
 						}
 						//dd($insert_data);
 						$this->UserExternalLoginModel->insert($insert_data);
-						$criteria['field'] = 'id,otp_verify,name,email,phone,created_at,updated_at';
+						$criteria['field'] = 'id,name,email,created_at';
 						$criteria['conditions'] = array('id'=>$insert_id);
 						$criteria['returnType'] = 'single';
 						$userInfo = $this->UserModel->search($criteria);
 						unset($criteria);
-						if($userInfo['otp_verify']){
-							$response = array('status'=>true,'otp_verify'=>true,'message'=>'Login successfully','user'=>$userInfo);
+						if(!empty($userInfo)){
+							$response = array('status'=>true,'message'=>'Login successfully','user'=>$userInfo);
 						}else{
-							$response = array('status'=>true,'otp_verify'=>false,'message'=>"Phone number not registerd",'user'=>$userInfo);
+							$response = array('status'=>false,'message'=>"User not found");
 						}
 					}else{
 						$response = array('status'=>false,'message'=>'An error occured!Please try again');
