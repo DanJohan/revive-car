@@ -117,6 +117,7 @@ class User extends Rest_Controller {
 	public function register() {
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
+		$this->form_validation->set_rules('phone','Phone','trim|required|is_unique[users.phone]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
 
 		   if ($this->form_validation->run() == true){
@@ -127,13 +128,14 @@ class User extends Rest_Controller {
 		   		$insert_data=array(
 		   			'name'=>$this->input->post('name'),
 		   			'email'=>$this->input->post('email'),
+		   			'phone' => $this->input->post('phone'),
 		   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT,$options),
 		   			'created_at'=>date('Y-m-d H:i:s')
 		   		);
 
 		   		$insert_id = $this->UserModel->insert($insert_data);
 		   		if($insert_id) {
-			   		$criteria['field'] = 'id,name,email,created_at';
+			   		$criteria['field'] = 'id,phone,name,email,created_at';
 					$criteria['conditions'] = array('id'=>$insert_id);
 					$criteria['returnType'] = 'single';
 					$user= $this->UserModel->search($criteria);
@@ -472,7 +474,10 @@ class User extends Rest_Controller {
 		}
 		//$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('email', 'Email', 'trim');
+		if($this->input->post('email')){
+			$this->form_validation->set_rules('email', 'Email', 'valid_email');
+		}
 
 		$this->form_validation->set_rules('login_type', 'Login Type', 'trim|required');
 
@@ -495,7 +500,7 @@ class User extends Rest_Controller {
 			unset($criteria);
 			if(!empty($user)){
 				$user_id= $user['user_id'];
-				$criteria['field'] = 'id,name,email,created_at';
+				$criteria['field'] = 'id,name,phone,email,created_at';
 				$criteria['conditions'] = array('id'=>$user_id);
 				$criteria['returnType'] = 'single';
 				$user_data = $this->UserModel->search($criteria);
@@ -525,7 +530,7 @@ class User extends Rest_Controller {
 						$insert_data['external_user_id']=$this->input->post('facebook_id');
 					}
 					$this->UserExternalLoginModel->insert($insert_data);
-					$criteria['field'] = 'id,name,email,created_at';
+					$criteria['field'] = 'id,name,phone,email,created_at';
 					$criteria['conditions'] = array('id'=>$user_id);
 					$criteria['returnType'] = 'single';
 					$user_data = $this->UserModel->search($criteria);
@@ -560,7 +565,7 @@ class User extends Rest_Controller {
 						}
 						//dd($insert_data);
 						$this->UserExternalLoginModel->insert($insert_data);
-						$criteria['field'] = 'id,name,email,created_at';
+						$criteria['field'] = 'id,name,phone,email,created_at';
 						$criteria['conditions'] = array('id'=>$insert_id);
 						$criteria['returnType'] = 'single';
 						$userInfo = $this->UserModel->search($criteria);
@@ -688,12 +693,15 @@ class User extends Rest_Controller {
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required');
 
 		if ($this->form_validation->run() == true){
 			$user_id = $this->input->post('user_id');
 			$email = $this->input->post('email');
+			$phone = $this->input->post('phone');
 			$is_email_exist = $this->UserModel->checkEmailExistsExcept($user_id,$email);
-			if(!$is_email_exist) {
+			$is_phone_exist = $this->UserModel->checkPhoneExistsExcept($user_id,$phone);
+			if(!$is_email_exist && !$is_phone_exist) {
 				$file_name = '';
 				if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
 
@@ -714,7 +722,8 @@ class User extends Rest_Controller {
 
 				$update_data = array(
 					'name' =>$this->input->post('name'),
-					'email' =>$this->input->post('email')
+					'email' =>$this->input->post('email'),
+					'phone' => $this->input->post('phone')
 				);
 				if($file_name != ''){
 					$update_data['profile_image']=$file_name;
@@ -724,15 +733,26 @@ class User extends Rest_Controller {
 				}
 
 				$this->UserModel->update($update_data,array('id'=>$user_id));
-				$criteria['field'] = 'id,otp,otp_verify,phone,name,profile_image,email,password,created_at,updated_at';
+				$criteria['field'] = 'id,phone,name,profile_image,email,created_at';
 				$criteria['conditions'] = array('id'=>$user_id);
 				$criteria['returnType'] = 'single';
 
 				$user= $this->UserModel->search($criteria);
-				$user['profile_image'] = base_url()."uploads/app/".$user['profile_image'];
+				if(!empty($user['profile_image'])) {
+					$user['profile_image'] = base_url()."uploads/app/".$user['profile_image'];
+				}
 				$response =array('status'=>true,'message'=>'Record updated successfully','user'=>$user);
 			}else{
-				$response = array('status'=>false,'message'=>'Email is already registered!');
+				$errors = array();
+				if(!empty($is_email_exist)){
+					$errors['email'] = "Email is already registered!"; 
+					
+				}
+				if(!empty($is_phone_exist)){
+					$errors['phone'] = "Phone number is already registered!"; 
+					
+				}
+				$response = array('status'=>false,'message'=>$errors);
 			}
 
 		}else{

@@ -42,6 +42,7 @@ class JobcardModel extends MY_Model {
 
 	}
 
+
 	public function getJobCardById($id,$driver_ids=null) {
 		$this->db->select('jc.*,jci.id AS image_id,jci.image,ro.id AS repair_order_id,ro.parts_name,ro.customer_request,ro.sa_remarks,ro.qty,ro.labour_price,ro.parts_price,ro.total_price,ro.status,c.registration_no,c.color,cb.brand_name,cm.model_name,u.phone,u.email,u.name,u.profile_image,se.loaner_vehicle,se.address,ei.id AS enquiry_image_id,ei.image AS enquiry_image'
 		);

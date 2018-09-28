@@ -66,7 +66,7 @@ class Driver extends Rest_Controller {
 			$criteria['returnType'] = 'single';
 			$enquiry = $this->ServiceEnquiryModel->search($criteria);
 			if($enquiry){
-				$this->ServiceEnquiryModel->update(array('verification_code'=>null),array('id'=>$enquiry['enquiry_id']));
+				//$this->ServiceEnquiryModel->update(array('verification_code'=>null),array('id'=>$enquiry['enquiry_id']));
 				$response = array('status'=>true,'message'=>'Record found successfully!','data'=>$enquiry);
 			}else{
 				$response = array('status'=>false,'message'=>'No detail found!');
@@ -124,6 +124,10 @@ class Driver extends Rest_Controller {
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('driver_id', 'Driver id', 'trim|required');
+		$this->form_validation->set_rules('user_name',' Name', 'trim|required');
+		$this->form_validation->set_rules('user_email',' Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('user_phone',' Phone', 'trim|required');
+		$this->form_validation->set_rules('user_address','Address', 'trim|required');
 
 		if ($this->form_validation->run() == true){
 			$insert_data = array(
@@ -131,6 +135,10 @@ class Driver extends Rest_Controller {
 				'car_id' =>$this->input->post('car_id'),
 				'user_id' => $this->input->post('user_id'),
 				'driver_id'=>$this->input->post('driver_id'),
+				'user_name' => $this->input->post('user_name'),
+				'user_email' => $this->input->post('user_email'),
+				'user_phone' => $this->input->post('user_phone'),
+				'user_address'=>$this->input->post('user_address'),
 				'alternate_no'=>$this->input->post('alternate_no'),
 				'vin_no' => $this->input->post('vin_no'),
 				'sa_name_no'=> $this->input->post('sa_name_no'),
@@ -274,9 +282,10 @@ class Driver extends Rest_Controller {
 		if($id){
 			$job_card=$this->JobcardModel->getJobCardById($id);
 		}
-		//dd($job_card);
+
 		if(empty($job_card)){
-			return;
+			log_message('debug',"No detail found for ".$id);
+			show_error('No detail found!',404);
 		}
 		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
 		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price')),SORT_REGULAR),'repair_order_id','');

@@ -17,6 +17,7 @@
 
 	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
 	<link rel="stylesheet" href="<?php echo base_url()?>public/dist/css/job_card.css">
+
 </head>
 
 
@@ -59,22 +60,22 @@
 								<div class="row">
 									<div class="col-xs-5"><b>Owner  Name</b></div>
 									<div class="col-xs-2">:</div>
-									<div class="col-xs-5"><span><?php echo $job_card['name']; ?></span></div>
+									<div class="col-xs-5"><span><?php echo $job_card['user_name']; ?></span></div>
 								</div>
 								<div class="row">
 									<div class="col-xs-5"><b>Email Id  : </b></div>
 									<div class="col-xs-2">:</div>
-									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['email']; ?></span></div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['user_email']; ?></span></div>
 								</div>
 								<div class="row">
 									<div class="col-xs-5"><b>Mobile No : </b></div>
 									<div class="col-xs-2">:</div>
-									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['phone']; ?></span></div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['user_phone']; ?></span></div>
 								</div>
 								<div class="row">
 									<div class="col-xs-5"><b> Address : </b></div>
 									<div class="col-xs-2">:</div>
-									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['address']; ?></span></div>
+									<div class="col-xs-5"><span class="filled-data"><?php echo $job_card['user_address']; ?></span></div>
 								</div>
 								<div class="row">
 									<div class="col-xs-5"><b>Alternate No :</b></div>
@@ -347,9 +348,9 @@
 	                            </div>
 	                          </div>
 	                      <?php
-	                          if($i % 3 == 0) {
+	                         if($i % $box_break == 0) {
 	                            echo "</div><div class='row'>";
-	                          }
+	                         }
 	                          $i++;
 	                        }
 	                      }else{
