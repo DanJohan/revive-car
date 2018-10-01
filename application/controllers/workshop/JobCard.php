@@ -52,17 +52,7 @@ class JobCard extends MY_Controller {
 			$this->session->set_flashdata('error_msg','No detail found!');
 			redirect('workshop/jobCard/list');
 		}
-		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
-		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price','status')),SORT_REGULAR),'repair_order_id','');
-		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
-		$job_card = $job_card[0];
-		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','labour_price','parts_price','total_price','enquiry_image_id','enquiry_image');
-		foreach($removeKeys as $key) {
-		   unset($job_card[$key]);
-		}
-		$job_card['images_data']=$job_card_images;
-		$job_card['repair_orders']=$repair_orders;
-		$job_card['enquiry_images'] = $enquiry_images;
+		$job_card = $this->filterJobCardData($job_card);
 		$data['job_card'] = $job_card;
 		$data['view'] = 'workshop/jobcard/show';
 		$this->load->view('workshop/layout',$data);
@@ -84,17 +74,8 @@ class JobCard extends MY_Controller {
 			$this->session->set_flashdata('error_msg','No detail found!');
 			redirect('workshop/jobCard/list');
 		}
-		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
-		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price','status')),SORT_REGULAR),'repair_order_id','');
-		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
-		$job_card = $job_card[0];
-		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','labour_price','parts_price','total_price','enquiry_image_id','enquiry_image');
-		foreach($removeKeys as $key) {
-		   unset($job_card[$key]);
-		}
-		$job_card['images_data']=$job_card_images;
-		$job_card['repair_orders']=$repair_orders;
-		$job_card['enquiry_images'] = $enquiry_images;
+		$job_card = $this->filterJobCardData($job_card);
+
 		$data['job_card'] = $job_card;
 		$data['view'] = 'workshop/jobcard/complete-job';
 		$this->load->view('workshop/layout',$data);
@@ -496,6 +477,55 @@ class JobCard extends MY_Controller {
 			$this->session->set_flashdata('info_msg','Invoice has been forward to customer successfully');
 		}
 		redirect('workshop/jobCard/invoiceList/'.$job_card_id);
+	}
+
+
+	public function deliverCar($id){
+		$manager_id = $this->session->userdata('id');
+		$drivers = $this->DriverModel->getDriversByWorkshop($manager_id);
+		if($drivers) {
+			$driver_ids = array_column($drivers, 'id');
+		}else{
+			$driver_ids=array();
+		}
+		if($id){
+			$job_card=$this->JobcardModel->getJobCardById($id,$driver_ids);
+		}
+
+		if(empty($job_card)){
+			$this->session->set_flashdata('error_msg','No detail found!');
+			redirect('workshop/jobCard/list');
+		}
+		$job_card = $this->filterJobCardData($job_card);
+		$data['job_card'] = $job_card;
+		$data['drivers'] = $drivers;
+		$data['view'] = 'workshop/jobcard/deliver_car';
+		$this->load->view('workshop/layout',$data);
+
+	}
+
+	public function save_ride(){
+		$this->load->model('RideModel');
+		if($this->input->post('submit')){
+			$insert_data = array(
+				'driver_id' => $this->input->post('driver'),
+				'job_card_id' => $this->input->post('job_card_id'),
+				'customer_name' => $this->input->post('c_name'),
+				'customer_phone' => ($this->input->post('c_phone')) ? '+91'.$this->input->post('c_phone'):'',
+				'customer_address' => $this->input->post('c_address'),
+				'delivery_date' => $this->input->post('deliver_date'),
+				'delivery_time' => $this->input->post('deliver_time'),
+				'ride_type' =>'delivery',
+				'created_at' => date("Y-m-d H:i:s")
+			);
+			$insert_id = $this->RideModel->insert($insert_data);
+			if($insert_id) {
+				$this->session->set_flashdata('success_msg','Car delivery scheduled successfully!');
+			}else{
+				$this->session->set_flashdata('error_msg','Something went wrong! Please try again!');
+			}
+		}
+		redirect('workshop/jobCard/list');
 	}
 
 }// end of class

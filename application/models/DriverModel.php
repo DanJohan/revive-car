@@ -53,7 +53,7 @@ class DriverModel extends MY_Model {
 	}
 
 	public function getDriversByWorkshop($manager_id) {
-		$this->db->select('id');
+		$this->db->select('id,d_name');
 		$this->db->where(array('d_workshop_assign'=>$manager_id));
 		$query = $this->db->get($this->table);
 		$result = $query->result_array();

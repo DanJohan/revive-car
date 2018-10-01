@@ -62,8 +62,27 @@ class MY_Controller extends CI_Controller
             return array('upload_data' => $this->upload->data());
 
       }
+  }// end of do_upload method
+
+  protected function filterJobCardData($job_card =array()){
+  	if(!empty($job_card)){
+  		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
+		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price','status')),SORT_REGULAR),'repair_order_id','');
+		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
+		$job_card = $job_card[0];
+		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','labour_price','parts_price','total_price','enquiry_image_id','enquiry_image');
+		foreach($removeKeys as $key) {
+		   unset($job_card[$key]);
+		}
+		$job_card['images_data']=$job_card_images;
+		$job_card['repair_orders']=$repair_orders;
+		$job_card['enquiry_images'] = $enquiry_images;
+  	}
+  	return $job_card;
+
   }
-}
+
+}// end of MY_Controller class
 
 // include other controllers that extent My_controller
 require_once 'Rest_Controller.php';

@@ -361,6 +361,26 @@ class Driver extends Rest_Controller {
 		$this->renderJson($response);
 	}
 
+	public function getDeliveryCars() {
+		$this->form_validation->set_rules('driver_id', 'driver id', 'trim|required');
+		$this->load->model('RideModel');
+		if ($this->form_validation->run() == true) {
+			$driver_id = $this->input->post('driver_id');
+			$rides = $this->RideModel->get_all(array('driver_id'=>$driver_id));
+			if(!empty($rides)){
+				$response = array('status'=>true,'message'=>'Record found successfully','data'=>$rides);
+			}else{
+				$response = array('status'=>false, 'message'=>'No detail found!');
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}
+
 
 }// end of class
 ?>

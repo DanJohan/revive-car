@@ -43,6 +43,7 @@
                     <li><a href="<?php echo base_url('workshop/jobCard/completeJobs/'.$job['id'])?>">Change jobs status</a></li>
                     <li><a href="<?php echo base_url('workshop/jobCard/invoice/'.$job['id'])?>" >Generate invoice</a></li>
                     <li><a href="<?php echo base_url('workshop/jobCard/invoiceList/'.$job['id'])?>" >View invoices</a></li>
+                    <li><a href="<?php echo base_url('workshop/jobCard/deliverCar/'.$job['id'])?>" >Deliver car</a></li>
                 </ul>
             </div>
           </tr>

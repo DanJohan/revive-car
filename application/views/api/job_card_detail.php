@@ -8,7 +8,6 @@
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<link rel="icon" href="../../favicon.ico">
 
 	<title>Job card</title>
 
@@ -340,6 +339,7 @@
 						$job_card_images = $job_card['images_data'];
 	                      if(!empty($job_card_images)) {
 	                      	$i=1;
+	                      	$box_size = 3;
 	                        foreach ($job_card_images as $index => $job_card_image) {
 	                      ?>
 	                          <div class="col-md-4 col-sm-4 col-xs-6">
@@ -348,7 +348,7 @@
 	                            </div>
 	                          </div>
 	                      <?php
-	                         if($i % $box_break == 0) {
+	                         if($i % $box_size == 0) {
 	                            echo "</div><div class='row'>";
 	                         }
 	                          $i++;

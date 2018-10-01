@@ -160,9 +160,9 @@ class MY_Model extends CI_Model
   */
   public function delete($where_arr = NULL)
   {
-   
     if(isset($where_arr))
     {
+
       $this->db->where($where_arr);
       $this->db->delete($this->table);
       return $this->db->affected_rows();

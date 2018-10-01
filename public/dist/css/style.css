@@ -437,3 +437,7 @@ label{
     border-color: lightgray;
     background-color: #f9f9f9; 
 }
+
+.table-responsive{
+	overflow-y: -webkit-paged-y;
+}

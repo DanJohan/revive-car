@@ -272,65 +272,28 @@ class Car extends Rest_Controller {
 			);
 
 			$insert_id = $this->ServiceEnquiryModel->insert($register_data);
-			$file_data = array();
-			$file_not_uploaded = array();
-			$allowed_types = array('png','jpg','jpeg');
 
-			//dd($_FILES);
-			if($insert_id){
-				
-			if(isset($_FILES['service_images']) && !empty($_FILES['service_images']['name'])){
-					$filesCount = count($_FILES['service_images']['name']);
-					for($i = 0; $i < $filesCount; $i++){
-		                $_FILES['file']['name']     = $_FILES['service_images']['name'][$i];
-		                $info = new SplFileInfo($_FILES['file']['name']);
-		                $_FILES['file']['type']     = $_FILES['service_images']['type'][$i];
-		                $_FILES['file']['tmp_name'] = $_FILES['service_images']['tmp_name'][$i];
-		                $_FILES['file']['error']     = $_FILES['service_images']['error'][$i];
-		                $_FILES['file']['size']     = $_FILES['service_images']['size'][$i];
-		                // this check is inserted to check file extension as codeigniter not supporting it
-		                if (in_array(strtolower($info->getExtension()),$allowed_types)) {
-			                $url = FCPATH.'uploads/app/';
-			                $config['allowed_types'] = '*';
-			               $config['new_name']=true;
-			                $upload = $this->do_upload('file',$url, $config);
 
-			                if(isset($upload['upload_data'])){
-								chmod($upload['upload_data']['full_path'], 0777);
-								$files_data[$i]['enquiry_id'] = $insert_id;
-								$files_data[$i]['image'] = $upload['upload_data']['file_name'];
-								$files_data[$i]['created_at'] = date("Y-m-d H:i:s");
-							}else{
-								$file_not_uploaded[$i]['file'] =  $_FILES['file']['name'] ;
-								$file_not_uploaded[$i]['error'] =  strip_tags($upload['error']) ;
-							}
-						}else{
-							$file_not_uploaded[$i]['file'] =  $_FILES['file']['name'] ;
-							$file_not_uploaded[$i]['error'] = 'The file type not allowed';
-						}
-		            }
-				}
-
-				if(!empty($files_data)) {
-					$this->EnquiryImagesModel->insert_batch($files_data);
-				}
-				$enquiry = $this->ServiceEnquiryModel->getEnquiryById($insert_id);
-				$enquiry['image_id'] = explode('|', $enquiry['image_id']);
-				$enquiry['image'] = explode('|',$enquiry['image']);
-				$images =array();
-				if(!empty($enquiry['image_id'][0])) {
-					foreach ($enquiry['image_id'] as $index => $data) {
-						$images[$index]['image_id'] = $data;
-						$images[$index]['image'] = base_url()."uploads/app/".$enquiry['image'][$index];
-					}
-				}
-				unset($enquiry['image_id']);
-				unset($enquiry['image']);
-				$enquiry['images'] = $images;
-				$response = array('status'=>true,'message'=>'Record inserted successfully','data'=>$enquiry,'file_not_uploaded'=>$file_not_uploaded);
-			}else{
-				$response = array('status'=> false,'message'=>'An error occured!Please try again' );
+			$service_images = $this->input->post('service_images');
+			if(!empty($service_images) && $insert_id) {
+				$this->EnquiryImagesModel->updateEnquiryImages($service_images,$insert_id);
 			}
+
+			$enquiry = $this->ServiceEnquiryModel->getEnquiryById($insert_id);
+			$enquiry['image_id'] = explode('|', $enquiry['image_id']);
+			$enquiry['image'] = explode('|',$enquiry['image']);
+			$images =array();
+			if(!empty($enquiry['image_id'][0])) {
+				foreach ($enquiry['image_id'] as $index => $data) {
+					$images[$index]['image_id'] = $data;
+					$images[$index]['image'] = base_url()."uploads/app/".$enquiry['image'][$index];
+				}
+			}
+			unset($enquiry['image_id']);
+			unset($enquiry['image']);
+			$enquiry['images'] = $images;
+			$response = array('status'=>true,'message'=>'Record inserted successfully','data'=>$enquiry);
+
 
 		}else{
 			$errors = $this->form_validation->error_array();
@@ -338,6 +301,75 @@ class Car extends Rest_Controller {
 		}
 		$this->renderJson($response);
 	}// end of serviceEnquiry method
+
+
+	public function uploadServiceImages() {
+		if(isset($_FILES['file']) && !empty($_FILES['file']['name'])) {
+			$file_name = '';
+			$url = FCPATH."uploads/app/";
+			$config['new_name']=true;
+			$upload =$this->do_upload('file',$url,$config);
+			if(isset($upload['upload_data'])){
+				chmod($upload['upload_data']['full_path'], 0777);
+				$file_name = $upload['upload_data']['file_name'];
+				$insert_data = array(
+					'image' =>$file_name,
+					'created_at' => date('Y-m-d H:i:s')
+				);
+				$insert_id = $this->EnquiryImagesModel->insert($insert_data);
+				if($insert_id){
+					$criteria['field'] = 'id,image';
+					$criteria['conditions'] = array('id'=>$insert_id);
+					$criteria['returnType'] = 'single';
+					$image = $this->EnquiryImagesModel->search($criteria);
+					if(!empty($image)){
+						$image['image'] = base_url()."uploads/app/".$image['image'];
+						$response = array('status'=>true,'message'=>'Image Uploaded successfully','data'=>$image);
+					}else{
+						$response = array('status'=>false,'message'=>'Somthing went wrong');
+					}
+				}else{
+					$response = array('status'=>false,'message'=>'Somthing went wrong');
+				}
+			}else{
+				$response = array('status'=>false,'message'=>strip_tags($upload['error']));
+			}
+		}
+		$this->renderJson($response);
+	}// end of  uploadServiceImages method
+
+
+	public function deleteServiceImages(){
+		$image_ids = $this->input->post('image_ids');
+
+		if(!empty($image_ids)){	
+			if(is_array($image_ids)){
+				$images = $this->EnquiryImagesModel->getImagesById($image_ids);
+
+				if(!empty($images)){
+					foreach ($images as $index => $image) {
+						$is_delete = $this->EnquiryImagesModel->delete(array('id'=>$image['id']));
+						@unlink(FCPATH."uploads/app/".$image['image']);
+					}
+					$response = array('status'=>true,'message'=>'Images deleted successfully');
+				}else{
+					$response = array('status'=>false,'message'=>'Somthing went wrong!');
+				}
+			}else{
+				$image = $this->EnquiryImagesModel->get(array('id'=>$image_ids));
+				if(!empty($image)){
+					$this->EnquiryImagesModel->delete(array('id'=>$image['id']));
+					@unlink(FCPATH."uploads/app/".$image['image']);
+					$response = array('status'=>true,'message'=>'Image deleted successfully');
+				}else{
+					$response = array('status'=>false,'message'=>'Somthing went wrong!');
+				}
+			}
+		}else{
+			$response = array('status'=>false,'message'=>'Images are required');
+		}
+		$this->renderJson($response);
+	}
 
 
 	public function getUserEnquiries() {
