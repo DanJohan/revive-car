@@ -12,6 +12,7 @@ class User extends Rest_Controller {
 	    $this->load->library('mailer');
 	    $this->load->library('textMessage');
 	    $this->load->model('UserExternalLoginModel');
+	    $this->load->library('jwtAuth');
 	}
 
 	
@@ -115,6 +116,7 @@ class User extends Rest_Controller {
 	}// end of otpVerify method
 
 	public function register() {
+		$this->validateApiKey();
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
 		$this->form_validation->set_rules('phone','Phone','trim|required|is_unique[users.phone]');
@@ -139,23 +141,41 @@ class User extends Rest_Controller {
 					$criteria['conditions'] = array('id'=>$insert_id);
 					$criteria['returnType'] = 'single';
 					$user= $this->UserModel->search($criteria);
-			   	   	$response = array('status'=>true,'message'=>'Record inserted successfully','user'=>$user);
+					if(!empty($user)) {
+						$auth_result = $this->jwtauth->generateToken($user);
+						$refresh_token = uniqid(null,true);
+						$data = array(
+							'type'=>'Bearer',
+							'expires_in'=>36000,
+							'access_token'=>$auth_result['token'],
+							'refresh_token'=>$refresh_token,
+						);
+						$token_id = $this->UserModel->update(array(
+							'access_token'=>$auth_result['token'],
+							'refresh_token'=>$refresh_token,
+						),array('id'=>$user['id']));
+						if($token_id) {
+							$this->withStatus(200)->renderJson(array('status'=>true,'message'=>'Login successfully','data'=>$data));
+						}else{
+							$this->withStatus(500)->renderJson(array('status'=>false,'message'=>'Something went wrong!'));
+						}
+					}else{
+						$this->withStatus(500)->renderJson(array('status'=>false,'message'=>'Something went wrong!'));
+					}
 				}else{
-					$response = array('status'=>false,'message'=>'Something went wrong! Please try again.');
+					$this->withStatus(500)->renderJson(array('status'=>false,'message'=>'Something went wrong!'));
 				}
 
 		   }else{
 
 		   		$errors = $this->form_validation->error_array();
-				$response = array('status'=>false,'message'=>$errors);
+		   		$this->withStatus(500)->renderJson(array('status'=>false,'message'=>$errors));
 		   }
-
-		   $this->renderJson($response);
 
 	}// end of register method
 
 	public function login() {
-
+		$this->validateApiKey();
 
 		$this->form_validation->set_rules('username', 'Phone or email', 'trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
@@ -166,20 +186,32 @@ class User extends Rest_Controller {
 			if($user){
 				$is_verified = password_verify($password,$user['password']);
 				if($is_verified){
-					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user);
+						$auth_result = $this->jwtauth->generateToken($user);
+						$refresh_token = uniqid(null,true);
+						$data = array(
+							'type'=>'Bearer',
+							'expires_in'=>36000,
+							'access_token'=>$auth_result['token'],
+							'refresh_token'=>$refresh_token,
+						);
+						$token_id = $this->UserModel->update(array(
+							'access_token'=>$auth_result['token'],
+							'refresh_token'=>$refresh_token,
+						),array('id'=>$user['id']));
+						if($token_id) {
+							$this->withStatus(200)->renderJson(array('status'=>true,'message'=>'Login successfully','data'=>$data));
+						}else{
+							$this->withStatus(500)->renderJson(array('status'=>false,'message'=>'Something went wrong!'));
+						}
 				}else{
-					$response = array('status'=>false,'message'=>'Your password doesn\'t match');
+					$this->withStatus(401)->renderJson(array('status'=>false,'message'=>'Your password doesn\'t match'));
 				}
 			}else{
-				$response = array('status'=>false,'message'=>'User detail not found');
+				$this->withStatus(404)->renderJson(array('status'=>false,'message'=>'Your password doesn\'t match'));
 			}
 		}else{
-			$errors = $this->form_validation->error_array();
-			$response = array('status'=>false,'message'=>$errors);
+			$this->withStatus(500)->renderJson(array('status'=>false,'message'=>$errors));
 		}
-
-
-	    $this->renderJson($response);
 
 	}// end of login method 
 
@@ -689,7 +721,7 @@ class User extends Rest_Controller {
 	*/
 
 	public function editProfile(){
-
+		$this->validateApiKey();
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
@@ -772,24 +804,22 @@ class User extends Rest_Controller {
 	*/
 
 	public function getUserProfile(){
-		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
-		if ($this->form_validation->run() == true){
-			$user_id = $this->input->post('user_id');
-			$criteria['field'] = 'id,name,phone,password,profile_image,email,created_at';
-			$criteria['conditions'] = array('id'=>$user_id);
-			$criteria['returnType'] = 'single';
-			$user= $this->UserModel->search($criteria);
-			if(!empty($user)) {
-				$user['profile_image'] = (!empty($user['profile_image'])) ? base_url()."uploads/app/".$user['profile_image']:'';
-				$response =array('status'=>true,'message'=>'Record found successfully','user'=>$user);
-			}else{
-				$response =array('status'=>false,'message'=>'Record not found');
-			}
+		$this->validateApiKey();
+		$this->jwtauth->authenticate();
+
+		$user_id = $this->jwtauth->getUserId();
+		$criteria['field'] = 'id,name,phone,profile_image,email,created_at';
+		$criteria['conditions'] = array('id'=>$user_id);
+		$criteria['returnType'] = 'single';
+		$user= $this->UserModel->search($criteria);
+		if(!empty($user)) {
+			$user['profile_image'] = (!empty($user['profile_image'])) ? base_url()."uploads/app/".$user['profile_image']:'';
+			$this->withStatus(200)->renderJson(array('status'=>true,'message'=>'Record found successfully','user'=>$user));
+
 		}else{
-			$errors = $this->form_validation->error_array();
-			$response = array('status'=>false,'message'=>$errors);
+			$this->withStatus(404)->renderJson(array('status'=>false,'message'=>'Record not found'));
 		}
-		$this->renderJson($response);
+
 	}
 
 }// end of class

@@ -12,6 +12,7 @@ class Car extends MY_Controller {
 			$this->load->model('CarModel');
 			$this->load->model('CarBrandModel');
 			$this->load->model('CarModelsModel');
+			$this->load->model('CarFuelModel');
 		}
 
 		
@@ -28,6 +29,7 @@ class Car extends MY_Controller {
 			$data=array();
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
 			$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
+			$data['fuel_types'] = $this->CarFuelModel->get_all();
 			$data['view'] = 'admin/car/add_carmodel';
 			$this->load->view('admin/layout', $data);
 			

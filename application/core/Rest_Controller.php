@@ -8,6 +8,8 @@ class Rest_Controller extends MY_Controller
   {
     parent::__construct();
     $this->put_json_post();
+    header("Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type,      Accept");
+   // $this->validateApiKey();
   }
 
   protected function put_json_post() {
@@ -20,8 +22,19 @@ class Rest_Controller extends MY_Controller
    	return json_last_error() == JSON_ERROR_NONE;
   }
 
-  protected function checkApiKey(){
-  	
+   protected function validateApiKey(){
+  	$headers = getallheaders();
+
+  	if(!empty($headers['X-Api-Key'])){
+  		$api_key = $headers['X-Api-Key'];
+  		$query = $this->db->get_where('rest_keys', array('api_key' => $api_key));
+  		if($query->num_rows() ==0){
+  			$this->withStatus(403)->renderJson(array('status'=>false,'message'=>'Invalid api key!'));
+  		}
+
+  	}else{
+  		$this->withStatus(403)->renderJson(array('status'=>false,'message'=>'Api key required!'));
+  	}
   }
 
 

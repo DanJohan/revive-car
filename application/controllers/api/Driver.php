@@ -6,12 +6,15 @@ class Driver extends Rest_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
+	    $this->validateApiKey();
+	    $this->load->library('jwtAuth');
 	    $this->load->model('ServiceEnquiryModel');
 	    $this->load->model('JobcardModel');
 	    $this->load->model('JobCardImageModel');
 	    $this->load->model('RepairOrderModel');
 	    $this->load->model('DriverNotificationModel');
 	    $this->load->model('DriverModel');
+	    
 	}
 
 	/**
@@ -36,20 +39,33 @@ class Driver extends Rest_Controller {
 				$is_verified = password_verify($password,$driver['d_password']);
 				if($is_verified){
 					unset($driver['d_password']);
-					$response = array('status'=>true,'message'=>'Login successfully','driver'=>$driver);
+					$auth_result = $this->jwtauth->generateToken($driver);
+						$refresh_token = uniqid(null,true);
+						$data = array(
+							'type'=>'Bearer',
+							'expires_in'=>36000,
+							'access_token'=>$auth_result['token'],
+							'refresh_token'=>$refresh_token,
+						);
+						$token_id = $this->DriverModel->update(array(
+							'access_token'=>$auth_result['token'],
+							'refresh_token'=>$refresh_token,
+						),array('id'=>$driver['id']));
+						if($token_id) {
+							$this->withStatus(200)->renderJson(array('status'=>true,'message'=>'Login successfully','data'=>$data));
+						}else{
+							$this->withStatus(500)->renderJson(array('status'=>false,'message'=>'Something went wrong!'));
+						}
 				}else{
-					$response = array('status'=>false,'message'=>'Your password doesn\'t match');
+					$this->withStatus(404)->renderJson(array('status'=>false,'message'=>'Your password doesn\'t match'));
 				}
 			}else{
-				$response = array('status'=>false,'message'=>'User detail not found');
+				$this->withStatus(404)->renderJson(array('status'=>false,'message'=>'User detail not found'));
 			}
 		}else{
-			$errors = $this->form_validation->error_array();
-			$response = array('status'=>false,'message'=>$errors);
+			$this->withStatus(400)->renderJson(array('status'=>false,'message'=>$errors));
 		}
 
-
-	    $this->renderJson($response);
 	}
 
 	/**
@@ -58,6 +74,7 @@ class Driver extends Rest_Controller {
 	 *  PARAMETER : code (required)
 	 */
 	public function verifyCustomerCode(){
+		$this->jwtauth->authenticate();
 		$this->form_validation->set_rules('code', 'Verfication code', 'trim|required');
 		if ($this->form_validation->run() == true){
 			$code = $this->input->post('code');
@@ -85,6 +102,7 @@ class Driver extends Rest_Controller {
 	 *  PARAMETER : enquiry_id (required)
 	 */
 	public function getEnquiryDetail(){
+		$this->jwtauth->authenticate();
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
 		if ($this->form_validation->run() == true){
 			$enquiry_id = $this->input->post('enquiry_id');
@@ -117,6 +135,7 @@ class Driver extends Rest_Controller {
 	}
 
 	public function createJob(){
+		$this->jwtauth->authenticate();
 		//dd($_POST);
 		//dd($_FILES,false);
 		//$this->renderJson(array('post'=>$_POST,'file'=>$_FILES,'raw'=>$this->input->raw_input_stream));
@@ -134,7 +153,7 @@ class Driver extends Rest_Controller {
 				'enquiry_id' => $this->input->post('enquiry_id'),
 				'car_id' =>$this->input->post('car_id'),
 				'user_id' => $this->input->post('user_id'),
-				'driver_id'=>$this->input->post('driver_id'),
+				'driver_id'=>$this->jwtauth->getUserId(),
 				'user_name' => $this->input->post('user_name'),
 				'user_email' => $this->input->post('user_email'),
 				'user_phone' => $this->input->post('user_phone'),
@@ -254,26 +273,18 @@ class Driver extends Rest_Controller {
 
 
 	public function  registerDevice() {
-
-		$this->form_validation->set_rules('driver_id', 'driver id', 'trim|required');
+		$this->jwtauth->authenticate();
 		$this->form_validation->set_rules('device_type', 'Device type', 'trim|required');
 		$this->form_validation->set_rules('device_id', 'Device id', 'trim|required');
 
-		if ($this->form_validation->run() == true){
-			$driver_id = $this->input->post('driver_id');
-			$update_data=array(
-		   			'd_device_id'=>$this->input->post('device_id'),
-		   			'd_device_type'=>$this->input->post('device_type')
-		   	);
+		$driver_id = $this->jwtauth->getUserId();
+		$update_data=array(
+		   		'd_device_id'=>$this->input->post('device_id'),
+		   		'd_device_type'=>$this->input->post('device_type')
+		 );
 
-		   	$is_update = $this->DriverModel->update($update_data,array('id'=>$driver_id));
-	   		$response = array('status'=>true,'message'=>'Record updated successfully');
-
-		}else{
-			$errors = $this->form_validation->error_array();
-			$response = array('status'=>false,'message'=>$errors);
-		}
-
+		$is_update = $this->DriverModel->update($update_data,array('id'=>$driver_id));
+	   	$response = array('status'=>true,'message'=>'Record updated successfully');
 		$this->renderJson($response);
 
 	}// end of registerDevice method
