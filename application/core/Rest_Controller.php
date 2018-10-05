@@ -8,6 +8,7 @@ class Rest_Controller extends MY_Controller
   {
     parent::__construct();
     $this->put_json_post();
+    $this->checkApiKey();
   }
 
   protected function put_json_post() {
@@ -21,11 +22,17 @@ class Rest_Controller extends MY_Controller
   }
 
   protected function checkApiKey(){
-  	
+  	$headers = getallheaders();
+  	if(!empty($headers['X-Api-Key'])){
+  		$api_key = $headers['X-Api-Key'];
+  		$query = $this->db->get_where('rest_keys', array('api_key' => $api_key));
+  		if($query->num_rows() ==0){
+  			$this->withStatus(403)->renderJson(array('status'=>false,'message'=>'Invalid api key!'));
+  		}
+  	}else{
+  		$this->withStatus(403)->renderJson(array('status'=>false,'message'=>'Api key required!'));
+  	}
   }
-
-
-
 
 }
 ?>
