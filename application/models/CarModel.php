@@ -33,7 +33,7 @@ class CarModel extends MY_Model {
 	}
 
 	public function getUserAllCars($id){
-		$this->db->select('c.*,cb.brand_name,cm.model_name');
+		$this->db->select('c.*,cb.brand_name,cm.model_name,CASE WHEN fuel_type =1 THEN "Painting" WHEN fuel_type=2 THEN "CNG" WHEN fuel_type=3 THEN "Diesel" ELSE "" END AS fuel_type',false);
 		$this->db->from($this->table." AS c");
 		$this->db->join('car_brands AS cb','cb.id=c.brand_id');
 		$this->db->join('car_models AS cm','cm.id = c.model_id');

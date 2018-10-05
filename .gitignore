@@ -45,3 +45,5 @@ jwt.php
 application/config/constants.php
 application/config/payments.php
 application/third_party/paytmlib/config_paytm.php
+
+.env

@@ -115,30 +115,46 @@ class User extends Rest_Controller {
 	}// end of otpVerify method
 
 	public function register() {
+
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
 		$this->form_validation->set_rules('phone','Phone','trim|required|is_unique[users.phone]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
 
 		   if ($this->form_validation->run() == true){
-		   		$user_id = $this->input->post('user_id');
 		   		$options = [
 				    'cost' => 12,
 				];
+				$file_name = '';
+				if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
+
+					$url = FCPATH."uploads/app/";	
+					$config['new_name']=true;
+					$upload =$this->do_upload('profile_image',$url,$config);
+					if(isset($upload['upload_data'])){
+						chmod($upload['upload_data']['full_path'], 0777);
+						$file_name = $upload['upload_data']['file_name'];
+					}
+				}
+
 		   		$insert_data=array(
 		   			'name'=>$this->input->post('name'),
 		   			'email'=>$this->input->post('email'),
 		   			'phone' => $this->input->post('phone'),
+		   			'profile_image'=>$file_name,
 		   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT,$options),
 		   			'created_at'=>date('Y-m-d H:i:s')
 		   		);
 
 		   		$insert_id = $this->UserModel->insert($insert_data);
 		   		if($insert_id) {
-			   		$criteria['field'] = 'id,phone,name,email,created_at';
+			   		$criteria['field'] = 'id,phone,name,email,profile_image,created_at';
 					$criteria['conditions'] = array('id'=>$insert_id);
 					$criteria['returnType'] = 'single';
 					$user= $this->UserModel->search($criteria);
+					if(!empty($user['profile_image'])){
+						$user['profile_image']=base_url().'uploads/app/'.$user['profile_image'];
+					}
 			   	   	$response = array('status'=>true,'message'=>'Record inserted successfully','user'=>$user);
 				}else{
 					$response = array('status'=>false,'message'=>'Something went wrong! Please try again.');
