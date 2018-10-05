@@ -80,29 +80,44 @@ class Car extends Rest_Controller {
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('brand_id', 'Brand id', 'trim|required');
 		$this->form_validation->set_rules('model_id', 'Model id', 'trim|required');
-		$this->form_validation->set_rules('color', 'Color', 'trim|required');
-		$this->form_validation->set_rules('year', 'Year', 'trim|required');
+		$this->form_validation->set_rules('body', 'Body', 'trim|required');
+		//$this->form_validation->set_rules('color', 'Color', 'trim|required');
+		//$this->form_validation->set_rules('year', 'Year', 'trim|required');
 		$this->form_validation->set_rules('registration_no', 'Registration number', 'trim|required');
 		//$this->form_validation->set_rules('avg_mileage', 'Avg mileage', 'trim|required');
 
 		if ($this->form_validation->run() == true) {
 			$user_id = $this->input->post('user_id');
 			$have_cars = $this->CarModel->checkUserCarsExists($user_id);
+			$file_name = '';
+			if(isset($_FILES['car_image']) && !empty($_FILES['car_image']['name'])) {
+
+					$url = FCPATH."uploads/app/";	
+					$config['new_name']=true;
+					$upload =$this->do_upload('car_image',$url,$config);
+
+					if(isset($upload['upload_data'])){
+						chmod($upload['upload_data']['full_path'], 0777);
+						$file_name = $upload['upload_data']['file_name'];
+				}
+			}
 			$register_data=array(
 				'user_id'=>$this->input->post('user_id'),
 				'brand_id' => $this->input->post('brand_id'),
 				'model_id' => $this->input->post('model_id'),
-				'color' => $this->input->post('color'),
-				'year' => $this->input->post('year'),
+				'body'=>$this->input->post('body'),
+				'image'=>$file_name,
 				'is_default' => (!$have_cars) ? 1 : 0 ,
 				'registration_no' => $this->input->post('registration_no'),
-				//'avg_mileage' => $this->input->post('avg_mileage'),
 				'created_at' => date("Y-m-d H:i:s")
 			);
 			$insert_id = $this->CarModel->insert($register_data);
 			//echo $this->db->last_query();die;
 			if($insert_id){
 				$car = $this->CarModel->getCarById($insert_id);
+				if(!empty($car['image'])){
+					$car['image'] = base_url().'uploads/app/'.$car['image'];
+				}
 				$response = array('status'=>true,'message'=>'Record inserted successfully','data'=>$car);
 			}else{
 				$response = array('status'=> false,'message'=>'An error occured!Please try again' );
@@ -170,6 +185,9 @@ class Car extends Rest_Controller {
 			$user_id = $this->input->post('user_id');
 			$user_cars = $this->CarModel->getUserAllCars($user_id);
 			if(!empty($user_cars)){
+				foreach ($user_cars as $index => &$user_car) {
+					$user_car['image'] = ($user_car['image'])? base_url().'uploads/app'.$user_car['image']:'';
+				}
 				$response = array('status'=>true,'message'=>'Detail found successfully','data'=>$user_cars);
 			}else{
 				$response = array('status'=>false,'message'=>'No detail found'); 
