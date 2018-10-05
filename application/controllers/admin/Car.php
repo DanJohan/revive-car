@@ -12,6 +12,7 @@ class Car extends MY_Controller {
 			$this->load->model('CarModel');
 			$this->load->model('CarBrandModel');
 			$this->load->model('CarModelsModel');
+			$this->load->model('CarServiceModel');
 		}
 
 		
@@ -29,6 +30,17 @@ class Car extends MY_Controller {
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
 			$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
 			$data['view'] = 'admin/car/add_carmodel';
+			$this->load->view('admin/layout', $data);
+			
+		}
+
+		public function add_carservice(){ //display add carservice page 
+
+			$data=array();
+			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
+			$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
+			$data['all_carservice'] =  $this->CarServiceModel->getCarServiceName();
+			$data['view'] = 'admin/car/car_service';
 			$this->load->view('admin/layout', $data);
 			
 		}
@@ -60,18 +72,33 @@ class Car extends MY_Controller {
 
 			public function insert_carmodel(){  //insert carmodel
 
+				$file_name = '';
+				if(isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
+					$path= FCPATH.'uploads/admin/';
+					$config['new_name']=true;
+					$upload= $this->do_upload('image',$path,$config);
+					//dd($upload);
+					if(isset($upload['upload_data'])){
+						$file_name = $upload['upload_data']['file_name'];
+
+					}
+				}
+				
 				$data = array(
 					'brand_id' => $this->input->post('brand_id'),
 					'model_name' => $this->input->post('model_name'),
+					'fuel_type' => $this->input->post('fuel_type'),
+					'image' => $file_name,
 					'created_at' => date('Y-m-d H:i:s')
 
 				);
-				
+				//print_r($data);die;
 				$result = $this->CarModelsModel->insert($data);
-			    if($result){
-					$this->session->set_flashdata('success_msg', 'Car Model is Added Successfully!');
-					redirect(base_url('admin/car/add_carmodel'));
 
+			    if($result){
+					$this->session->set_flashdata('success_msg', 'Car Model & Fuel Type is Added Successfully!');
+					redirect(base_url('admin/car/add_carmodel'));
+					//print_r($data);die;
 				}
 				
 				else{
