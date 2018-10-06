@@ -7,7 +7,9 @@ class MY_Controller extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-
+    require_once APPPATH."config/MY_constants.php";
+    //var_dump(TWILIO_SID);die;
+   // dd($_ENV);
   }
 
   protected function render($the_view = NULL, $template = 'admin/layout')

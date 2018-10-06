@@ -4,8 +4,8 @@
 /*$config['client_id'] = 'AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS';
 $config['secret'] = 'EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL';*/
 
-$config['client_id'] = 'AUvPOPFRg002AdyvE-gbrELklxpyP-XDz2vsolVPdQ-aIp26fgkppiIc-O9ODzD1n29JUC4VpWbrmTVu';
-$config['secret'] = 'ELhNYBFWOYiP_vtVHp8ibHtBjGiRRAODu6evmNWQPz3fQpmS2aGd34YiARLQLQ-Tjjk5z2NL8sMuuajc';
+$config['client_id'] = getenv('PAYPAL_CLIENT_ID');
+$config['secret'] = getenv('PAYPAL_SECRET');
 /**
  * SDK configuration
  */
@@ -36,6 +36,6 @@ $config['settings'] = array(
     'log.LogLevel' => 'FINE'
 );
 
-$config['payu_merchant_key'] = 'rjQUPktU';
-$config['payu_salt'] = 'e5iIg1jwi8';
-$config['payu_base_url'] = "https://sandboxsecure.payu.in";
+$config['payu_merchant_key'] = getenv('PAYU_MERCHANT_KEY');
+$config['payu_salt'] = getenv('e5iIg1jwi8');
+$config['payu_base_url'] = getenv('PAYU_BASE_URL');

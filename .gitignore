@@ -39,11 +39,8 @@ uploads/app/*
 uploads/admin/*
 !uploads/admin/.gitkeep
 migrations.txt
-jwt.php
 
 
-application/config/constants.php
-application/config/payments.php
-application/third_party/paytmlib/config_paytm.php
-
-.env
+application/composer.lock
+application/.env.development
+application/.env.production

@@ -133,7 +133,8 @@ class Car extends Rest_Controller {
 
 	public function addUserTempCars() {
 		$post_data = $this->input->post('cars');
-		//dd($post_data);
+		dd($_FILES,false);
+		dd($post_data);
 		foreach ($post_data as $index => $data) {
 			$this->form_validation->set_rules('cars['.$index.'][user_id]', 'User id', 'trim|required');
 			$this->form_validation->set_rules('cars['.$index.'][brand_id]', 'Brand id', 'trim|required');
