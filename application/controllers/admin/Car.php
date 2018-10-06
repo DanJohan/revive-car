@@ -13,6 +13,7 @@ class Car extends MY_Controller {
 			$this->load->model('CarBrandModel');
 			$this->load->model('CarModelsModel');
 			$this->load->model('CarServiceModel');
+			$this->load->model('CarServicePriceModel');
 		}
 
 		
@@ -43,6 +44,23 @@ class Car extends MY_Controller {
 			$data['view'] = 'admin/car/car_service';
 			$this->load->view('admin/layout', $data);
 			
+		}
+
+		public function getCarModels(){
+			if($this->input->post('brand_id')){
+				$brand_id = $this->input->post('brand_id');
+				$models = $this->CarModelsModel->getModelsByBrandId($brand_id);
+				if(!empty($models)){
+					$template = '';
+					foreach ($models as $index => $data) {
+						$template.='<option value="'.$data['id'].'">'.$data['model_name'].'-'.$data['fuel_type'].'</option>';
+					}
+					$this->renderJson(array('status'=>true,'template'=>$template));
+				}else{
+
+					$this->renderJson(array('status'=>false,'message'=>'data not found!'));
+				}
+			}
 		}
 		
 		public function insert_carbrand(){  //insert carbrand
@@ -96,7 +114,7 @@ class Car extends MY_Controller {
 				$result = $this->CarModelsModel->insert($data);
 
 			    if($result){
-					$this->session->set_flashdata('success_msg', 'Car Model & Fuel Type is Added Successfully!');
+					$this->session->set_flashdata('success_msg', 'Car Model is Added Successfully!');
 					redirect(base_url('admin/car/add_carmodel'));
 					//print_r($data);die;
 				}
@@ -107,6 +125,33 @@ class Car extends MY_Controller {
 					
 				}
 			}	
+
+		public function insert_carservice(){  //insert carservice
+
+				
+				$data = array(
+					'brand_id' => $this->input->post('brand_id'),
+					'model_id' => $this->input->post('model_id'),
+					'price' => str_replace(',', '', $this->input->post('price')),
+					'service_id' => $this->input->post('service'),
+					'created_at' => date('Y-m-d H:i:s')
+
+				);
+				//print_r($data);die;
+				$result = $this->CarServicePriceModel->insert($data);
+
+			    if($result){
+					$this->session->set_flashdata('success_msg', 'Car Service is Added Successfully!');
+					redirect(base_url('admin/car/add_carservice'));
+					//print_r($data);die;
+				}
+				
+				else{
+					$this->session->set_flashdata('error_msg', 'Some problem occur!');
+					redirect(base_url('admin/car/add_carservice'));
+					
+				}
+			}		
 
 		public function del_carbrand($id = 0){
 			$this->db->delete('car_brands', array('id' => $id));
