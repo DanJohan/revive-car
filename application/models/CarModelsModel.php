@@ -18,4 +18,14 @@ class CarModelsModel extends MY_Model {
 		return (!empty($result))? $result :false;
 	}
 
+
+	public function getModelsByBrandId($brand_id) {
+		$this->db->select('id, model_name,CASE WHEN fuel_type = 1 THEN "Petrol" WHEN fuel_type =2 THEN "CNG" WHEN fuel_type = 3 THEN "Diesel" ELSE "" END AS fuel_type',false);
+		$this->db->from($this->table);
+		$this->db->where('brand_id',$brand_id);
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return (!empty($result))? $result :false;
+	}
+
 }
