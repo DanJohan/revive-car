@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class CarServicePriceModel extends MY_Model {
+class ServiceModel extends MY_Model {
 
-	protected $table = 'car_service_price';
+	protected $table = 'services';
 
 	public function __construct()
 	{

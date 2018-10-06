@@ -13,7 +13,7 @@ class Car extends MY_Controller {
 			$this->load->model('CarBrandModel');
 			$this->load->model('CarModelsModel');
 			$this->load->model('CarServiceModel');
-			$this->load->model('CarServicePriceModel');
+			$this->load->model('ServiceModel');
 		}
 
 		
@@ -41,6 +41,8 @@ class Car extends MY_Controller {
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
 			$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
 			$data['all_carservice'] =  $this->CarServiceModel->getCarServiceName();
+			//echo $this->db->last_query();
+			//dd($data);
 			$data['view'] = 'admin/car/car_service';
 			$this->load->view('admin/layout', $data);
 			
@@ -138,7 +140,7 @@ class Car extends MY_Controller {
 
 				);
 				//print_r($data);die;
-				$result = $this->CarServicePriceModel->insert($data);
+				$result = $this->ServiceModel->insert($data);
 
 			    if($result){
 					$this->session->set_flashdata('success_msg', 'Car Service is Added Successfully!');
