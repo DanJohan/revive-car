@@ -117,8 +117,7 @@ class Driver extends Rest_Controller {
 	}
 
 	public function createJob(){
-		//dd($_POST);
-		//dd($_FILES,false);
+
 		//$this->renderJson(array('post'=>$_POST,'file'=>$_FILES,'raw'=>$this->input->raw_input_stream));
 		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
 		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');

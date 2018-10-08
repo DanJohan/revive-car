@@ -55,8 +55,8 @@
 			$("#pwd-error").text('');
 			$('#confirm_pwd').text('');
 
-			if(pwd.length>6 || pwd.length<6){
-				$("#pwd-error").text("Password should be 6 characters long");
+			if(pwd.length>20 || pwd.length<6){
+				$("#pwd-error").text("Password should be between 6 to 20 characters long");
 				error = true;
 			}
 
@@ -74,7 +74,7 @@
 				return false;
 			}else{
 				$.ajax({
-					url:'<?php echo base_url();?>api/user/changePasswordByEmail',
+					url:'<?php echo base_url();?>api/web/changePasswordByEmail',
 					method:'post',
 					data:{'email':email,'hash':hash,'pwd':pwd},
 					success:function(response){

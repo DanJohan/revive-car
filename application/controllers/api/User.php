@@ -354,7 +354,7 @@ class User extends Rest_Controller {
 			$user = $this->UserModel->get(array('email'=>$email));
 			if(!empty($user)) {
 				$password_hash= md5(uniqid(mt_rand(1000,9999),true));
-				$link = base_url()."api/user/resetPassword/".$user['email']."/".$password_hash;
+				$link = base_url()."api/web/resetPassword/".$user['email']."/".$password_hash;
 
 				$this->mailer->setFrom(MAIL_USERNAME);
 				$this->mailer->addAddress($user['email']);
@@ -389,45 +389,7 @@ class User extends Rest_Controller {
 
 	}
 
-	public function resetPassword($email=null,$hash=null) {
 
-		if(!$email || !$hash){
-			return ;
-		}
-		$data=array('email'=>$email,'hash'=>$hash);
-		$this->load->view('api/passwordReset',$data);
-	}
-
-	public function changePasswordByEmail() {
-		if($this->input->post('email')){
-			$email= $this->input->post('email');
-			$hash = $this->input->post('hash');
-			$pwd = $this->input->post('pwd');
-
-			$criteria['field'] = 'id,otp,otp_verify,name,device_id,device_type,email,created_at,updated_at';
-
-			$criteria['conditions']=array('email'=>$email,'password_reset_hash'=>$hash);
-			$criteria['returnType'] = 'single';
-			$user = $this->UserModel->search($criteria);
-
-			if($user){
-				$user_id = $user['id'];
-				$options = [
-				    'cost' => 12,
-				];
-
-				$update_data= array(
-					'password'=>password_hash($pwd,PASSWORD_BCRYPT,$options)
-				);
-				$this->UserModel->update($update_data,array('id'=>$user_id));
-				$response = array('status'=>true,'message'=>'Password changed successfully!');
-			}else{
-				$response= array('status'=>false,'message'=>'User not found!');
-			}
-			
-			$this->renderJson($response);
-		}
-	}// end of changePasswordByEmail method
 
 	public function socialPhoneRegister() {
 		$login_type = $this->input->post('login_type');

@@ -4,7 +4,7 @@ if ( ! function_exists('dd'))
 {
     function dd($data,$dump=true)
     {
-        if(is_array($data)){
+        if(is_array($data) || is_object($data)){
         	echo "<pre>",print_r($data),"</pre>";
         }else{
         	echo $data;

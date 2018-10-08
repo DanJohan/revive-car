@@ -16,7 +16,7 @@
               </div>
             <?php endif; ?>
            
-       <form method="post" action="<?php echo base_url() . 'admin/car/insert_carmodel'; ?>" enctype="multipart/form-data"> 
+       <form class="form-horizontal" method="post" action="<?php echo base_url() . 'admin/car/insert_carmodel'; ?>" enctype="multipart/form-data"> 
               <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label">Select Car Model Name</label>
 
@@ -28,7 +28,6 @@
                   </select>
                 </div>
               </div>
-             <br><br></br>
 
              <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label">Model Name</label>
@@ -37,27 +36,24 @@
                   <input type="text" name="model_name" class="form-control" required>
                 </div>
               </div>
-              <br><br>
-              <div class="form-group">
-                <label for="firstname" class="col-sm-3 control-label">Fuel Type</label>
-
-                <div class="col-sm-8">
-                  <select name="fuel_type" class="form-control" required>
-                      <option value="1">Petrol</option>
-                      <option value="2">CNG</option>
-                      <option value="3">Diesel</option>
-                  
-                  </select>
-                </div>
-              </div>
-               <br></br>
+             <!--  <div class="form-group">
+               <label for="firstname" class="col-sm-3 control-label">Fuel Type</label>
+             
+               <div class="col-sm-8">
+                 <select name="fuel_type" class="form-control" required>
+                     <option value="1">Petrol</option>
+                     <option value="2">CNG</option>
+                     <option value="3">Diesel</option>
+                 
+                 </select>
+               </div>
+             </div> -->
                <div class="form-group">
                 <label for="exampleInputFile" class="col-sm-3 control-label">Upload Image</label>
                    <div class="col-sm-8">
                       <input type="file" id="exampleInputFile" name="image" class="form-control">
                   </div>
               </div>
-              <br><br></br>
               <div class="form-group">
                 <div class="col-md-11">
                   <input type="submit" name="submit" value="Add Car Model" class="btn btn-info pull-right">
@@ -84,7 +80,6 @@
           <th>ID</th>
           <th>Brand</th>
           <th>Model</th>
-          <th>Fuel Type</th>
           <th>Updated At</th>
           <th style="width: 150px;" class="text-right">Option</th>
         </tr>
@@ -97,7 +92,6 @@
             <td><?= $row['id']; ?></td>
             <td><?= $row['brand_name']; ?></td>
             <td><?= $row['model_name']; ?></td>
-            <td><?= $row['fuel_type']; ?></td>
             <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
             
             <td class="text-right">
@@ -112,4 +106,5 @@
   </div>
   <!-- /.box -->
 </section>  
+
 

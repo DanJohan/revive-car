@@ -14,6 +14,7 @@ class Car extends MY_Controller {
 			$this->load->model('CarModelsModel');
 			$this->load->model('CarServiceModel');
 			$this->load->model('ServiceModel');
+
 		}
 
 		

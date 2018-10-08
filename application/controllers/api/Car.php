@@ -7,13 +7,14 @@ class Car extends Rest_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
-	   // $this->jwtauth->verify_request();
+	   // $this->jwtauth->verify_request();	
 	    $this->load->helper('api');
 	    $this->load->model('CarModel');
 	    $this->load->model('CarBrandModel');
 	    $this->load->model('CarModelsModel');
 	    $this->load->model('ServiceEnquiryModel');
 	    $this->load->model('EnquiryImagesModel');
+	    $this->load->model('ServiceModel');
 	    //$this->load->library('mailer');
 	}
 
@@ -81,10 +82,7 @@ class Car extends Rest_Controller {
 		$this->form_validation->set_rules('brand_id', 'Brand id', 'trim|required');
 		$this->form_validation->set_rules('model_id', 'Model id', 'trim|required');
 		$this->form_validation->set_rules('body', 'Body', 'trim|required');
-		//$this->form_validation->set_rules('color', 'Color', 'trim|required');
-		//$this->form_validation->set_rules('year', 'Year', 'trim|required');
 		$this->form_validation->set_rules('registration_no', 'Registration number', 'trim|required');
-		//$this->form_validation->set_rules('avg_mileage', 'Avg mileage', 'trim|required');
 
 		if ($this->form_validation->run() == true) {
 			$user_id = $this->input->post('user_id');
@@ -133,28 +131,45 @@ class Car extends Rest_Controller {
 
 	public function addUserTempCars() {
 		$post_data = $this->input->post('cars');
-		dd($_FILES,false);
-		dd($post_data);
+
 		foreach ($post_data as $index => $data) {
 			$this->form_validation->set_rules('cars['.$index.'][user_id]', 'User id', 'trim|required');
 			$this->form_validation->set_rules('cars['.$index.'][brand_id]', 'Brand id', 'trim|required');
 			$this->form_validation->set_rules('cars['.$index.'][model_id]', 'Model id', 'trim|required');
-			$this->form_validation->set_rules('cars['.$index.'][color]', 'Color', 'trim|required');
-			$this->form_validation->set_rules('cars['.$index.'][year]', 'Year', 'trim|required');
+			$this->form_validation->set_rules('cars['.$index.'][body]', 'Body', 'trim|required');
 			$this->form_validation->set_rules('cars['.$index.'][registration_no]', 'Registration number', 'trim|required');
 		}
 
 		if ($this->form_validation->run() == true) {
+			$have_cars = $this->CarModel->checkUserCarsExists($post_data[0]['user_id']);
 			foreach ($post_data as $index => $data) {
+				$file_name = '';
+				if(isset($_FILES['images']['name'][$index]) && !empty($_FILES['images']['name'][$index])) {
+
+					$_FILES['car_image']['name'] = $_FILES['images']['name'][$index];
+					 $_FILES['car_image']['type']     = $_FILES['images']['type'][$index];
+		                $_FILES['car_image']['tmp_name'] = $_FILES['images']['tmp_name'][$index];
+		                $_FILES['car_image']['error']     = $_FILES['images']['error'][$index];
+		                $_FILES['car_image']['size']     = $_FILES['images']['size'][$index];
+
+					$url = FCPATH."uploads/app/";	
+					$config['new_name']=true;
+					$upload =$this->do_upload('car_image',$url,$config);
+
+					if(isset($upload['upload_data'])){
+						chmod($upload['upload_data']['full_path'], 0777);
+						$file_name = $upload['upload_data']['file_name'];
+					}
+				}
+
 				$register_data[$index]=array(
 					'user_id'=>$data['user_id'],
 					'brand_id' => $data['brand_id'],
 					'model_id' => $data['model_id'],
-					'color' => $data['color'],
-					'year' => $data['year'],
-					'is_default' => ($index==0) ? 1 : 0 ,
+					'body' => $data['body'],
+					'image' => $file_name,
+					'is_default' => (!$have_cars) ? ($index == 0) ? '1' : '0' : '0' ,
 					'registration_no' => $data['registration_no'],
-					//'avg_mileage' => $this->input->post('avg_mileage'),
 					'created_at' => date("Y-m-d H:i:s")
 				);
 			}
@@ -176,7 +191,6 @@ class Car extends Rest_Controller {
 
 	/**
 	 *  API DESCRIPTION : To get all car of user
-	 *  @link  http://localhost/car-service/api/car/getUserCars
 	 *  @param  user_id (required)
 	 *  @return user cars detail
 	 */
@@ -247,6 +261,7 @@ class Car extends Rest_Controller {
 			$user_id = $this->input->post('user_id');
 			$user_car = $this->CarModel->getDefaultCar($user_id);
 			if(!empty($user_car)){
+				$user_car['image'] = ($user_car['image']) ? base_url().'uploads/app/'.$user_car['image']:'';
 				$response = array('status'=>true,'message'=>'Record found successfully','data'=>$user_car);
 			}else{
 				$response = array('status'=>false,'message'=>'No detail found!');
@@ -410,4 +425,48 @@ class Car extends Rest_Controller {
 		$this->renderJson($response);
 	}
 
-}
+	public function service(){
+		$this->form_validation->set_rules('model_id', 'Model id', 'trim|required');
+
+		if ($this->form_validation->run() == true) {
+			$model_id = $this->input->post('model_id');
+			$cat_id = $this->input->post('cat_id');
+			$services = $this->ServiceModel->getServicesByModel($model_id,$cat_id);
+			if(!empty($services)){
+				foreach ($services as $index => &$service) {
+					$service['image'] = ($service['image'])? base_url().'public/images/admin/car/'.$service['image']:'';
+				}
+
+				$response = array('status'=>true,'message'=>'Record get successfully','data'=>$services);
+			}else{
+				$response = array('status'=>false,'message'=>'No service found!');
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}
+
+
+	public function getServiceImages() {
+
+		if($this->input->post('image_ids')){
+			$image_ids = $this->input->post('image_ids');
+			$images = $this->EnquiryImagesModel->getImagesById($image_ids);
+			if(!empty($images)){
+				foreach ($images as $index => &$image) {
+					$image['image'] = ($image['image'])? base_url().'public/images/admin/car/'.$image['image']:'';
+				}
+				$response = array('status'=>true,'message'=>'Record get successfully','data'=>$images);
+			}
+		}else{
+			$response = array('status'=>false,'message'=>"image ids are required");
+		}
+
+		$this->renderJson($response);
+	}
+
+}// end of class
