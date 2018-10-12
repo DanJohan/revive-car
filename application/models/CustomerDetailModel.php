@@ -1,15 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class EnquiryImagesModel extends MY_Model {
+class CustomerDetailModel extends MY_Model {
 
-	protected $table = 'enquiry_images';
+	protected $table = 'customer_details';
 
 	public function __construct()
 	{
 	    parent::__construct();
 	}
-
-
-
 
 }

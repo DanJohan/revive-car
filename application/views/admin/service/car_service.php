@@ -8,17 +8,10 @@
         <!-- /.box-header -->
         <!-- form start -->
         <div class="box-body my-form-body">
-          <?php if(isset($msg)):?>
-              <div class="alert alert-warning alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h4><i class="icon fa fa-warning"></i> Alert!</h4>
-                 <?= isset($msg)? $msg: ''; ?>
-              </div>
-            <?php endif; ?>
            
-              <form id="add-service" class="form-horizontal" method="post" action="<?php echo base_url() . 'admin/car/insert_carservice'; ?>"> 
+              <form id="add-service" class="form-horizontal" method="post" action="<?php echo base_url() . 'admin/service/insert_carservice'; ?>"> 
               <div class="form-group">
-                <label for="firstname" class="col-sm-3 control-label">Select Car Model Name</label>
+                <label for="firstname" class="col-sm-3 control-label">Manufacturer Name</label>
 
                 <div class="col-sm-8">
                   <select name="brand_id" id="brand" class="form-control">
@@ -41,20 +34,9 @@
                   </select>
                 </div>
               </div>
-              <!-- <div class="form-group">
-                <label for="firstname" class="col-sm-3 control-label">Fuel Type</label>
 
-                <div class="col-sm-8">
-                  <select name="fuel_type" class="form-control" required>
-                      <option value="1">Petrol</option>
-                      <option value="2">CNG</option>
-                      <option value="3">Diesel</option>
-                  
-                  </select>
-                </div>
-              </div> -->
                <div class="form-group">
-                <label for="firstname" class="col-sm-3 control-label">Service Parts</label>
+                <label for="firstname" class="col-sm-3 control-label">Services</label>
 
                 <div class="col-sm-8">
                   <select name="service" class="form-control">
@@ -64,6 +46,7 @@
                   </select>
                 </div>
               </div>
+
                <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label">Price</label>
 
@@ -76,7 +59,7 @@
               <br><br></br>
               <div class="form-group">
                 <div class="col-md-11">
-                  <input type="submit" name="submit" value="Add Car Model" class="btn btn-info pull-right">
+                  <input type="submit" name="submit" value="Submit" class="btn btn-info pull-right">
                 </div>
               </div>
             </form>

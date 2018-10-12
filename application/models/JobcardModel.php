@@ -27,7 +27,7 @@ class JobcardModel extends MY_Model {
 
 	// user in workshop crm
 	public function jobCardDetailsForWorkshop($driver_ids){
-		$this->db->select('jc.*,c.color,c.registration_no,u.name,u.phone,cb.brand_name,cm.model_name');
+		$this->db->select('jc.*,c.registration_no,u.name,u.phone,cb.brand_name,cm.model_name');
 	    $this->db->from('job_cards AS jc');
 	    $this->db->join('service_enquiries AS se', 'se.id = jc.enquiry_id'); 
 	    $this->db->join('cars AS c','c.id = jc.car_id');

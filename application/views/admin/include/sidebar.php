@@ -50,9 +50,9 @@ if($cur_tab=='enquiry'){
             </a>
             <ul class="treeview-menu">
                <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Customers Detail</a></li>
-                <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers enquiry</a></li>
-                <li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers job cards</a></li>
-                <li id="list"><a href="<?= base_url('admin/jobCard/invoiceList'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers invoices</a></li>
+            <!--   <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers enquiry</a></li>
+            <li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers job cards</a></li>
+            <li id="list"><a href="<?= base_url('admin/jobCard/invoiceList'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers invoices</a></li> -->
             </ul>
           </li>
         <li id="" class="treeview car active">
@@ -65,7 +65,18 @@ if($cur_tab=='enquiry'){
             <ul class="treeview-menu">
               <li id="add_carbrand"><a href="<?= base_url('admin/car/add_carbrand'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Add Car Brand</a></li>
               <li id="add_carmodel"><a href="<?= base_url('admin/car/add_carmodel'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Add Car Model</a></li>
-              <li id="add_carservice"><a href="<?= base_url('admin/car/add_carservice'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Add Car Services</a></li>
+           </ul>
+        </li>
+        <li id="" class="treeview car active">
+            <a href="#" class="sidebar-toggle">
+              <i class="fa fa-car"></i> <span>Services Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li id="add_carbrand"><a href="<?= base_url('admin/service/add_carservice'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Add cars to services</a></li>
+              <li id="add_carbrand"><a href="<?= base_url('admin/service/car_services_list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>View Car Services</a></li>
            </ul>
         </li>
         <li id="" class="treeview driver active">
