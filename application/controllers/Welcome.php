@@ -59,5 +59,18 @@ class Welcome extends CI_Controller {
 		echo $generator->generateString(3,'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 	}
 
+	public function insert_coupan(){
+		for($i=2; $i<=1545;$i++) {
+			$coupan []= array(
+				'service_id'=>$i,
+				'discount_value'=>'500.00',
+				'valid_untill' => date('Y-m-d H:i:s'),
+				'coupan_code' => 'REVIVE500',
+				'created_at' => date('Y-m-d H:i:s')
+			);
+		}
+		$this->db->insert_batch('services_discount',$coupan);
+	}
+
 
 }

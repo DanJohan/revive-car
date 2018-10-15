@@ -64,6 +64,8 @@ class Order extends Rest_Controller {
 				'order_no' =>$sequence['sequence'],
 				'hash'=> md5(uniqid(true)),
 				'service_type'=>$this->input->post('service_type'),
+				'service_center' => $this->input->post('service_center'),
+				'loaner_vehicle' => $this->input->post('loaner_vehicle'),
 				'pick_up_date'=>$this->input->post('pick_up_date'),
 				'pick_up_time' => $this->input->post('pick_up_time'),
 				'sub_total'=> $this->input->post('sub_total'),
@@ -202,7 +204,7 @@ class Order extends Rest_Controller {
 			$images = $this->OrderCarImagesModel->getImagesById($image_ids);
 			if(!empty($images)){
 				foreach ($images as $index => &$image) {
-					$image['image'] = ($image['image'])? base_url().'public/images/admin/car/'.$image['image']:'';
+					$image['image'] = ($image['image'])? base_url().'uploads/app/'.$image['image']:'';
 				}
 				$response = array('status'=>true,'message'=>'Record get successfully','data'=>$images);
 			}
@@ -212,4 +214,7 @@ class Order extends Rest_Controller {
 
 		$this->renderJson($response);
 	}
+
+
+
 }// end of class

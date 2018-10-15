@@ -449,6 +449,10 @@ class User extends Rest_Controller {
 			$this->form_validation->set_rules('gmail_id','Gmail id','trim|required');
 		}elseif ($login_type=='F') {
 			$this->form_validation->set_rules('facebook_id', 'Facebook_id', 'trim|required');
+		}elseif ($login_type=='T') {
+			$this->form_validation->set_rules('twitter_id', 'Twitter_id', 'trim|required');
+		}elseif ($login_type=='I') {
+			$this->form_validation->set_rules('insta_id', 'Instagram_id', 'trim|required');
 		}
 		//$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
@@ -466,9 +470,15 @@ class User extends Rest_Controller {
 			if($login_type =="G"){
 				$social_id = $this->input->post('gmail_id');
 				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'1');
-			}else if($login_type == 'F'){
+			}elseif($login_type == 'F'){
 				$social_id = $this->input->post('facebook_id');
 				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'2');
+			}elseif($login_type == 'T') {
+				$social_id = $this->input->post('twitter_id');
+				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'3');
+			}elseif ($login_type == 'I') {
+				$social_id = $this->input->post('insta_id');
+				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'4');
 			}
 
 			$criteria['field'] = 'id,user_id';
@@ -503,9 +513,15 @@ class User extends Rest_Controller {
 		 			 if($login_type =="G"){
 						$insert_data['external_authentication_provider'] ="1";
 						$insert_data['external_user_id']=$this->input->post('gmail_id');
-					}else if($login_type == 'F'){
+					}elseif($login_type == 'F'){
 						$insert_data['external_authentication_provider'] ="2";
 						$insert_data['external_user_id']=$this->input->post('facebook_id');
+					}elseif($login_type == 'T') {
+						$insert_data['external_authentication_provider'] ="3";
+						$insert_data['external_user_id']=$this->input->post('twitter_id');
+					}elseif ($login_type =='I') {
+						$insert_data['external_authentication_provider'] ="4";
+						$insert_data['external_user_id']=$this->input->post('insta_id');
 					}
 					$this->UserExternalLoginModel->insert($insert_data);
 					$criteria['field'] = 'id,name,phone,email,created_at';
@@ -537,9 +553,15 @@ class User extends Rest_Controller {
 			 			if($login_type =="G"){
 							$insert_data['external_authentication_provider'] ="1";
 							$insert_data['external_user_id']=$this->input->post('gmail_id');
-						}else if($login_type == 'F'){
+						}elseif($login_type == 'F'){
 							$insert_data['external_authentication_provider'] ="2";
 							$insert_data['external_user_id']=$this->input->post('facebook_id');
+						}elseif ($login_type == 'T') {
+							$insert_data['external_authentication_provider'] ="3";
+							$insert_data['external_user_id']=$this->input->post('twitter_id');
+						}elseif ($login_type == 'I') {
+							$insert_data['external_authentication_provider'] ="4";
+							$insert_data['external_user_id']=$this->input->post('insta_id');
 						}
 						//dd($insert_data);
 						$this->UserExternalLoginModel->insert($insert_data);
