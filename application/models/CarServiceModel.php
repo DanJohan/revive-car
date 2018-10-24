@@ -18,10 +18,10 @@ class CarServiceModel extends MY_Model {
 		return (!empty($result))? $result :false;
 	}
 
-	public function getCarServicesWithCateogory(){
-		$this->db->select('cs.id,cs.name,cs.image,csc.category,cs.created_at');
+	public function getCarServices(){
+		$this->db->select('cs.id,cs.name,cs.image,cs.created_at');
 		$this->db->from($this->table.' AS cs');
-		$this->db->join('car_service_category AS csc','cs.category_id = csc.id');
+		//$this->db->join('car_service_category AS csc','cs.category_id = csc.id');
 		$query = $this->db->get();
 		$result = $query->result_array();
 		return (!empty($result)) ? $result : null;

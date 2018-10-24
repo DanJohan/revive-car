@@ -24,6 +24,7 @@ class Widget {
 	public function endBlock(){
 		$block = ob_get_clean();
 		if($this->renderInPlace){
+			echo $block;
 			if($this->existsBlock()){
 				echo $this->blocks[$this->blockName];
 			}

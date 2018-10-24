@@ -55,6 +55,8 @@ class Order extends Rest_Controller {
 		$this->form_validation->set_rules('email','Email','trim|required|valid_email');
 		$this->form_validation->set_rules('phone','Phone', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
+		$this->form_validation->set_rules('paid_status','Paid status','trim|required');
+		$this->form_validation->set_rules('payment_type', 'Payment type','trim|required');
 
 		if ($this->form_validation->run() == true ) {
 			$this->load->library('sequence');
@@ -71,10 +73,15 @@ class Order extends Rest_Controller {
 				'sub_total'=> $this->input->post('sub_total'),
 				'discount_amount'=>$this->input->post('discount_amount'),
 				'net_pay_amount' => $this->input->post('net_pay_amount'),
+				'paid' => $this->input->post('paid_status'),
+				'payment_type_id'=>$this->input->post('payment_type'),
 				'user_id'=>$this->input->post('user_id'),
 				'car_id' => $this->input->post('car_id'),
 				'created_at' =>date('Y-m-d H:i:s')
 			);
+			if($this->input->post('payment_id')){
+				$order_data['payment_id'] = $this->input->post('payment_id');
+			}
 
 			$order_id = $this->OrderModel->insert($order_data);
 			if($order_id) {
@@ -212,6 +219,64 @@ class Order extends Rest_Controller {
 			$response = array('status'=>false,'message'=>"image ids are required");
 		}
 
+		$this->renderJson($response);
+	}
+
+	public function getUserOrders(){
+		$this->form_validation->set_rules('user_id','User id', 'trim|required');
+
+		if ($this->form_validation->run() == true ) {
+			$user_id = $this->input->post('user_id');
+			$orders = $this->OrderModel->getOrdersByUser($user_id);
+			//dd($orders,false);
+			if(!empty($orders)){
+				$new_orders = [];
+				foreach ($orders as $order) {
+					$key = $order['id'];
+					if(!isset($new_orders[$key])){
+						$new_orders[$key] = [];
+						$new_orders[$key]['order_items'] = [];
+					}
+
+					$new_orders[$key]['id'] = $order['id'];
+		            	$new_orders[$key]['order_no'] = $order['order_no'];
+		            	$new_orders[$key]['service_type'] = $order['service_type'];
+		            	$new_orders[$key]['service_center'] = $order['service_center'];
+		            	$new_orders[$key]['loaner_vehicle'] = $order['loaner_vehicle'];
+		            	$new_orders[$key]['pick_up_date'] = $order['pick_up_date'];
+		            	$new_orders[$key]['pick_up_time'] = $order['pick_up_time'];
+		            	$new_orders[$key]['sub_total'] = $order['sub_total'];
+		            	$new_orders[$key]['discount_amount'] = $order['discount_amount'];
+		            	$new_orders[$key]['net_pay_amount'] = $order['net_pay_amount'];
+		            	$new_orders[$key]['paid'] = $order['paid'];
+		            	$new_orders[$key]['payment_type'] = $order['payment_type'];
+		            	$new_orders[$key]['status'] = $order['status'];
+		            	$new_orders[$key]['created_at'] = $order['created_at'];
+		            	$new_orders[$key]['customer_name'] = $order['customer_name'];
+		            	$new_orders[$key]['customer_email'] = $order['customer_email'];
+		            	$new_orders[$key]['customer_phone'] = $order['customer_phone'];
+		            	$new_orders[$key]['customer_address'] = $order['customer_address'];
+		            	$new_orders[$key]['latitude'] = $order['latitude'];
+		            	$new_orders[$key]['longitude'] = $order['longitude'];
+					$new_orders[$key]['order_items'][] = [
+						  'id' => $order['order_item_id'],
+				            'order_id'=> $order['order_item_order_id'],
+				            'service_id' => $order['service_id'],
+				            'service_name' => $order['service_name'],
+				            'price' => $order['price'],
+					];
+					
+				}
+				$new_orders= array_values($new_orders);
+				//dd($new_orders);
+				$response = array('status'=>true,'message'=>'Record found successfully','data'=>$new_orders);
+			}else{
+				$response = array('status'=>false,'message'=>'No detail found!');
+			}
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
 		$this->renderJson($response);
 	}
 

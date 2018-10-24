@@ -30,7 +30,7 @@
 						<td><?php echo date('d M Y h:i A',strtotime($service['created_at'])); ?></td>
 						<td>
 								<div class="dropdown">
-	                <button class="btn btn-success dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+	                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
 	                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
 	                    <li><a href="<?php echo base_url('admin/service/add_carservice/'.$service['id']); ?> ">Add cars</a></li>
 	                </ul>

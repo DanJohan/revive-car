@@ -14,6 +14,7 @@ class Service extends MY_Controller {
 		$this->load->model('CarModelsModel');
 		$this->load->model('ServiceModel');
 		$this->load->model('ServiceDiscountModel');
+		$this->load->model('ServiceCategoryModel');
 	}
 
 	public function index() {
@@ -30,7 +31,8 @@ class Service extends MY_Controller {
 		$data=array();
 		$data['all_carbrand'] =  $this->CarBrandModel->get_all();
 		$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
-		$data['all_carservice'] =  $this->CarServiceModel->getCarServicesWithCateogory();
+		$data['all_carservice'] =  $this->CarServiceModel->getCarServices();
+		$data['categories'] = $this->ServiceCategoryModel->get_all();
 		$data['view'] = 'admin/service/car_service';
 		$this->load->view('admin/layout', $data);
 			
@@ -39,28 +41,34 @@ class Service extends MY_Controller {
 	public function insert_carservice(){  //insert carservice
 
 		if($this->input->post('submit')) {
+			$model_id = $this->input->post('model_id');
 			$service_id =  $this->input->post('service');
-			$data = array(
-				//'brand_id' => $this->input->post('brand_id'),
-				'model_id' => $this->input->post('model_id'),
-				'price' => str_replace(',', '', $this->input->post('price')),
-				'service_id' => $service_id,
-				'created_at' => date('Y-m-d H:i:s')
+			$category_id = $this->input->post('service_category');
+			$is_exists = $this->ServiceModel->checkServiceExists($model_id,$service_id,$category_id);
+			if(!is_exists) {
+				$data = array(
+					'model_id' =>$model_id,
+					'price' => str_replace(',', '', $this->input->post('price')),
+					'service_id' => $service_id,
+					'category_id' =>$category_id,
+					'created_at' => date('Y-m-d H:i:s')
 
-			);
-			//print_r($data);die;
-			$result = $this->ServiceModel->insert($data);
-
-		    if($result){
-				$this->session->set_flashdata('success_msg', 'Car Service is Added Successfully!');
-				redirect(base_url('admin/service/add_carservice'));
+				);
 				//print_r($data);die;
-			}
-			
-			else{
-				$this->session->set_flashdata('error_msg', 'Some problem occur!');
+				$result = $this->ServiceModel->insert($data);
+
+			    if($result){
+					$this->session->set_flashdata('success_msg', 'Car Service is Added Successfully!');
+					redirect(base_url('admin/service/add_carservice'));
+					//print_r($data);die;
+				}else{
+					$this->session->set_flashdata('error_msg', 'Some problem occur!');
+					redirect(base_url('admin/service/add_carservice'));
+					
+				}
+			}else{
+				$this->session->set_flashdata('error_msg', 'Sorry, This service already exists!');
 				redirect(base_url('admin/service/add_carservice'));
-				
 			}
 		}
 	}

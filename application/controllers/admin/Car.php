@@ -43,7 +43,7 @@ class Car extends MY_Controller {
 				if(!empty($models)){
 					$template = '';
 					foreach ($models as $index => $data) {
-						$template.='<option value="'.$data['id'].'">'.$data['model_name'].'-'.$data['fuel_type'].'</option>';
+						$template.='<option value="'.$data['id'].'">'.$data['model_name'].'</option>';
 					}
 					$this->renderJson(array('status'=>true,'template'=>$template));
 				}else{

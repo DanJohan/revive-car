@@ -96,26 +96,22 @@ class Payment extends Rest_Controller {
 	public function save() {
 
 		$this->form_validation->set_rules('txn_id', 'Transaction id', 'trim|required');
-		$this->form_validation->set_rules('client_txn_id', 'Client transaction id', 'trim|required');
 		$this->form_validation->set_rules('payment_type', 'Payment type', 'trim|required');
-		$this->form_validation->set_rules('invoice_id', 'Invoice id', 'trim|required');
 		$this->form_validation->set_rules('amount', 'Amount', 'trim|required');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
 
 		if ($this->form_validation->run() == true) {
 			$invoice_id = $this->input->post('invoice_id');
 			$insert_data = array(
-				'merchant_transaction_id'=>$this->input->post('txn_id'),
-				'client_transaction_id' => $this->input->post('client_txn_id'),
+				'transaction_id'=>$this->input->post('txn_id'),
 				'payment_type_id' => $this->input->post('payment_type'),
-				'invoice_id' =>$invoice_id,
 				'amount' => $this->input->post('amount'),
+				'channel' => 2,
 				'status' =>$this->input->post('status'),
 				'created_at'=>date("Y-m-d H:i:s")
 			);
 			$insert_id = $this->PaymentModel->insert($insert_data);
 			if($insert_id){
-				$this->InvoiceModel->update(array('paid'=>1,'payment_id'=>$insert_id),array('id'=>$invoice_id));
 				$payment = $this->PaymentModel->getById($insert_id);
 				if($payment){
 					$response= array('status'=>true,'message'=>'Payment made successfully!','data'=>$payment);

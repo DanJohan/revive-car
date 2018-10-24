@@ -40,8 +40,22 @@
 
                 <div class="col-sm-8">
                   <select name="service" class="form-control">
+                  	<option value="">Please select</option>
                      <?php foreach($all_carservice as $cs):?>
                       <option value="<?= $cs['id']; ?>"><?= $cs['name']; ?></option>
+                    <?php endforeach; ?> 
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="firstname" class="col-sm-3 control-label">Services Category</label>
+
+                <div class="col-sm-8">
+                  <select name="service_category" class="form-control">
+                  	 <option value="">Please select</option>
+                     <?php foreach($categories as $category):?>
+                      <option value="<?= $category['id']; ?>"><?= $category['name']; ?></option>
                     <?php endforeach; ?> 
                   </select>
                 </div>
@@ -106,6 +120,9 @@
         },
         service:{
           required:true
+        },
+        service_category:{
+        	required:true
         }
     }
    });

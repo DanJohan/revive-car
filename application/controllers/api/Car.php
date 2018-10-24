@@ -129,6 +129,59 @@ class Car extends Rest_Controller {
 		$this->renderJson($response);
 	}// end of addCar method
 
+
+	public function edit_car(){
+		$this->form_validation->set_rules('car_id','Car id', 'trim|required');
+		$this->form_validation->set_rules('brand_id', 'Brand id', 'trim|required');
+		$this->form_validation->set_rules('model_id', 'Model id', 'trim|required');
+		$this->form_validation->set_rules('body', 'Body', 'trim|required');
+		$this->form_validation->set_rules('registration_no', 'Registration number', 'trim|required');
+
+		if ($this->form_validation->run() == true) {
+			$car_id = $this->input->post('car_id');
+			$file_name = '';
+			if(isset($_FILES['car_image']) && !empty($_FILES['car_image']['name'])) {
+
+					$url = FCPATH."uploads/app/";	
+					$config['new_name']=true;
+					$upload =$this->do_upload('car_image',$url,$config);
+
+					if(isset($upload['upload_data'])){
+						chmod($upload['upload_data']['full_path'], 0777);
+						$file_name = $upload['upload_data']['file_name'];
+						$criteria['field'] = 'image';
+						$criteria['conditions'] = array('id'=>$car_id);
+						$criteria['returnType'] = 'single';
+						$car_data = $this->CarModel->search($criteria);
+						if(@file_exists($url.$car_data['image'])) {
+							@unlink($url.$car_data['image']);
+						}
+					}
+			}
+
+			$update_data=array(
+				'brand_id' => $this->input->post('brand_id'),
+				'model_id' => $this->input->post('model_id'),
+				'body'=>$this->input->post('body'),
+				'registration_no' => $this->input->post('registration_no'),
+			);
+
+			if(!empty($file_name)) {
+				$update_data['image'] = $file_name;
+			}
+
+			$this->CarModel->update($update_data,array('id' => $car_id));
+			$car = $this->CarModel->getCarById($car_id);
+			$response = array('status'=>true,'message'=>'Record updated successfully','data'=>$car);
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
+	}
+
 	public function addUserTempCars() {
 		$post_data = $this->input->post('cars');
 
@@ -360,11 +413,11 @@ class Car extends Rest_Controller {
 
 	public function service(){
 		$this->form_validation->set_rules('model_id', 'Model id', 'trim|required');
-
+		$this->form_validation->set_rules('cat_id','Category_id','trim|required');
 		if ($this->form_validation->run() == true) {
 			$model_id = $this->input->post('model_id');
 			$cat_id = $this->input->post('cat_id');
-			$services = $this->ServiceModel->getServicesByModel($model_id,$cat_id);
+			$services = $this->ServiceModel->getServicesByCategory($model_id,$cat_id);
 			if(!empty($services)){
 				foreach ($services as $index => &$service) {
 					$service['image'] = ($service['image'])? base_url().'public/images/admin/car/'.$service['image']:'';

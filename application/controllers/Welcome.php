@@ -72,5 +72,31 @@ class Welcome extends CI_Controller {
 		$this->db->insert_batch('services_discount',$coupan);
 	}
 
+	public function update_service(){
+		die();
+		for($i=16 ;$i<=17;$i++){
+			for($j=1; $j<=107; $j++){
+				if($j==45 || $j==67 || $j==83 || $j==100) {
+					continue;
+				}
+				if($i==16){
+					$category_id = 5;
+				}else if($i==17){
+					$category_id = 4;
+				}
 
-}
+				$insert_data[] = array(
+					'service_id'=>$i,
+					'model_id' => $j,
+					'category_id'=> $category_id,
+					'price' => 14999,
+					'created_at' =>date("Y-m-d H:i:s")
+				);
+				
+				
+			}
+		}
+		//dd($insert_data);
+		$insert_id = $this->db->insert_batch('services',$insert_data);
+	}
+}// END OF CLASS
