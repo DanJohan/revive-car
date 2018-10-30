@@ -56,4 +56,13 @@ class ServiceModel extends MY_Model {
 		return (!empty($result))? true :false;
 	}
 
+	public function updatePiceByServices($service_cat_id,$car_models_id = array(),$price)
+	{
+		$this->db->where('category_id',$service_cat_id);
+		if(!empty($car_models_id)){
+			$this->db->where_in('model_id',$car_models_id);
+		}
+		$this->db->update($this->table,array('price'=>$price));
+	}
+
 }

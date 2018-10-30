@@ -15,6 +15,7 @@ class Service extends MY_Controller {
 		$this->load->model('ServiceModel');
 		$this->load->model('ServiceDiscountModel');
 		$this->load->model('ServiceCategoryModel');
+		$this->load->model('CarTypeModel');
 	}
 
 	public function index() {
@@ -117,6 +118,40 @@ class Service extends MY_Controller {
 
 		}
 
+	}
+
+	public function change_service_price(){
+		if($this->input->post('submit')){
+			$service_cat_id = $this->input->post('service_type');
+			$car_type = $this->input->post('car_type');
+			$price = str_replace(',','', $this->input->post('service_price'));
+			$car_models_id = array();
+			if($car_type){
+				$criteria['field'] = 'id';
+				$criteria['conditions'] = array('car_type'=>$car_type);
+				$car_models = $this->CarModelsModel->search($criteria);
+				if(!empty($car_models)){
+					$car_models_id = array_column($car_models, 'id');
+				}
+			}
+			if($service_cat_id == 4 || $service_cat_id == 5) {
+				$car_models_id = array();
+			}else{
+				if(empty($car_models_id)) {
+					$this->session->set_flashdata('error_msg','Service not found!');
+					redirect('admin/service/change_service_price');
+				}
+			}
+			$this->ServiceModel->updatePiceByServices($service_cat_id, $car_models_id,$price);
+			//echo $this->db->last_query();die;
+			$this->session->set_flashdata('success_msg','Prices has been changed successfully');
+			redirect('admin/service/change_service_price');
+			//echo $service_cat_id." ".$car_type." ".$price;die;
+		}
+		$data['service_categories'] = $this->ServiceCategoryModel->get_all();
+		$data['car_types'] = $this->CarTypeModel->get_all();
+		$data['view'] = 'admin/service/change_service_price';
+		$this->load->view('admin/layout',$data);
 	}	
 
 }// end of class

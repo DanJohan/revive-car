@@ -18,14 +18,17 @@ class OrderModel extends MY_Model {
 	}
 
 	public function getOrdersByUser($user_id){
-		$this->db->select('o.id, o.order_no,sc.name as service_type,scl.name as service_center,o.loaner_vehicle,o.pick_up_date, o.pick_up_time, o.sub_total, o.discount_amount, o.net_pay_amount,o.paid,pt.name as payment_type, o.status,o.created_at, oi.id as order_item_id,oi.order_id as order_item_order_id ,oi.service_id,,oi.name as service_name,oi.price,cd.name as customer_name, cd.email as customer_email, cd.phone as customer_phone, cd.address as customer_address,cd.latitude, cd.longitude');
+		$this->db->select('o.id, o.order_no,sc.name as service_type,scl.name as service_center,o.loaner_vehicle,o.pick_up_date, o.pick_up_time, o.sub_total, o.discount_amount, o.net_pay_amount,o.paid,pt.name as payment_type, o.status,o.created_at, oi.id as order_item_id,oi.order_id as order_item_order_id ,oi.service_id,,oi.name as service_name,oi.price,cd.name as customer_name, cd.email as customer_email, cd.phone as customer_phone, cd.address as customer_address,cd.latitude, cd.longitude,c.registration_no,cb.brand_name,cm.model_name');
 		$this->db->from($this->table." AS o");
 		$this->db->join('order_items AS oi', 'o.id = oi.order_id');
 		$this->db->join('customer_details AS cd', 'o.id = cd.order_id');
 		$this->db->join('services_category AS sc', 'o.service_type = sc.id');
 		$this->db->join('service_centers AS scl', 'o.service_center = scl.id');
 		$this->db->join('payment_types AS pt', 'o.payment_type_id=pt.id');
-		$this->db->where('user_id',$user_id);
+		$this->db->join('cars AS c','o.car_id =  c.id');
+		$this->db->join('car_brands AS cb','c.brand_id =  cb.id');
+		$this->db->join('car_models AS cm','c.model_id =  cm.id');
+		$this->db->where('o.user_id',$user_id);
 		$result = $this->db->get()->result_array();
 		return $result;
 	}

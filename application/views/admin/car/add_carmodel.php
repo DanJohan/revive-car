@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Car Brand</h3>
+          <h3 class="box-title">Add New Car Model</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
@@ -22,6 +22,7 @@
 
                 <div class="col-sm-8">
                   <select name="brand_id" class="form-control" required>
+                  	<option value="">Please select</option>
                     <?php foreach($all_carbrand as $row):?>
                       <option value="<?= $row['id']; ?>"><?= $row['brand_name']; ?></option>
                     <?php endforeach; ?> 
@@ -36,18 +37,23 @@
                   <input type="text" name="model_name" class="form-control" required>
                 </div>
               </div>
-             <!--  <div class="form-group">
-               <label for="firstname" class="col-sm-3 control-label">Fuel Type</label>
+             <div class="form-group">
+               <label for="car_type" class="col-sm-3 control-label">Car Type</label>
              
                <div class="col-sm-8">
-                 <select name="fuel_type" class="form-control" required>
-                     <option value="1">Petrol</option>
-                     <option value="2">CNG</option>
-                     <option value="3">Diesel</option>
+                 <select name="car_type" id="car_type" class="form-control" required>
+                 	<option value="">Please select</option>
+                 	<?php
+                 		foreach ($car_types as $index => $car_type) {
+                 	?>
+                 		<option value="<?php echo $car_type['id']; ?>"><?php echo $car_type['name']; ?></option>
+                 	<?php
+                 		}
+                 	?>
                  
                  </select>
                </div>
-             </div> -->
+             </div> 
                <div class="form-group">
                 <label for="exampleInputFile" class="col-sm-3 control-label">Upload Image</label>
                    <div class="col-sm-8">
@@ -70,7 +76,7 @@
 <section class="content">
    <div class="box">
     <div class="box-header">
-      <h3 class="box-title">Added Car Models</h3>
+      <h3 class="box-title">Car Models List</h3>
     </div>
     <!-- /.box-header -->
     <div class="box-body table-responsive">
@@ -80,6 +86,7 @@
           <th>ID</th>
           <th>Brand</th>
           <th>Model</th>
+          <th>Type</th>
           <th>Updated At</th>
           <th style="width: 150px;" class="text-right">Option</th>
         </tr>
@@ -92,10 +99,18 @@
             <td><?= $row['id']; ?></td>
             <td><?= $row['brand_name']; ?></td>
             <td><?= $row['model_name']; ?></td>
+            <td> <?= $row['car_type_name']; ?>
             <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
             
             <td class="text-right">
-             <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/car/del_carmodel/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
+        <!--      <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/car/del_carmodel/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a> -->
+             	<div class="dropdown">
+	                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+	                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+	                	<li><a href="<?= base_url('admin/car/edit_carmodel/'.$row['id']); ?>">Edit</a></li>
+	                    <li><a onclick="return confirm('Are you sure to delete this record?')" href="<?= base_url('admin/car/del_carmodel/'.$row['id']); ?>">Delete</a></li>
+	                </ul>
+            	</div>
             </tr>
           <?php endforeach; ?>
         </tbody>
@@ -105,6 +120,13 @@
     <!-- /.box-body -->
   </div>
   <!-- /.box -->
-</section>  
+</section>
+<script type="text/javascript">
+  $(function () {
+    $("#example1").DataTable({
+      'order':[[0,'desc']]
+    });
+  });
+</script>
 
 

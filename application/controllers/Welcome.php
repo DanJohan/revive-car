@@ -74,29 +74,43 @@ class Welcome extends CI_Controller {
 
 	public function update_service(){
 		die();
-		for($i=16 ;$i<=17;$i++){
-			for($j=1; $j<=107; $j++){
-				if($j==45 || $j==67 || $j==83 || $j==100) {
+		for($i=1 ;$i<=17;$i++){
+			//for($j=1; $j<=107; $j++){
+				/*if($j==45 || $j==67 || $j==83 || $j==100) {
 					continue;
-				}
-				if($i==16){
+				}*/
+				if($i==3){
+					continue;
+					$category_id = 3;
+					$price = 25000;
+
+				}else if($i==16){
+					continue;
 					$category_id = 5;
+					$price =14999;
 				}else if($i==17){
+					continue;
 					$category_id = 4;
+					$price=14999;
+				}else{
+					$category_id = 2;
+					$price = 1999;
 				}
 
 				$insert_data[] = array(
 					'service_id'=>$i,
-					'model_id' => $j,
+					'model_id' => 108,
 					'category_id'=> $category_id,
-					'price' => 14999,
+					'price' => $price,
 					'created_at' =>date("Y-m-d H:i:s")
 				);
 				
 				
-			}
+			//}
 		}
 		//dd($insert_data);
 		$insert_id = $this->db->insert_batch('services',$insert_data);
 	}
+
+	
 }// END OF CLASS

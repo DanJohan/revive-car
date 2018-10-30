@@ -77,6 +77,7 @@ if($cur_tab=='enquiry'){
             <ul class="treeview-menu">
               <li id="add_carbrand"><a href="<?= base_url('admin/service/add_carservice'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Add cars to services</a></li>
               <li id="add_carbrand"><a href="<?= base_url('admin/service/car_services_list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>View Car Services</a></li>
+              <li id="add_carbrand"><a href="<?= base_url('admin/service/change_service_price'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Change services price</a></li>
            </ul>
         </li>
         <li id="" class="treeview driver active">

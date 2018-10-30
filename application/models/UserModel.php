@@ -57,4 +57,5 @@ class UserModel extends MY_Model {
 		return (!empty($result))? $result :false;
 	}
 
+
 }

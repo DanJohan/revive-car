@@ -14,6 +14,7 @@ class Car extends MY_Controller {
 			$this->load->model('CarModelsModel');
 			$this->load->model('CarServiceModel');
 			$this->load->model('ServiceModel');
+			$this->load->model('CarTypeModel');
 
 		}
 
@@ -31,7 +32,9 @@ class Car extends MY_Controller {
 			$data=array();
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
 			$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
+			$data['car_types'] = $this->CarTypeModel->get_all();
 			$data['view'] = 'admin/car/add_carmodel';
+			//dd($data);
 			$this->load->view('admin/layout', $data);
 			
 		}
@@ -78,7 +81,7 @@ class Car extends MY_Controller {
 			}
 		}	
 
-			public function insert_carmodel(){  //insert carmodel
+		public function insert_carmodel(){  //insert carmodel
 
 				$file_name = '';
 				if(isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
@@ -95,7 +98,7 @@ class Car extends MY_Controller {
 				$data = array(
 					'brand_id' => $this->input->post('brand_id'),
 					'model_name' => $this->input->post('model_name'),
-					'fuel_type' => $this->input->post('fuel_type'),
+					'car_type' => $this->input->post('car_type'),
 					'image' => $file_name,
 					'created_at' => date('Y-m-d H:i:s')
 
@@ -116,7 +119,47 @@ class Car extends MY_Controller {
 				}
 			}	
 
-	
+		public function edit_carmodel($id=null){
+			if(!$id){
+				redirect('admin/car/add_carmodel');
+			}
+			$data['model'] = $this->CarModelsModel->get(array('id'=>$id));
+			
+			if(empty($data['model'])) {
+				redirect('admin/car/add_carmodel');
+			}
+			if($this->input->post('submit')){
+				//dd($_POST);
+				$file_name = $data['model']['image'];
+				if(isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
+					$path= FCPATH.'uploads/admin/';
+					$config['new_name']=true;
+					$upload= $this->do_upload('image',$path,$config);
+					//dd($upload);
+					if(isset($upload['upload_data'])){
+						$file_name = $upload['upload_data']['file_name'];
+						chmod($upload['upload_data']['full_path'], 0777);
+						if(@file_exists($path.$data['model']['image'])) {
+							@unlink($path.$data['model']['image']);
+						}
+					}
+				}
+
+				$update_data= array(
+					'brand_id'=>$this->input->post('brand_id'),
+					'model_name'=>$this->input->post('model_name'),
+					'car_type' => $this->input->post('car_type'),
+					'image'	=> $file_name,
+				);
+				$this->CarModelsModel->update($update_data,array('id'=>$data['model']['id']));
+				redirect('admin/car/edit_carmodel/'.$data['model']['id']);
+			}
+			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
+			
+			$data['car_types'] = $this->CarTypeModel->get_all();
+			$data['view'] = 'admin/car/edit_carmodel';
+			$this->load->view('admin/layout',$data);
+		}
 
 		public function del_carbrand($id = 0){
 			$this->db->delete('car_brands', array('id' => $id));

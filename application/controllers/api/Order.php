@@ -68,7 +68,7 @@ class Order extends Rest_Controller {
 				'service_type'=>$this->input->post('service_type'),
 				'service_center' => $this->input->post('service_center'),
 				'loaner_vehicle' => $this->input->post('loaner_vehicle'),
-				'pick_up_date'=>$this->input->post('pick_up_date'),
+				'pick_up_date'=>date('Y-m-d',strtotime($this->input->post('pick_up_date'))),
 				'pick_up_time' => $this->input->post('pick_up_time'),
 				'sub_total'=> $this->input->post('sub_total'),
 				'discount_amount'=>$this->input->post('discount_amount'),
@@ -258,6 +258,9 @@ class Order extends Rest_Controller {
 		            	$new_orders[$key]['customer_address'] = $order['customer_address'];
 		            	$new_orders[$key]['latitude'] = $order['latitude'];
 		            	$new_orders[$key]['longitude'] = $order['longitude'];
+		            	$new_orders[$key]['brand_name'] = $order['brand_name'];
+		            	$new_orders[$key]['model_name'] = $order['model_name'];
+		            	$new_orders[$key]['registration_no'] = $order['registration_no'];
 					$new_orders[$key]['order_items'][] = [
 						  'id' => $order['order_item_id'],
 				            'order_id'=> $order['order_item_order_id'],
