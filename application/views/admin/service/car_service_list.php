@@ -56,6 +56,7 @@
 	<!-- /.box -->
 </section>  
 <?php $this->load->view('common/modal'); ?>
+<?php $this->widget->beginBlock('scripts'); ?>
 <script>
 	$(function () {
 		$("#example1").DataTable({
@@ -63,4 +64,5 @@
 		});
 	});
 </script> 
+<?php $this->widget->endBlock(); ?>
 		 

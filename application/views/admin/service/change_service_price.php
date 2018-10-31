@@ -62,11 +62,9 @@
   </div>  
 
 </section> 
-
+<?php $this->widget->beginBlock('scripts'); ?>
 <script type="text/javascript">
- $(document).ready(function(){
 
-     $('.price-field').number(true,2);
-  
-});
+  $('.price-field').number(true,2);
 </script>
+<?php $this->widget->endBlock(); ?>

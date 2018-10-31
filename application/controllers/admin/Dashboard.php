@@ -5,6 +5,11 @@
 		public function __construct(){
 			parent::__construct();
 
+			if (!$this->session->userdata['is_admin_login'] == TRUE)
+			{
+			   redirect('admin/auth/login'); //redirect to login page
+			} 
+
 			$this->load->model('DriverModel');
 			$this->load->model('WorkshopModel');
 
@@ -12,10 +17,7 @@
 			$this->load->model('ServiceEnquiryModel');
 			$this->load->model('CarModel');
 
-			if (!$this->session->userdata['is_admin_login'] == TRUE)
-			{
-			   redirect('admin/auth/login'); //redirect to login page
-			} 
+			
 		}
 
 		public function index(){
@@ -27,8 +29,9 @@
 			$data['workshopCount'] =  $this->WorkshopModel->search($criteria);
 			$data['enquiryCount'] =  $this->ServiceEnquiryModel->search($criteria);	
 			
-			$data['view'] = 'admin/dashboard/index';
-			$this->load->view('admin/layout', $data);
+			//$data['view'] = 'admin/dashboard/index';
+			$this->render('admin/dashboard/index', $data);
+			//$this->load->view('admin/layout', $data);
 		}
 
 	}

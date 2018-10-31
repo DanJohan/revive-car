@@ -17,9 +17,10 @@
 			$data=array();
 			$data['managers']=$this->WorkshopModel->get_all();
 			//dd($data['managers']);
-			$data['view'] = 'admin/driver/add_driver';
+			//$data['view'] = 'admin/driver/add_driver';
 
-			$this->load->view('admin/layout', $data);
+			//$this->load->view('admin/layout', $data);
+			$this->render('admin/driver/add_driver', $data);
 			
 		}
 		
@@ -87,8 +88,9 @@
 		public function view_driver(){ //view all drivers from db
 			$data=array();
 			$data['all_driver'] =  $this->DriverModel->get_all(NULL,array('id','desc'));
-			$data['view'] = 'admin/driver/view_driver';
-			$this->load->view('admin/layout', $data);
+			//$data['view'] = 'admin/driver/view_driver';
+			//$this->load->view('admin/layout', $data);
+			$this->render('admin/driver/view_driver',$data);
 		 }
 
 		public function view_record_by_id($id){
@@ -172,8 +174,9 @@
 			
 			$data['driver']['d_phone'] = substr($data['driver']['d_phone'],-10);
 			$data['managers']=$this->WorkshopModel->get_all();
-			$data['view'] = 'admin/driver/edit_driver';
-			$this->load->view('admin/layout', $data);
+			//$data['view'] = 'admin/driver/edit_driver';
+			//$this->load->view('admin/layout', $data);
+			$this->render('admin/driver/edit_driver',$data);
 		}
 	}
 

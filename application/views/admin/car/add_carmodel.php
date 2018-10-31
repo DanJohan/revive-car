@@ -121,6 +121,7 @@
   </div>
   <!-- /.box -->
 </section>
+<?php $this->widget->beginBlock('scripts'); ?>
 <script type="text/javascript">
   $(function () {
     $("#example1").DataTable({
@@ -128,5 +129,6 @@
     });
   });
 </script>
+<?php $this->widget->endBlock('scripts'); ?>
 
 

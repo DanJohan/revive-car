@@ -60,8 +60,8 @@
   <!-- /.box -->
 </section>  
 <?php $this->load->view('common/modal');?>
-
-<script>
+<?php $this->widget->beginBlock('scripts'); ?>
+<script type="text/javascript">
   $(function () {
     $("#example1").DataTable({
       'order':[[0,'desc']],
@@ -75,8 +75,7 @@
     });
   });
 </script> 
-<script>
-$("#view_users").addClass('active');
+<script type="text/javascript">
 
 $(document).on('click','#view-detail',function(){
 
@@ -91,4 +90,5 @@ $(document).on('click','#view-detail',function(){
     }
   });
 });
-</script>        
+</script>
+<?php $this->widget->endBlock(); ?>    

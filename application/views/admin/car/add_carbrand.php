@@ -76,4 +76,13 @@
     <!-- /.box-body -->
   </div>
   <!-- /.box -->
-</section>  
+</section>
+<?php $this->widget->beginBlock('scripts')?>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      'order':[[0,'desc']]
+    });
+  });
+</script> 
+<?php $this->widget->endBlock(); ?>

@@ -23,8 +23,9 @@ class Service extends MY_Controller {
 	}
 	public function list(){
 		$data['services'] = $this->CarServiceModel->getCarServicesWithCateogory();
-		$data['view'] = 'admin/service/list';
-		$this->load->view('admin/layout',$data);
+		//$data['view'] = 'admin/service/list';
+		//$this->load->view('admin/layout',$data);
+		$this->render('admin/service/list',$data);
 	}
 
 	public function add_carservice(){ //display add carservice page 
@@ -34,8 +35,9 @@ class Service extends MY_Controller {
 		$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
 		$data['all_carservice'] =  $this->CarServiceModel->getCarServices();
 		$data['categories'] = $this->ServiceCategoryModel->get_all();
-		$data['view'] = 'admin/service/car_service';
-		$this->load->view('admin/layout', $data);
+		//$data['view'] = 'admin/service/car_service';
+		//$this->load->view('admin/layout', $data);
+		$this->render('admin/service/car_service', $data);
 			
 	}
 
@@ -76,9 +78,10 @@ class Service extends MY_Controller {
 
 	public function car_services_list(){
 		$data['services'] = $this->ServiceModel->getServices();
-		$data['view'] = 'admin/service/car_service_list';
+		//$data['view'] = 'admin/service/car_service_list';
 		//dd($data);
-		$this->load->view('admin/layout',$data);
+		//$this->load->view('admin/layout',$data);
+		$this->render('admin/service/car_service_list',$data);
 	}
 
 	public function add_coupan($id){
@@ -91,8 +94,9 @@ class Service extends MY_Controller {
 			$this->session->set_flashdata('error_msg','Serivce not found');
 			redirect('admin/service/car_services_list');
 		}
-		$data['view'] = 'admin/service/add_coupan';
-		$this->load->view('admin/layout',$data);
+		//$data['view'] = 'admin/service/add_coupan';
+		//$this->load->view('admin/layout',$data);
+		$this->render('admin/service/add_coupan',$data);
 	}
 
 	public function save_coupan(){
@@ -150,8 +154,9 @@ class Service extends MY_Controller {
 		}
 		$data['service_categories'] = $this->ServiceCategoryModel->get_all();
 		$data['car_types'] = $this->CarTypeModel->get_all();
-		$data['view'] = 'admin/service/change_service_price';
-		$this->load->view('admin/layout',$data);
+		//$data['view'] = 'admin/service/change_service_price';
+		//$this->load->view('admin/layout',$data);
+		$this->render('admin/service/change_service_price',$data);
 	}	
 
 }// end of class

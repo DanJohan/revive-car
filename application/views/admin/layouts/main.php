@@ -19,9 +19,9 @@
 		  <!-- AdminLTE Skins. Choose a skin from the css/skins. -->
 		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/skins/skin-blue.min.css">
 		  <!-- jQuery 2.2.3 -->
-		  <script src="<?= base_url() ?>public/plugins/jQuery/jquery-2.2.3.min.js"></script>
-		  <!-- jQuery UI 1.11.4 -->
-		  <script src="<?= base_url() ?>public/dist/js/jquery-ui.min.js"></script>
+		  <?php $this->widget->beginBlock('stylesheets',true); ?>
+		  <?php $this->widget->endBlock(); ?>
+
 		   <script>
 				var config = {
 					'baseUrl':"<?php echo base_url(); ?>",
@@ -49,7 +49,7 @@
 				<section id="main-content">
 					<div class="content-wrapper" style="min-height: 394px; padding:15px;">
 						<!-- page start-->
-						<?php $this->load->view($view);?>
+						<?php echo $content;?>
 						<!-- page end-->
 					</div>
 				</section>
@@ -62,40 +62,21 @@
 				<!--footer end-->
 			</section>
 
-			<!-- /.control-sidebar -->
-			<?php //$this->load->view('admin/include/control_sidebar.php'); ?>
-
 	</div>	
     
-	
+<script src="<?php echo base_url() ?>public/dist/js/jquery3.3.1.min.js"></script>	
+<script src="<?php echo base_url() ?>public/dist/js/jquery-ui.min.js"></script>	
 <script src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>public/dist/js/app.min.js"></script>
 <script src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
-
-	<!-- page script -->
-<script type="text/javascript">
-	$(".flash-msg").fadeTo(2000, 500).slideUp(500, function(){
-	    $(".flash-msg").slideUp(500);
-	});
-</script>
-	<script type="text/javascript">
-		$.ajax({
-			'url':"<?php echo base_url(); ?>admin/enquiry/get_notifications",
-			'method':"POST",
-			'async':false,
-			success:function(response){
-				if(response.status){
-					$('#notification-list').html(response.template);
-					$('#notification-count').text(response.total);
-				}
-			}
-		});
-	</script>
+<script src="<?php echo base_url(); ?>public/dist/js/main.js"></script>
 <script type="text/javascript">
  // $(".<?php //echo $cur_tab; ?>").addClass('active');
   $("#<?php echo $cur_tab_link; ?>").addClass('active');
 </script>
+<?php $this->widget->beginBlock('scripts', true); ?>
+<?php $this->widget->endBlock(); ?>
 	</body>
 </html>

@@ -56,6 +56,7 @@
   <!-- /.box -->
 </section>  
 <?php $this->load->view('common/modal'); ?>
+<?php $this->widget->beginBlock('scripts');?>
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -71,7 +72,6 @@
   });
 </script> 
 <script>
-$("#view_users").addClass('active');
 
 $(document).on('click','#view-detail',function(){
 
@@ -87,3 +87,4 @@ $(document).on('click','#view-detail',function(){
   });
 });
 </script>        
+<?php $this->widget->endBlock(); ?>

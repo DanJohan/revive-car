@@ -1,7 +1,7 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class Users extends CI_Controller {
+	class Users extends MY_Controller {
 
 		public function __construct(){
 			parent::__construct();
@@ -15,8 +15,9 @@
  
 		public function index(){
 			$data['all_users'] =  $this->UserModel->get_all(array('name !='=>'','email !='=>''),array('id','desc'));
-			$data['view'] = 'admin/users/user_list';
-			$this->load->view('admin/layout', $data);
+			//$data['view'] = 'admin/users/user_list';
+			//$this->load->view('admin/layout', $data);
+			$this->render('admin/users/index', $data);
 		}
 	
 		public function edit($id = null){
@@ -67,8 +68,9 @@
 			else{
 				$data['user'] = $this->UserModel->get(array('id'=>$id));
 				$data['user']['phone'] = substr($data['user']['phone'],-10);
-				$data['view'] = 'admin/users/user_edit';
-				$this->load->view('admin/layout', $data);
+				//$data['view'] = 'admin/users/user_edit';
+				//$this->load->view('admin/layout', $data);
+				$this->render('admin/users/user_edit',$data);
 			}
 		}
 		public function show($id){
@@ -78,8 +80,9 @@
 			$criteria['returnType'] = 'single';
 			$data['user'] =  $this->UserModel->search($criteria);
 			$data['cars'] = $this->CarModel->getCarWithUserByUserId($id);
-			$data['view'] = 'admin/users/user_view';
-			$this->load->view('admin/layout',$data);
+			//$data['view'] = 'admin/users/user_view';
+			//$this->load->view('admin/layout',$data);
+			$this->render('admin/users/user_view',$data);
 		  }
 			
 		public function del($id = null){
@@ -91,13 +94,5 @@
 			redirect(base_url('admin/users'));
 		}
 
-		/*public function carList(){
-			$data['cars'] = $this->CarModel->getAllCarsWithUsers();
-			$data['view'] = 'admin/car/car_list';
-			$this->load->view('admin/layout', $data);
-		}*/
-
 	}
-
-
 ?>

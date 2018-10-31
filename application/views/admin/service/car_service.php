@@ -84,6 +84,7 @@
   </div>  
 
 </section>
+<?php $this->widget->beginBlock('scripts'); ?>
 <script src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
 <script type="text/javascript">
    $(document).ready(function(){
@@ -128,5 +129,6 @@
    });
   });// end of ready function
 </script>
+<?php $this->widget->endBlock(); ?>
  
 

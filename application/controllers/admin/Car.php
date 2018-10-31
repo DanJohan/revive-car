@@ -23,8 +23,9 @@ class Car extends MY_Controller {
 		public function add_carbrand(){ //display add carbrand page 
 			$data=array();
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all(NULL,array('id','asc'));
-			$data['view'] = 'admin/car/add_carbrand';
-			$this->load->view('admin/layout', $data);
+			//$data['view'] = 'admin/car/add_carbrand';
+			//$this->load->view('admin/layout', $data);
+			$this->render('admin/car/add_carbrand', $data);
 			
 		}
 
@@ -33,9 +34,10 @@ class Car extends MY_Controller {
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
 			$data['all_carmodel'] =  $this->CarModelsModel->getModelsWithBrand();
 			$data['car_types'] = $this->CarTypeModel->get_all();
-			$data['view'] = 'admin/car/add_carmodel';
+			//$data['view'] = 'admin/car/add_carmodel';
 			//dd($data);
-			$this->load->view('admin/layout', $data);
+			//$this->load->view('admin/layout', $data);
+			$this->render('admin/car/add_carmodel', $data);
 			
 		}
 
@@ -157,8 +159,9 @@ class Car extends MY_Controller {
 			$data['all_carbrand'] =  $this->CarBrandModel->get_all();
 			
 			$data['car_types'] = $this->CarTypeModel->get_all();
-			$data['view'] = 'admin/car/edit_carmodel';
-			$this->load->view('admin/layout',$data);
+			//$data['view'] = 'admin/car/edit_carmodel';
+			//$this->load->view('admin/layout',$data);
+			$this->render('admin/car/edit_carmodel', $data);
 		}
 
 		public function del_carbrand($id = 0){

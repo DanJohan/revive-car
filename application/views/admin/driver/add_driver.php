@@ -85,10 +85,10 @@
               </div>
               <br></br>
               <div class="form-group">
-                <label for="password" class="col-sm-3 control-label">Complete Address</label>
+                <label for="address" class="col-sm-3 control-label">Complete Address</label>
 
                 <div class="col-sm-8">
-                  <textarea type="text" name="d_address" class="form-control" id="password" required><?php echo ($post_data['d_address'])? $post_data['d_address'] : '' ; ?></textarea>
+                  <textarea type="text" name="d_address" class="form-control" id="address" required><?php echo ($post_data['d_address'])? $post_data['d_address'] : '' ; ?></textarea>
                 </div>
               </div>
               <br><br><br>
@@ -113,18 +113,18 @@
               </div>
              <br></br>
              <div class="form-group">
-                <label for="password" class="col-sm-3 control-label">License</label>
+                <label for="license" class="col-sm-3 control-label">License</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_license" class="form-control" id="password" required value="<?php echo ($post_data['d_license'])? $post_data['d_license'] : '' ; ?>" />
+                  <input type="text" name="d_license" class="form-control" id="license" required value="<?php echo ($post_data['d_license'])? $post_data['d_license'] : '' ; ?>" />
                 </div>
               </div>
               <br></br>
             <div class="form-group">
-                <label for="password" class="col-sm-3 control-label">ID Proof</label>
+                <label for="id_proof" class="col-sm-3 control-label">ID Proof</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="d_idproof" class="form-control" id="password" required value="<?php echo ($post_data['d_idproof'])? $post_data['d_idproof'] : '' ; ?>" />
+                  <input type="text" name="d_idproof" class="form-control" id="id_proof" required value="<?php echo ($post_data['d_idproof'])? $post_data['d_idproof'] : '' ; ?>" />
                 </div>
               </div>
               <br></br>

@@ -1,10 +1,3 @@
-<?php 
-$cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
-$cur_tab_link =   $this->uri->segment(3)==''?'index': $this->uri->segment(3);
-if($cur_tab=='enquiry'){
-  $cur_tab_link="e_".$cur_tab_link;
-}
-?>  
 
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
@@ -80,6 +73,19 @@ if($cur_tab=='enquiry'){
               <li id="add_carbrand"><a href="<?= base_url('admin/service/change_service_price'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Change services price</a></li>
            </ul>
         </li>
+
+	<li id="" class="treeview car active">
+            <a href="#" class="sidebar-toggle">
+              <i class="fa fa-car"></i> <span>Order Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li id="add_carbrand"><a href="<?= base_url('admin/order/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>View orders</a></li>
+           </ul>
+     </li>
+
         <li id="" class="treeview driver active">
             <a href="#" class="sidebar-toggle">
               <img src="<?php echo base_url()?>public/images/admin/driver.png" style="height: 20px;width: 20px;"><span>Driver Management</span>
@@ -109,8 +115,3 @@ if($cur_tab=='enquiry'){
     <!-- /.sidebar -->
   </aside>
 
-  
-<script>
- // $(".<?php //echo $cur_tab; ?>").addClass('active');
-  $("#<?php echo $cur_tab_link; ?>").addClass('active');
-</script>

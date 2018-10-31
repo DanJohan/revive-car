@@ -15,8 +15,9 @@
 
 		public function add_manager(){
 			$data=array();
-			$data['view'] = 'admin/workshop/add_manager';
-			$this->load->view('admin/layout', $data);
+			//$data['view'] = 'admin/workshop/add_manager';
+			//$this->load->view('admin/layout', $data);
+			$this->render('admin/workshop/add_manager', $data);
 			
 		}
 		public function insert_manager(){
@@ -82,9 +83,10 @@
 		public function view_manager(){
 			$data=array();
 			$data['all_manager'] =  $this->WorkshopModel->get_all(NULL,array('id','desc'));
-			$data['view'] = 'admin/workshop/view_manager';
-			$this->load->view('admin/layout', $data);
-			$this->load->view('common/modal', $data);  //include modal box layout
+			//$data['view'] = 'admin/workshop/view_manager';
+			//$this->load->view('admin/layout', $data);
+			$this->render('admin/workshop/view_manager', $data);
+			//$this->load->view('common/modal', $data);  //include modal box layout
 		  }
 		 
 		public function view_record_by_id($id){
@@ -160,8 +162,9 @@
 			else{
 				
 				$data['manager']['m_phone'] = substr($data['manager']['m_phone'],-10);
-				$data['view'] = 'admin/workshop/edit_manager';
-				$this->load->view('admin/layout', $data);
+				//$data['view'] = 'admin/workshop/edit_manager';
+				//$this->load->view('admin/layout', $data);
+				$this->render('admin/workshop/edit_manager', $data);
 			}
 		}
 
