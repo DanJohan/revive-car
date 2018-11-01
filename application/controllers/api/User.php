@@ -77,14 +77,12 @@ class User extends Rest_Controller {
 
 	public function otpVerify()
 	{
-
 	   $this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 	   $this->form_validation->set_rules('otp', 'OTP', 'trim|required');
 	   if ($this->form_validation->run() == true){
 	   		$user_id = $this->input->post('user_id');
 	   		$otp = $this->input->post('otp');
 	   		
-
 	   	   $is_verified = $this->UserModel->verifyOtp(array('id'=>$user_id,'otp'=>$otp));
 	   	   if($is_verified){
 	   	   		$update_data = array(
@@ -92,50 +90,29 @@ class User extends Rest_Controller {
 		   			'otp'=>null,
 		   		);
 	   	   		$this->UserModel->update($update_data,array('id'=>$user_id));
-	   	   		$criteria['field'] = 'id,name,email,phone,created_at';
+	   	   		$criteria['field'] = 'id,otp,otp_verify,created_at,updated_at';
 				$criteria['conditions'] = array('id'=>$user_id);
 				$criteria['returnType'] = 'single';
-
 				$user= $this->UserModel->search($criteria);
-
-				if(empty($user['email']) && empty($user['phone'])) {
-					$profile_status = "EMAIL_PHONE_REQUIRED";
-				}else if(empty($user['email'])) {
-					$profile_status = "EMAIL_REQUIRED";
-				}else if(empty($user['phone'])) {
-					$profile_status = "PHONE_REQUIRED";
-				}else{
-					$profile_status = "COMPLETED";
-				}
-
-	   	   		$response = array('status'=>true,'profile_status'=>$profile_status,'message'=>'OTP verified successfully','user'=>$user);
+	   	   		$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
 	   	   }else{
-
-	   	   		$response = array('status'=>false,'message'=>'OTP code doesn\'t match');
-
+	   	   		$response = array('status'=>false,'message'=>array('otp'=>'OTP code doesn\'t match'));
 	   	   }
-
 	   }else{
-
 	   		$errors = $this->form_validation->error_array();
 			$response = array('status'=>false,'message'=>$errors);
 	   }
-
 	   $this->renderJson($response);
-
 	}// end of otpVerify method
 
 	public function register() {
-
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
 		$this->form_validation->set_rules('phone','Phone','trim|required|is_unique[users.phone]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
-
 		   if ($this->form_validation->run() == true){
 				$file_name = '';
 				if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
-
 					$url = FCPATH."uploads/app/";	
 					$config['new_name']=true;
 					$upload =$this->do_upload('profile_image',$url,$config);
@@ -144,57 +121,35 @@ class User extends Rest_Controller {
 						$file_name = $upload['upload_data']['file_name'];
 					}
 				}
-
-				$otp = generate_otp();
-				$data = array(
-						'phone'=>$this->input->post('phone'),
-						'body' =>$otp." otp for your mobile verification"
-				);
-				$message = $this->textmessage->send($data);
-
-				$message_send = (is_object($message) && $message->sid) ? true : false;
-
 		   		$insert_data=array(
 		   			'name'=>$this->input->post('name'),
 		   			'email'=>$this->input->post('email'),
 		   			'phone' => $this->input->post('phone'),
-		   			'otp' => $otp,
 		   			'profile_image'=>$file_name,
 		   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT),
 		   			'created_at'=>date('Y-m-d H:i:s')
 		   		);
-
 		   		$insert_id = $this->UserModel->insert($insert_data);
 		   		if($insert_id) {
-			   		$criteria['field'] = 'id,phone,otp_verify,name,email,profile_image,created_at';
+			   		$criteria['field'] = 'id,phone,name,email,profile_image,created_at';
 					$criteria['conditions'] = array('id'=>$insert_id);
 					$criteria['returnType'] = 'single';
 					$user= $this->UserModel->search($criteria);
-
-					$otp_verify = ($user['otp_verify']) ? true : false;
-
 					if(!empty($user['profile_image'])){
 						$user['profile_image']=base_url().'uploads/app/'.$user['profile_image'];
 					}
-					unset($user['otp_verify']);
-			   	   	$response = array('status'=>true,'message_send' => $message_send ,'otp_verify'=>$otp_verify,'message'=>'Record inserted successfully','user'=>$user);
+			   	   	$response = array('status'=>true,'message'=>'Record inserted successfully','user'=>$user);
 				}else{
 					$response = array('status'=>false,'message'=>'Something went wrong! Please try again.');
 				}
-
 		   }else{
-
 		   		$errors = $this->form_validation->error_array();
 				$response = array('status'=>false,'message'=>$errors);
 		   }
-
 		   $this->renderJson($response);
-
 	}// end of register method
 
 	public function login() {
-
-
 		$this->form_validation->set_rules('username', 'Phone or email', 'trim|required');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
 		if ($this->form_validation->run() == true){
@@ -204,33 +159,7 @@ class User extends Rest_Controller {
 			if($user){
 				$is_verified = password_verify($password,$user['password']);
 				if($is_verified){
-					if(! $user['otp_verify']) {
-						$otp = generate_otp();
-						$data = array(
-								'phone'=>$user['phone'],
-								'body' =>$otp." otp for your mobile verification"
-						);
-						$message = $this->textmessage->send($data);
-						$this->UserModel->update(array('otp'=>$otp),array('id'=>$user['id']));
-						$message_send = (is_object($message) && $message->sid) ? true : false;
-						$otp_verify = false;
-					}else{
-						$message_send = false;
-						$otp_verify =true;
-					}
-
-					if(empty($user['email']) && empty($user['phone'])) {
-						$profile_status = "EMAIL_PHONE_REQUIRED";
-					}else if(empty($user['email'])) {
-						$profile_status = "EMAIL_REQUIRED";
-					}else if(empty($user['phone'])) {
-						$profile_status = "PHONE_REQUIRED";
-					}else{
-						$profile_status = "COMPLETED";
-					}
-					unset($user['password']);
-					unset($user['otp_verify']);
-					$response = array('status'=>true,'otp_verify'=>$otp_verify,'message_send'=>$message_send,'profile_status'=>$profile_status,'message'=>'Login successfully','user'=>$user);
+					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user);
 				}else{
 					$response = array('status'=>false,'message'=>'Your password doesn\'t match');
 				}
@@ -241,11 +170,62 @@ class User extends Rest_Controller {
 			$errors = $this->form_validation->error_array();
 			$response = array('status'=>false,'message'=>$errors);
 		}
-
-
 	    $this->renderJson($response);
-
 	}// end of login method 
+
+	public function otpLogin(){
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$phone = $this->input->post('phone');
+			$result = $this->UserModel->checkPhoneExists($phone);
+			if($result){
+				$otp = generate_otp();
+				$data = array(
+					'phone'=>$phone,
+					'body' =>$otp." otp to login into your Revive auto care acccount."
+				);
+				$message = $this->textmessage->send($data);
+				if(is_object($message) && $message->sid){
+					$update_data = array(
+						'otp'=>$otp,
+					);
+					$this->UserModel->update($update_data,array('phone'=>$phone));
+					$response = array('status'=>true,'message'=>'OTP send successfully!');
+
+				}else{
+					$response= array("status"=>false,'message'=>'An error occured!Please try again!',);
+				}
+			}else{
+				$response = array('status'=>false,'message'=>'Sorry,this phone number is not registerd with us!');
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
+
+	public function verifyLoginOtp(){
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required');
+		$this->form_validation->set_rules('otp', 'OTP', 'trim|required');
+		if ($this->form_validation->run() == true){
+			$criteria ['field'] = "id,name,email,phone,created_at";
+			$criteria['conditions'] = array('phone'=>$this->input->post('phone'),'otp'=>$this->input->post('otp'));
+			$criteria['returnType'] ='single';
+			$user = $this->UserModel->search($criteria);
+			if($user){
+				$this->UserModel->update(array('otp'=>null),array('id'=>$user['id']));
+				$response = array('status'=>true,'message'=>'Login successfully','user'=>$user);
+			}else{
+				$response = array('status'=>false, 'message'=>'Otp not valid');
+			}
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
 
 	public function comleteUserProfile() {
 		$this->form_validation->set_rules('user_id', 'User_id', 'trim|required');
@@ -565,7 +545,6 @@ class User extends Rest_Controller {
 
 
 	public function socialLogin() {
-
 		$login_type = $this->input->post('login_type');
 		if($login_type=='G'){
 			$this->form_validation->set_rules('gmail_id','Gmail id','trim|required');
@@ -578,23 +557,19 @@ class User extends Rest_Controller {
 		if($this->input->post('email')){
 			$this->form_validation->set_rules('email', 'Email', 'valid_email');
 		}
-
 		$this->form_validation->set_rules('login_type', 'Login Type', 'trim|required');
-
 		if ($this->form_validation->run() == true){
-
 			//$user_id = $this->input->post('user_id');
 			$email = $this->input->post('email');
 			if($login_type =="G"){
 				$social_id = $this->input->post('gmail_id');
-				$auth_provider = 1; 
+				$auth_provider = 1;
 				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>$auth_provider);
 			}elseif($login_type == 'F'){
 				$social_id = $this->input->post('facebook_id');
 				$auth_provider = 2;
 				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>$auth_provider);
 			}
-
 			$criteria['field'] = 'id,user_id';
 			$criteria['returnType'] = 'single';
 			$user = $this->UserExternalLoginModel->search($criteria);
@@ -607,9 +582,7 @@ class User extends Rest_Controller {
 				$criteria['returnType'] = 'single';
 				$user_data = $this->UserModel->search($criteria);
 				if(!empty($user_data)){
-					$user_status = $this->getUserProfileStatus($user_data['id']);
-					$response = array('status'=>true,'message_send'=>$user_status['message_send'],'otp_verify'=>$user_status['otp_verify'],'profile_status'=>$user_status['profile_status'],'message'=>'Login successfully','user'=>$user_data);
-
+					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user_data);
 				}else{
 					$response = array('status'=>false,'message'=>"User not found!");
 				}
@@ -627,7 +600,6 @@ class User extends Rest_Controller {
 		 			 	'email'=>$this->input->post('email'),
 		 			 	'created_at' => date("Y-m-d H:i:s")
 		 			 );
-
 					$this->UserExternalLoginModel->insert($insert_data);
 
 					$criteria['field'] = 'id,name,phone,email,created_at';
@@ -636,8 +608,7 @@ class User extends Rest_Controller {
 					$user_data = $this->UserModel->search($criteria);
 					unset($criteria);
 					if(!empty($user_data)){
-						$user_status = $this->getUserProfileStatus($user_data['id']);
-						$response = array('status'=>true,'message_send'=>$user_status['message_send'],'otp_verify'=>$user_status['otp_verify'],'profile_status'=>$user_status['profile_status'],'message'=>'Login successfully','user'=>$user_data);
+						$response = array('status'=>true,'message'=>'Login successfully','user'=>$user_data);
 					}else{
 						$response = array('status'=>false,'message'=>"User not found");
 					}
@@ -647,18 +618,17 @@ class User extends Rest_Controller {
 						'email'=>$email,
 						'created_at'=>date("Y-m-d H:i:s")
 					);
-
 					$insert_id = $this->UserModel->insert($register_data);
 					if($insert_id) {
 						$insert_data= array(
 			 			 	'user_id' =>$insert_id,
 			 			 	'external_authentication_provider' => $auth_provider,
-			 			 	'external_user_id'=>$social_id,
+			 			 	'external_user_id' => $social_id,
 			 			 	'name'=>$this->input->post('name'),
 			 			 	'email'=>$this->input->post('email'),
 			 			 	'created_at' => date("Y-m-d H:i:s")
 			 			 );
-
+						//dd($insert_data);
 						$this->UserExternalLoginModel->insert($insert_data);
 
 						$criteria['field'] = 'id,name,phone,email,created_at';
@@ -666,25 +636,20 @@ class User extends Rest_Controller {
 						$criteria['returnType'] = 'single';
 						$userInfo = $this->UserModel->search($criteria);
 						unset($criteria);
-
 						if(!empty($userInfo)){
-							$user_status = $this->getUserProfileStatus($userInfo['id'],false);
-							$response = array('status'=>true,'message_send'=>$user_status['message_send'],'otp_verify'=>$user_status['otp_verify'],'profile_status'=>$user_status['profile_status'],'message'=>'Login successfully','user'=>$userInfo);
+							$response = array('status'=>true,'message'=>'Login successfully','user'=>$userInfo);
 						}else{
 							$response = array('status'=>false,'message'=>"User not found");
 						}
 					}else{
 						$response = array('status'=>false,'message'=>'An error occured!Please try again');
 					}
-
 				}
 			}
-
 		}else{
 			$errors = $this->form_validation->error_array();
 			$response = array('status'=>false,'message'=>$errors);
 		}
-
 		$this->renderJson($response);
 	} // end of socialLogin method
 
