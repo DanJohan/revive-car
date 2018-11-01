@@ -92,15 +92,26 @@ class User extends Rest_Controller {
 		   			'otp'=>null,
 		   		);
 	   	   		$this->UserModel->update($update_data,array('id'=>$user_id));
-	   	   		$criteria['field'] = 'id,otp,otp_verify,created_at,updated_at';
+	   	   		$criteria['field'] = 'id,name,email,phone,created_at';
 				$criteria['conditions'] = array('id'=>$user_id);
 				$criteria['returnType'] = 'single';
 
 				$user= $this->UserModel->search($criteria);
-	   	   		$response = array('status'=>true,'message'=>'OTP verified successfully','user'=>$user);
+
+				if(empty($user['email']) && empty($user['phone'])) {
+					$profile_status = "EMAIL_PHONE_REQUIRED";
+				}else if(empty($user['email'])) {
+					$profile_status = "EMAIL_REQUIRED";
+				}else if(empty($user['phone'])) {
+					$profile_status = "PHONE_REQUIRED";
+				}else{
+					$profile_status = "COMPLETED";
+				}
+
+	   	   		$response = array('status'=>true,'profile_status'=>$profile_status,'message'=>'OTP verified successfully','user'=>$user);
 	   	   }else{
 
-	   	   		$response = array('status'=>false,'message'=>array('otp'=>'OTP code doesn\'t match'));
+	   	   		$response = array('status'=>false,'message'=>'OTP code doesn\'t match');
 
 	   	   }
 
@@ -122,9 +133,6 @@ class User extends Rest_Controller {
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
 
 		   if ($this->form_validation->run() == true){
-		   		$options = [
-				    'cost' => 12,
-				];
 				$file_name = '';
 				if(isset($_FILES['profile_image']) && !empty($_FILES['profile_image']['name'])) {
 
@@ -137,25 +145,39 @@ class User extends Rest_Controller {
 					}
 				}
 
+				$otp = generate_otp();
+				$data = array(
+						'phone'=>$this->input->post('phone'),
+						'body' =>$otp." otp for your mobile verification"
+				);
+				$message = $this->textmessage->send($data);
+
+				$message_send = (is_object($message) && $message->sid) ? true : false;
+
 		   		$insert_data=array(
 		   			'name'=>$this->input->post('name'),
 		   			'email'=>$this->input->post('email'),
 		   			'phone' => $this->input->post('phone'),
+		   			'otp' => $otp,
 		   			'profile_image'=>$file_name,
-		   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT,$options),
+		   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT),
 		   			'created_at'=>date('Y-m-d H:i:s')
 		   		);
 
 		   		$insert_id = $this->UserModel->insert($insert_data);
 		   		if($insert_id) {
-			   		$criteria['field'] = 'id,phone,name,email,profile_image,created_at';
+			   		$criteria['field'] = 'id,phone,otp_verify,name,email,profile_image,created_at';
 					$criteria['conditions'] = array('id'=>$insert_id);
 					$criteria['returnType'] = 'single';
 					$user= $this->UserModel->search($criteria);
+
+					$otp_verify = ($user['otp_verify']) ? true : false;
+
 					if(!empty($user['profile_image'])){
 						$user['profile_image']=base_url().'uploads/app/'.$user['profile_image'];
 					}
-			   	   	$response = array('status'=>true,'message'=>'Record inserted successfully','user'=>$user);
+					unset($user['otp_verify']);
+			   	   	$response = array('status'=>true,'message_send' => $message_send ,'otp_verify'=>$otp_verify,'message'=>'Record inserted successfully','user'=>$user);
 				}else{
 					$response = array('status'=>false,'message'=>'Something went wrong! Please try again.');
 				}
@@ -182,7 +204,33 @@ class User extends Rest_Controller {
 			if($user){
 				$is_verified = password_verify($password,$user['password']);
 				if($is_verified){
-					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user);
+					if(! $user['otp_verify']) {
+						$otp = generate_otp();
+						$data = array(
+								'phone'=>$user['phone'],
+								'body' =>$otp." otp for your mobile verification"
+						);
+						$message = $this->textmessage->send($data);
+						$this->UserModel->update(array('otp'=>$otp),array('id'=>$user['id']));
+						$message_send = (is_object($message) && $message->sid) ? true : false;
+						$otp_verify = false;
+					}else{
+						$message_send = false;
+						$otp_verify =true;
+					}
+
+					if(empty($user['email']) && empty($user['phone'])) {
+						$profile_status = "EMAIL_PHONE_REQUIRED";
+					}else if(empty($user['email'])) {
+						$profile_status = "EMAIL_REQUIRED";
+					}else if(empty($user['phone'])) {
+						$profile_status = "PHONE_REQUIRED";
+					}else{
+						$profile_status = "COMPLETED";
+					}
+					unset($user['password']);
+					unset($user['otp_verify']);
+					$response = array('status'=>true,'otp_verify'=>$otp_verify,'message_send'=>$message_send,'profile_status'=>$profile_status,'message'=>'Login successfully','user'=>$user);
 				}else{
 					$response = array('status'=>false,'message'=>'Your password doesn\'t match');
 				}
@@ -198,6 +246,38 @@ class User extends Rest_Controller {
 	    $this->renderJson($response);
 
 	}// end of login method 
+
+	public function comleteUserProfile() {
+		$this->form_validation->set_rules('user_id', 'User_id', 'trim|required');
+		$this->form_validation->set_rules('phone','Phone','trim|required|is_unique_update[users.phone@id@'.$this->input->post('user_id').']');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique_update[users.email@id@'.$this->input->post('user_id').']|valid_email');
+		//die;
+		if ($this->form_validation->run() == true){
+			$user_id = $this->input->post('user_id');
+			die($user_id);
+			$phone = $this->input->post('phone');
+			$email = $this->input->post('email');
+
+			$this->UserModel->update(array('phone'=>$phone,'email'=>$email),array('id'=>$user_id));
+
+			$criteria['field'] = 'id,phone,name,email,created_at';
+			$criteria['conditions'] = array('id'=>$user_id);
+			$criteria['returnType'] = 'single';
+			$user= $this->UserModel->search($criteria);
+			
+			if(!empty($user)) {
+				$user_status = $this->getUserProfileStatus($user['id']);
+				$response = array('status'=>true,'message_send'=>$user_status['message_send'],'otp_verify'=>$user_status['otp_verify'],'profile_status'=>$user_status['profile_status'],'message'=>'Login successfully','user'=>$user);
+			}else{
+				$response = array('status'=>false,'message'=>'User not found!');
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
 
 
 	public function  registerDevice() {
@@ -442,6 +522,48 @@ class User extends Rest_Controller {
 	}// end of socialPhoneRegister method
 
 
+	private function getUserProfileStatus($user_id = null) {
+		if(! $user_id) {
+			return false;  
+		}
+
+		$criteria['field'] = 'id,phone,otp_verify,email';
+		$criteria['conditions'] = array('id'=>$user_id);
+		$criteria['returnType'] = 'single';
+		$user= $this->UserModel->search($criteria);
+
+		if(empty($user['phone'])) {
+			$message_send = false;
+			$otp_verify = false;
+		}else if(! $user['otp_verify']) {
+			$otp = generate_otp();
+			$data = array(
+					'phone'=>$user['phone'],
+					'body' =>$otp." otp for your mobile verification"
+			);
+			$message = $this->textmessage->send($data);
+			$this->UserModel->update(array('otp'=>$otp),array('id'=>$user['id']));
+			$message_send = (is_object($message) && $message->sid) ? true : false;
+			$otp_verify = false;
+		}else{
+			$message_send = false;
+			$otp_verify =true;
+		}
+
+		if(empty($user['email']) && empty($user['phone'])) {
+			$profile_status = "EMAIL_PHONE_REQUIRED";
+		}else if(empty($user['email'])) {
+			$profile_status = "EMAIL_REQUIRED";
+		}else if(empty($user['phone'])) {
+			$profile_status = "PHONE_REQUIRED";
+		}else{
+			$profile_status = "COMPLETED";
+		}
+
+		return array('message_send'=>$message_send,'otp_verify'=>$otp_verify,'profile_status'=>$profile_status);
+	}
+
+
 	public function socialLogin() {
 
 		$login_type = $this->input->post('login_type');
@@ -449,10 +571,6 @@ class User extends Rest_Controller {
 			$this->form_validation->set_rules('gmail_id','Gmail id','trim|required');
 		}elseif ($login_type=='F') {
 			$this->form_validation->set_rules('facebook_id', 'Facebook_id', 'trim|required');
-		}elseif ($login_type=='T') {
-			$this->form_validation->set_rules('twitter_id', 'Twitter_id', 'trim|required');
-		}elseif ($login_type=='I') {
-			$this->form_validation->set_rules('insta_id', 'Instagram_id', 'trim|required');
 		}
 		//$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('name', 'Name', 'trim|required');
@@ -469,16 +587,12 @@ class User extends Rest_Controller {
 			$email = $this->input->post('email');
 			if($login_type =="G"){
 				$social_id = $this->input->post('gmail_id');
-				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'1');
+				$auth_provider = 1; 
+				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>$auth_provider);
 			}elseif($login_type == 'F'){
 				$social_id = $this->input->post('facebook_id');
-				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'2');
-			}elseif($login_type == 'T') {
-				$social_id = $this->input->post('twitter_id');
-				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'3');
-			}elseif ($login_type == 'I') {
-				$social_id = $this->input->post('insta_id');
-				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>'4');
+				$auth_provider = 2;
+				$criteria['conditions'] = array('external_user_id'=>$social_id,'external_authentication_provider'=>$auth_provider);
 			}
 
 			$criteria['field'] = 'id,user_id';
@@ -493,7 +607,9 @@ class User extends Rest_Controller {
 				$criteria['returnType'] = 'single';
 				$user_data = $this->UserModel->search($criteria);
 				if(!empty($user_data)){
-					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user_data);
+					$user_status = $this->getUserProfileStatus($user_data['id']);
+					$response = array('status'=>true,'message_send'=>$user_status['message_send'],'otp_verify'=>$user_status['otp_verify'],'profile_status'=>$user_status['profile_status'],'message'=>'Login successfully','user'=>$user_data);
+
 				}else{
 					$response = array('status'=>false,'message'=>"User not found!");
 				}
@@ -505,32 +621,23 @@ class User extends Rest_Controller {
 					$user_id = $is_exists_email['id'];
 		 			 $insert_data= array(
 		 			 	'user_id' =>$user_id,
+		 			 	'external_authentication_provider' => $auth_provider,
+		 			 	'external_user_id' => $social_id,
 		 			 	'name'=>$this->input->post('name'),
 		 			 	'email'=>$this->input->post('email'),
 		 			 	'created_at' => date("Y-m-d H:i:s")
 		 			 );
 
-		 			 if($login_type =="G"){
-						$insert_data['external_authentication_provider'] ="1";
-						$insert_data['external_user_id']=$this->input->post('gmail_id');
-					}elseif($login_type == 'F'){
-						$insert_data['external_authentication_provider'] ="2";
-						$insert_data['external_user_id']=$this->input->post('facebook_id');
-					}elseif($login_type == 'T') {
-						$insert_data['external_authentication_provider'] ="3";
-						$insert_data['external_user_id']=$this->input->post('twitter_id');
-					}elseif ($login_type =='I') {
-						$insert_data['external_authentication_provider'] ="4";
-						$insert_data['external_user_id']=$this->input->post('insta_id');
-					}
 					$this->UserExternalLoginModel->insert($insert_data);
+
 					$criteria['field'] = 'id,name,phone,email,created_at';
 					$criteria['conditions'] = array('id'=>$user_id);
 					$criteria['returnType'] = 'single';
 					$user_data = $this->UserModel->search($criteria);
 					unset($criteria);
 					if(!empty($user_data)){
-						$response = array('status'=>true,'message'=>'Login successfully','user'=>$user_data);
+						$user_status = $this->getUserProfileStatus($user_data['id']);
+						$response = array('status'=>true,'message_send'=>$user_status['message_send'],'otp_verify'=>$user_status['otp_verify'],'profile_status'=>$user_status['profile_status'],'message'=>'Login successfully','user'=>$user_data);
 					}else{
 						$response = array('status'=>false,'message'=>"User not found");
 					}
@@ -545,33 +652,24 @@ class User extends Rest_Controller {
 					if($insert_id) {
 						$insert_data= array(
 			 			 	'user_id' =>$insert_id,
+			 			 	'external_authentication_provider' => $auth_provider,
+			 			 	'external_user_id'=>$social_id,
 			 			 	'name'=>$this->input->post('name'),
 			 			 	'email'=>$this->input->post('email'),
 			 			 	'created_at' => date("Y-m-d H:i:s")
 			 			 );
 
-			 			if($login_type =="G"){
-							$insert_data['external_authentication_provider'] ="1";
-							$insert_data['external_user_id']=$this->input->post('gmail_id');
-						}elseif($login_type == 'F'){
-							$insert_data['external_authentication_provider'] ="2";
-							$insert_data['external_user_id']=$this->input->post('facebook_id');
-						}elseif ($login_type == 'T') {
-							$insert_data['external_authentication_provider'] ="3";
-							$insert_data['external_user_id']=$this->input->post('twitter_id');
-						}elseif ($login_type == 'I') {
-							$insert_data['external_authentication_provider'] ="4";
-							$insert_data['external_user_id']=$this->input->post('insta_id');
-						}
-						//dd($insert_data);
 						$this->UserExternalLoginModel->insert($insert_data);
+
 						$criteria['field'] = 'id,name,phone,email,created_at';
 						$criteria['conditions'] = array('id'=>$insert_id);
 						$criteria['returnType'] = 'single';
 						$userInfo = $this->UserModel->search($criteria);
 						unset($criteria);
+
 						if(!empty($userInfo)){
-							$response = array('status'=>true,'message'=>'Login successfully','user'=>$userInfo);
+							$user_status = $this->getUserProfileStatus($userInfo['id'],false);
+							$response = array('status'=>true,'message_send'=>$user_status['message_send'],'otp_verify'=>$user_status['otp_verify'],'profile_status'=>$user_status['profile_status'],'message'=>'Login successfully','user'=>$userInfo);
 						}else{
 							$response = array('status'=>false,'message'=>"User not found");
 						}
