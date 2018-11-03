@@ -1,7 +1,7 @@
 
  <section class="content">
 	 <div class="box">
-		<div class="box-header">
+		<div class="box-header bg-green">
 			<h3 class="box-title">Orders</h3>
 		</div>
 		<!-- /.box-header -->
@@ -38,10 +38,10 @@
 						<td><?php echo date('dS M Y h:i A',strtotime($order['created_at'])); ?></td>
 						<td class="text-right">
 							<div class="dropdown">
-					                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+					                <button class="btn btn-success dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
 					                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-					                    <li><a href="<?php echo base_url('admin/order/show/'.$order['id']); ?> ">View</a></li>
-					                    <li><a href="javascript:void(0)" class="forword-to-workshop" data-order-id="<?php echo $order['id']; ?>">Forward to workshop</a></li>
+					                    <li><a href="<?php echo base_url('workshop/order/show/'.$order['id']); ?> ">View</a></li>
+					                    <li><a href="<?php echo base_url('workshop/order/create_ride/'.$order['id']); ?> ">Assign driver</a></li>
 					                </ul>
 				            	</div>
 						</td>
@@ -65,20 +65,7 @@
 		});
 	});
 
-	$(document).on('click','.forword-to-workshop',function(){
-		var order_id = $(this).data('order-id');
-		$.ajax({
-			url:config.baseUrl+'admin/order/getManagarListForm',
-			method:"POST",
-			data:{'order_id':order_id},
-			success:function(response){
-				if(response.status){
-					$('.modal-content').html(response.template);
-					$('#basicModal').modal();
-				}
-			}
-		});
-	});
+
 </script> 
 <?php $this->widget->endBlock(); ?>
 		 

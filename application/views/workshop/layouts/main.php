@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		  <title><?=isset($title)?$title:'Customer Relationship Management' ?></title>
+		  <title><?=isset($title)?$title:'Workshop Management System' ?></title>
 		  <!-- Tell the browser to be responsive to screen width -->
 		  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 		  <!-- Bootstrap 3.3.6 -->
@@ -12,14 +12,16 @@
 		  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 		  <!-- Theme style -->
 	      <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/AdminLTE.min.css">
-	       <!-- Datatable style -->
+	           <!-- Datatable style -->
 		  <link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css"> 
-		    <link rel="stylesheet" href="<?= base_url() ?>public/vendor/alertifyjs/css/alertify.css"> 
+		  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		     <link rel="stylesheet" href="<?= base_url() ?>public/vendor/alertifyjs/css/alertify.css"> 
 	       <!-- Custom CSS -->
 		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/style.css">
 		  <!-- AdminLTE Skins. Choose a skin from the css/skins. -->
-		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/skins/skin-blue.min.css">
-		  <!-- jQuery 2.2.3 -->
+		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/skins/skin-green.min.css">
+
+
 		  <?php $this->widget->beginBlock('stylesheets',true); ?>
 		  <?php $this->widget->endBlock(); ?>
 
@@ -31,19 +33,18 @@
 		  </script>
 		
 	</head>
-	<body class="hold-transition skin-blue sidebar-mini">
+	<body class="hold-transition skin-green sidebar-mini">
 		<div class="wrapper" style="height: auto;">
-
 			
 			<section id="container">
 				<!--header start-->
 				<header class="header white-bg">
-					<?php $this->load->view('admin/include/navbar.php'); ?>
+					<?php $this->load->view('workshop/include/navbar.php'); ?>
 				</header>
 				<!--header end-->
 				<!--sidebar start-->
 				<aside>
-					<?php $this->load->view('admin/include/sidebar.php'); ?>
+					<?php $this->load->view('workshop/include/sidebar.php'); ?>
 				</aside>
 				<!--sidebar end-->
 				<!--main content start-->
@@ -57,25 +58,28 @@
 				<!--main content end-->
 				<!--footer start-->
 				<footer class="main-footer">
-					<strong>Copyright © 2018 <a href="#">Smart Serve Infotech</a></strong> All rights
+					<strong>Copyright © 2018 <a href="javascript:void(0);">Smart Serve Infotech</a></strong> All rights
 					reserved.
 				</footer>
 				<!--footer end-->
 			</section>
 
+			<!-- /.control-sidebar -->
+			<?php $this->load->view('workshop/include/control_sidebar.php'); ?>
+
 	</div>	
-    
-<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery3.3.1.min.js"></script>	
-<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery-ui.min.js"></script>	
-<script type="text/javascript" src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/app.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/vendor/alertifyjs/alertify.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/main.js"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery3.3.1.min.js"></script>	
+	<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery-ui.min.js"></script>	
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>public/dist/js/app.min.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>public/dist/js/demo.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>public/vendor/alertifyjs/alertify.min.js"></script>
+	
+	<script type="text/javascript">
  // $(".<?php //echo $cur_tab; ?>").addClass('active');
   $("#<?php echo $cur_tab_link; ?>").addClass('active');
 </script>

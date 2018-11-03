@@ -418,7 +418,7 @@ label{
     bottom: 0px;
     right: 100px;
 }
-.error{
+label.error{
     color:red;
 }
 
@@ -441,3 +441,17 @@ label{
 .table-responsive{
 	overflow-y: -webkit-paged-y;
 }
+
+.ajs-message {
+    border: 2px solid white;
+    color : white;
+}
+
+.ajs-message.ajs-info { 
+	background-color: #31708f;  
+
+ }
+
+ .row-pb-5{
+	padding-bottom: 5px;
+ }

@@ -1,11 +1,13 @@
+<script type="text/javascript">
+	 alertify.set('notifier','position', 'top-right');
+</script>>
 <?php
 if($this->session->flashdata('success_msg') != '') {
 ?>
-<div class="alert alert-success flash-msg alert-dismissible">
-	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-	<h4> Success!</h4>
-  <?php echo $this->session->flashdata('success_msg'); ?>
-</div>
+<script type="text/javascript">
+	alertify.notify('<?php echo $this->session->flashdata('success_msg'); ?>', 'success', 5, function(){  console.log('dismissed'); });
+
+</script>
 <?php
 }
 ?>
@@ -13,11 +15,10 @@ if($this->session->flashdata('success_msg') != '') {
 <?php
 if($this->session->flashdata('error_msg') != '') {
 ?>
-<div class="alert alert-danger flash-msg alert-dismissible">
-	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-	<h4> Alert!</h4>
-  	<?php echo $this->session->flashdata('error_msg'); ?>
-</div>
+<script type="text/javascript">
+	alertify.notify('<?php echo $this->session->flashdata('error_msg'); ?>', 'error', 5, function(){  console.log('dismissed'); });
+
+</script>
 <?php
 }
 ?>
@@ -25,11 +26,10 @@ if($this->session->flashdata('error_msg') != '') {
 <?php
 if($this->session->flashdata('info_msg') != '') {
 ?>
-<div class="alert alert-info flash-msg alert-dismissible">
-	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-	<h4>Information!</h4>
-  	<?php echo $this->session->flashdata('info_msg'); ?>
-</div>
+<script type="text/javascript">
+	alertify.notify('<?php echo $this->session->flashdata('info_msg'); ?>', 'info', 5, function(){  console.log('dismissed'); });
+
+</script>
 <?php
 }
 ?>

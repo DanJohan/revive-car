@@ -12,6 +12,7 @@ class Driver extends Rest_Controller {
 	    $this->load->model('RepairOrderModel');
 	    $this->load->model('DriverNotificationModel');
 	    $this->load->model('DriverModel');
+	    $this->load->model('RideModel');
 	}
 
 	/**
@@ -59,15 +60,19 @@ class Driver extends Rest_Controller {
 	 */
 	public function verifyCustomerCode(){
 		$this->form_validation->set_rules('code', 'Verfication code', 'trim|required');
+		$this->form_validation->set_rules('ride_id', 'Ride id', 'trim|required');
 		if ($this->form_validation->run() == true){
 			$code = $this->input->post('code');
-			$criteria['field'] = 'id AS enquiry_id,car_id,user_id';
-			$criteria['conditions'] = array('verification_code'=>$code);
+			$ride_id = $this->input->post('ride_id');
+
+			$criteria['field'] = 'order_id';
+			$criteria['conditions'] = array('verfication_code'=>$code,'id'=>$ride_id);
 			$criteria['returnType'] = 'single';
-			$enquiry = $this->ServiceEnquiryModel->search($criteria);
-			if($enquiry){
+
+			$result = $this->RideModel->search($criteria);
+			if($result){
 				//$this->ServiceEnquiryModel->update(array('verification_code'=>null),array('id'=>$enquiry['enquiry_id']));
-				$response = array('status'=>true,'message'=>'Record found successfully!','data'=>$enquiry);
+				$response = array('status'=>true,'message'=>'Record found successfully!','data'=>$result);
 			}else{
 				$response = array('status'=>false,'message'=>'No detail found!');
 			}
@@ -360,12 +365,11 @@ class Driver extends Rest_Controller {
 		$this->renderJson($response);
 	}
 
-	public function getDeliveryCars() {
+	public function getRides() {
 		$this->form_validation->set_rules('driver_id', 'driver id', 'trim|required');
-		$this->load->model('RideModel');
 		if ($this->form_validation->run() == true) {
 			$driver_id = $this->input->post('driver_id');
-			$rides = $this->RideModel->get_all(array('driver_id'=>$driver_id));
+			$rides = $this->RideModel->getDriverRides($driver_id);
 			if(!empty($rides)){
 				$response = array('status'=>true,'message'=>'Record found successfully','data'=>$rides);
 			}else{
@@ -378,6 +382,11 @@ class Driver extends Rest_Controller {
 		}
 
 		$this->renderJson($response);
+	}
+
+
+	public function getOrderDetail(){
+		$this->form_validation->set_rules('driver_id', 'driver id', 'trim|required');
 	}
 
 

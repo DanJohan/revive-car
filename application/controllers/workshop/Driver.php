@@ -20,9 +20,9 @@
 			$mangar_id = $this->session->userdata('id');
 			$data['driverData'] =  $this->DriverModel->get_all(array('d_workshop_assign'=>$mangar_id));
 			//echo $this->db->last_query();die;
-			$data['view'] = 'workshop/driver/view_driver';
+			//$data['view'] = 'workshop/driver/view_driver';
 			//print_r($data['all_manager'][0]);die;
-			$this->load->view('workshop/layout', $data);
+			$this->renderView('workshop/driver/view_driver', $data);
 
 		}
 

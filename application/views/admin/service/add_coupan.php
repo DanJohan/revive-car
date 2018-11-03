@@ -94,7 +94,7 @@
 					required:true
 				}
 		}
-	 });
+	 	});
 	});// end of ready function
 </script>
  

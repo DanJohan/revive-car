@@ -17,8 +17,8 @@
 
 		public function index(){
 			$data['userData'] =  $this->UserModel->get_all(array('name !='=>'','email !='=>''),array('id','desc'));
-			$data['view'] = 'workshop/users/user_list';
-			$this->load->view('workshop/layout', $data);
+
+			$this->renderView('workshop/users/user_list', $data);
 		}
 
 		public function show($id){
@@ -28,8 +28,7 @@
 			$criteria['returnType'] = 'single';
 			$data['user'] =  $this->UserModel->search($criteria);
 			$data['cars'] = $this->CarModel->getCarWithUserByUserId($id);
-			$data['view'] = 'workshop/users/user_view';
-			$this->load->view('workshop/layout',$data);
+			$this->renderView('workshop/users/user_view',$data);
 		  }
 		
 		

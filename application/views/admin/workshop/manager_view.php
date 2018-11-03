@@ -1,4 +1,4 @@
-      <div class="modal-header admin-header">
+<div class="modal-header admin-header">
         <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
         <h3 class="modal-title">Manager Details</h3>
       </div>
@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-    </div>
+  </div>
                     <!-- /.modal-content -->
 
 

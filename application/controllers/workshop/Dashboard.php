@@ -22,8 +22,8 @@
 			$data['driverCount'] =  $this->DriverModel->search($criteria);
 			$data['userCount'] =  $this->UserModel->search($criteria);
 			$data['enquiryCount'] =  $this->ServiceEnquiryModel->search($criteria);	
-			$data['view'] = 'workshop/dashboard/index';
-			$this->load->view('workshop/layout', $data);
+			//$data['view'] = 'workshop/dashboard/index';
+			$this->renderView('workshop/dashboard/index', $data);
 		}
 
 	}

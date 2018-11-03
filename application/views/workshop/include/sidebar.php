@@ -1,13 +1,4 @@
-<?php 
-$cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
-$cur_tab_link =   $this->uri->segment(3)==''?'index': $this->uri->segment(3);
-if($cur_tab=='enquiry'){
-  $cur_tab_link="e_".$cur_tab_link;
-}
-if($cur_tab=='users'){
-  $cur_tab_link="u_".$cur_tab_link;
-}
-?>  
+
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -55,8 +46,8 @@ if($cur_tab=='users'){
             </a>
             <ul class="treeview-menu">
               <li id="u_index" class=""><a href="<?= base_url('workshop/users'); ?>"><i class="fa fa-arrow-circle-right text-green"></i>Customers Detail</a></li>
-              <li id="e_index"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-arrow-circle-right text-green"></i>Customers enquiry</a></li>
-              <li id="list"><a href="<?= base_url('workshop/jobCard/list'); ?>"><i class="fa fa-arrow-circle-right text-green"></i>Customers job cards</a></li>
+           <!--    <li id="e_index"><a href="<?= base_url('workshop/enquiry/index'); ?>"><i class="fa fa-arrow-circle-right text-green"></i>Customers enquiry</a></li>
+           <li id="list"><a href="<?= base_url('workshop/jobCard/list'); ?>"><i class="fa fa-arrow-circle-right text-green"></i>Customers job cards</a></li> -->
             </ul>
           </li>
 
@@ -71,14 +62,21 @@ if($cur_tab=='users'){
               <li id="view_driver" class=""><a href="<?= base_url('workshop/driver/view_driver'); ?>"><i class="fa fa-arrow-circle-right text-green"></i> View Driver Details</a></li>
             </ul>
         </li>
+
+        <li id="" class="treeview car active">
+            <a href="#" class="sidebar-toggle">
+              <i class="fa fa-car"></i> <span>Order Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li id="add_carbrand"><a href="<?= base_url('workshop/order/list'); ?>"><i class="fa fa-arrow-circle-right text-green"></i>View orders</a></li>
+           </ul>
+     </li>
       </ul> 
        
     </section>
     <!-- /.sidebar -->
   </aside>
 
-  
-<script>
-  //$(".<?php echo $cur_tab; ?>").addClass('active');
-  $("#<?php echo $cur_tab_link; ?>").addClass('active');
-</script>

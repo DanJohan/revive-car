@@ -22,6 +22,16 @@ class MY_Controller extends CI_Controller
       $this->load->view($layout, $data);  
   }
 
+  protected function renderView($the_view = NULL,$data=array() ,$layout = 'workshop/layouts/main')
+  {	
+  	$tabs= $this->initSidebarTab();
+  	$data['cur_tab'] = $tabs['cur_tab'];
+  	$data['cur_tab_link'] = $tabs['cur_tab_link'];
+     $data['content'] = (is_null($the_view)) ? '' : $this->load->view($the_view,$data, TRUE);
+      //dd($this->widget);
+      $this->load->view($layout, $data);  
+  }
+
   protected function initSidebarTab(){
   	$cur_tab = $this->uri->segment(2)==''?'dashboard': $this->uri->segment(2);
 	$cur_tab_link =   $this->uri->segment(3)==''?'index': $this->uri->segment(3);
