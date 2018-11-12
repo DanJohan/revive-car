@@ -54,7 +54,7 @@
 				   				</div>
 				   				<div class="row row-pb-5">
 				   					<div class="col-xs-3">Payment type</div>
-				   					<div class="col-xs-3"><?php echo $order['payment_type']; ?></div>
+				   					<div class="col-xs-3"><?php echo ($order['payment_type'])? $order['payment_type'] : 'Not selected'; ?></div>
 				   				</div>
 				   				<div class="row row-pb-5">
 				   					<div class="col-xs-3">Created_at</div>

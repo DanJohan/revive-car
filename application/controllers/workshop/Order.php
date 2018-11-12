@@ -25,17 +25,28 @@ class Order extends MY_Controller {
 		$this->renderView('workshop/order/list',$data);
 	}
 
-	public function show($id = null){
-		if(!$id){
+	public function show($hash = null){
+		if(!$hash){
 			$this->session->set_flashdata('error_msg','No detail found !');
-			redirect('admin/order/list');
+			redirect('workshop/order/list');
 		}
+		$criteria['field'] = 'id';
+		$criteria['conditions'] = array('hash'=>$hash);
+		$criteria['returnType'] = 'single';
+
+		$order_result = $this->OrderModel->search($criteria);
+
+		if(empty($order_result)) {
+			$this->session->set_flashdata('error_msg','No detail found !');
+			redirect('workshop/order/list');
+		}
+
 		$data = array();
-		$order = $this->OrderModel->getOrderById($id);
+		$order = $this->OrderModel->getOrderById($order_result['id']);
 		//dd($order);
 		if(empty($order)){
 			$this->session->set_flashdata('error_msg','No detail found !');
-			redirect('admin/order/list');
+			redirect('workshop/order/list');
 		}
 
 		$order_item_keys = array('order_item_id', 'order_item_order_id', 'service_id', 'service_name','price');
@@ -58,10 +69,22 @@ class Order extends MY_Controller {
 		$this->renderView('workshop/order/show',$data);
 	}
 
-	public function create_ride($id=null){
-		if(!$id){
+	public function create_ride($hash=null){
+		if(!$hash){
+			$this->session->set_flashdata('error_msg','No detail found !');
 			redirect('workshop/order/list');
 		}
+
+		$criteria['field'] = 'id';
+		$criteria['conditions'] = array('hash'=>$hash);
+		$criteria['returnType'] = 'single';
+
+		$order = $this->OrderModel->search($criteria);
+		if(!$order){
+			$this->session->set_flashdata('error_msg','No detail found !');
+			redirect('workshop/order/list');
+		}
+
 		$this->load->helper('api');
 		if($this->input->post('submit')){
 			//dd($_POST);
@@ -70,9 +93,15 @@ class Order extends MY_Controller {
 			$randomInt = $generator->generateInt(100000, 999999);
 			$randomChar = $generator->generateString(3,'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 			$otp = $randomChar.$randomInt;
-
+			$driver_id = $this->input->post('driver');
+			$ride_type = $this->input->post('ride_type');
+			$check_ride = $this->RideModel->checkRideExists($order['id'],$driver_id, $ride_type);
+			if($check_ride) {
+				$this->session->set_flashdata('error_msg','Ride is already scheduled for this order !');
+				redirect('workshop/order/list');
+			}
 			$insert_data = array(
-				'order_id' => $this->input->post('order_id'),
+				'order_id' => $order['id'],
 				'driver_id' => $this->input->post('driver'),
 				'ride_date' => date('Y-m-d',strtotime($this->input->post('ride_date'))),
 				'ride_time' => date('h:iA',strtotime($this->input->post('ride_time'))),
@@ -127,14 +156,15 @@ class Order extends MY_Controller {
 						}
 
 						$this->session->set_flashdata('success_msg','Ride scheduled successfully!');
-						redirect('workshop/order/create_ride/'.$this->input->post('order_id'));
+						redirect('workshop/order/create_ride/'.$hash);
 				}
 			}else{
 				$this->session->set_flashdata('error_msg','Something went wrong!');
-				redirect('workshop/order/create_ride/'.$this->input->post('order_id'));
+				redirect('workshop/order/create_ride/'.$hash);
 			}
 		}
-		$data['order_id'] = $id;
+
+		$data['hash'] = $hash;
 		$manager_id = $this->session->userdata('id');
 		$data['drivers'] = $this->DriverModel->get_all(array('d_workshop_assign'=>$manager_id));
 		$this->renderView('workshop/order/create_ride',$data);

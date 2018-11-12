@@ -7,7 +7,7 @@ class JobCard extends Rest_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
-	    $this->load->model('JobcardModel'); 
+	    $this->load->model('JobcardModel');
 	    $this->load->model('InvoiceModel');
 	}
 

@@ -6,8 +6,7 @@
 		</div>
 		<!-- /.box-header -->
 		<div class="box-body table-responsive">
-			<form id="create_ride" action="<?php echo base_url();?>workshop/order/create_ride/<?php echo $order_id; ?>" method="post" class="form-horizontal col-xs-8">
-					<input type="hidden" value="<?php echo $order_id; ?>" name="order_id">
+			<form id="create_ride" action="<?php echo base_url();?>workshop/order/create_ride/<?php echo $hash; ?>" method="post" class="form-horizontal col-xs-8">
 					<div class="form-group">
 							<label for="driver" class="col-xs-2 control-label">Drivers</label>
 							<div class="col-xs-10">

@@ -62,9 +62,10 @@ class Order extends Rest_Controller {
 			$this->load->library('sequence');
 			$this->sequence->createSequence('order');
 			$sequence = $this->sequence->getNextSequence();
+			$user_id = $this->input->post('user_id');
 			$order_data = array(
 				'order_no' =>$sequence['sequence'],
-				'hash'=> md5(uniqid(true)),
+				'hash'=> md5(uniqid($user_id,true)),
 				'service_type'=>$this->input->post('service_type'),
 				'service_center' => $this->input->post('service_center'),
 				'loaner_vehicle' => $this->input->post('loaner_vehicle'),
@@ -75,7 +76,7 @@ class Order extends Rest_Controller {
 				'net_pay_amount' => $this->input->post('net_pay_amount'),
 				'paid' => $this->input->post('paid_status'),
 				'payment_type_id'=>$this->input->post('payment_type'),
-				'user_id'=>$this->input->post('user_id'),
+				'user_id'=>$user_id,
 				'car_id' => $this->input->post('car_id'),
 				'created_at' =>date('Y-m-d H:i:s')
 			);
@@ -120,6 +121,7 @@ class Order extends Rest_Controller {
 
 				$order_detail = $this->OrderModel->getById($order_id);
 				if(!empty($order_detail)){
+					$order_detail = $this->OrderModel->arrangeOrderData($order_detail);
 					$response = array('status'=>true,'message'=>'Order placed successfully','data'=>$order_detail);
 				}else{
 					$response = array('status'=>false,'message'=>'Something went wrong!');

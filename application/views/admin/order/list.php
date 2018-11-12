@@ -21,7 +21,7 @@
 				</thead>
 				<tbody>
 				 <?php 
-					if(count($orders)) {
+					if($orders) {
 					foreach($orders as $order){ 
 				?>
 					<tr>

@@ -6,10 +6,10 @@ class Driver extends Rest_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
-	    $this->load->model('ServiceEnquiryModel');
-	    $this->load->model('JobcardModel');
-	    $this->load->model('JobCardImageModel');
-	    $this->load->model('RepairOrderModel');
+	  //  $this->load->model('ServiceEnquiryModel');
+	   // $this->load->model('JobcardModel');
+	  //  $this->load->model('JobCardImageModel');
+	    $this->load->model('OrderModel');
 	    $this->load->model('DriverNotificationModel');
 	    $this->load->model('DriverModel');
 	    $this->load->model('RideModel');
@@ -386,7 +386,23 @@ class Driver extends Rest_Controller {
 
 
 	public function getOrderDetail(){
-		$this->form_validation->set_rules('driver_id', 'driver id', 'trim|required');
+		$this->form_validation->set_rules('order_id', 'Order id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+			$order_id = $this->input->post('order_id');
+			$order = $this->OrderModel->getById($order_id);
+			if(!empty($order)){
+				$order = $this->OrderModel->arrangeOrderData($order);
+				$response  = array('status'=>true,'message'=>'Record found successfully','data'=>$order);
+			}else{
+				$response = array('status'=>false,'message'=>'No detail found!');
+			}
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+
+		$this->renderJson($response);
 	}
 
 

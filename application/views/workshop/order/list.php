@@ -21,7 +21,7 @@
 				</thead>
 				<tbody>
 				 <?php 
-					if(count($orders)) {
+					if(($orders)) {
 					foreach($orders as $order){ 
 				?>
 					<tr>
@@ -40,8 +40,8 @@
 							<div class="dropdown">
 					                <button class="btn btn-success dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
 					                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-					                    <li><a href="<?php echo base_url('workshop/order/show/'.$order['id']); ?> ">View</a></li>
-					                    <li><a href="<?php echo base_url('workshop/order/create_ride/'.$order['id']); ?> ">Assign driver</a></li>
+					                    <li><a href="<?php echo base_url('workshop/order/show/'.$order['hash']); ?> ">View</a></li>
+					                    <li><a href="<?php echo base_url('workshop/order/create_ride/'.$order['hash']); ?> ">Assign driver</a></li>
 					                </ul>
 				            	</div>
 						</td>

@@ -37,4 +37,13 @@ class RideModel extends MY_Model {
 		return $result;
 	}
 
+	//used in workshop crm
+	public function checkRideExists($order_id, $driver_id, $ride_type) {
+		$this->db->select('id');
+		$this->db->from($this->table.' AS r');
+		$this->db->where(array('order_id'=>$order_id,'driver_id'=>$driver_id,'ride_type'=>$ride_type));
+		$result = $this->db->get()->row_array();
+		return (!empty($result)) ? true : false;
+	}
+
 }

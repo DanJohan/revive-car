@@ -28,7 +28,7 @@ class Order extends MY_Controller {
 		}
 		$data = array();
 		$order = $this->OrderModel->getOrderById($id);
-		//dd($order);
+
 		if(empty($order)){
 			$this->session->set_flashdata('error_msg','No detail found !');
 			redirect('admin/order/list');

@@ -21,7 +21,6 @@
 		}
 
 		public function index(){
-
 			$data=array();
 			$criteria['returnType'] = 'count';
 			$data['driverCount'] =  $this->DriverModel->search($criteria);
