@@ -16,4 +16,9 @@ define('DRIVER_PUSH_AUTH_KEY',getenv('DRIVER_PUSH_AUTH_KEY'));
 
 define('JWT_KEY',getenv('JWT_KEY'));
 
+define('PUSHER_APP_ID',getenv('PUSHER_APP_ID'));
+define('PUSHER_KEY',getenv('PUSHER_KEY'));
+define('PUSHER_SECRET',getenv('PUSHER_SECRET'));
+define('PUSHER_CLUSTER',getenv('PUSHER_CLUSTER'));
+
 ?>

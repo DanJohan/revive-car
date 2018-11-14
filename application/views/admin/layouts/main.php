@@ -68,17 +68,33 @@
 <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery3.3.1.min.js"></script>	
 <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery-ui.min.js"></script>	
 <script type="text/javascript" src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/app.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/app.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/vendor/alertifyjs/alertify.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/main.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/pusher.min.js"></script>
 <script type="text/javascript">
  // $(".<?php //echo $cur_tab; ?>").addClass('active');
   $("#<?php echo $cur_tab_link; ?>").addClass('active');
 </script>
+  <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('<?php echo PUSHER_KEY; ?>', {
+      cluster: '<?php echo PUSHER_CLUSTER; ?>',
+      forceTLS: true
+    });
+
+    var channel = pusher.subscribe('order');
+    channel.bind('receive-order', function(data) {
+     alertify.notify(data.message, 'success', 5, function(){  console.log('dismissed'); });
+    });
+  </script>
 <?php $this->widget->beginBlock('scripts', true); ?>
 <?php $this->widget->endBlock(); ?>
 <?php $this->load->view('common/flashmessage'); ?>

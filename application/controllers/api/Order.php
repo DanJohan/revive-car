@@ -119,6 +119,10 @@ class Order extends Rest_Controller {
 					$this->OrderCarImagesModel->updateOrderImages($image_ids,$order_id);
 				}
 
+				$pusher = new Pusher\Pusher(PUSHER_KEY,PUSHER_SECRET,PUSHER_APP_ID,array('cluster' => PUSHER_CLUSTER,'useTLS' => true));
+				 $data['message'] = 'You have new order received!';
+  				 $pusher->trigger('order', 'receive-order', $data);
+
 				$order_detail = $this->OrderModel->getById($order_id);
 				if(!empty($order_detail)){
 					$order_detail = $this->OrderModel->arrangeOrderData($order_detail);

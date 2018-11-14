@@ -406,6 +406,8 @@ function _init() {
         //Check if the next element is a menu and is visible
         if ((checkElement.is('.treeview-menu')) && (checkElement.is(':visible')) && (!$('body').hasClass('sidebar-collapse'))) {
           //Close the menu
+          return false;
+          //console.log("main menu");
           checkElement.slideUp(animationSpeed, function () {
             checkElement.removeClass('menu-open');
             //Fix the layout in case the sidebar stretches over the height of the window

@@ -7,8 +7,8 @@ class Driver extends Rest_Controller {
 	{
 	    parent::__construct();
 	  //  $this->load->model('ServiceEnquiryModel');
-	   // $this->load->model('JobcardModel');
-	  //  $this->load->model('JobCardImageModel');
+	    $this->load->model('JobcardModel');
+	    $this->load->model('JobCardImageModel');
 	    $this->load->model('OrderModel');
 	    $this->load->model('DriverNotificationModel');
 	    $this->load->model('DriverModel');
@@ -124,9 +124,9 @@ class Driver extends Rest_Controller {
 	public function createJob(){
 
 		//$this->renderJson(array('post'=>$_POST,'file'=>$_FILES,'raw'=>$this->input->raw_input_stream));
-		$this->form_validation->set_rules('enquiry_id', 'Enquiry id', 'trim|required');
-		$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
-		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
+		$this->form_validation->set_rules('order_id', 'Order id', 'trim|required');
+		//$this->form_validation->set_rules('car_id', 'Car id', 'trim|required');
+		//$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		$this->form_validation->set_rules('driver_id', 'Driver id', 'trim|required');
 		$this->form_validation->set_rules('user_name',' Name', 'trim|required');
 		$this->form_validation->set_rules('user_email',' Email', 'trim|required|valid_email');
@@ -135,9 +135,9 @@ class Driver extends Rest_Controller {
 
 		if ($this->form_validation->run() == true){
 			$insert_data = array(
-				'enquiry_id' => $this->input->post('enquiry_id'),
-				'car_id' =>$this->input->post('car_id'),
-				'user_id' => $this->input->post('user_id'),
+				'order_id' => $this->input->post('order_id'),
+				//'car_id' =>$this->input->post('car_id'),
+				//'user_id' => $this->input->post('user_id'),
 				'driver_id'=>$this->input->post('driver_id'),
 				'user_name' => $this->input->post('user_name'),
 				'user_email' => $this->input->post('user_email'),
@@ -160,7 +160,7 @@ class Driver extends Rest_Controller {
 			$insert_id = $this->JobcardModel->insert($insert_data);
 
 			// insert jobs data
-			$repair_orders= $this->input->post('repair_order');
+			/*$repair_orders= $this->input->post('repair_order');
 			if(!empty($repair_orders) && $insert_id){
 				foreach ($repair_orders as $index => $repair_order) {
 					$repair_orders[$index]['job_card_id'] = $insert_id;
@@ -178,7 +178,7 @@ class Driver extends Rest_Controller {
 				}
 			}
 
-			$this->RepairOrderModel->insert_batch($repair_orders);
+			$this->RepairOrderModel->insert_batch($repair_orders);*/
 
 			// insert job card images
 			$files_data = array();
@@ -282,30 +282,7 @@ class Driver extends Rest_Controller {
 
 	}// end of registerDevice method
 
-	public function viewJobCard($id=null) {
-		if($id){
-			$job_card=$this->JobcardModel->getJobCardById($id);
-		}
 
-		if(empty($job_card)){
-			log_message('debug',"No detail found for ".$id);
-			show_error('No detail found!',404);
-		}
-		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('image','image_id')),SORT_REGULAR),'image_id','');
-		$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price')),SORT_REGULAR),'repair_order_id','');
-		$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
-		$job_card = $job_card[0];
-		$removeKeys=array('image','image_id','repair_order_id','parts_name','customer_request','sa_remarks','price_labour','price_parts','price_total','enquiry_image_id','enquiry_image');
-		foreach($removeKeys as $key) {
-		   unset($job_card[$key]);
-		}
-		$job_card['images_data']=$job_card_images;
-		$job_card['repair_orders']=$repair_orders;
-		$job_card['enquiry_images'] = $enquiry_images;
-		$data['job_card'] = $job_card;
-		//dd($data['job_card']);
-		$this->load->view('api/job_card_detail',$data);
-	}
 
 	public function getAllJobCards() {
 		$this->form_validation->set_rules('driver_id', 'Driver id', 'trim|required');
@@ -390,8 +367,14 @@ class Driver extends Rest_Controller {
 		if ($this->form_validation->run() == true) {
 			$order_id = $this->input->post('order_id');
 			$order = $this->OrderModel->getById($order_id);
+			//dd($order);
 			if(!empty($order)){
 				$order = $this->OrderModel->arrangeOrderData($order);
+				//dd($order);
+				if($order['profile_image']) {
+					$order['profile_image'] = base_url()."uploads/app/".$order['profile_image'];
+				}
+				//dd($order);
 				$response  = array('status'=>true,'message'=>'Record found successfully','data'=>$order);
 			}else{
 				$response = array('status'=>false,'message'=>'No detail found!');

@@ -71,7 +71,7 @@
     <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery3.3.1.min.js"></script>	
 	<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery-ui.min.js"></script>	
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="<?= base_url() ?>public/dist/js/app.min.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>public/dist/js/app.js"></script>
 	<script type="text/javascript" src="<?= base_url() ?>public/dist/js/demo.js"></script>
 	<script type="text/javascript" src="<?= base_url() ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>

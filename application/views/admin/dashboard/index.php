@@ -44,14 +44,14 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><?php echo $enquiryCount; ?></h3>
+              <h3><?php echo $ordersCount; ?></h3>
 
-              <p>Enquiry</p>
+              <p>Orders</p>
             </div>
             <div class="icon">
               <img height="80" width="80" src="<?= base_url() ?>public/dist/img/enquiry.png">
             </div>
-            <a href="<?= base_url('admin/enquiry/show'); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?= base_url('admin/order/list'); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
 

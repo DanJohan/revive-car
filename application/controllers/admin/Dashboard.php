@@ -14,7 +14,7 @@
 			$this->load->model('WorkshopModel');
 
 			$this->load->model('UserModel');
-			$this->load->model('ServiceEnquiryModel');
+			$this->load->model('OrderModel');
 			$this->load->model('CarModel');
 
 			
@@ -26,7 +26,7 @@
 			$data['driverCount'] =  $this->DriverModel->search($criteria);
 			$data['userCount'] =  $this->UserModel->search($criteria);	
 			$data['workshopCount'] =  $this->WorkshopModel->search($criteria);
-			$data['enquiryCount'] =  $this->ServiceEnquiryModel->search($criteria);	
+			$data['ordersCount'] =  $this->OrderModel->search($criteria);	
 			
 			//$data['view'] = 'admin/dashboard/index';
 			$this->render('admin/dashboard/index', $data);
