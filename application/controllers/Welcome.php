@@ -10,6 +10,9 @@ class Welcome extends CI_Controller {
 		$this->load->view('user');
 		
 	}
+	
+	public function test(){
+	}
 
 	public function update_service(){
 		die("Are you sure to run this script!");
