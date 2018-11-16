@@ -159,6 +159,7 @@ class User extends Rest_Controller {
 			if($user){
 				$is_verified = password_verify($password,$user['password']);
 				if($is_verified){
+					unset($user['password']);
 					$response = array('status'=>true,'message'=>'Login successfully','user'=>$user);
 				}else{
 					$response = array('status'=>false,'message'=>'Your password doesn\'t match');
