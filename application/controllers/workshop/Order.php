@@ -116,7 +116,7 @@ class Order extends MY_Controller {
 				$update_order_data = array(
 					'loaner_vehicle' => $this->input->post('loaner_vehicle'),
 					'lv_reg_no'	=> ($this->input->post('lv_reg_no'))? $this->input->post('lv_reg_no') :null,
-					'status' => 1,
+					'status' => 3,
 				);
 				
 				$this->OrderModel->update($update_order_data,array('id'=>$order['id']));

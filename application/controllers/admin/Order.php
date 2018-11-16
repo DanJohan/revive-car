@@ -71,8 +71,18 @@ class Order extends MY_Controller {
 		if(count($this->input->post())){
 			$order_id = $this->input->post('order_id');
 			$manager_id = $this->input->post('manager_id');
-			$this->OrderModel->update(array('assign_workshop_id'=>$manager_id),array('id'=>$order_id));
-			$this->session->set_flashdata('success_msg','Forward to workshop successfully!');
+
+			$criteria['field'] = 'assign_workshop_id';
+			$criteria['conditions'] = array('id'=>$order_id);
+			$criteria['returnType'] = 'single';
+			$result = $this->OrderModel->search($criteria);
+
+			if(empty($result['assign_workshop_id'])){
+				$this->OrderModel->update(array('assign_workshop_id'=>$manager_id),array('id'=>$order_id));
+				$this->session->set_flashdata('success_msg','Forward to workshop successfully!');
+			}else{
+				$this->session->set_flashdata('error_msg','Order  is already forward to workshop!');
+			}
 		}
 		redirect('admin/order/list');
 		

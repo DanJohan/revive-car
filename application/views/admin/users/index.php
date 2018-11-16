@@ -27,9 +27,15 @@
             <td><?php echo $user['phone']; ?></td>
             <td><?php echo date('d M Y h:i A',strtotime($user['created_at'])); ?></td>
            <td class="text-right">
-              <a data-toggle="modal" class="btn btn-success" data-toggle="tooltip" href="<?= base_url('admin/users/show/'.$user['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
-            <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/users/edit/'.$user['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-            <a class="btn btn-danger" onclick="return confirm('Are you sure to delete this record?')" data-toggle="tooltip" href="<?= base_url('admin/users/del/'.$user['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
+
+           	<div class="dropdown">
+	                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+	                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+	                    <li><a href="<?= base_url('admin/users/show/'.$user['id']); ?>">View</a></li>
+	                    <li><a href="<?= base_url('admin/users/edit/'.$user['id']); ?>">Edit</a></li>
+	                    <li><a href="<?= base_url('admin/users/del/'.$user['id']); ?>" onclick="return confirm('Are you sure to delete this record?')">Delete</a></li>
+	                </ul>
+            	</div>
             
             </td>
           </tr>

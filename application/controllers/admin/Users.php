@@ -14,7 +14,7 @@
 		}
  
 		public function index(){
-			$data['all_users'] =  $this->UserModel->get_all(array('name !='=>'','email !='=>''),array('id','desc'));
+			$data['all_users'] =  $this->UserModel->get_all(NULL,array('id','desc'));
 			//$data['view'] = 'admin/users/user_list';
 			//$this->load->view('admin/layout', $data);
 			$this->render('admin/users/index', $data);

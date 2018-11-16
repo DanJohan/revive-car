@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Add New Driver</h3>
+          <h3 class="box-title">Edit Driver</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->

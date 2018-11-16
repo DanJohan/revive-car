@@ -102,6 +102,7 @@
 			$criteria['conditions'] = array('driver.id'=>$id);
 			$criteria['returnType'] = 'single';
 			$data['driver_by_id'] =  $this->DriverModel->search($criteria);
+			//die("here");
 			echo $this->load->view('admin/driver/driver_view',$data,true);
 			
 		}

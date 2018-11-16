@@ -32,7 +32,15 @@
 						<td><?php echo ($order['paid']) ? '<span class="label label-success">Paid</span>' : '<span class="label label-danger">Not Paid</span>' ; ?>
 							
 						</td>
-						<td><?php echo ($order['status']) ? '<span class="label label-success">Confirmed</span>' : '<span class="label label-danger">Not Confirmed</span>' ; ?>
+						<td><?php 
+							if($order['status'] == 1){
+								echo '<span class="label label-warning">Pending</span>';
+							}elseif ($order['status'] == 2) {
+								echo '<span class="label label-danger">Cancel</span>';
+							}elseif ($order['status'] == 3) {
+								echo '<span class="label label-success">Confirmed</span>';
+							}
+						?>
 							
 						</td>
 						<td><?php echo date('dS M Y h:i A',strtotime($order['created_at'])); ?></td>

@@ -25,6 +25,7 @@ class OrderModel extends MY_Model {
 		$this->db->join('order_car_images AS oci','o.id =  oci.order_id','left');
 		$this->db->join('users AS u','o.user_id =  u.id');
 		$this->db->where('o.id',$order_id);
+		$this->db->where('o.status !=',2);
 		$result = $this->db->get()->result_array();
 		return $result;
 	}
@@ -42,6 +43,7 @@ class OrderModel extends MY_Model {
 		$this->db->join('car_brands AS cb','c.brand_id =  cb.id');
 		$this->db->join('car_models AS cm','c.model_id =  cm.id');
 		$this->db->where('o.user_id',$user_id);
+		$this->db->where('o.status !=',2);
 		$result = $this->db->get()->result_array();
 		return $result;
 	}

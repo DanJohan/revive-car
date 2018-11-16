@@ -289,6 +289,20 @@ class Order extends Rest_Controller {
 		$this->renderJson($response);
 	}
 
+	public function cancelOrder(){
+		$this->form_validation->set_rules('order_id','Order id', 'trim|required');
+		if ($this->form_validation->run() == true ) {
+			$order_id = $this->input->post('order_id');
+			$is_update = $this->OrderModel->update(array('status'=>2),array('id'=>$order_id));
+			$response = array('status'=>true,'message'=>'Order cancel successfully!');
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
+
 
 
 }// end of class

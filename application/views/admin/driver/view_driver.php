@@ -1,8 +1,3 @@
-  <style type="text/css">
-.btn{
-  padding: 3px 6px !important;
-}
- </style>
  <section class="content">
    <div class="box">
     <div class="box-header">
@@ -38,10 +33,15 @@
             <td><?= $row['d_phone']; ?></td>
             <td><?= date('d M Y h:i A',strtotime($row['created_at'])); ?></td>
             <td class="text-right">
-              <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?= base_url('admin/driver/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
-              
-            <a class="btn btn-primary" data-toggle="tooltip" href="<?= base_url('admin/driver/edit_driver/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-            <a class="btn btn-danger" data-toggle="tooltip" onclick="return confirm('Are you sure to delete this record?')" href="<?= base_url('admin/driver/del_driver/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
+            	<div class="dropdown">
+	                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+	                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+	                    <li><a data-toggle="modal" id="view-detail" data-link="<?= base_url('admin/driver/view_record_by_id/'.$row['id']); ?>">View</a></li>
+	                    <li><a href="<?= base_url('admin/driver/edit_driver/'.$row['id']); ?>">Edit</a></li>
+	                    <li><a href="<?= base_url('admin/driver/del_driver/'.$row['id']); ?>" onclick="return confirm('Are you sure to delete this record?')">Delete</a></li>
+	                </ul>
+            	</div>
+
             
             </td>
            

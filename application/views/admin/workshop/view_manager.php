@@ -41,11 +41,14 @@
 
          
             <td class="text-right">
-              <a data-toggle="modal" id="view-detail" class="btn btn-success" data-toggle="tooltip" data-link="<?php echo  base_url('admin/workshop/view_record_by_id/'.$row['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
-              <a class="btn btn-primary" data-toggle="tooltip" href="<?php echo base_url('admin/workshop/edit_manager/'.$row['id']); ?>" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-              <a class="btn btn-danger" data-toggle="tooltip" onclick="return confirm('Are you sure to delete this record?')" href="<?php echo base_url('admin/workshop/del_manager/'.$row['id']); ?>" data-original-title="Delete"><i class="fa fa-trash-o"></i></a>
-            
-
+            	<div class="dropdown">
+	                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+	                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+	                    <li><a data-toggle="modal" id="view-detail" data-link="<?php echo  base_url('admin/workshop/view_record_by_id/'.$row['id']); ?>">View</a></li>
+	                    <li><a href="<?php echo base_url('admin/workshop/edit_manager/'.$row['id']); ?>">Edit</a></li>
+	                    <li><a href="<?php echo base_url('admin/workshop/del_manager/'.$row['id']); ?>" onclick="return confirm('Are you sure to delete this record?')">Delete</a></li>
+	                </ul>
+            	</div>
           </tr>
           <?php
                }
