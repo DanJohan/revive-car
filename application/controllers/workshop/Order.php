@@ -70,12 +70,13 @@ class Order extends MY_Controller {
 	}
 
 	public function create_ride($hash=null){
+		//dd($_POST);
 		if(!$hash){
 			$this->session->set_flashdata('error_msg','No detail found !');
 			redirect('workshop/order/list');
 		}
 
-		$criteria['field'] = 'id';
+		$criteria['field'] = 'id,loaner_vehicle';
 		$criteria['conditions'] = array('hash'=>$hash);
 		$criteria['returnType'] = 'single';
 
@@ -91,8 +92,8 @@ class Order extends MY_Controller {
 			$factory = new RandomLib\Factory;
 			$generator =$factory->getMediumStrengthGenerator();
 			$randomInt = $generator->generateInt(100000, 999999);
-			$randomChar = $generator->generateString(3,'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-			$otp = $randomChar.$randomInt;
+			//$randomChar = $generator->generateString(3,'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+			$otp = $randomInt;
 			$driver_id = $this->input->post('driver');
 			$ride_type = $this->input->post('ride_type');
 			$check_ride = $this->RideModel->checkRideExists($order['id'],$driver_id, $ride_type);
@@ -103,7 +104,7 @@ class Order extends MY_Controller {
 			$insert_data = array(
 				'order_id' => $order['id'],
 				'driver_id' => $this->input->post('driver'),
-				'ride_date' => date('Y-m-d',strtotime($this->input->post('ride_date'))),
+				'ride_date' => date('Y-m-d',strtotime(str_replace('/','-',$this->input->post('ride_date')))),
 				'ride_time' => date('h:iA',strtotime($this->input->post('ride_time'))),
 				'ride_type' => $this->input->post('ride_type'),
 				'verfication_code' => $otp,
@@ -112,11 +113,24 @@ class Order extends MY_Controller {
 			//dd($insert_data);
 			$insert_id = $this->RideModel->insert($insert_data);
 			if($insert_id){
+				$update_order_data = array(
+					'loaner_vehicle' => $this->input->post('loaner_vehicle'),
+					'lv_reg_no'	=> ($this->input->post('lv_reg_no'))? $this->input->post('lv_reg_no') :null,
+					'status' => 1,
+				);
+				
+				$this->OrderModel->update($update_order_data,array('id'=>$order['id']));
+				
 				$ride = $this->RideModel->getCustomerDriverDetail($insert_id);
 				//dd($ride);
 				if($ride){
 					// driver_message
-					$driver_msg = "You are directed to provide your pickup service on below mentioned Address:\nUser name : ".$ride['customer_name']."\nAddress : ".$ride['customer_address']."\nPhone No : ".$ride['customer_phone']."\nReg. No : ".$ride['registration_no'];
+					if($ride['ride_type'] == 1) {
+						$ride_type = 'pickup';
+					}else{
+						$ride_type = 'delivery';
+					}
+					$driver_msg = "You are directed to provide your ".$ride_type." service on below mentioned Address:\nUser name : ".$ride['customer_name']."\nAddress : ".$ride['customer_address']."\nPhone No : ".$ride['customer_phone']."\nReg. No : ".$ride['registration_no'];
 
 						$driver_notification = array(
 							'driver_id' => $ride['driver_id'],
@@ -134,7 +148,7 @@ class Order extends MY_Controller {
 
 						$notification_result=send_push_notification($notifymsg,DRIVER_PUSH_AUTH_KEY);
 						// user message
-						$user_msg = 'Dear '.$ride['customer_name'].', On confirmation of your enquiry , REVIVE driver '.$ride['d_name'].' is coming to pick your car. Insert OTP '.$otp.' for Confirmation to start assistance and service';
+						$user_msg = 'Dear '.$ride['customer_name'].', On confirmation of your enquiry , REVIVE driver '.$ride['d_name'].' is coming to '.$ride_type.' your car. Insert OTP '.$otp.' for Confirmation to start assistance and service';
 
 						$notification_data = array(
 							'user_id'=>$ride['user_id'],
@@ -165,6 +179,8 @@ class Order extends MY_Controller {
 		}
 
 		$data['hash'] = $hash;
+		$data['order'] = $order;
+		//dd($order);
 		$manager_id = $this->session->userdata('id');
 		$data['drivers'] = $this->DriverModel->get_all(array('d_workshop_assign'=>$manager_id));
 		$this->renderView('workshop/order/create_ride',$data);

@@ -278,7 +278,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12 col-md-12 col-xs-12 qty">
-							<span class="qty">Repair order</span>
+							<span class="qty">Order services</span>
 							<div class="container">
 								<div class="row">
 									<div class="col-xs-12">
@@ -286,29 +286,23 @@
 											<table summary="This table shows how to create responsive tables using Bootstrap's default functionality" class="table table-bordered table-hover">
 												<thead>
 													<tr>
-														<th>Customer Request</th>
-														<th>S.A  Remarks</th>
-														<th>Parts Name</th>
-														<th> Qty</th>
-														<th>Parts Price</th>
-														<th>Labour Price</th>
-														<th>Total Price</th>
+														<th>S. No</th>
+														<th>Service Name</th>
+														<th>Price</th>
 													</tr>
 												</thead>
 												<tbody>
 													<?php
-													$repair_orders = $job_card['repair_orders'];
-													if(!empty($repair_orders)) {
-														foreach ($repair_orders as $index => $repair_order) {
+													//$repair_orders = $job_card['order_items'];
+													if(!empty($job_card['order_items'])) {
+														$sno=1;
+														foreach ($job_card['order_items'] as $index => $order_item) {
 													?>
 													  <tr>
-														<td><?php echo $repair_order['customer_request']; ?></td>
-														<td><?php echo $repair_order['sa_remarks']; ?></td>
-														<td><?php echo $repair_order['parts_name']; ?></td>
-														<td><?php echo $repair_order['qty']; ?></td>
-														<td><?php echo number_format($repair_order['parts_price'],2,'.',','); ?></td>
-                            							<td><?php echo number_format($repair_order['labour_price'],2,'.',','); ?></td>
-                            							<td><?php echo number_format($repair_order['total_price'],2,'.',','); ?></td>
+														<td><?php echo $sno; ?></td>
+														<td><?php echo $order_item['service_name']; ?></td>
+														<td><?php echo $order_item['price']; ?></td>
+													
 													</tr>
 													<?php
 														}
@@ -344,7 +338,7 @@
 	                      ?>
 	                          <div class="col-md-4 col-sm-4 col-xs-6">
 	                            <div class="image-responsive">
-	                                <img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$job_card_image['image']; ?>" style="height:200px;width:100%;" />
+	                                <img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$job_card_image['job_card_image']; ?>" style="height:200px;width:100%;" />
 	                            </div>
 	                          </div>
 	                      <?php

@@ -11,7 +11,7 @@ class RideModel extends MY_Model {
 
 	// user ws_crm
 	public function getCustomerDriverDetail($id=null) {
-		$this->db->select('r.id,r.verfication_code,d.id as driver_id ,d.d_device_type,d.d_device_id,d.d_name,cd.name as customer_name, cd.address as customer_address,cd.phone as customer_phone,u.device_type,u.id as user_id,u.device_id,c.registration_no');
+		$this->db->select('r.id,r.ride_type,r.verfication_code,d.id as driver_id ,d.d_device_type,d.d_device_id,d.d_name,cd.name as customer_name, cd.address as customer_address,cd.phone as customer_phone,u.device_type,u.id as user_id,u.device_id,c.registration_no');
 		$this->db->from($this->table.' AS r');
 		$this->db->join('driver AS d','r.driver_id = d.id');
 		$this->db->join('placed_orders AS o','r.order_id = o.id');

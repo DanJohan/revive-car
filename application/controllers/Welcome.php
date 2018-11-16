@@ -10,9 +10,6 @@ class Welcome extends CI_Controller {
 		$this->load->view('user');
 		
 	}
-	
-	public function test(){
-	}
 
 	public function update_service(){
 		die("Are you sure to run this script!");
@@ -93,6 +90,10 @@ class Welcome extends CI_Controller {
 		//dd($insert_data);
 		$insert_id = $this->db->insert_batch('services',$insert_data);
 		var_dump($insert_id);
+	}
+
+	public function test(){
+		$this->load->view('test/phone');
 	}
 
 	

@@ -388,6 +388,18 @@ class Driver extends Rest_Controller {
 		$this->renderJson($response);
 	}
 
+	public function deliverCar(){
+		$this->form_validation->set_rules('order_id', 'Order id', 'trim|required');
+		$this->form_validation->set_rules('driver_id', 'Driver id', 'trim|required');
+		if ($this->form_validation->run() == true) {
+
+		}else{
+			$errors = $this->form_validation->error_array();
+			$response = array('status'=>false,'message'=>$errors);
+		}
+		$this->renderJson($response);
+	}
+
 
 }// end of class
 ?>

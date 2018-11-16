@@ -11,7 +11,7 @@ class OrderModel extends MY_Model {
 
 	// used in api
 	public function getById($order_id) {
-		$this->db->select('o.id, o.order_no,sc.name as service_type,scl.name as service_center,o.loaner_vehicle,o.pick_up_date, o.pick_up_time, o.sub_total, o.discount_amount, o.net_pay_amount,o.paid,pt.name as payment_type, o.status,o.created_at, oi.id as order_item_id,oi.order_id as order_item_order_id ,oi.service_id,,oi.name as service_name,oi.price,cd.name as customer_name, cd.email as customer_email, cd.phone as customer_phone, cd.address as customer_address,cd.latitude, cd.longitude,c.registration_no,cb.brand_name,cm.model_name,u.profile_image,oci.id AS car_image_id,oci.image AS car_image');
+		$this->db->select('o.id, o.order_no,sc.name as service_type,scl.name as service_center,o.loaner_vehicle,o.pick_up_date, o.pick_up_time, o.sub_total, o.discount_amount, o.net_pay_amount,o.lv_reg_no,o.paid,pt.name as payment_type, o.status,o.created_at, oi.id as order_item_id,oi.order_id as order_item_order_id ,oi.service_id,,oi.name as service_name,oi.price,cd.name as customer_name, cd.email as customer_email, cd.phone as customer_phone, cd.address as customer_address,cd.latitude, cd.longitude,c.registration_no,cb.brand_name,cm.model_name,u.profile_image,oci.id AS car_image_id,oci.image AS car_image');
 
 		$this->db->from($this->table." AS o");
 		$this->db->join('order_items AS oi', 'o.id = oi.order_id');

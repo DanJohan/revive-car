@@ -59,24 +59,29 @@ class Web extends MY_Controller {
 		if($id){
 			$job_card=$this->JobcardModel->getJobCardById($id);
 		}else{
-			return ;
+			show_error('No detail found!',404);
 		}
-
+		//dd($job_card);
 		if(empty($job_card)){
 			log_message('debug',"No detail found for ".$id);
 			show_error('No detail found!',404);
 		}
+		
 		$job_card_images_key = array('job_card_image_id','job_card_image');
 		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, $job_card_images_key),SORT_REGULAR),'job_card_image_id','');
-		//$repair_orders = array_filter_by_value(array_unique(array_column_multi($job_card, array('repair_order_id','parts_name','customer_request','sa_remarks','qty','labour_price','parts_price','total_price')),SORT_REGULAR),'repair_order_id','');
-		//$enquiry_images = array_filter_by_value(array_unique(array_column_multi($job_card, array('enquiry_image_id','enquiry_image')),SORT_REGULAR),'enquiry_image_id','');
+
+		$order_item_keys = array('order_item_id', 'order_item_order_id', 'service_id', 'service_name','price');
+		$order_items = array_filter_by_value(array_unique(array_column_multi($job_card,$order_item_keys),SORT_REGULAR),'order_item_id','');
+
 		$job_card = $job_card[0];
-		$removeKeys=array_merge($job_card_images_key);
+		$removeKeys=array_merge($job_card_images_key,$order_item_keys);
 		foreach($removeKeys as $key) {
 		   unset($job_card[$key]);
 		}
+
 		$job_card['images_data']=$job_card_images;
-		//$job_card['repair_orders']=$repair_orders;
+		$job_card['order_items']=$order_items;
+		//dd($job_card);
 		//$job_card['enquiry_images'] = $enquiry_images;
 		$data['job_card'] = $job_card;
 		//dd($data['job_card']);
