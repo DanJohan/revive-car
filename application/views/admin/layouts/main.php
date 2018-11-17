@@ -13,7 +13,6 @@
 		  <!-- Theme style -->
 	      <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/AdminLTE.min.css">
 	       <!-- Datatable style -->
-		  <link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css"> 
 		    <link rel="stylesheet" href="<?= base_url() ?>public/vendor/alertifyjs/css/alertify.css"> 
 	       <!-- Custom CSS -->
 		  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/style.css">
@@ -69,8 +68,6 @@
 <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery-ui.min.js"></script>	
 <script type="text/javascript" src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/app.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/vendor/alertifyjs/alertify.min.js"></script>

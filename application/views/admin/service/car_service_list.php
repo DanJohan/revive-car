@@ -1,4 +1,6 @@
-
+<?php $this->widget->beginBlock('stylesheets');?>
+ 	<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css"> 
+<?php $this->widget->endBlock(); ?>
  <section class="content">
 	 <div class="box">
 		<div class="box-header">
@@ -13,41 +15,14 @@
 					<!-- <th>Image</th> -->
 					<th>Service Name</th>
 					<th>Service Category</th>
-					<th>Manufacturer Name</th>
-					<th>Model Name</th>
-					<th>Price</th>
+					<th style="width: 10%;">Manufacturer Name</th>
+					<th style="width: 10%;">Model Name</th>
+					<th style="width: 10%;">Price</th>
 					<th>Created At</th>
-					<th>Option</th>
+					<th class="text-right">Option</th>
 				</tr>
 				</thead>
-				<tbody>
-					<?php 
-					if(!empty($services)) {
-					foreach($services as $service){ 
-					?>
-					<tr>
-						<td><?php echo $service['id']; ?></td>
-						<td><?php echo $service['name']; ?></td>
-						<td><?php echo $service['category_name']?></td>
-						<td><?php echo $service['brand_name']; ?></td>
-						<td><?php echo $service['model_name']; ?></td>
-						<td><?php echo number_format($service['price'],2,".",","); ?></td>
-						<td><?php echo date('d M Y h:i A',strtotime($service['created_at'])); ?></td>
-						<td>
-								<div class="dropdown">
-	                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
-	                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-	                    <li><a href="<?php echo base_url('admin/service/change_price/'.$service['id']); ?> ">Change Price</a></li>
-	                    <li><a href="<?php echo base_url('admin/service/add_coupan/'.$service['id']); ?> ">Add Coupan</a></li>
-	                </ul>
-            		</div>
-						</td>
-					</tr>
-					<?php 
-							}
-						}
-					?>
-				</tbody>
+
 			 
 			</table>
 		</div>
@@ -57,10 +32,46 @@
 </section>  
 <?php $this->load->view('common/modal'); ?>
 <?php $this->widget->beginBlock('scripts'); ?>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/moment.js"></script>
 <script>
 	$(function () {
 		$("#example1").DataTable({
-			'order':[[0,'desc']]
+			'order':[[0,'desc']],
+			'serverSide' : true,
+			'ajax' : {
+				url : config.baseUrl+'admin/service/services_list',
+				type : "POST"
+			},
+			//'orderMulti':true,
+			'columns':[
+				{data:'id'},
+				{data : 'name'},
+				{data : 'category_name'},
+				{data : 'brand_name'},
+				{data : 'model_name'},
+				{data : 'price'},
+				{
+					data : 'created_at',
+					render: function(data, type, row){
+						console.log(data,type,row);
+                			return moment(data).format("MMMM Do YYYY, h:mm:ss a");
+            			}
+            		},
+				{
+					mRender : function(data, type, row) {
+						var html = '<div class="dropdown">'+
+			                '<button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>'+
+			                '<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'+
+			                    '<li><a href="'+config.baseUrl+'admin/service/change_price/'+row.id+'">Change Price</a></li>'+
+			                    '<li><a href="'+config.baseUrl+'admin/service/add_coupan/'+row.id+'">Add Coupan</a></li>'+
+			                '</ul>'+
+		            		'</div>';
+		            		return html;
+					}
+				}
+			]
 		});
 	});
 </script> 

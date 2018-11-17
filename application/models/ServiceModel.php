@@ -22,13 +22,40 @@ class ServiceModel extends MY_Model {
 		return (!empty($result))? $result :false;
 	}
 
-	public function getServices() {
-		$this->db->select('s.id,sc.name as category_name,cs.name,cs.image,s.price,cm.model_name,cb.brand_name,s.created_at');
+	private function getSeviceColumn(){
+		return array("s.id", 'cs.name', 'sc.name', 'cb.brand_name', 'cm.model_name', 's.price', 's.created_at');
+	}
+
+	public function getServices($start,$limit,$orders,$search) {
+		$this->db->select('SQL_CALC_FOUND_ROWS s.id,sc.name as category_name,cs.name,cs.image,s.price,cm.model_name,cb.brand_name,s.created_at',false);
 		$this->db->from($this->table.' AS s');
 		$this->db->join('car_services AS cs','s.service_id= cs.id');
 		$this->db->join('car_models AS cm', 's.model_id=cm.id');
 		$this->db->join('car_brands AS cb', 'cm.brand_id=cb.id');
 		$this->db->join('services_category AS sc', 's.category_id=sc.id');
+		if(!empty($search['value'])){
+			$this->db->or_like(
+				array(
+					's.id'=>$search['value'],
+					'sc.name' =>$search['value'],
+					'cs.name' => $search['value'],
+					'cm.model_name'=>$search['value'],
+					'cb.brand_name' => $search['value'],
+					's.price' => $search['value'],
+					's.created_at' => $search['value'],
+				)
+			);
+		}
+	
+		$columns = $this->getSeviceColumn();
+		//dd($columns);
+		foreach ($columns as $c_index => $column) {
+			if($orders[0]['column'] == $c_index) {
+				$this->db->order_by($column,$orders[0]['dir']);
+			}
+		}
+
+		$this->db->limit($limit,$start);
 		$query = $this->db->get();
 		$result = $query->result_array();
 		return (!empty($result))? $result :false;

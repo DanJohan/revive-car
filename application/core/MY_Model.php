@@ -218,4 +218,11 @@ class MY_Model extends CI_Model
         //return fetched data
       	return $result;
       }
+
+
+      public function getFoundRows(){
+      	$sql = "SELECT FOUND_ROWS() AS found_row";
+      	$result = $this->db->query($sql)->row_array();
+      	return $result['found_row']; 
+      }
  }

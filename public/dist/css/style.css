@@ -438,10 +438,6 @@ label.error{
     background-color: #f9f9f9; 
 }
 
-.table-responsive{
-	overflow-y: -webkit-paged-y;
-}
-
 .ajs-message {
     border: 2px solid white;
     color : white;
@@ -455,3 +451,8 @@ label.error{
  .row-pb-5{
 	padding-bottom: 5px;
  }
+
+.example1.table-bordered th:last-child, table.table-bordered td:last-child{
+ 	text-align:right;
+}
+

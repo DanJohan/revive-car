@@ -5,10 +5,10 @@ class Service extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		if (!$this->session->userdata['is_admin_login'] == TRUE)
+		/*if (!$this->session->userdata['is_admin_login'] == TRUE)
 		{
 		   redirect('admin/auth/login'); //redirect to login page
-		}
+		}*/
 		$this->load->model('CarServiceModel');
 		$this->load->model('CarBrandModel');
 		$this->load->model('CarModelsModel');
@@ -77,11 +77,22 @@ class Service extends MY_Controller {
 	}
 
 	public function car_services_list(){
-		$data['services'] = $this->ServiceModel->getServices();
-		//$data['view'] = 'admin/service/car_service_list';
-		//dd($data);
-		//$this->load->view('admin/layout',$data);
+
+		$data =array();
 		$this->render('admin/service/car_service_list',$data);
+	}
+
+	public function services_list(){
+		//dd($_POST);
+		$start = $this->input->post('start');
+		$limit = $this->input->post('length');
+		$order = $this->input->post('order');
+		$search = $this->input->post('search');
+		$services = $this->ServiceModel->getServices($start,$limit,$order,$search);
+		//echo $this->db->last_query();die;
+		$found_rows = $this->ServiceModel->getFoundRows();
+		$this->renderJson(array('draw'=>intval($this->input->post('draw')),'recordsTotal'=>intval($found_rows), 'recordsFiltered' => intval($found_rows),'data'=>$services));
+		//dd($data['services']);
 	}
 
 	public function add_coupan($id){
