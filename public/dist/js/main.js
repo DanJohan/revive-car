@@ -2,16 +2,11 @@ $(".flash-msg").fadeTo(2000, 500).slideUp(500, function(){
 	$(".flash-msg").slideUp(500);
 });
 
-/*$.ajax({
-	'url':"<?php echo base_url(); ?>admin/enquiry/get_notifications",
-	'method':"POST",
-	'async':false,
-	success:function(response){
-		if(response.status){
-			$('#notification-list').html(response.template);
-			$('#notification-count').text(response.total);
-		}
-	}
-});*/
+$(document).on('change','.upload-input',function(e){
+	var path = $(this).val();
+	var path_array= path.split('\\');
+	$('.upload-file-name').text(path_array.pop());
+});
+
 
 

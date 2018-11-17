@@ -110,6 +110,19 @@
               <li id="view_manager" class=""><a href="<?= base_url('admin/workshop/view_manager'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> View Manager</a></li>
             </ul>
         </li>
+        <li id="" class="treeview users enquiry jobCard active" >
+            <a href="#" class="sidebar-toggle">
+              <i class="fa fa-users"></i> <span>Site Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+               <li id="index" class=""><a href="<?= base_url('admin/blog/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Blogs</a></li>
+            	<li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Gallery images</a></li>
+            	<li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Testimonials</a></li>
+            </ul>
+          </li>
       </ul>
     </section>
     <!-- /.sidebar -->
