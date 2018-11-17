@@ -17,8 +17,19 @@ class Order extends MY_Controller {
 	public function list() {
 
 		$data= array();
-		$data['orders'] = $this->OrderModel->get_all();
+		//$data['orders'] = $this->OrderModel->get_all();
 		$this->render('admin/order/list',$data);
+	}
+
+	public function ajax_orders_list() {
+		$start = $this->input->post('start');
+		$limit = $this->input->post('length');
+		$order = $this->input->post('order');
+		$search = $this->input->post('search');
+		$services = $this->OrderModel->getOrders($start,$limit,$order,$search);
+		//echo $this->db->last_query();die;
+		$found_rows = $this->OrderModel->getFoundRows();
+		$this->renderJson(array('draw'=>intval($this->input->post('draw')),'recordsTotal'=>intval($found_rows), 'recordsFiltered' => intval($found_rows),'data'=>$services));
 	}
 
 	public function show($id = null){

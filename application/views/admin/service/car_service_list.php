@@ -15,11 +15,11 @@
 					<!-- <th>Image</th> -->
 					<th>Service Name</th>
 					<th>Service Category</th>
-					<th style="width: 10%;">Manufacturer Name</th>
-					<th style="width: 10%;">Model Name</th>
-					<th style="width: 10%;">Price</th>
+					<th>Manufacturer Name</th>
+					<th>Model Name</th>
+					<th>Price</th>
 					<th>Created At</th>
-					<th class="text-right">Option</th>
+					<th>Option</th>
 				</tr>
 				</thead>
 
@@ -55,8 +55,7 @@
 				{
 					data : 'created_at',
 					render: function(data, type, row){
-						console.log(data,type,row);
-                			return moment(data).format("MMMM Do YYYY, h:mm:ss a");
+                			return moment(data).format("Do MMM YYYY, h:mm A");
             			}
             		},
 				{

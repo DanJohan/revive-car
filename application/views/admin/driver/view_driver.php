@@ -1,3 +1,6 @@
+ <?php $this->widget->beginBlock('stylesheets');?>
+ 	<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css"> 
+<?php $this->widget->endBlock(); ?>
  <section class="content">
    <div class="box">
     <div class="box-header">
@@ -57,6 +60,9 @@
 </section>  
 <?php $this->load->view('common/modal'); ?>
 <?php $this->widget->beginBlock('scripts');?>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/moment.js"></script>
 <script>
   $(function () {
     $("#example1").DataTable({

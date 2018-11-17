@@ -9,6 +9,41 @@ class OrderModel extends MY_Model {
 	    parent::__construct();
 	}
 
+	private function getOrderColumn(){
+		return array('o.order_no','o.pick_up_date', 'o.pick_up_time', 'o.net_pay_amount', 'o.paid', 'o.status','o.created_at');
+	}
+
+	public function getOrders($start,$limit,$orders,$search) {
+		$this->db->select('SQL_CALC_FOUND_ROWS o.id, o.order_no,o.pick_up_date, o.pick_up_time, o.net_pay_amount, o.paid, o.status,o.created_at',false);
+		$this->db->from($this->table.' AS o');
+		if(!empty($search['value'])){
+			$this->db->or_like(
+				array(
+					'o.order_no'=>$search['value'],
+					'o.pick_up_date' =>$search['value'],
+					'o.pick_up_time' => $search['value'],
+					'o.net_pay_amount'=>$search['value'],
+					'o.paid' => $search['value'],
+					'o.status' => $search['value'],
+					'o.created_at' => $search['value'],
+				)
+			);
+		}
+	
+		$columns = $this->getOrderColumn();
+		//dd($columns);
+		foreach ($columns as $c_index => $column) {
+			if($orders[0]['column'] == $c_index) {
+				$this->db->order_by($column,$orders[0]['dir']);
+			}
+		}
+
+		$this->db->limit($limit,$start);
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return (!empty($result))? $result :false;
+	}
+
 	// used in api
 	public function getById($order_id) {
 		$this->db->select('o.id, o.order_no,sc.name as service_type,scl.name as service_center,o.loaner_vehicle,o.pick_up_date, o.pick_up_time, o.sub_total, o.discount_amount, o.net_pay_amount,o.lv_reg_no,o.paid,pt.name as payment_type, o.status,o.created_at, oi.id as order_item_id,oi.order_id as order_item_order_id ,oi.service_id,,oi.name as service_name,oi.price,cd.name as customer_name, cd.email as customer_email, cd.phone as customer_phone, cd.address as customer_address,cd.latitude, cd.longitude,c.registration_no,cb.brand_name,cm.model_name,u.profile_image,oci.id AS car_image_id,oci.image AS car_image');

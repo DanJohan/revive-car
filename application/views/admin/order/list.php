@@ -1,4 +1,6 @@
-
+<?php $this->widget->beginBlock('stylesheets');?>
+ 	<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css"> 
+<?php $this->widget->endBlock(); ?>
  <section class="content">
 	 <div class="box">
 		<div class="box-header">
@@ -9,56 +11,17 @@
 			<table id="example1" class="table table-bordered table-striped dataTable">
 				<thead>
 				<tr>
-					<th style="width: 10%;">Order no</th>
-					<th style="width: 10%;">Pick up date</th>
-					<th style="width: 5%;">Pick up time</th>
-					<th style="width: 5%;">Amount</th>
-					<th style="width: 10%;">Paid</th>
-					<th style="width: 20%;">Status</th>
-					<th style="width: 15%;">Created at</th>
+					<th>Order no</th>
+					<th>Pick up date</th>
+					<th>Pick up time</th>
+					<th>Amount</th>
+					<th>Paid</th>
+					<th>Status</th>
+					<th>Created at</th>
 					<th>Option</th>
 				</tr>
 				</thead>
-				<tbody>
-				 <?php 
-					if($orders) {
-					foreach($orders as $order){ 
-				?>
-					<tr>
-						<td><?php echo $order['order_no']; ?></td>
-						<td><?php echo date('dS M Y', strtotime($order['pick_up_date'])); ?></td>
-						<td><?php echo $order['pick_up_time']; ?></td>
-						<td><?php echo $order['net_pay_amount']; ?></td>
-						<td><?php echo ($order['paid']) ? '<span class="label label-success">Paid</span>' : '<span class="label label-danger">Not Paid</span>' ; ?>
-							
-						</td>
-						<td><?php 
-							if($order['status'] == 1){
-								echo '<span class="label label-warning">Pending</span>';
-							}elseif ($order['status'] == 2) {
-								echo '<span class="label label-danger">Cancel</span>';
-							}elseif ($order['status'] == 3) {
-								echo '<span class="label label-success">Confirmed</span>';
-							}
-						?>
-							
-						</td>
-						<td><?php echo date('dS M Y h:i A',strtotime($order['created_at'])); ?></td>
-						<td class="text-right">
-							<div class="dropdown">
-					                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
-					                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-					                    <li><a href="<?php echo base_url('admin/order/show/'.$order['id']); ?> ">View</a></li>
-					                    <li><a href="javascript:void(0)" class="forword-to-workshop" data-order-id="<?php echo $order['id']; ?>">Forward to workshop</a></li>
-					                </ul>
-				            	</div>
-						</td>
-					</tr>
-					<?php 
-							}
-						}
-					?>
-				</tbody>
+
 			 
 			</table>
 		</div>
@@ -66,10 +29,71 @@
 </section>  
 <?php $this->load->view('common/modal'); ?>
 <?php $this->widget->beginBlock('scripts'); ?>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/moment.js"></script>
 <script type="text/javascript">
 	$(function () {
 		$("#example1").DataTable({
-			'order':[[0,'desc']]
+			'order':[[0,'desc']],
+			'serverSide' : true,
+			'ajax' : {
+				url : config.baseUrl+'admin/order/ajax_orders_list',
+				type : "POST"
+			},
+			'columns':[
+				{data:'order_no'},
+				{
+					data : 'pick_up_date',
+					render : function(data,type,row){
+						return moment(data).format("Do MMM YYYY");
+					}
+				},
+				{
+					data : 'pick_up_time',
+				},
+				{data : 'net_pay_amount'},
+				{
+					data : 'paid',
+					render : function(data,type,row){
+						if(data ==1){
+							return '<label class="label label-success">Paid</label>';
+						}else{
+							return '<label class="label label-danger">Not paid</label>';
+						}
+					}
+				},
+				{
+					data : 'status',
+					render : function(data,type,row){
+						if(data == 1){
+							return '<label class="label label-warning">Pending</label>';
+						}else if(data==2){
+							return '<label class="label label-danger">Cancel</label>';
+						}else if(data == 3){
+							return '<label class="label label-success">Confirmed</label>';
+						}
+					}
+				},
+				{
+					data : 'created_at',
+					render: function(data, type, row){
+	           			return moment(data).format("Do MMM YYYY, h:mm A");
+	       			}
+	       		},
+				{
+					mRender : function(data, type, row) {
+						var html = '<div class="dropdown">'+
+			                '<button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>'+
+			                '<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'+
+			                    '<li><a href="'+config.baseUrl+'admin/order/show/'+row.id+'">View</a></li>'+
+			                    '<li><a href="javascript:void(0)" class="forword-to-workshop" data-order-id="'+row.id+'">Forward to workshop</a></li>'+
+			                '</ul>'+
+		            		'</div>';
+		            		return html;
+					}
+				}
+			]
 		});
 	});
 

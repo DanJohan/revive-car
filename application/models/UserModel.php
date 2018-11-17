@@ -9,6 +9,40 @@ class UserModel extends MY_Model {
 	    parent::__construct();
 	}
 
+	private function getUserColumn(){
+		return array("u.id", 'u.name', 'u.email', 'u.phone', 'u.created_at');
+	}
+
+	public function getUsers($start,$limit,$orders,$search){
+		$this->db->select('SQL_CALC_FOUND_ROWS u.id,u.name ,u.email,u.phone, u.created_at',false);
+		$this->db->from($this->table.' AS u');
+
+		if(!empty($search['value'])){
+			$this->db->or_like(
+				array(
+					'u.id'=>$search['value'],
+					'u.name' =>$search['value'],
+					'u.email' => $search['value'],
+					'u.phone'=>$search['value'],
+					'u.created_at' => $search['value'],
+				)
+			);
+		}
+	
+		$columns = $this->getUserColumn();
+		//dd($columns);
+		foreach ($columns as $c_index => $column) {
+			if($orders[0]['column'] == $c_index) {
+				$this->db->order_by($column,$orders[0]['dir']);
+			}
+		}
+
+		$this->db->limit($limit,$start);
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return (!empty($result))? $result :false;
+	}
+
 	public function verifyOtp($data=array()) {
 		$this->db->select('*');
 		$this->db->where($data);

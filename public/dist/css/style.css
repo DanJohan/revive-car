@@ -454,5 +454,6 @@ label.error{
 
 .example1.table-bordered th:last-child, table.table-bordered td:last-child{
  	text-align:right;
+ 	width: 15%;
 }
 

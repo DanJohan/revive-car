@@ -14,10 +14,20 @@
 		}
  
 		public function index(){
-			$data['all_users'] =  $this->UserModel->get_all(NULL,array('id','desc'));
-			//$data['view'] = 'admin/users/user_list';
-			//$this->load->view('admin/layout', $data);
+
+			$data = array();
 			$this->render('admin/users/index', $data);
+		}
+
+		public function ajax_users_list(){
+			$start = $this->input->post('start');
+			$limit = $this->input->post('length');
+			$order = $this->input->post('order');
+			$search = $this->input->post('search');
+			$services = $this->UserModel->getUsers($start,$limit,$order,$search);
+			//echo $this->db->last_query();die;
+			$found_rows = $this->UserModel->getFoundRows();
+			$this->renderJson(array('draw'=>intval($this->input->post('draw')),'recordsTotal'=>intval($found_rows), 'recordsFiltered' => intval($found_rows),'data'=>$services));
 		}
 	
 		public function edit($id = null){

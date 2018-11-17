@@ -23,7 +23,7 @@ class ServiceModel extends MY_Model {
 	}
 
 	private function getSeviceColumn(){
-		return array("s.id", 'cs.name', 'sc.name', 'cb.brand_name', 'cm.model_name', 's.price', 's.created_at');
+		return array('s.id', 'cs.name', 'sc.name', 'cb.brand_name', 'cm.model_name', 's.price', 's.created_at');
 	}
 
 	public function getServices($start,$limit,$orders,$search) {
