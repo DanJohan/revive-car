@@ -56,7 +56,8 @@ class Gallery extends MY_Controller {
 
 	public function delete($id = null,$image) {
 		if(!$id) {
-			show_error('No detail found!',404);
+			$this->session->set_flashdata('error_msg','No detail found!');
+			redirect('admin/gallery/list');
 		}
 		$is_delete = $this->GalleryModel->delete(array('id'=>$id));
 		if($is_delete) {

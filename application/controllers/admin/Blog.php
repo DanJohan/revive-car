@@ -82,8 +82,8 @@ class Blog extends MY_Controller {
 		$blog=$this->BlogModel->get(array('id'=>$id));
 		//dd($job_card);
 		if(empty($blog)){
-			log_message('debug',"No detail found for ".$id);
-			show_error('No detail found!',404);
+			$this->session->set_flashdata('error_msg','No detail found!');
+			redirect('admin/blog/list');
 		}
 
 		$this->render('admin/blog/show',array(
@@ -93,13 +93,14 @@ class Blog extends MY_Controller {
 
 	public function edit($id = null) {
 		if(!$id){
-			show_error('No detail found!',404);
+			$this->session->set_flashdata('error_msg','No detail found!');
+			redirect('admin/blog/list');
 		}
 		$blog=$this->BlogModel->get(array('id'=>$id));
 		//dd($job_card);
 		if(empty($blog)){
-			log_message('debug',"No detail found for ".$id);
-			show_error('No detail found!',404);
+			$this->session->set_flashdata('error_msg','No detail found!');
+			redirect('admin/blog/list');
 		}
 
 		if($this->input->post('submit')) {
@@ -144,10 +145,19 @@ class Blog extends MY_Controller {
 
 	public function delete($id = null) {
 		if(!$id) {
-			show_error('No detail found!',404);
+			$this->session->set_flashdata('error_msg','No detail found!');
+			redirect('admin/blog/list');
 		}
+		$blog=$this->BlogModel->get(array('id'=>$id));
+		//dd($job_card);
+		if(empty($blog)){
+			$this->session->set_flashdata('error_msg','No detail found!');
+			redirect('admin/blog/list');
+		}
+
 		$is_delete = $this->BlogModel->delete(array('id'=>$id));
 		if($is_delete) {
+			@unlink(FCPATH.'uploads/site/'.$blog['image']);
 			$this->session->set_flashdata('success_msg','Blog deleted successfully!');		
 		}else{
 			$this->session->set_flashdata('error_msg','Something went wrong!');
