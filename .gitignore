@@ -36,6 +36,9 @@ uploads/app/*
 !uploads/app/.gitkeep
 
 
+uploads/site/*
+!uploads/site/.gitkeep
+
 uploads/admin/*
 !uploads/admin/.gitkeep
 migrations.txt

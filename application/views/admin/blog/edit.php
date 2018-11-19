@@ -17,12 +17,12 @@
 				<!-- form start -->
 				<div class="box-body">
 					 
-					<form id="blog-form" class="form-horizontal" method="post" action="<?php echo base_url() . 'admin/blog/create'; ?>" enctype="multipart/form-data"> 
+					<form id="blog-form" class="form-horizontal" method="post" action="<?php echo base_url() . 'admin/blog/edit/'.$blog['id']; ?>" enctype="multipart/form-data"> 
 						<div class="form-group">
 							<label for="firstname" class="col-sm-3 control-label">Title</label>
 
 							<div class="col-sm-9">
-								<input type="text" class="form-control" name="title" />
+								<input type="text" class="form-control" name="title" value="<?php echo ($blog['title']) ? $blog['title'] : ''; ?>"/>
 								<div class="form-error"></div>
 							</div>
 						</div>
@@ -30,7 +30,7 @@
 							<label for="firstname" class="col-sm-3 control-label">Description</label>
 
 							<div class="col-sm-9">
-								<textarea name="description" id="editor"  cols="30" rows="10"></textarea>
+								<textarea name="description" id="editor"  cols="30" rows="10"><?php echo ($blog['description']) ? $blog['description'] : ''; ?></textarea>
 								<div class="form-error"></div>
 
 							</div>
@@ -39,9 +39,14 @@
 							<label for="firstname" class="col-sm-3 control-label">Image</label>
 
 							<div class="col-sm-9">
-								<div class="upload-btn-wrapper">
-									<button class="upload-btn">Upload image</button><span class="upload-file-name"></span>
-									<input type="file" class="upload-input" name="blog_image"/>
+								<div class="row">
+									<div class="upload-btn-wrapper col-xs-6">
+										<button class="upload-btn">Upload image</button><span class="upload-file-name"></span>
+										<input type="file" class="upload-input" name="blog_image"/>
+									</div>
+									<div class="col-xs-6">
+										<img src="<?php echo base_url(); ?>uploads/site/<?php echo $blog['image']; ?>" class= "img-responsive img-thumbnail" height="200" width="300">
+									</div>
 								</div>
 							</div>
 						</div>

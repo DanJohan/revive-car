@@ -451,6 +451,12 @@ label.error{
  .row-pb-5{
 	padding-bottom: 5px;
  }
+ .mb-10{
+ 	margin-bottom: 10px;
+ }
+  .mt-10{
+ 	margin-top: 10px;
+ }
 
 .example1.table-bordered th:last-child, table.table-bordered td:last-child{
  	text-align:right;

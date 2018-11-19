@@ -17,6 +17,7 @@
 			<table id="example1" class="table table-bordered table-striped ">
 				<thead>
 				<tr>
+					<th>ID</th>
 					<th>Title</th>
 					<th>Description</th>
 					<th>Created at</th>
@@ -42,17 +43,19 @@
 			'order':[[0,'desc']],
 			'serverSide' : true,
 			'ajax' : {
-				url : config.baseUrl+'admin/service/services_list',
+				url : config.baseUrl+'admin/blog/ajax_blog_list',
 				type : "POST"
 			},
 			//'orderMulti':true,
 			'columns':[
 				{data:'id'},
-				{data : 'name'},
-				{data : 'category_name'},
-				{data : 'brand_name'},
-				{data : 'model_name'},
-				{data : 'price'},
+				{data : 'title'},
+				{
+					data : 'description',
+					render :function (data,type,tow){
+						return data.substring(0,50);
+					}
+				},
 				{
 					data : 'created_at',
 					render: function(data, type, row){
@@ -64,8 +67,8 @@
 						var html = '<div class="dropdown">'+
 			                '<button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>'+
 			                '<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'+
-			                    '<li><a href="'+config.baseUrl+'admin/service/change_price/'+row.id+'">Change Price</a></li>'+
-			                    '<li><a href="'+config.baseUrl+'admin/service/add_coupan/'+row.id+'">Add Coupan</a></li>'+
+			                    '<li><a href="'+config.baseUrl+'admin/blog/show/'+row.id+'">View</a></li>'+
+			                    '<li><a href="'+config.baseUrl+'admin/blog/edit/'+row.id+'">Edit</a></li>'+
 			                '</ul>'+
 		            		'</div>';
 		            		return html;
