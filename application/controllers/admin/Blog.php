@@ -141,4 +141,17 @@ class Blog extends MY_Controller {
 			'blog' => $blog,
 		));
 	}
+
+	public function delete($id = null) {
+		if(!$id) {
+			show_error('No detail found!',404);
+		}
+		$is_delete = $this->BlogModel->delete(array('id'=>$id));
+		if($is_delete) {
+			$this->session->set_flashdata('success_msg','Blog deleted successfully!');		
+		}else{
+			$this->session->set_flashdata('error_msg','Something went wrong!');
+		}
+		redirect('admin/blog/list');
+	}
 }

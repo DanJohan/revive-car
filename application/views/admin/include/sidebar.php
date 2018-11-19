@@ -119,7 +119,7 @@
             </a>
             <ul class="treeview-menu">
                <li id="index" class=""><a href="<?= base_url('admin/blog/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Blogs</a></li>
-            	<li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Gallery images</a></li>
+            	<li id="e_index"><a href="<?= base_url('admin/gallery/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Gallery images</a></li>
             	<li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Testimonials</a></li>
             </ul>
           </li>

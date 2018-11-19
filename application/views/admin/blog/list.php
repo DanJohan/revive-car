@@ -69,6 +69,7 @@
 			                '<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'+
 			                    '<li><a href="'+config.baseUrl+'admin/blog/show/'+row.id+'">View</a></li>'+
 			                    '<li><a href="'+config.baseUrl+'admin/blog/edit/'+row.id+'">Edit</a></li>'+
+			                    '<li><a href="'+config.baseUrl+'admin/blog/delete/'+row.id+'" onclick="return confirm(\'Are you sure to delete this record?\')">Delete</a></li>'+
 			                '</ul>'+
 		            		'</div>';
 		            		return html;
