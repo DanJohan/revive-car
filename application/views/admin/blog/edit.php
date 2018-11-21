@@ -41,7 +41,7 @@
 							<div class="col-sm-9">
 								<div class="row">
 									<div class="upload-btn-wrapper col-xs-6">
-										<button class="upload-btn">Upload image</button><span class="upload-file-name"></span>
+										<button class="upload-btn"><i class="fa fa-upload" aria-hidden="true"></i> Upload image</button><span class="upload-file-name"></span>
 										<input type="file" class="upload-input" name="blog_image"/>
 									</div>
 									<div class="col-xs-6">
@@ -70,7 +70,6 @@
 <script type="text/javascript">
 
 	 $(document).ready(function(){
-		 $('.price-field').number(true,2);
 		  ClassicEditor
             .create( document.querySelector( '#editor' ) )
             .catch( error => {

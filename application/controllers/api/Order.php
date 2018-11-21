@@ -229,6 +229,7 @@ class Order extends Rest_Controller {
 	}
 
 	public function getUserOrders(){
+		
 		$this->form_validation->set_rules('user_id','User id', 'trim|required');
 
 		if ($this->form_validation->run() == true ) {

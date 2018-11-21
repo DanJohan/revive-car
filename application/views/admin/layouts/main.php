@@ -72,8 +72,13 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/main.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/pusher.min.js"></script>
 <script type="text/javascript">
- // $(".<?php //echo $cur_tab; ?>").addClass('active');
-  $("#<?php echo $cur_tab_link; ?>").addClass('active');
+	var current_url = window.location.href;
+	$('.treeview-menu a').each(function(){
+		if($(this).attr('href')== current_url){
+			$(this).parent('li').addClass('active');
+			//$(this).parents('li.treeview').addClass('active');
+		}
+	});
 </script>
   <script>
 

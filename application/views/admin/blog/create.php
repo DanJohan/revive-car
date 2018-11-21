@@ -29,7 +29,7 @@
 							<label for="firstname" class="col-sm-3 control-label">Description</label>
 
 							<div class="col-sm-9">
-								<textarea name="description" id="editor"  cols="30" rows="10"></textarea>
+								<textarea name="description" id="description"  cols="30" rows="10"></textarea>
 								<div class="form-error"></div>
 							</div>
 						</div>
@@ -38,7 +38,7 @@
 
 							<div class="col-sm-9">
 								<div class="upload-btn-wrapper">
-									<button class="upload-btn">Upload image</button><span class="upload-file-name"></span>
+									<button class="upload-btn"><i class="fa fa-upload" aria-hidden="true"></i> Upload image</button><span class="upload-file-name"></span>
 									<input type="file" class="upload-input" name="blog_image"/>
 								</div>
 							</div>
@@ -58,18 +58,17 @@
 
 </section>
 <?php $this->widget->beginBlock('scripts');?>
-<script src="<?php echo base_url(); ?>public/dist/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/ckeditor.js"></script>
 <script type="text/javascript">
 
 	 $(document).ready(function(){
-		 $('.price-field').number(true,2);
-		  ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .catch( error => {
+		 var CKEDITOR = ClassicEditor.create(document.querySelector('#description'));
+
+            CKEDITOR.catch( error => {
                 console.error( error );
             } );
-
+            console.log(CKEDITOR.instances);
 		$("#blog-form").validate({
 			debug : true,
 			errorClass: "error",
@@ -81,7 +80,7 @@
 					required:true
 				},
 				description:{
-                         required:true
+                         required: true,
                     }
 			}
 	 	});

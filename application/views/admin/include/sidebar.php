@@ -26,7 +26,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" >
-        <li id="" class="treeview dashboard active">
+        <li id="" class="treeview active">
           <a href="javascript:void(0)">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
            </a>
@@ -34,7 +34,7 @@
                <li id="index" class=""><a href="<?= base_url('admin/dashboard'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Dashboard</a></li>
             </ul>
         </li>
-        <li id="" class="treeview users enquiry jobCard active" >
+        <li id="" class="treeview active" >
             <a href="#" class="sidebar-toggle">
               <i class="fa fa-users"></i> <span>Customers</span>
               <span class="pull-right-container">
@@ -43,12 +43,11 @@
             </a>
             <ul class="treeview-menu">
                <li id="index" class=""><a href="<?= base_url('admin/users'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Customers Detail</a></li>
-            <li id="e_index"><a href="<?= base_url('admin/enquiry/index'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers enquiry</a></li>
             <li id="list"><a href="<?= base_url('admin/jobCard/list'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers job cards</a></li>
             <li id="list"><a href="<?= base_url('admin/jobCard/invoiceList'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i>Customers invoices</a></li> 
             </ul>
           </li>
-        <li id="" class="treeview car active">
+        <li id="" class="treeview active">
             <a href="#" class="sidebar-toggle">
               <i class="fa fa-car"></i> <span>Car Management</span>
               <span class="pull-right-container">
@@ -60,7 +59,7 @@
               <li id="add_carmodel"><a href="<?= base_url('admin/car/add_carmodel'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> Add Car Model</a></li>
            </ul>
         </li>
-        <li id="" class="treeview car active">
+        <li id="" class="treeview active">
             <a href="#" class="sidebar-toggle">
               <i class="fa fa-car"></i> <span>Services Management</span>
               <span class="pull-right-container">
@@ -74,7 +73,7 @@
            </ul>
         </li>
 
-	<li id="" class="treeview car active">
+	<li id="" class="treeview active">
             <a href="#" class="sidebar-toggle">
               <i class="fa fa-car"></i> <span>Order Management</span>
               <span class="pull-right-container">
@@ -86,7 +85,7 @@
            </ul>
      </li>
 
-        <li id="" class="treeview driver active">
+        <li id="" class="treeview active">
             <a href="#" class="sidebar-toggle">
               <img src="<?php echo base_url()?>public/images/admin/driver.png" style="height: 20px;width: 20px;"><span>Driver Management</span>
               <span class="pull-right-container">
@@ -98,7 +97,7 @@
               <li id="view_driver" class=""><a href="<?= base_url('admin/driver/view_driver'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> View Driver Details</a></li>
             </ul>
         </li>
-        <li id="" class="treeview workshop active">
+        <li id="" class="treeview active">
             <a href="#" class="sidebar-toggle">
               <img src="<?php echo base_url()?>public/images/admin/workshop.png"><span>Workshop Management</span>
               <span class="pull-right-container">
@@ -110,9 +109,9 @@
               <li id="view_manager" class=""><a href="<?= base_url('admin/workshop/view_manager'); ?>"><i class="fa fa-arrow-circle-right text-aqua"></i> View Manager</a></li>
             </ul>
         </li>
-        <li id="" class="treeview users enquiry jobCard active" >
+        <li id="" class="treeview active" >
             <a href="#" class="sidebar-toggle">
-              <i class="fa fa-users"></i> <span>Site Management</span>
+              <i class="fa fa-cog"></i> <span>Site Management</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>

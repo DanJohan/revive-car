@@ -377,11 +377,9 @@ class User extends Rest_Controller {
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
 		if ($this->form_validation->run() == true){
 			$user_id = $this->input->post('user_id');
-	   		$options = [
-			    'cost' => 12,
-			];
+
 	   		$update_data=array(
-	   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT,$options)
+	   			'password'=>password_hash($this->input->post('password'),PASSWORD_BCRYPT)
 	   		);
 
 	   		$this->UserModel->update($update_data,array('id'=>$user_id));
@@ -836,6 +834,7 @@ class User extends Rest_Controller {
 	*/
 
 	public function getUserProfile(){
+		
 		$this->form_validation->set_rules('user_id', 'User id', 'trim|required');
 		if ($this->form_validation->run() == true){
 			$user_id = $this->input->post('user_id');

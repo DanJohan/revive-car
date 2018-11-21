@@ -57,10 +57,10 @@
 
     <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Repair orders</h3>
+            <h3 class="box-title">Order services</h3>
           </div>
           <div class="box-body">
-           <?php $this->load->view('common/jobcard/jobcard_repair_order'); ?>
+           <?php $this->load->view('common/jobcard/jobcard_order_item'); ?>
         </div>
     </div><!-- end of repair order box -->
 
@@ -70,7 +70,7 @@
         </div>
     
       <div class="box-body">
-					<?php $this->load->view('common/jobcard/jobcard_images'); ?>
+		<?php $this->load->view('common/jobcard/jobcard_images'); ?>
       </div>
     </div><!-- end of images box -->
 

@@ -7,7 +7,7 @@ $job_card_images = $job_card['images_data'];
 						?>
 								<div class="col-md-4 col-sm-4 col-xs-6">
 									<div class="image-responsive">
-											<a target="_blank" href="<?php echo base_url().'uploads/app/'.$job_card_image['image']; ?>"><img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$job_card_image['image']; ?>" style="height:200px;width:100%;" /></a>
+											<a target="_blank" href="<?php echo base_url().'uploads/app/'.$job_card_image['job_card_image']; ?>"><img class="img-thumbnail" src="<?php echo base_url().'uploads/app/'.$job_card_image['job_card_image']; ?>" style="height:200px;width:100%;" /></a>
 									</div>
 								</div>
 						<?php

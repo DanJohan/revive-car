@@ -1,3 +1,6 @@
+ <?php $this->widget->beginBlock('stylesheets'); ?>
+<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css">
+ <?php $this->widget->endBlock(); ?>
  <section class="content">
    <div class="box">
     <div class="box-header">
@@ -36,8 +39,13 @@
 
          
             <td class="text-right">
-              <a data-toggle="modal" class="btn btn-success" data-toggle="tooltip" href="<?php echo  base_url('admin/jobCard/show/'.$job['id']); ?>" data-original-title="View"><i class="fa fa-eye"></i></a>
-            
+              		<div class="dropdown">
+			          <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+			                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+			                    <li><a href="<?php echo base_url(); ?>admin/jobCard/show/<?php echo $job['id']; ?>">View</a></li>
+			                </ul>
+		          </div>
+            </td>
           </tr>
           <?php
                }
@@ -51,7 +59,9 @@
   </div>
   <!-- /.box -->
 </section>  
-
+<?php $this->widget->beginBlock('scripts'); ?>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -71,8 +81,6 @@
     });
   });
 </script> 
-<script>
-$("#view_users").addClass('active');
-</script>
+<?php $this->widget->endBlock(); ?>
 
       
