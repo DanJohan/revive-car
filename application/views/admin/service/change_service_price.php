@@ -9,7 +9,7 @@
         <!-- form start -->
         <div class="box-body my-form-body">
            
-       <form class="form-horizontal" method="post" action="<?php echo base_url().'admin/service/change_service_price'; ?>" enctype="multipart/form-data"> 
+       <form id="change_service_price" class="form-horizontal" method="post" action="<?php echo base_url().'admin/service/change_service_price'; ?>" > 
               <div class="form-group">
                 <label for="service_type" class="col-sm-3 control-label">Select service type</label>
 
@@ -20,6 +20,7 @@
                       <option value="<?= $service_category['id']; ?>" ><?= $service_category['name']; ?></option>
                     <?php endforeach; ?> 
                   </select>
+                   <div class="form-error"></div>
                 </div>
               </div>
              
@@ -38,6 +39,7 @@
                  	?>
                  
                  </select>
+                  <div class="form-error"></div>
                </div>
              </div> 
 
@@ -45,7 +47,11 @@
                 <label for="firstname" class="col-sm-3 control-label">Price</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="service_price" class="form-control price-field" placeholder="0.00" required>
+                	<div class="input-group">
+                		<span class="input-group-addon">₹</span>
+                  		<input type="text" name="service_price" class="form-control price-field" placeholder="0.00" required>
+                  	</div>
+                  <div class="form-error"></div>
                 </div>
               </div>
             
@@ -63,8 +69,28 @@
 
 </section> 
 <?php $this->widget->beginBlock('scripts'); ?>
+<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
 <script type="text/javascript">
-
   $('.price-field').number(true,2);
+
+     $("#change_service_price").validate({
+      	errorClass: "error",
+      	errorPlacement: function(error, element) {
+			error.appendTo(element.parents('.form-group').find('.form-error'));
+		},
+	     rules: {
+	        service_type:{
+	          required:true
+	        },
+	        car_type: {
+	          required: true,
+	        },
+	        service_price: {
+	          required: true,
+	          number: true
+	        }
+	     }
+   });
 </script>
 <?php $this->widget->endBlock(); ?>

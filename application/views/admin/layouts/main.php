@@ -68,8 +68,6 @@
 <script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery-ui.min.js"></script>	
 <script type="text/javascript" src="<?php echo base_url(); ?>public/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/app.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/vendor/alertifyjs/alertify.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/main.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/pusher.min.js"></script>

@@ -20,6 +20,7 @@
                       <option value="<?= $row['id']; ?>"><?= $row['brand_name']; ?></option>
                     <?php endforeach; ?> 
                   </select>
+                  <div class="form-error"></div>
                 </div>
               </div>
 
@@ -32,6 +33,7 @@
                       <option value="<?= $mn['brand_id']; ?>"><?= $mn['model_name']; ?></option>
                     <?php endforeach; ?>  -->
                   </select>
+                  <div class="form-error"></div>
                 </div>
               </div>
 
@@ -45,6 +47,7 @@
                       <option value="<?= $cs['id']; ?>"><?= $cs['name']; ?></option>
                     <?php endforeach; ?> 
                   </select>
+                  <div class="form-error"></div>
                 </div>
               </div>
 
@@ -58,16 +61,21 @@
                       <option value="<?= $category['id']; ?>"><?= $category['name']; ?></option>
                     <?php endforeach; ?> 
                   </select>
+                  <div class="form-error"></div>
                 </div>
               </div>
 
                <div class="form-group">
-                <label for="firstname" class="col-sm-3 control-label">Price</label>
+                	<label for="firstname" class="col-sm-3 control-label">Price</label>
 
-                <div class="col-sm-8">
-                  <div class="input-group"><span class="input-group-addon">&#x20b9;</span><input type="text" class="form-control price-field" name="price" placeholder ="0.00" /></div>
-                </div>
-              </div>
+                	<div class="col-sm-8">
+                  		<div class="input-group">
+                  			<span class="input-group-addon">&#x20b9;</span>
+                  			<input type="text" class="form-control price-field" name="price" placeholder ="0.00" />
+                  		</div>
+                  	<div class="form-error"></div>
+                	</div>
+	          </div>
 
              
               <br><br></br>
@@ -85,7 +93,8 @@
 
 </section>
 <?php $this->widget->beginBlock('scripts'); ?>
-<script src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
 <script type="text/javascript">
    $(document).ready(function(){
      $('.price-field').number(true,2);
@@ -108,6 +117,9 @@
 
     $("#add-service").validate({
       errorClass: "error",
+      errorPlacement: function(error, element) {
+		error.appendTo(element.parents('.form-group').find('.form-error'));
+	},
       rules: {
         brand_id:{
           required:true

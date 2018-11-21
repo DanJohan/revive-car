@@ -42,9 +42,6 @@
                 <tr style="background-color: #3c8cbd;color:white;"><td>Car No.</td><td><?php echo ($index+1); ?></td></tr>
                 <tr><td><b>Brand Name: </b></td><td><?php echo $car['brand_name']; ?></td>
                 <tr><td><b>Model Name: </b></td><td><?php echo $car['model_name']; ?></td>
-                <tr><td><b>Year: </b></td><td><?php echo $car['year']; ?></td>
-                <tr><td><b>Colour: </b></td><td><?php echo ucfirst($car['color']); ?></td>
-                <tr><td><b>Year: </b></td><td><?php echo $car['year']; ?></td>
                 <tr><td><b>Registration No: </b> </td><td><?php echo $car['registration_no']; ?></td>
               </table>
             <?php } }else{ ?>

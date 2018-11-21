@@ -37,6 +37,7 @@
   $(function () {
     $("#example1").DataTable({
       	'order':[[0,'desc']],
+      	'stateSave' : true,
       	'serverSide' : true,
 		'ajax' : {
 			url : config.baseUrl+'admin/users/ajax_users_list',
