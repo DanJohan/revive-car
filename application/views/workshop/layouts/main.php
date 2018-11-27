@@ -78,10 +78,14 @@
 	<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/jquery.number.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>public/vendor/alertifyjs/alertify.min.js"></script>
-	
-	<script type="text/javascript">
- // $(".<?php //echo $cur_tab; ?>").addClass('active');
-  $("#<?php echo $cur_tab_link; ?>").addClass('active');
+<script type="text/javascript">
+	var current_url = window.location.href;
+	$('.treeview-menu a').each(function(){
+		if($(this).attr('href')== current_url){
+			$(this).parent('li').addClass('active');
+			//$(this).parents('li.treeview').addClass('active');
+		}
+	});
 </script>
 <?php $this->widget->beginBlock('scripts', true); ?>
 <?php $this->widget->endBlock(); ?>

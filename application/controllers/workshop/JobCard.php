@@ -31,9 +31,7 @@ class JobCard extends MY_Controller {
 		}else{
 			$data['jobs'] = array();
 		}
-		$data['view'] = 'workshop/jobcard/list';
-	//	dd($data);
-		$this->load->view('workshop/layout', $data);
+		$this->renderView('workshop/jobcard/list', $data);
 	}
 
 	public function show($id = null) {
@@ -45,17 +43,32 @@ class JobCard extends MY_Controller {
 			$driver_ids=array();
 		}
 		if($id){
-			$job_card=$this->JobcardModel->getJobCardById($id,$driver_ids);
+			$job_card=$this->JobcardModel->getJobCardFromId($id,$driver_ids);
+			//dd($job_card);
 		}
 
 		if(empty($job_card)){
 			$this->session->set_flashdata('error_msg','No detail found!');
 			redirect('workshop/jobCard/list');
 		}
-		$job_card = $this->filterJobCardData($job_card);
+		$job_card_images_key = array('job_card_image_id','job_card_image');
+		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, $job_card_images_key),SORT_REGULAR),'job_card_image_id','');
+
+		$order_item_keys = array('order_item_id', 'order_item_order_id', 'service_id', 'service_name','price');
+		$order_items = array_filter_by_value(array_unique(array_column_multi($job_card,$order_item_keys),SORT_REGULAR),'order_item_id','');
+
+		$job_card = $job_card[0];
+		$removeKeys=array_merge($job_card_images_key,$order_item_keys);
+		foreach($removeKeys as $key) {
+		   unset($job_card[$key]);
+		}
+
+		$job_card['images_data']=$job_card_images;
+		$job_card['order_items']=$order_items;
+		//dd($job_card);
 		$data['job_card'] = $job_card;
-		$data['view'] = 'workshop/jobcard/show';
-		$this->load->view('workshop/layout',$data);
+
+		$this->renderView('workshop/jobcard/show',$data);
 	}
 
 	public function completeJobs($id=null){
@@ -66,19 +79,33 @@ class JobCard extends MY_Controller {
 		}else{
 			$driver_ids=array();
 		}
+		//dd($driver_ids);
 		if($id){
-			$job_card=$this->JobcardModel->getJobCardById($id,$driver_ids);
+			$job_card=$this->JobcardModel->getJobCardFromId($id,$driver_ids);
 		}
 
 		if(empty($job_card)){
 			$this->session->set_flashdata('error_msg','No detail found!');
 			redirect('workshop/jobCard/list');
 		}
-		$job_card = $this->filterJobCardData($job_card);
+		$job_card_images_key = array('job_card_image_id','job_card_image');
+		$job_card_images = array_filter_by_value(array_unique(array_column_multi($job_card, $job_card_images_key),SORT_REGULAR),'job_card_image_id','');
 
+		$order_item_keys = array('order_item_id', 'order_item_order_id', 'service_id', 'service_name','price');
+		$order_items = array_filter_by_value(array_unique(array_column_multi($job_card,$order_item_keys),SORT_REGULAR),'order_item_id','');
+
+		$job_card = $job_card[0];
+		$removeKeys=array_merge($job_card_images_key,$order_item_keys);
+		foreach($removeKeys as $key) {
+		   unset($job_card[$key]);
+		}
+
+		$job_card['images_data'] = $job_card_images;
+		$job_card['order_items'] = $order_items;
+		//dd($job_card);
 		$data['job_card'] = $job_card;
-		$data['view'] = 'workshop/jobcard/complete-job';
-		$this->load->view('workshop/layout',$data);
+
+		$this->renderView('workshop/jobcard/complete-job',$data);
 	}
 
 	public function editRepairOrder(){

@@ -25,6 +25,7 @@ class JobCard extends MY_Controller {
 	public function show($id = null) {
 		if($id){
 			$job_card=$this->JobcardModel->getJobCardFromId($id);
+			//echo $this->db->last_query();die;
 			//dd($job_card);
 		}
 

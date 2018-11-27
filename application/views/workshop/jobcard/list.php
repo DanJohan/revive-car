@@ -59,7 +59,7 @@
   </div>
   <!-- /.box -->
 </section>  
-
+<?php $this->widget->beginBlock('scripts'); ?>
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -79,8 +79,6 @@
     });
   });
 </script> 
-<script>
-$("#view_users").addClass('active');
-</script>
+<?php $this->widget->endBlock(); ?>
 
       
