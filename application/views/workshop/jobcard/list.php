@@ -41,9 +41,6 @@
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                     <li><a href="<?php echo  base_url('workshop/jobCard/show/'.$job['id']); ?>">View job card</a></li>
                     <li><a href="<?php echo base_url('workshop/jobCard/completeJobs/'.$job['id'])?>">Change jobs status</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/invoice/'.$job['id'])?>" >Generate invoice</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/invoiceList/'.$job['id'])?>" >View invoices</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/deliverCar/'.$job['id'])?>" >Deliver car</a></li>
                 </ul>
             </div>
           </tr>

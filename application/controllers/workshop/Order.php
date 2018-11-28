@@ -14,6 +14,9 @@ class Order extends MY_Controller {
 		$this->load->model('RideModel');
 		$this->load->model('DriverNotificationModel');
 		$this->load->model('NotificationModel');
+		$this->load->model('JobcardModel');
+		$this->load->model('InvoiceModel');
+		$this->load->model('InvoiceItemModel');
 
 	}
 
@@ -186,8 +189,6 @@ class Order extends MY_Controller {
 		$this->renderView('workshop/order/create_ride',$data);
 
 	}
-
-
 
 
 

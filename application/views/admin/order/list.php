@@ -83,6 +83,7 @@
 	       		},
 				{
 					mRender : function(data, type, row) {
+						console.log(data,type,row);
 						var html = '<div class="dropdown">'+
 			                '<button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>'+
 			                '<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'+

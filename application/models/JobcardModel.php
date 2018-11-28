@@ -46,7 +46,7 @@ class JobcardModel extends MY_Model {
 
 	// used in crm admin
 	public function getJobCardFromId($id,$driver_ids = array()) {
-		$this->db->select('jc.id,jc.order_id,jc.driver_id,jc.alternate_no,jc.vin_no,jc.sa_name_no,jc.delivery_datetime,jc.reporting_datetime,jc.type_of_service,jc.ride_kms,jc.damage_mark,jc.car_properties,jc.fuel,jc.vehicle_qty,jc.signature,jc.created_at,cd.name as user_name,cd.phone as user_phone,cd.email as user_email,cd.address as user_address,cd.landmark,o.loaner_vehicle,c.registration_no,cb.brand_name,cm.model_name,jci.id AS job_card_image_id,jci.image AS job_card_image,oi.id as order_item_id,oi.order_id as order_item_order_id ,oi.service_id,,oi.name as service_name,oi.price');
+		$this->db->select('jc.id,jc.order_id,jc.driver_id,jc.alternate_no,jc.vin_no,jc.sa_name_no,jc.delivery_datetime,jc.reporting_datetime,jc.type_of_service,jc.ride_kms,jc.damage_mark,jc.car_properties,jc.fuel,jc.vehicle_qty,jc.signature,jc.created_at,cd.name as user_name,cd.phone as user_phone,cd.email as user_email,cd.address as user_address,cd.landmark,o.loaner_vehicle,o.user_id,o.sub_total,o.discount_amount,o.net_pay_amount,c.registration_no,cb.brand_name,cm.model_name,jci.id AS job_card_image_id,jci.image AS job_card_image,oi.id as order_item_id,oi.order_id as order_item_order_id ,oi.service_id,,oi.name as service_name,oi.price,oi.status as service_status');
 		$this->db->from($this->table.' AS jc');
 		$this->db->join('job_card_images AS jci','jc.id=jci.job_card_id','left');
 		$this->db->join('placed_orders AS o','jc.order_id=o.id');
