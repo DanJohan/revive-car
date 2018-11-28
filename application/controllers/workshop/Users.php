@@ -16,7 +16,7 @@
 		}
 
 		public function index(){
-			$data['userData'] =  $this->UserModel->get_all(array('name !='=>'','email !='=>''),array('id','desc'));
+			$data['userData'] =  $this->UserModel->get_all();
 
 			$this->renderView('workshop/users/user_list', $data);
 		}

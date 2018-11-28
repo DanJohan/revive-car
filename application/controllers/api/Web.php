@@ -88,4 +88,14 @@ class Web extends MY_Controller {
 		$this->load->view('api/job_card_detail',$data);
 	}
 
+	public function getOrderView(){
+
+		$id = $_GET['id'];
+
+		$query = $this->db->query('SELECT * FROM placed_orders WHERE id='.$id.' LIMIT 1');
+		$result = $query->row_array();
+		echo $this->db->last_query();
+		dd($result);
+	}
+
 }

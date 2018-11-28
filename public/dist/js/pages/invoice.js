@@ -239,24 +239,7 @@ $(function(){
 		calculateDiscount($('#discount'));
 	});
 
-	$(document).on('keyup','.parts-gst',function(){
 
-		var qtyField = $(this).parents('tr').find('.parts-qty');
-		var gstAmountField = $(this).parents('tr').find('.gst-amount');
-		var totalField = $(this).parents('tr').find('.parts-total');
-		var costField = $(this).parents('tr').find('.parts-cost');
-		var cost=(costField.val())?costField.val():0.00;
-		var gst = $(this).val();
-		var qty=(qtyField.val())?qtyField.val():0.00;
-		var amount = cost*qty;
-		gstAmountField.val((amount/100*gst).toFixed(2));
-		gstAmount=gstAmountField.val();
-		totalField.val((Number(amount)+Number(gstAmount)).toFixed(2));
-		getPartsTotal();
-		getGstTotal();
-		calculateDiscount($('#discount'));
-
-	});
 	function calculateDiscount(el){
 		var discount=el.val()/100;
 		tempTotalAmount=totalAmount;

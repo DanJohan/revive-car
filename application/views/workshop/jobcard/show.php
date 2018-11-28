@@ -61,7 +61,7 @@
             <h3 class="box-title">Repair orders</h3>
           </div>
           <div class="box-body">
-		  <?php $this->load->view('common/jobcard/jobcard_repair_order'); ?>
+		  <?php $this->load->view('common/jobcard/jobcard_order_item'); ?>
         </div>
     </div><!-- end of repair order box -->
 

@@ -1,6 +1,9 @@
+ <?php $this->widget->beginBlock('stylesheets');?>
+ 	<link rel="stylesheet" href="<?= base_url() ?>public/plugins/datatables/dataTables.bootstrap.css"> 
+<?php $this->widget->endBlock(); ?>
  <section class="content">
    <div class="box">
-    <div class="box-header bg-green">
+    <div class="box-header">
       <h3 class="box-title">Invoices</h3>
     </div>
     <!-- /.box-header -->
@@ -17,7 +20,7 @@
           <th>Forward to customer</th>
           <th>Paid</th>
           <th>Created At</th>
-          <th style="width: 150px;" class="text-right">Option</th>
+          <th class="text-right">Option</th>
         </tr>
         </thead>
         <tbody>
@@ -41,11 +44,9 @@
          
             <td class="text-right">
               <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
+                <button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    <li><a href="<?php echo  base_url('workshop/jobCard/invoiceShow/'.$invoice['id']); ?>">View</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/invoiceEdit/'.$invoice['id'])?>">Edit</a></li>
-                    <li><a href="<?php echo base_url('workshop/jobCard/invoiceFwdToCust/'.$invoice['id'].'/'.$invoice['job_card_id'])?>">Forward to customer</a></li>
+                    <li><a href="<?php echo  base_url('admin/invoice/show/'.$invoice['id']); ?>">View</a></li>
                 </ul>
             </div>
           </tr>
@@ -61,7 +62,9 @@
   </div>
   <!-- /.box -->
 </section>  
-
+<?php $this->widget->beginBlock('scripts'); ?>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -76,6 +79,6 @@
     });
   });
 </script> 
-
+<?php $this->widget->endBlock(); ?>
 
       

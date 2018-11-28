@@ -22,6 +22,7 @@ class Order extends MY_Controller {
 	}
 
 	public function ajax_orders_list() {
+		//dd($_POST);
 		$start = $this->input->post('start');
 		$limit = $this->input->post('length');
 		$order = $this->input->post('order');

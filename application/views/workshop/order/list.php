@@ -48,6 +48,8 @@
 					                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
 					                    <li><a href="<?php echo base_url('workshop/order/show/'.$order['hash']); ?> ">View</a></li>
 					                    <li><a href="<?php echo base_url('workshop/order/create_ride/'.$order['hash']); ?> ">Assign driver</a></li>
+					                    <li><a href="<?php echo base_url('workshop/invoice/create/'.$order['hash']); ?> ">Generate invoice</a></li>
+					                     <li><a href="<?php echo base_url('workshop/invoice/list/'.$order['hash'])?>" >View invoices</a></li>
 					                </ul>
 				            	</div>
 						</td>

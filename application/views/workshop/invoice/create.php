@@ -1,9 +1,12 @@
+<?php $this->widget->beginBlock('stylesheets'); ?>
+<link rel="stylesheet" href="<?php echo  base_url() ?>public/dist/css/bootstrap-datetimepicker.min.css"> 
+<?php $this->widget->endBlock(); ?>
 <section class="content">
     <div class="box">
         <div class="box-header bg-green">
          <h3 class="box-title">Invoice</h3>
        </div>
-      <form id="invoice-form" action="<?php echo base_url(); ?>workshop/jobCard/createInvoice" method="post">
+      <form id="invoice-form" action="<?php echo base_url(); ?>workshop/invoice/save" method="post">
        <div class="box-body">
         <div class="row">
             <div class="col-xs-6">
@@ -14,7 +17,7 @@
                     <div class="col-xs-7">
                       <?php echo $job_card['user_name']; ?>
                       <input type="hidden" name="client_name" value="<?php echo $job_card['user_name']; ?>" />
-                      <input type="hidden" name="job_card_id" value="<?php echo $job_card['id']; ?>" />
+                      <input type="hidden" name="order_id" value="<?php echo $job_card['order_id']; ?>" />
                       <input type="hidden" name="user_id" value="<?php echo $job_card['user_id']; ?>" />
                     </div>
                 </div>
@@ -100,7 +103,13 @@
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-7">
                       <div class="form-group">
-                        <input type="date" class="form-control" name="invoice_created_date" value="<?php echo date('Y-m-d');?>">
+                      	<div class='input-group date' id='invoice_created_date'>
+                        		<input type="text" class="form-control" id="invoice_created_date" name="invoice_created_date" value="<?php echo date('d/m/Y');?>">
+                        		<span class="input-group-addon">
+					            <span class="glyphicon glyphicon-calendar"></span>
+					     </span>
+					     <div class="form-error"></div>
+                        	</div>
                       </div>
                     </div>
                 </div>
@@ -109,7 +118,13 @@
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-7">
                       <div class="form-group">
-                        <input type="date" class="form-control" name="invoice_due_date" value="<?php echo date('Y-m-d');?>">
+                      	<div class='input-group date' id='invoice_created_date'>
+                        		<input type="text" class="form-control" id="invoice_due_date" name="invoice_due_date" value="">
+                        		<span class="input-group-addon">
+					            <span class="glyphicon glyphicon-calendar"></span>
+					     </span>
+                        	</div>
+                        	<div class="form-error"></div>
                       </div>
                       </div>
                 </div>
@@ -119,6 +134,7 @@
                     <div class="col-xs-7">
                       <div class="form-group">
                         <input type="text" class="form-control" name="sa_name" value="<?php echo $this->session->userdata('m_name'); ?>" required />
+                        <div class="form-error"></div>
                       </div>
                     </div>
                 </div>
@@ -126,57 +142,35 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-              <h3>Labour</h3>
+              <h3>Order service</h3>
               <div class="table-responsive">
                   <table class="table labour-table">
                     <tr>
-                        <td style="width:40%;">Item</td>
-                        <td style="width:10%;">Hours</td>
-                        <td style="width:10%;">Rate/Day</td>
-                        <td style="width:10%;">Cost</td>
-                        <td style="width:10%;">GST (%)</td>
-                        <td style="width:10%;">Total</td>
-                        <td>Actions</td>
-                    </tr>
-                    <tr>
-                          <td><input type="text" class="form-control labour-item invoice-item" name="labour[0][item]" autocomplete="off"/></td>
-                          <td><input type="text" class="form-control labour-hour validateNumeric" name="labour[0][hour]" /></td>
-                          <td><input type="text" class="form-control labour-rate validateNumeric" name="labour[0][rate]" /></td>
-                          <td><input type="text" class="form-control labour-cost" name="labour[0][cost]" readonly /></td>
-                          <td><input type="text" class="form-control labour-gst validateNumeric" name="labour[0][gst]" value="0.00" /><input type="hidden" class="gst-amount" name="labour[0][gst_amount]" value="0.00"></td>
-                          <td><input type="text" class="form-control labour-total" name="labour[0][total]" readonly /></td>
-                          <td><button type="button" class="btn btn-success labour-add-button"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
-                    </tr>
+                        <td class="text-bold" >S. No.</td>
+                        <td class="text-bold" >Service Name</td>
+                        <td class="text-bold" >Price</td>
+                    <?php 
+                    	if(!empty($job_card['order_items'])){
+                    		$i=1;
+                    		foreach ($job_card['order_items'] as $index => $order_item) {
+                   	?>
+                   		<tr>
+                   			<td><?php echo $i."."; ?></td>
+                   			<td><?php echo $order_item['service_name']; ?><input type="hidden" name="order_items[<?php echo $i-1; ?>][service_name]" value="<?php echo $order_item['service_name']; ?>" /></td>
+                   			<td><?php echo $order_item['price']; ?><input type="hidden" name="order_items[<?php echo $i-1; ?>][price]" value="<?php echo $order_item['price']; ?>" /></td>
+                   		</tr>
+                   	<?php
+                    		$i++;
+                    		}
+                    	}
+
+                    ?>
                   </table>
               </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-xs-12">
-              <h3>Parts</h3>
-              <div class="table-responsive">
-                  <table class="table parts-table">
-                    <tr>
-                        <td style="width:50%;">Item</td>
-                        <td style="width:10%;">Qty</td>
-                        <td style="width:10%;">Cost</td>
-                        <td style="width:10%;">GST (%)</td>
-                        <td style="width:10%;">Total</td>
-                        <td>Actions</td>
-                    </tr>
-                      <tr>
-                          <td><input type="text" class="form-control parts-item invoice-item" name="parts[0][item]" /></td>
-                          <td><input type="text" class="form-control parts-qty validateNumeric" name="parts[0][qty]" /></td>
-                          <td><input type="text" class="form-control parts-cost validateNumeric" name="parts[0][cost]" /></td>
-                          <td><input type="text" class="form-control parts-gst validateNumeric" name="parts[0][gst]" value="0.00" /><input type="hidden" class="gst-amount" value="0.00" name="parts[0][gst_amount]"></td>
-                          <td><input type="text" class="form-control parts-total" name="parts[0][total]" readonly /></td>
-                          <td><button type="button" class="btn btn-success parts-add-button"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
-                      </tr>
-                  </table>
-              </div>
-          </div>
-        </div>
+
     
         <div class="row">
           <div class="col-xs-6">
@@ -185,43 +179,44 @@
           </div>
           <div class="col-xs-6">
                   <br><br><br>
-                 <div class="row">
-                    <div class="col-xs-4"><b>Total labor</b></div>
+			<div class="row">
+                    <div class="col-xs-4"><b>Sub Total:</b></div>
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-5">
-                      <span id="total-labour-amount">&#x20b9; 0.00</span>
-                      <input type="hidden" id="labourTotal"  name="labour_total" value="0.00">
+                      <span id="sub_total">&#x20b9; <?php echo $job_card['sub_total']; ?></span>
+                      <input type="hidden" id="sub_total" name="sub_total" value="<?php echo $job_card['sub_total']; ?>">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4"><b>Total Parts:</b></div>
+                    <div class="col-xs-4"><b>Discount Amount:</b></div>
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-5">
-                      <span id="total-parts-amount">&#x20b9; 0.00</span>
-                      <input type="hidden" id="partsTotal" name="parts_total" value="0.00">
+                      <span id="discount_amount">&#x20b9; <?php echo $job_card['discount_amount']; ?></span>
+                      <input type="hidden" id="discount_amount" name="discount_amount" value="<?php echo $job_card['discount_amount']; ?>">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4"><b>GST</b></div>
+                    <div class="col-xs-4"><b>Total Amount:</b></div>
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-5">
-                      <span id="total-gst-amount">&#x20b9; 0.00</span>
-                      <input type="hidden" id="gstTotal" name="gst_total" value="0.00">
+                      <span id="total_amount-text">&#x20b9; <?php echo $job_card['net_pay_amount']; ?></span>
+                      <input type="hidden" id="total_amount" name="total_amount" value="<?php echo $job_card['net_pay_amount']; ?>">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4"><b>Discount(%)</b></div>
-                    <div class="col-xs-1">:</div>
-                    <div class="col-xs-5"><input id="discount" type="text" name="discount" class="form-control" value="0.00"/></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4"><b>Total</b></div>
+                    <div class="col-xs-4"><b>GST(%)</b></div>
                     <div class="col-xs-1">:</div>
                     <div class="col-xs-5">
-                      <span id="total-amount">&#x20b9; 0.00</span>
-                      <input type="hidden" id="totalAmountAfterDiscount" name="total_amount_after_discount" value="0.00"/>
-                      <input type="hidden" id="totalAmount" name="total_amount" value="0.00"/>
-                      <input type="hidden" id="discountAmount" name="discount_amount" value="0.00"/>
+                    	<input id="gst" type="text" name="gst" class="form-control" value="0.00"/>
+                    	<input type="hidden" id="gst-amount" name="gst_amount" value="0.00">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4"><b>Total Pay amount</b></div>
+                    <div class="col-xs-1">:</div>
+                    <div class="col-xs-5">
+                      <span id="total-pay-amount-text">&#x20b9;  <?php echo $job_card['net_pay_amount']; ?></span>
+                      <input type="hidden" id="total-pay-amount" name="total_pay_amount" value=" <?php echo $job_card['net_pay_amount']; ?>"/>
                     </div>
                 </div>
           </div>
@@ -237,18 +232,53 @@
       </form>
 </div>
 </section>
-<script type="text/javascript">
-  var invoiceConfig = {
-          'labourFieldStart':"1",
-          'partsFieldStart':"1",
-          'labourTotalSum':$('#labourTotal').val(),
-          'partsTotalSum' : $('#partsTotal').val(),
-          'gstTotalSum':$('#gstTotal').val(),
-          'totalAmount':$('#totalAmount').val()
-  };
+<?php $this->widget->beginBlock('scripts'); ?>
 
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/moment.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>public/dist/js/bootstrap-datetimepicker.min.js"></script>
+<!-- <script type="text/javascript" src="<?php //echo base_url() ?>public/dist/js/pages/invoice.js"></script> -->
+<script type="text/javascript">
+	var date = new Date();
+ 	var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+	$('#invoice_created_date,#invoice_due_date').datetimepicker({
+     	format:'DD/MM/YYYY',
+     	minDate:today,
+     	allowInputToggle:true,
+     });
+
+     $(document).on('keyup','#gst',function(){
+
+		var gst = $(this).val();
+		var amount = $('#total_amount').val();
+		var gstAmount=((amount/100)*gst).toFixed(2);
+		var total_pay_amount = (Number(amount)+Number(gstAmount)).toFixed(2);
+		console.log(total_pay_amount);
+		$('#gst-amount').val(gstAmount);
+		$('#total-pay-amount').val(total_pay_amount);
+		$('#total-pay-amount-text').html('&#x20b9; '+total_pay_amount);
+
+
+	});
+
+	$("#invoice-form").validate({
+		errorClass: "error",
+		errorPlacement: function(error, element) {
+			error.appendTo(element.parents('.form-group').find('.form-error'));
+		},
+		rules: {
+			invoice_due_date:{
+				required:true
+			},
+			invoice_created_date: {
+				required: true,
+			},
+			sa_name: {
+				required: true,
+			}
+		}
+	});
 </script>
-<script type="text/javascript" src="<?php echo base_url() ?>public/dist/js/pages/invoice.js"></script>
+<?php $this->widget->endBlock(); ?>
 
 
 
