@@ -13,6 +13,8 @@ class Driver extends Rest_Controller {
 	    $this->load->model('DriverNotificationModel');
 	    $this->load->model('DriverModel');
 	    $this->load->model('RideModel');
+	    $this->load->model('DeliveryCarModel');
+	    $this->load->model('DeliveryCarImageModel');
 	}
 
 	/**
@@ -392,6 +394,98 @@ class Driver extends Rest_Controller {
 		$this->form_validation->set_rules('order_id', 'Order id', 'trim|required');
 		$this->form_validation->set_rules('driver_id', 'Driver id', 'trim|required');
 		if ($this->form_validation->run() == true) {
+			$order_id = $this->input->post('order_id');
+			$driver_id = $this->input->post('driver_id');
+
+			$signature = '';
+			if(isset($_FILES['signature']) && !empty($_FILES['signature']['name'])) {
+				
+				$url = FCPATH."uploads/app/";
+				$config['new_name']=true;
+				$upload =$this->do_upload('signature',$url,$config);
+				if(isset($upload['upload_data'])){
+					chmod($upload['upload_data']['full_path'], 0777);
+					$signature = $upload['upload_data']['file_name'];				
+				}
+			}
+
+			$insert_data = array(
+				'order_id'=>$order_id,
+				'driver_id'=>$driver_id,
+				'signature'=>$signature,
+				'created_at'=>date('Y-m-d H:i:s'),
+			);
+
+			$insert_id = $this->DeliveryCarModel->insert($insert_data);
+
+			$files_data = array();
+			$file_not_uploaded = array();
+			if($insert_id){
+				if(isset($_FILES['images']) && !empty($_FILES['images']['name'])){
+					$filesCount = count($_FILES['images']['name']);
+					for($i = 0; $i < $filesCount; $i++){
+		                $_FILES['file']['name']     = $_FILES['images']['name'][$i];
+		                $_FILES['file']['type']     = $_FILES['images']['type'][$i];
+		                $_FILES['file']['tmp_name'] = $_FILES['images']['tmp_name'][$i];
+		                $_FILES['file']['error']     = $_FILES['images']['error'][$i];
+		                $_FILES['file']['size']     = $_FILES['images']['size'][$i];
+
+		                $url = FCPATH.'uploads/app/';
+		                	//$config['allowed_types'] = '*';
+		                	$config['new_name']=true;
+		               	$upload = $this->do_upload('file',$url,$config);
+		               //	dd($upload,false);
+		                if(isset($upload['upload_data'])){
+							chmod($upload['upload_data']['full_path'], 0777);
+							$files_data[$i]['delivery_car_id'] = $insert_id;
+							$files_data[$i]['image'] = $upload['upload_data']['file_name'];
+						}else{
+							$file_not_uploaded[$i]['file'] =  $_FILES['file']['name'] ;
+							$file_not_uploaded[$i]['error'] =  strip_tags($upload['error']) ;
+						}
+
+		            }
+				}
+			}
+			if(!empty($files_data)) {
+				$this->DeliveryCarImageModel->insert_batch($files_data);
+			}
+
+			if($insert_id){
+				$deliver_car = $this->DeliveryCarModel->getById($insert_id);
+				//dd($deliver_car);
+				if(!empty($deliver_car)){
+					$images_keys =  array('image_id','image');
+					$images = array_filter_by_value(array_unique(array_column_multi($deliver_car,$images_keys),SORT_REGULAR),'image_id','');
+
+
+					$deliver_car = $deliver_car[0];
+
+					$removeKeys = $images_keys;
+					foreach($removeKeys as $key) {
+					   unset($deliver_car[$key]);
+					}
+					foreach ($images as $index => &$data) {
+						if(!empty($data['image'])){
+							$data['image'] = base_url().'uploads/app/'.$data['image'];
+						}
+					}
+
+					if(!empty($deliver_car['signature'])){
+						$deliver_car['signature'] = base_url().'uploads/app/'.$deliver_car['signature'];
+					}
+
+					$deliver_car['images_data'] = $images;
+					$response = array('status'=>true,'message'=>'Record created successfully','data'=>$deliver_car);
+				}else{
+					$response = array('status'=>false,'message'=>'Something went wrong!');
+				}
+
+			}else{
+				$response = array('status'=>false,'message'=>'Something went wrong!');
+			}
+			
+
 
 		}else{
 			$errors = $this->form_validation->error_array();

@@ -20,7 +20,7 @@ class InvoiceModel extends MY_Model {
 		return (!empty($result))? $result : false;
 	}
 
-	// used in w_crm
+	// used in w_crm, api web
 	public function getInvoiceById($id,$manager_id=null){
 		$this->db->select('i.*,o.hash,ii.id as item_id,ii.item_name, ii.price');
 		$this->db->from($this->table.' AS i');
@@ -35,11 +35,11 @@ class InvoiceModel extends MY_Model {
 		return (!empty($result))? $result : false;
 	}
 
+	// user in api
 	public function getInvoiceByUserId($user_id){
-		$this->db->select('i.*, il.id AS invoice_labour_id, il.item AS invoice_labour_item, il.hour AS invoice_labour_hour, il.rate AS invoice_labour_rate, il.cost AS invoice_labour_cost, il.gst AS invoice_labour_gst, il.gst_amount AS invoice_labour_gst_amount, il.total AS invoice_labour_total, ip.id AS invoice_parts_id, ip.item AS invoice_parts_item, ip.quantity AS invoice_parts_quantity, ip.cost AS invoice_parts_cost, ip.gst AS invoice_parts_gst, ip.gst_amount as invoice_parts_gst_amount,ip.total AS invoice_parts_total');
+		$this->db->select('i.id,i.invoice_number, i.client_name,i.client_phone,i.client_email,i.client_address,i.vehicle_reg_no,i.vehicle_brand_name,i.vehicle_model_name,i.vehicle_vin_no,i.vehicle_kms,i.date_created,i.due_date,i.sa_name,i.gst,i.gst_amount,i.discount_amount,i.sub_total,i.total_amount,i.total_pay_amount,i.notes,i.paid,i.created_at,ii.id as item_id,ii.item_name,ii.price');
 		$this->db->from($this->table.' AS i');
-		$this->db->join('invoice_labour_items AS il','i.id=il.invoice_id','left');
-		$this->db->join('invoice_parts_items AS ip','i.id=ip.invoice_id','left');
+		$this->db->join('invoice_items AS ii','i.id=ii.invoice_id','left');
 		$this->db->where('i.user_id',$user_id);
 		$this->db->where('i.fwd_to_customer',1);
 		$query = $this->db->get();

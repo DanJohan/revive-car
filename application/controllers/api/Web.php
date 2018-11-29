@@ -9,6 +9,7 @@ class Web extends MY_Controller {
 	    parent::__construct();
 	    $this->load->model('UserModel');
 	    $this->load->model('JobcardModel');
+	    $this->load->model('InvoiceModel');
 
 	}
 
@@ -88,14 +89,52 @@ class Web extends MY_Controller {
 		$this->load->view('api/job_card_detail',$data);
 	}
 
-	public function getOrderView(){
+	public function viewInvoice($id=null,$pdf=false) {
+		if($id){
+			$invoice = $this->InvoiceModel->getInvoiceById($id);
+		}
+		if(empty($invoice)){
+			return;
+		}
+		$invoice_items_keys =  array('item_id','item_name','price');
+		$invoice_items = array_filter_by_value(array_unique(array_column_multi($invoice,$invoice_items_keys),SORT_REGULAR),'item_id','');
 
-		$id = $_GET['id'];
 
-		$query = $this->db->query('SELECT * FROM placed_orders WHERE id='.$id.' LIMIT 1');
-		$result = $query->row_array();
-		echo $this->db->last_query();
-		dd($result);
+		$invoice = $invoice[0];
+
+		$removeKeys = $invoice_items_keys;
+		foreach($removeKeys as $key) {
+		   unset($invoice[$key]);
+		}
+
+		$invoice['invoice_items'] = $invoice_items;
+		
+		//dd($invoice);
+		if($pdf){
+			return $this->load->view('api/invoice_pdf',compact('invoice'),true);
+		}
+		$this->load->view('api/invoice',compact('invoice'));
 	}
+
+	public function printInvoicePdf($id=null) {
+		$this->load->library('myPdf');
+		// create new PDF document
+		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$pdf->setPrintHeader(false);
+
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$pdf->SetFont('times', 12);
+		$pdf->AddPage();
+		$html = self::viewInvoice($id,true);
+		//dd($html);
+		// output the HTML content
+		$pdf->writeHTML($html, true, false, true, false, '');
+		ob_end_clean();
+		$pdf->Output('invoice.pdf', 'D');
+		//print_r($pdf);
+	}
+
+
 
 }

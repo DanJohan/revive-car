@@ -295,31 +295,6 @@ class JobCard extends MY_Controller {
 
 
 
-
-	public function deliverCar($id){
-		$manager_id = $this->session->userdata('id');
-		$drivers = $this->DriverModel->getDriversByWorkshop($manager_id);
-		if($drivers) {
-			$driver_ids = array_column($drivers, 'id');
-		}else{
-			$driver_ids=array();
-		}
-		if($id){
-			$job_card=$this->JobcardModel->getJobCardById($id,$driver_ids);
-		}
-
-		if(empty($job_card)){
-			$this->session->set_flashdata('error_msg','No detail found!');
-			redirect('workshop/jobCard/list');
-		}
-		$job_card = $this->filterJobCardData($job_card);
-		$data['job_card'] = $job_card;
-		$data['drivers'] = $drivers;
-		$data['view'] = 'workshop/jobcard/deliver_car';
-		$this->load->view('workshop/layout',$data);
-
-	}
-
 	public function save_ride(){
 		$this->load->model('RideModel');
 		if($this->input->post('submit')){

@@ -125,32 +125,22 @@ Email:customercare@reviveauto.in</p>
         <thead class="border">
           <tr>
             <th>SR</th>
-            <th>Labor</th>
-            <th>Hour</th>
-            <th>Rate/Day</th>
-            <th>Cost</th>
-            <th>GST (%)</th>
-            <th>Total Amount</th>
+            <th>Service name</th>
+            <th>Price</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style="border-bottom: 1px solid #ddd;">
           <?php 
-            if(!empty($invoice['labour'])) {
+            if(!empty($invoice['invoice_items'])) {
                 $i=1;
-                $labour_sum=0;
-               foreach ($invoice['labour'] as $index => $data) {
+               foreach ($invoice['invoice_items'] as $index => $data) {
           ?>
             <tr>
-              <td><?php echo $i; ?></td>
-              <td><?php echo $data['invoice_labour_item']; ?></td>
-              <td><?php echo $data['invoice_labour_hour']; ?></td>
-              <td><?php echo $data['invoice_labour_rate']; ?></td>
-              <td><?php echo $data['invoice_labour_cost']; ?></td>
-              <td><?php echo $data['invoice_labour_gst']; ?></td>
-              <td><?php echo $data['invoice_labour_total']; ?></td>
+              <td><?php echo $i.'.'; ?></td>
+              <td><?php echo $data['item_name']; ?></td>
+              <td><?php echo $data['price']; ?></td>
             </tr>
           <?php
-                $labour_sum += $data['invoice_labour_total'];
                 $i++;
                 } 
             }
@@ -158,67 +148,12 @@ Email:customercare@reviveauto.in</p>
          
 
         </tbody>
-        <thead class="border">
-          <tr>
-            <th colspan="6">Total</th>
-            <th>&#x20b9;&nbsp;<?php echo number_format($labour_sum,'2','.',''); ?></th>
-          </tr>
-        </thead>
       </table>
     </div>
   </div>
 </section>
 
 
-<!-----------------Middle---------------->
-<section class="middle">
-  <div class="container">
-    <div class="table-responsive">
-    <table class="table">
-      <thead class="border">
-        <tr>
-          <th>SR</th>
-          <th>Parts</th>
-          <th>Quantity</th>
-          <th>Cost</th>
-          <th>GST (%)</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php 
-          if(!empty($invoice['parts'])){
-             $i=1;
-             $parts_sum=0;
-             foreach ($invoice['parts'] as $index => $data) {
-          ?>
-          <tr>
-            <td><?php echo $i; ?></td>
-            <td><?php echo $data['invoice_parts_item']; ?></td>
-            <td><?php echo $data['invoice_parts_quantity']; ?></td>
-            <td><?php echo $data['invoice_parts_cost']; ?></td>
-            <td><?php echo $data['invoice_parts_gst']; ?></td>
-            <td><?php echo $data['invoice_parts_total']; ?></td>
-          </tr>
-          <?php
-              $parts_sum +=$data['invoice_parts_total']; 
-              $i++;
-             }
-          } 
-        ?>
-       
-
-      </tbody>
-      <thead class="border">
-        <tr>
-          <th colspan="5">Total</th>
-          <th>&#x20b9;&nbsp;<?php echo number_format($parts_sum,'2','.',''); ?></th>
-        </tr>
-      </thead>
-    </table>
-    </div>
-  </div>
-</section>
 
 <section class="bottom">
   <div class="container">
@@ -236,26 +171,26 @@ Email:customercare@reviveauto.in</p>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Total labour</td>
-              <td>&#x20b9; <?php echo $invoice['labour_total']; ?></td>
-            </tr>
-            <tr>
-              <td>Total Parts </td>
-              <td>&#x20b9; <?php echo $invoice['parts_total']; ?></td>
-            </tr>
-            <tr>
-              <td>GST</td>
-              <td>&#x20b9; <?php echo $invoice['gst_total']; ?></td>
-            </tr>
-            <tr>
-              <td>Discount</td>
-              <td>&#x20b9; <?php echo $invoice['discount_amount']; ?></td>
-            </tr>
-            <tr>
-              <td>Grand Total</td>
-              <td>&#x20b9; <?php echo $invoice['total_amount_after_discount']; ?></td>
-            </tr>
+                <tr>
+                  <td >Sub total</td>
+                  <td>&#x20b9; <?php echo $invoice['sub_total']; ?></td>
+                </tr>
+                <tr>
+                  <td >Discount Amount </td>
+                  <td>&#x20b9; <?php echo $invoice['discount_amount']; ?></td>
+                </tr>
+                <tr>
+                  <td >Total amount</td>
+                  <td>&#x20b9; <?php echo $invoice['total_amount']; ?></td>
+                </tr>
+                <tr>
+                  <td>Gst </td>
+                  <td>&#x20b9; <?php echo $invoice['gst_amount']; ?></td>
+                </tr>
+                <tr>
+                  <td>Grand Total</td>
+                  <td>&#x20b9; <?php echo $invoice['total_pay_amount']; ?></td>
+                </tr>
           </tbody>
         </table>
       </div>
@@ -264,6 +199,6 @@ Email:customercare@reviveauto.in</p>
 </section>
 <section>
   <div class="container text-right" style="margin-bottom: 20px;">
-    <a href="<?php echo base_url();?>api/jobCard/printInvoicePdf/<?php echo $invoice['id']; ?>" class="btn btn-primary">Download PDF</a>
+    <a href="<?php echo base_url();?>api/web/printInvoicePdf/<?php echo $invoice['id']; ?>" class="btn btn-primary">Download PDF</a>
   </div>
 </section>
