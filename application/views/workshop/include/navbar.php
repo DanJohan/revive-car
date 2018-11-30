@@ -4,7 +4,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>REVIVE</b> CAR</span>
       <!-- logo ofr regular state and mobile devices -->
-      <span class="logo-lg"><b>REVIVE</b> CAR</span>
+      <span class="logo-lg"><b>REVIVE</b> AUTO CARE</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">

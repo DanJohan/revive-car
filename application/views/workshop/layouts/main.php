@@ -58,7 +58,7 @@
 				<!--main content end-->
 				<!--footer start-->
 				<footer class="main-footer">
-					<strong>Copyright © 2018 <a href="javascript:void(0);">Smart Serve Infotech</a></strong> All rights
+					<strong>Copyright © 2018 <a href="javascript:void(0);">Revive auto care</a></strong> All rights
 					reserved.
 				</footer>
 				<!--footer end-->

@@ -125,7 +125,7 @@ class OrderModel extends MY_Model {
 		   unset($order[$key]);
 		}
 
-		$order['order_item'] = $order_item;
+		$order['order_item'] = array_values($order_item);
 		$order['order_car_images'] = $order_car_images;
 		return $order;
 	}
