@@ -12,6 +12,8 @@ class User extends Rest_Controller {
 	    $this->load->library('mailer');
 	    $this->load->library('textMessage');
 	    $this->load->model('UserExternalLoginModel');
+	    $this->load->model('ManageAddressModel');
+	    $this->load->model('OrderModel');
 	}
 
 	
@@ -855,4 +857,53 @@ class User extends Rest_Controller {
 		$this->renderJson($response);
 	}
 
+	public function saveaddress() {
+			$user_id = $this->input->post('user_id');
+			$location_type = $this->input->post('location_type');
+			$address = $this->input->post('address');
+			$checkuserid = array();
+			$checkuserid = $this->ManageAddressModel->checkUserIdExists($user_id);
+			//print_r($checkuserid);die;
+			
+			if($checkuserid['location_type'] == $location_type){
+
+				$update_address = array('address'=>$this->input->post('address')
+		   	);
+			$update_id = $this->ManageAddressModel->update($update_address,array('user_id' => $user_id));
+		
+				if($update_id){
+								$response = array("status" => true, "message" => "Address updated successfully");
+					}else{
+						$response = array("status" => false, "message" => "Try again; some error occur in update");
+					}
+				}else{
+					$save_address = array(
+						'user_id'=>$user_id,
+						'location_type' => $this->input->post('location_type'),
+						'address' => $this->input->post('address'),
+					);
+				
+				$insert_id = $this->ManageAddressModel->insert($save_address);
+					if($insert_id){
+						$response = array("status" => true, "message" => "Address inserted successfully");
+				}else{
+				$response = array("status" => false, "message" => "Try again; some error occur in insert");
+			}
+		}
+			
+		$this->renderJson($response);
+			
+	}
+	public function getAllAddress(){
+			$user_id = $this->input->post('user_id');
+			$address_data= $this->ManageAddressModel->get_all(array('user_id' => $user_id));
+				
+			if($address_data){
+				$response = array('status'=>true,'message'=>'Record found successfully','data' => $address_data);
+			}else{
+				$response = array('status'=>false,'message'=>'No deatil found');
+			}//$response = array('status'=>false,'message'=>$errors);
+		    $this->renderJson($response);
+	}
+		
 }// end of class

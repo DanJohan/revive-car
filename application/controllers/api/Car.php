@@ -254,7 +254,7 @@ class Car extends Rest_Controller {
 			$user_cars = $this->CarModel->getUserAllCars($user_id);
 			if(!empty($user_cars)){
 				foreach ($user_cars as $index => &$user_car) {
-					$user_car['image'] = ($user_car['image'])? base_url().'uploads/app/'.$user_car['image']:'';
+					$user_car['image'] = ($user_car['image'])? base_url().'uploads/admin/'.$user_car['image']:'';
 				}
 				$response = array('status'=>true,'message'=>'Detail found successfully','data'=>$user_cars);
 			}else{
