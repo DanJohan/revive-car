@@ -10,6 +10,7 @@
 				<thead>
 				<tr>
 					<th style="width: 10%;">Order no</th>
+					<th style="width: 10%;">User id</th>
 					<th style="width: 10%;">Pick up date</th>
 					<th style="width: 5%;">Pick up time</th>
 					<th style="width: 5%;">Amount</th>
@@ -26,6 +27,7 @@
 				?>
 					<tr>
 						<td><?php echo $order['order_no']; ?></td>
+						<td><?php echo $order['user_id']; ?></td>
 						<td><?php echo date('dS M Y', strtotime($order['pick_up_date'])); ?></td>
 						<td><?php echo $order['pick_up_time']; ?></td>
 						<td><?php echo $order['net_pay_amount']; ?></td>

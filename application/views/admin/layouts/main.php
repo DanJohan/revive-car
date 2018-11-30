@@ -83,17 +83,29 @@
   <script>
 
     // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+/*    Pusher.logToConsole = true;
 
-    var pusher = new Pusher('<?php echo PUSHER_KEY; ?>', {
-      cluster: '<?php echo PUSHER_CLUSTER; ?>',
+    var pusher = new Pusher('<?php //echo PUSHER_KEY; ?>', {
+      cluster: '<?php //echo PUSHER_CLUSTER; ?>',
       forceTLS: true
     });
 
     var channel = pusher.subscribe('order');
     channel.bind('receive-order', function(data) {
      alertify.notify(data.message, 'success', 5, function(){  console.log('dismissed'); });
-    });
+    });*/
+
+     $.ajax({
+		'url':"<?php echo base_url(); ?>admin/order/get_notifications",
+		'method':"POST",
+		'async':false,
+		success:function(response){
+			if(response.status){
+				$('#notification-list').html(response.template);
+				$('#notification-count').text(response.total);
+			}
+		}
+	});
   </script>
 <?php $this->widget->beginBlock('scripts', true); ?>
 <?php $this->widget->endBlock(); ?>

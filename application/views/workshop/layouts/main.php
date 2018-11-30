@@ -86,6 +86,18 @@
 			//$(this).parents('li.treeview').addClass('active');
 		}
 	});
+	
+	$.ajax({
+		'url':"<?php echo base_url(); ?>workshop/order/get_notifications",
+		'method':"POST",
+		'async':false,
+		success:function(response){
+			if(response.status){
+				$('#notification-list').html(response.template);
+				$('#notification-count').text(response.total);
+			}
+		}
+	});
 </script>
 <?php $this->widget->beginBlock('scripts', true); ?>
 <?php $this->widget->endBlock(); ?>
