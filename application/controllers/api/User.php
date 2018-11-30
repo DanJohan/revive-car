@@ -872,7 +872,7 @@ class User extends Rest_Controller {
 			$update_id = $this->ManageAddressModel->update($update_address,array('user_id' => $user_id));
 		
 				if($update_id){
-								$response = array("status" => true, "message" => "Address updated successfully");
+						$response = array("status" => true, "message" => "Address updated successfully");
 					}else{
 						$response = array("status" => false, "message" => "Try again; some error occur in update");
 					}
