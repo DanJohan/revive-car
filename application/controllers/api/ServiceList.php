@@ -17,7 +17,8 @@ class ServiceList extends Rest_Controller {
 			//print_r($data);die;
 			if(!empty($data)){
 				foreach ($data as &$servicelist) {
-						$servicelist['image']=base_url().'public/images/admin/car/'.$servicelist['image'];
+				        $servicelist['category_name'] = $servicelist['category_name']. " ". "for"." ". $servicelist['body_name'];
+						$servicelist['image'] = base_url().'public/images/admin/car/'.$servicelist['image'];
 			
 				}
 				$response = array('status'=>true,'message'=>'Services Listing','data' => $data);

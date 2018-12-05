@@ -19,7 +19,7 @@
 					<th>Model Name</th>
 					<th>Price</th>
 					<th>Created At</th>
-					<th>Option</th>
+					<!-- <th>Option</th> -->
 				</tr>
 				</thead>
 
@@ -58,18 +58,18 @@
                 			return moment(data).format("Do MMM YYYY, h:mm A");
             			}
             		},
-				{
+				/*{
 					mRender : function(data, type, row) {
 						var html = '<div class="dropdown">'+
 			                '<button class="btn btn-primary dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></button>'+
-			                /*'<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'+
+			                '<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">'+
 			                    '<li><a href="'+config.baseUrl+'admin/service/change_price/'+row.id+'">Change Price</a></li>'+
 			                    '<li><a href="'+config.baseUrl+'admin/service/add_coupan/'+row.id+'">Add Coupan</a></li>'+
-			                '</ul>'+*/
+			                '</ul>'+
 		            		'</div>';
 		            		return html;
 					}
-				}
+				}*/
 			]
 		});
 	});

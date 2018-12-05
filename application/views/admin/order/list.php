@@ -12,6 +12,7 @@
 				<thead>
 				<tr>
 					<th>Order no</th>
+					<th>User id</th>
 					<th>Pick up date</th>
 					<th>Pick up time</th>
 					<th>Amount</th>
@@ -43,6 +44,9 @@
 			},
 			'columns':[
 				{data:'order_no'},
+				{
+					data : 'user_id',
+				},
 				{
 					data : 'pick_up_date',
 					render : function(data,type,row){

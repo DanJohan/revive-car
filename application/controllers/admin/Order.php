@@ -45,7 +45,7 @@ class Order extends MY_Controller {
 			$this->session->set_flashdata('error_msg','No detail found !');
 			redirect('admin/order/list');
 		}
-
+		$this->OrderModel->markOrderSeen($id);
 		$order_item_keys = array('order_item_id', 'order_item_order_id', 'service_id', 'service_name','price');
 		$order_item = array_filter_by_value(array_unique(array_column_multi($order,$order_item_keys),SORT_REGULAR),'order_item_id','');
 		
@@ -100,6 +100,16 @@ class Order extends MY_Controller {
 		
 	}
 
-
+	public function get_notifications() {
+		$data['orders'] = $this->OrderModel->getOrderNotification();
+		//dd($data);
+		if(!empty($data['orders'])) {
+			$template = $this->load->view('admin/order/notification',$data,true);
+			$response = array('status'=>true,'template'=>$template,'total'=>count($data['orders']));
+		}else{
+			$response = array('status'=>false,"Detail not found");
+		}
+		$this->renderJson($response);
+	}
 
 }// end of class

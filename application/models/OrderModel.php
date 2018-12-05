@@ -10,16 +10,17 @@ class OrderModel extends MY_Model {
 	}
 
 	private function getOrderColumn(){
-		return array('o.order_no','o.pick_up_date', 'o.pick_up_time', 'o.net_pay_amount', 'o.paid', 'o.status','o.created_at');
+		return array('o.order_no','o.user_id','o.pick_up_date', 'o.pick_up_time', 'o.net_pay_amount', 'o.paid', 'o.status','o.created_at');
 	}
 
 	public function getOrders($start,$limit,$orders,$search) {
-		$this->db->select('SQL_CALC_FOUND_ROWS o.id, o.order_no,o.pick_up_date, o.pick_up_time, o.net_pay_amount, o.paid, o.status,o.created_at',false);
+		$this->db->select('SQL_CALC_FOUND_ROWS o.id, o.order_no,o.user_id,o.pick_up_date, o.pick_up_time, o.net_pay_amount, o.paid, o.status,o.created_at',false);
 		$this->db->from($this->table.' AS o');
 		if(!empty($search['value'])){
 			$this->db->or_like(
 				array(
 					'o.order_no'=>$search['value'],
+					'o.user_id' =>$search['value'],
 					'o.pick_up_date' =>$search['value'],
 					'o.pick_up_time' => $search['value'],
 					'o.net_pay_amount'=>$search['value'],
@@ -124,9 +125,47 @@ class OrderModel extends MY_Model {
 		   unset($order[$key]);
 		}
 
-		$order['order_item'] = $order_item;
+		$order['order_item'] = array_values($order_item);
 		$order['order_car_images'] = $order_car_images;
 		return $order;
+	}
+
+	public function getOrderNotification() {
+		$this->db->select('o.id,o.loaner_vehicle,o.created_at,cb.brand_name,cm.model_name,u.name');
+		$this->db->from($this->table.' AS o');
+		$this->db->join('cars AS c','o.car_id = c.id');
+		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
+		$this->db->join('car_models AS cm','c.model_id = cm.id');
+		$this->db->join('users AS u','o.user_id = u.id');
+		$this->db->where('o.admin_seen',0);
+		$this->db->order_by('o.id','DESC');
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return (!empty($result))? $result : false;
+	}
+
+	public function markOrderSeen($id){
+		$this->db->where(array('id'=>$id));
+		$this->db->update($this->table, array('admin_seen'=>1));
+	}
+
+	public function getWorkshopOrderNotification($manager_id) {
+		$this->db->select('o.id,o.hash,o.loaner_vehicle,o.created_at,cb.brand_name,cm.model_name,u.name');
+		$this->db->from($this->table.' AS o');
+		$this->db->join('cars AS c','o.car_id = c.id');
+		$this->db->join('car_brands AS cb','c.brand_id = cb.id');
+		$this->db->join('car_models AS cm','c.model_id = cm.id');
+		$this->db->join('users AS u','o.user_id = u.id');
+		$this->db->where('o.workshop_seen=0 AND o.assign_workshop_id='.$manager_id);
+		$this->db->order_by('o.id','DESC');
+ 		$query = $this->db->get();
+		$result = $query->result_array();
+		return (!empty($result))? $result : false;
+	}
+	
+	public function markOrderWorkshopSeen($id){
+		$this->db->where(array('id'=>$id));
+		$this->db->update($this->table, array('workshop_seen'=>1));
 	}
 
 }

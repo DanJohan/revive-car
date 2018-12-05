@@ -12,8 +12,6 @@ class Car extends Rest_Controller {
 	    $this->load->model('CarModel');
 	    $this->load->model('CarBrandModel');
 	    $this->load->model('CarModelsModel');
-	    $this->load->model('ServiceEnquiryModel');
-	    $this->load->model('EnquiryImagesModel');
 	    $this->load->model('ServiceModel');
 	    //$this->load->library('mailer');
 	}

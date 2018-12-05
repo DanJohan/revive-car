@@ -58,7 +58,7 @@
 				<!--main content end-->
 				<!--footer start-->
 				<footer class="main-footer">
-					<strong>Copyright © 2018 <a href="javascript:void(0);">Smart Serve Infotech</a></strong> All rights
+					<strong>Copyright © 2018 <a href="javascript:void(0);">Revive auto care</a></strong> All rights
 					reserved.
 				</footer>
 				<!--footer end-->
@@ -84,6 +84,18 @@
 		if($(this).attr('href')== current_url){
 			$(this).parent('li').addClass('active');
 			//$(this).parents('li.treeview').addClass('active');
+		}
+	});
+	
+	$.ajax({
+		'url':"<?php echo base_url(); ?>workshop/order/get_notifications",
+		'method':"POST",
+		'async':false,
+		success:function(response){
+			if(response.status){
+				$('#notification-list').html(response.template);
+				$('#notification-count').text(response.total);
+			}
 		}
 	});
 </script>

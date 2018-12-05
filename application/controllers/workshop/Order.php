@@ -44,6 +44,8 @@ class Order extends MY_Controller {
 			redirect('workshop/order/list');
 		}
 
+		$this->OrderModel->markOrderWorkshopSeen($order_result['id']);
+
 		$data = array();
 		$order = $this->OrderModel->getOrderById($order_result['id']);
 		//dd($order);
@@ -190,7 +192,19 @@ class Order extends MY_Controller {
 
 	}
 
-
+	public function get_notifications() {
+		
+		$manager_id = $this->session->userdata('id');
+		$data['orders'] = $this->OrderModel->getWorkshopOrderNotification($manager_id);
+		//dd($data['enquiries']);
+		if(!empty($data['orders'])) {
+			$template = $this->load->view('workshop/order/notification',$data,true);
+			$response = array('status'=>true,'template'=>$template,'total'=>count($data['orders']));
+		}else{
+			$response = array('status'=>false,"Detail not found");
+		}
+		$this->renderJson($response);
+	}
 
 
 }// end of class

@@ -92,6 +92,7 @@ class Web extends MY_Controller {
 	public function viewInvoice($id=null,$pdf=false) {
 		if($id){
 			$invoice = $this->InvoiceModel->getInvoiceById($id);
+			//echo $this->db->last_query();die;
 		}
 		if(empty($invoice)){
 			return;

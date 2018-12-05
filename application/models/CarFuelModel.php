@@ -1,14 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class UserExternalLoginModel extends MY_Model {
+class CarFuelModel extends MY_Model {
 
-	protected $table = 'user_external_logins';
+	protected $table = 'car_fuel_types';
 
 	public function __construct()
 	{
 	    parent::__construct();
 	}
-
-	
 
 }

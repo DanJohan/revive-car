@@ -12,7 +12,7 @@
               <div class="alert alert-warning alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h4><i class="icon fa fa-warning"></i> Alert!</h4>
-                  <?= validation_errors();?>
+                  <?php echo validation_errors();?>
               </div>
             <?php endif; ?>
            
@@ -21,7 +21,7 @@
                 <label for="password" class="col-sm-3 control-label">New Password</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="password" class="form-control" id="password" placeholder="">
+                  <input type="password" name="m_password" class="form-control" id="password" placeholder="">
                 </div>
               </div>
 
@@ -29,7 +29,7 @@
                 <label for="confirm_pwd" class="col-sm-3 control-label">Confirm Password</label>
 
                 <div class="col-sm-8">
-                  <input type="text" name="confirm_pwd" class="form-control" id="confirm_pwd" placeholder="">
+                  <input type="password" name="confirm_pwd" class="form-control" id="confirm_pwd" placeholder="">
                 </div>
               </div>
 

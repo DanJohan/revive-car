@@ -92,9 +92,5 @@ class Welcome extends CI_Controller {
 		var_dump($insert_id);
 	}
 
-	public function test(){
-		$this->load->view('test/phone');
-	}
-
 	
 }// END OF CLASS
